@@ -53,7 +53,7 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Name1</th>
                         <th>&nbsp;</th>
                     </tr>
                     </thead>
