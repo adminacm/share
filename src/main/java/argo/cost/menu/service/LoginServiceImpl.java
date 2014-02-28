@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.menu.dao.ComDao;
+import argo.cost.menu.dao.ComDaoImpl;
 import argo.cost.menu.model.UserInfo;
 import argo.cost.menu.model.UserKengen;
 
@@ -15,7 +16,7 @@ public class LoginServiceImpl implements LoginService {
 	 * 共通DAO
 	 */
 	@Autowired
-	private ComDao comDao;
+	private ComDao comDao = new ComDaoImpl();
 	
 	
 	@Override

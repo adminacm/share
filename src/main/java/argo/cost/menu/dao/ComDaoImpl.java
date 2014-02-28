@@ -40,7 +40,7 @@ public class ComDaoImpl implements ComDao {
 			user.setPassword("liuyj");
 		// 権限：20
 		} else if ("xiongyl".equals(loginId)) {
-			user.setName("熊燕齢");
+			user.setName("熊燕玲");
 			user.setPassword("xiongyl");
 		// ユーザが存在しやい
 		} else {
