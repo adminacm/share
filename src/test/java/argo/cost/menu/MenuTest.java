@@ -1,4 +1,4 @@
-package test.java.argo.cost.menu;
+package argo.cost.menu;
 
 import static org.junit.Assert.assertEquals;
 
