@@ -56,6 +56,7 @@ public class MenuController {
 
     	UserKengen userkg = service.getUserKengen(userId);
     	map.put("kengenKbn", userkg.getKengenCd());
+    	map.put("userId", userId);
 
         return "menu";
     }
