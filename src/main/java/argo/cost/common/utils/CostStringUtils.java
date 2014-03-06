@@ -1,15 +1,18 @@
 package argo.cost.common.utils;
 
-import org.springframework.util.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 
+
+/**
+ * 文字列操作ライブラリ
+ * 
+ * @author cost
+ * 
+ */
 public class CostStringUtils extends StringUtils {
-	
 
-	public static boolean equals(CharSequence cs1, CharSequence cs2) {
-        return cs1 == null ? cs2 == null : cs1.equals(cs2);
-    }
-	
 	/**
 	 * 
 	 *　数字の前ゼロを追加する
@@ -32,4 +35,5 @@ public class CostStringUtils extends StringUtils {
 	     }
 	     return str;
 	 }
+	 
 }

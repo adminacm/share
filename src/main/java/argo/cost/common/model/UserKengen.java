@@ -1,4 +1,4 @@
-package argo.cost.menu.model;
+package argo.cost.common.model;
 
 
 // 就業管理の権限取得
@@ -33,8 +33,5 @@ public class UserKengen {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-	
-	
 
 }

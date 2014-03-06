@@ -2,28 +2,28 @@ package argo.cost.menu.controller;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import argo.cost.menu.model.UserInfo;
-import argo.cost.menu.model.UserKengen;
-import argo.cost.menu.service.LoginService;
+import argo.cost.common.controller.AbstractController;
+import argo.cost.common.model.AppSession;
+import argo.cost.common.model.UserInfo;
+import argo.cost.menu.model.MenueForm;
 
 
 @Controller
 @RequestMapping("/top")
-public class MenuController {
-
-	/**
-	 * このアクションが利用するサービスです。
-	 */
-	@Autowired
-	protected LoginService service;
+@SessionAttributes(types = { MenueForm.class })
+public class MenuController extends AbstractController {
 
     @RequestMapping("/init")
     public String initTop(Map<String, Object> map) {
@@ -34,30 +34,34 @@ public class MenuController {
     }
     
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String doLogin(@ModelAttribute("userInfo") UserInfo user, BindingResult result) {
+    public String doLogin(@ModelAttribute("userInfo") UserInfo user,HttpServletRequest request, BindingResult result) {
 
-    	// ユーザ情報の取得
-    	UserInfo userInfo = service.getUserInfo(user);
-		
-		// ユーザ情報が存在しない
-		if (userInfo == null) {
-			return "top";
-		// ユーザー名とパスウードが正しい場合
-		} else if (userInfo.getPassword().equals(user.getPassword())) {
-			return "redirect:/top/initMenu?userId=" + user.getUserId();
-		// パスウードが誤りの場合
-		} else {
-			return "top";
-		}
+    	RequestContextHolder.getRequestAttributes().removeAttribute(SESSION, RequestAttributes.SCOPE_SESSION);
+    	
+    	request.getSession().setAttribute("userId", user.getUserId());
+    	
+		// セッション情報初期化
+		AppSession session = comService.initSession(user.getUserId(), user.getPassword());
+
+		// セッション情報設定
+		RequestContextHolder.getRequestAttributes().setAttribute(SESSION, session, RequestAttributes.SCOPE_SESSION);
+
+		return "forward:/top/initMenu";
     }
     
     @RequestMapping("/initMenu")
-    public String initMenu(Map<String, Object> map,@RequestParam String userId) {
+    public String initMenu(Model model, HttpServletRequest request) throws Exception {
 
-    	UserKengen userkg = service.getUserKengen(userId);
-    	map.put("kengenKbn", userkg.getKengenCd());
-    	map.put("userId", userId);
-
+    	// ユーザ情報を取得
+    	UserInfo userInfo = getSession().getUserInfo();
+    	
+    	// フォーム初期化
+    	MenueForm form = initForm(MenueForm.class);
+		// 画面へ設定します。
+		model.addAttribute(form);
+		
+    	form.setUserInfo(userInfo);
+    	
         return "menu";
     }
 

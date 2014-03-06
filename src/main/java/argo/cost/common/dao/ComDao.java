@@ -1,17 +1,17 @@
-package argo.cost.menu.dao;
+package argo.cost.common.dao;
 
-import argo.cost.menu.model.UserInfo;
-import argo.cost.menu.model.UserKengen;
+import argo.cost.common.model.UserInfo;
+import argo.cost.common.model.UserKengen;
 
 /**
  * <p>
  * 共通部品に関するデータへのアクセスクラスを提供します。
  * </p>
  *
- * @author 
+ * @author COST argo Corporation.
  */
 public interface ComDao {
-	
+
 	/**
 	 * ユーザ情報を取得します。
 	 *
@@ -22,6 +22,15 @@ public interface ComDao {
 	UserInfo findUserById(String userId);
 
 	/**
+	 * システム設定値を取得します。
+	 *
+	 * @param setKey
+	 *            設定キー
+	 * @return 設定値
+	 */
+	String findSysSetVal(String setKey);
+	
+	/**
 	 * ユーザ権限情報を取得します。
 	 *
 	 * @param userId
@@ -29,5 +38,4 @@ public interface ComDao {
 	 * @return ユーザ権限情報
 	 */
 	UserKengen findUserKengenById(String userId);
-
 }

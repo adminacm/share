@@ -1,47 +1,47 @@
-package argo.cost.menu.dao;
-
-import javax.persistence.EntityManager;
+package argo.cost.common.dao;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.menu.model.UserInfo;
-import argo.cost.menu.model.UserKengen;
+import argo.cost.common.model.UserInfo;
+import argo.cost.common.model.UserKengen;
 
+/**
+ * <p>
+ * 共通部品に関するデータへのアクセスクラスを提供します。
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Repository
 public class ComDaoImpl implements ComDao {
-	
-	protected EntityManager em;
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public UserInfo findUserById(String loginId) {
-		
-		// TODO:DBなし
-//		TypedQuery<UserInfo> query = em.createQuery("select e from UserInfo e where e.id = :loginId", UserInfo.class);
-//		query.setParameter("loginId", loginId);
-//		try {
-//			return query.getSingleResult();
-//		} catch (NoResultException e) {
-//			// 該当データ無し
-//			return null;
-//		}
+	public UserInfo findUserById(String userId) {
+
+		// TODO
 		UserInfo user = new UserInfo();
 		
 		// 権限：30
-		if ("caowy".equals(loginId)) {
-			user.setName("曹文艶");
+		if ("caowy".equals(userId)) {
+			user.setUserName("曹文艶");
 			user.setPassword("caowy");
+			user.setUserId("caowy");
+			user.setOpeKbn("30");
 		// 権限：40
-		} else if ("liuyj".equals(loginId)) {
-			user.setName("劉亜傑");
+		} else if ("liuyj".equals(userId)) {
+			user.setUserName("劉亜傑");
 			user.setPassword("liuyj");
+			user.setUserId("liuyj");
+			user.setOpeKbn("40");
 		// 権限：20
-		} else if ("xiongyl".equals(loginId)) {
-			user.setName("熊燕玲");
+		} else if ("xiongyl".equals(userId)) {
+			user.setUserName("熊燕玲");
 			user.setPassword("xiongyl");
+			user.setUserId("xiongyl");
+			user.setOpeKbn("40");
 		// ユーザが存在しやい
 		} else {
 			return null;
@@ -49,7 +49,19 @@ public class ComDaoImpl implements ComDao {
 		return user;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String findSysSetVal(String setKey) {
 
+		// TODO
+		return "key";
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public UserKengen findUserKengenById(String userId) {
 		
@@ -69,5 +81,4 @@ public class ComDaoImpl implements ComDao {
 		}
 		return userkg;
 	}
-
 }
