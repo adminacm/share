@@ -37,7 +37,7 @@
 	            		<li style="margin-left:20px;"><a href="#">勤怠入力</a></li>
 	            		<li style="margin-left:20px;"><a href="/monthlyReport/init?loginId=${userId}">月報</a></li>
 	            		<li style="margin-left:20px;"><a href="#">休暇管理</a></li>
-	            		<li style="margin-left:20px;"><a href="#">休日出勤管理</a></li>
+	            		<li style="margin-left:20px;"><a href="/atendanceOnHoliday/init">休日出勤管理</a></li>
 	            		<li style="margin-left:20px;"><a href="#">個人設定</a></li>
 	            		<c:if test="${menueForm.userInfo.opeKbn=='30'}">
 	            			<li style="margin-left:20px;"><a href="#">承認一覧</a></li>
