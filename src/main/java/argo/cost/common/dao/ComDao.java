@@ -2,6 +2,7 @@ package argo.cost.common.dao;
 
 import argo.cost.common.model.UserInfo;
 import argo.cost.common.model.UserKengen;
+import argo.cost.common.model.entity.Users;
 
 /**
  * <p>
@@ -11,6 +12,18 @@ import argo.cost.common.model.UserKengen;
  * @author COST argo Corporation.
  */
 public interface ComDao {
+	
+	
+	/**
+	 * ユーザ名より、ユーザ情報を取得します。
+	 *
+	 * @param name
+	 *            ユーザ名
+	 * 
+	 * @return ユーザ情報
+	 */
+	Users findByName(String name);
+	
 
 	/**
 	 * ユーザ情報を取得します。

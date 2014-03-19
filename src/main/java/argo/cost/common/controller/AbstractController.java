@@ -36,38 +36,6 @@ public abstract class AbstractController {
 	 * フォワード属性名
 	 */
 	public static final String FORWARD = "forward";
-	/**
-	 * 画面初期化
-	 */
-	public static final String INIT = "";
-	/**
-	 * ダウンロード
-	 */
-	public static final String DOWNLOAD = "/download";
-	/**
-	 * 複数件ダウンロード（非同期）
-	 */
-	public static final String MUTIPLE_DOWNLOAD = "multipleDownload";
-	/**
-	 * アップロード
-	 */
-	public static final String UPLOAD = "/upload";
-	/**
-	 * アップロードエラー
-	 */
-	public static final String UPLOAD_ERROR = "error/uploadError";
-	/**
-	 * 権限エラー
-	 */
-	public static final String AUTH_ERROR = "error/authError";
-	/**
-	 * ファイルダウンロード
-	 */
-	public static final String FILE_DOWNLOAD = "/fileDownload";
-	/**
-	 * エラーファイルダウンロード
-	 */
-	public static final String ERROR_FILE_DOWNLOAD = "/errorFileDownload";
 
 	/**
 	 * セッション情報取得
@@ -101,7 +69,7 @@ public abstract class AbstractController {
 			throw new Exception();
 		}
 
-		form.setUserId(session.getUserInfo().getUserId());
+		form.setUserId(session.getUserInfo().getId());
 
 		return form;
 	}

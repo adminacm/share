@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import argo.cost.common.model.UserInfo;
 import argo.cost.common.model.UserKengen;
+import argo.cost.common.model.entity.Users;
 
 /**
  * <p>
@@ -15,6 +16,39 @@ import argo.cost.common.model.UserKengen;
 @Repository
 public class ComDaoImpl implements ComDao {
 
+
+	/**
+	 * ユーザ名より、ユーザ情報を取得します。
+	 *
+	 * @param name
+	 *            ユーザ名
+	 * 
+	 * @return ユーザ情報
+	 */
+	@Override
+	public Users findByName(String name) {
+		
+		Users user = null;
+		
+		if ("user01".equals(name)) {
+			user = new Users();
+			user.setEnable(1);
+			user.setId("U0001");
+			user.setName(name);
+			user.setPassword("user01");
+		}
+		
+		if ("admin".equals(name)) {
+			user = new Users();
+			user.setEnable(1);
+			user.setId("U0002");
+			user.setName(name);
+			user.setPassword("admin");
+		}
+		
+		return user;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

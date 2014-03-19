@@ -2,6 +2,8 @@ package argo.cost.common.model;
 
 import java.io.Serializable;
 
+import argo.cost.common.model.entity.Users;
+
 /**
  * <p>
  * セッション情報を表現します。
@@ -19,7 +21,7 @@ public class AppSession implements Serializable {
 	/**
 	 * ユーザ情報
 	 */
-	private UserInfo userInfo;
+	private Users userInfo;
 
 	/**
 	 * 権限持てるフラグ
@@ -59,7 +61,7 @@ public class AppSession implements Serializable {
 	 *
 	 * @return ユーザ情報
 	 */
-	public UserInfo getUserInfo() {
+	public Users getUserInfo() {
 
 		return userInfo;
 	}
@@ -70,7 +72,7 @@ public class AppSession implements Serializable {
 	 * @param userInfo
 	 *            ユーザ情報
 	 */
-	public void setUserInfo(UserInfo userInfo) {
+	public void setUserInfo(Users userInfo) {
 
 		this.userInfo = userInfo;
 	}

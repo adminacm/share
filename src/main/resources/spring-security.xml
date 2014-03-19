@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans:beans xmlns="http://www.springframework.org/schema/security"  
+    xmlns:beans="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">  
+                          
+    <!-- 该路径下的资源不用过滤 -->             
+    <http pattern="/js/**" security="none"/>
+    <http auto-config="true" access-denied-page="/accessDenied.jsp">
+    	<intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <form-login login-page="/login.jsp" default-target-url="/menu/init"
+        	always-use-default-target="true" authentication-failure-url="/login.jsp?login_error=1" />  
+        <logout invalidate-session="true" logout-success-url="/login.jsp"  
+            logout-url="/j_spring_security_logout" />
+        <intercept-url pattern="/opportunity/init" access="ROLE_ADMIN"/>
+        <!-- 实现免登陆验证 -->  
+        <remember-me />  
+        <session-management invalid-session-url="/timeout.jsp">  
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />  
+        </session-management>  
+        <custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR"/>  
+    </http>  
+    <!-- 配置过滤器 -->  
+    <beans:bean id="myFilter" class="argo.cost.common.security.MySecurityFilter">  
+        <!-- 用户拥有的权限 -->  
+        <beans:property name="authenticationManager" ref="myAuthenticationManager" />  
+        <!-- 用户是否拥有所请求资源的权限 -->  
+        <beans:property name="accessDecisionManager" ref="myAccessDecisionManager" />  
+        <!-- 资源与权限对应关系 -->  
+        <beans:property name="securityMetadataSource" ref="mySecurityMetadataSource" />  
+    </beans:bean>  
+    <!-- 实现了UserDetailsService的Bean -->
+    <authentication-manager alias="myAuthenticationManager">  
+        <authentication-provider user-service-ref="myUserDetailServiceImpl" />  
+    </authentication-manager>  
+    <beans:bean id="myAccessDecisionManager" class="argo.cost.common.security.MyAccessDecisionManager"></beans:bean>  
+    <beans:bean id="mySecurityMetadataSource" class="argo.cost.common.security.MySecurityMetadataSource">  
+        <beans:constructor-arg name="resourcesDao" ref="resourcesDao"></beans:constructor-arg>
+    </beans:bean>  
+    <beans:bean id="myUserDetailServiceImpl" class="argo.cost.common.security.MyUserDetailServiceImpl">
+    	<beans:property name="usersDao" ref="usersDao"></beans:property>  
+    	<beans:property name="resourcesDao" ref="resourcesDao"></beans:property>  
+    </beans:bean>
+    <beans:bean id="resourcesDao" class="argo.cost.common.dao.ResourcesDaoImpl"></beans:bean>
+    <beans:bean id="usersDao" class="argo.cost.common.dao.UsersDaoImpl"></beans:bean>
+</beans:beans>  
