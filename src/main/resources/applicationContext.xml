@@ -13,7 +13,7 @@
 
     <context:annotation-config />
     <context:component-scan base-package="argo.cost" />
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    
     <mvc:annotation-driven/>
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -26,19 +26,6 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
         <property name="dataSource" ref="dataSource"/>
 
-    </bean>
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-    </bean>
-    <bean id="exceptionTranslationFilter" class="org.springframework.security.web.access.ExceptionTranslationFilter">
-    	<property name="authenticationEntryPoint" ref="authenticationEntryPoint"></property>
-    	<property name="accessDeniedHandler" ref="accessDeniedHandler"></property>
-    </bean>
-    
-    <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-    	<property name="loginFormUrl" value="/login.jsp"/>
-    </bean>
-    <bean id="accessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl"> 
-    	<property name="errorPage" value="/accessDenied.htm"/> 
     </bean>
 
     <beans profile="default">

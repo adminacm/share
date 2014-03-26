@@ -93,5 +93,52 @@ public abstract class AbstractController {
 		out.flush();
 		out.close();
 	}
+//
+//	/**
+//	 * 単一データJSONで出力
+//	 *
+//	 * @param response
+//	 *            レスポンス
+//	 * @param obj
+//	 *            データ
+//	 * @throws IOException
+//	 *             異常
+//	 */
+//	protected <T> void writeJsonObject(HttpServletResponse response, T obj) throws IOException {
+//
+//		response.setContentType("text/html;charset=UTF-8");
+//		PrintWriter out = response.getWriter();
+//
+//		JSONObject jsonObject = new JSONObject(obj);
+//
+//		out.write(jsonObject.toString());
+//		out.flush();
+//		out.close();
+//	}
+//
+//	/**
+//	 * 一覧データJSONで出力
+//	 *
+//	 * @param response
+//	 *            レスポンス
+//	 * @param list
+//	 *            一覧データ
+//	 * @throws IOException
+//	 *             異常
+//	 */
+//	protected <T> void writeJsonArray(HttpServletResponse response, List<T> list) throws IOException {
+//
+//		response.setContentType("text/html;charset=UTF-8");
+//		PrintWriter out = response.getWriter();
+//
+//		JSONArray jsonArray = new JSONArray();
+//		for (T item : list) {
+//
+//			jsonArray.put(new JSONObject(item));
+//		}
+//		out.write(jsonArray.toString());
+//		out.flush();
+//		out.close();
+//	}
 
 }

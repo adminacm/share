@@ -23,13 +23,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!--  获取Spring Security session的生命周期-->  
-    <listener>
-    	<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-    </listener>
-    <session-config>
-    	<session-timeout>20</session-timeout>
-    </session-config>
     
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
@@ -50,9 +43,4 @@
         <servlet-name>spring</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
-    <error-page>
-        <error-code>403</error-code>
-        <location>/accessDenied.jsp</location>
-    </error-page>
 </web-app>
