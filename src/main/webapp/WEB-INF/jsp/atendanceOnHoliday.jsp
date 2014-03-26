@@ -44,7 +44,7 @@
     &nbsp;
     <input type="submit" value="削除" class="btn"/>
     &nbsp;
-    <input type="button" value="戻る" onclick="javascript:history.go(-1);/>
+    <input type="button" value="戻る" onclick="javascript:history.go(-1);">
     </td>
     </tr>
     <br/>
