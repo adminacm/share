@@ -1,9 +1,6 @@
 package argo.cost.common.utils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -39,5 +36,30 @@ public class CostDateUtils extends DateUtils {
 		 }
 		 
 		 return result;
+	 }
+	 
+	 /**
+	  * 日付チェック
+	  * 
+	  * @param date
+	  * 		日付
+	  * @return
+	  * 		チェック結果
+	  */
+	 public static boolean isValidDate(String date) {
+		 
+		// 日付フォーマット
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		dateFormat.setLenient(false);
+        try
+        {
+        	// 日付変換
+			dateFormat.parse(date);
+			return true;
+         }
+        catch (Exception e)
+        {
+            return false;
+        }
 	 }
 }

@@ -46,11 +46,32 @@ public class ResourcesDaoImpl implements ResourcesDao {
 		re4.setName("ROLE_USER");
 		re4.setMemo("月報初期化");
 		re4.setUrl("/monthlyReport/init");
-
+		
+		Resources re5 = new Resources();
+		re5.setId("RS002");
+		re5.setName("ROLE_USER");
+		re5.setMemo("個人設定初期化");
+		re5.setUrl("/setup/init");
+		
+		Resources re6 = new Resources();
+		re6.setId("RS003");
+		re6.setName("ROLE_USER");
+		re6.setMemo("承認一覧初期化");
+		re6.setUrl("/approvalList/init");
+		
+		Resources re7 = new Resources();
+		re7.setId("RS004");
+		re7.setName("ROLE_USER");
+		re7.setMemo("月報状況一覧初期化");
+		re7.setUrl("/monthlyReportStatusList/init");
+		
 		result.add(re1);
 		result.add(re2);
 		result.add(re3);
 		result.add(re4);
+		result.add(re5);
+		result.add(re6);
+		result.add(re7);
 
 		return result;
 	}
@@ -92,6 +113,24 @@ public class ResourcesDaoImpl implements ResourcesDao {
 		re4.setMemo("月報初期化");
 		re4.setUrl("/monthlyReport/init");
 		
+		Resources re5 = new Resources();
+		re5.setId("RS002");
+		re5.setName("ROLE_USER");
+		re5.setMemo("個人設定初期化");
+		re5.setUrl("/setup/init");
+		
+		Resources re6 = new Resources();
+		re6.setId("RS003");
+		re6.setName("ROLE_USER");
+		re6.setMemo("承認一覧初期化");
+		re6.setUrl("/approvalList/init");
+		
+		Resources re7 = new Resources();
+		re7.setId("RS004");
+		re7.setName("ROLE_USER");
+		re7.setMemo("月報状況一覧初期化");
+		re7.setUrl("/monthlyReportStatusList/init");
+		
 		if ("R0001".equals(roId)) {
 			result.add(re1);
 			result.add(re4);
@@ -101,6 +140,9 @@ public class ResourcesDaoImpl implements ResourcesDao {
 			result.add(re4);
 		}
 		result.add(re3);
+		result.add(re5);
+		result.add(re6);
+		result.add(re7);
 		
 		return result;
 	}
