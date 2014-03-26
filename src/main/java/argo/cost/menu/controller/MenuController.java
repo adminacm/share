@@ -2,8 +2,8 @@ package argo.cost.menu.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +24,16 @@ public class MenuController extends AbstractController {
     
     @RequestMapping("/init")
     public String doLogin(Model model, HttpServletRequest request) {
-
-    	// Spring security 情報を取得
-    	SecurityContextImpl securityContextImpl = (SecurityContextImpl) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
     	
-    	String userName = securityContextImpl.getAuthentication().getName();
+    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	
+    	// Spring security 情報を取得
+    	String userName;
+    	if (principal instanceof UserDetails) {
+    		userName = ((UserDetails)principal).getUsername(); 
+    		} else {
+    			userName = principal.toString(); 
+    		}
     	
     	request.getSession().setAttribute("userName", userName);
 

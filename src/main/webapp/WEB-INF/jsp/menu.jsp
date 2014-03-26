@@ -39,7 +39,7 @@
 	            <span style="font-size:19px;">就業管理</span>
 	            	<ul>
 	            		<li style="margin-left:20px;"><a href="#">勤怠入力</a></li>
-	            		<li style="margin-left:20px;"><a href="#">月報</a></li>
+	            		<li style="margin-left:20px;"><a href="/monthlyReport/init">月報</a></li>
 	            		<li style="margin-left:20px;"><a href="#">休暇管理</a></li>
 	            		<li style="margin-left:20px;"><a href="#">休日出勤管理</a></li>
 	            		<li style="margin-left:20px;"><a href="#">個人設定</a></li>

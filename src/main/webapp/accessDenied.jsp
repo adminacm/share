@@ -5,6 +5,7 @@
 	<title>拒絶訪問</title>
 </head>
 <body>
-	訪問の権限がありません！
-</body>
+    <font size="5">Access Deny!</font><br>
+    ${requestScope['SPRING_SECURITY_403_EXCEPTION'].message}
+  </body>
 </html>

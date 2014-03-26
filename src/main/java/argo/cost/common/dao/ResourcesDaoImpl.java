@@ -33,9 +33,24 @@ public class ResourcesDaoImpl implements ResourcesDao {
 		re2.setName("ROLE_ADMIN");
 		re2.setMemo("案件情報");
 		re2.setUrl("/opportunity/init");
+		
+
+		Resources re3 = new Resources();
+		re3.setId("RS000");
+		re3.setName("ROLE_USER");
+		re3.setMemo("拒否画面");
+		re3.setUrl("accessDenied.jsp");
+		
+		Resources re4 = new Resources();
+		re4.setId("RS001");
+		re4.setName("ROLE_USER");
+		re4.setMemo("月報初期化");
+		re4.setUrl("/monthlyReport/init");
 
 		result.add(re1);
 		result.add(re2);
+		result.add(re3);
+		result.add(re4);
 
 		return result;
 	}
@@ -64,13 +79,28 @@ public class ResourcesDaoImpl implements ResourcesDao {
 		re2.setName("ROLE_ADMIN");
 		re2.setMemo("案件情報");
 		re2.setUrl("/opportunity/init");
+
+		Resources re3 = new Resources();
+		re3.setId("RS000");
+		re3.setName("ROLE_USER");
+		re3.setMemo("拒否画面");
+		re3.setUrl("accessDenied.jsp");
+		
+		Resources re4 = new Resources();
+		re4.setId("RS001");
+		re4.setName("ROLE_USER");
+		re4.setMemo("月報初期化");
+		re4.setUrl("/monthlyReport/init");
 		
 		if ("R0001".equals(roId)) {
 			result.add(re1);
+			result.add(re4);
 		}
 		if ("R0002".equals(roId)) {
 			result.add(re2);
+			result.add(re4);
 		}
+		result.add(re3);
 		
 		return result;
 	}

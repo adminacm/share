@@ -28,7 +28,6 @@ import argo.cost.common.model.entity.Resources;
 public class MySecurityMetadataSource implements
 		FilterInvocationSecurityMetadataSource {
 
-	@Autowired
 	private ResourcesDao resourcesDao;
 
 	public MySecurityMetadataSource(ResourcesDao resourcesDao) {
