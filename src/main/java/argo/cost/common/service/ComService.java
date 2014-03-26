@@ -1,6 +1,11 @@
 package argo.cost.common.service;
 
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+
 import argo.cost.common.model.AppSession;
+import argo.cost.common.model.ListItem;
 
 /**
  * <p>
@@ -14,14 +19,12 @@ public interface ComService {
 	/**
 	 * セッション情報初期化
 	 *
-	 * @param userInfo
-	 *            ユーザID
-	 * @param pwd
-	 *            パスワード
+	 * @param userName
+	 *            ユーザ名
 	 *
 	 * @return セッション情報
 	 */
-	AppSession initSession(String userId, String pwd);
+	AppSession initSession(String userName);
 
 	/**
 	 * セッション情報リフレッシュ
@@ -30,56 +33,53 @@ public interface ComService {
 	 *            セッション情報
 	 */
 	void flushSession(AppSession session);
-
+	
 	/**
-	 * 権限チェック
-	 *
-	 * @param session
-	 *            セッション
-	 * @param msgDispFlg
-	 *            メッセージ表示フラグ
+	 * 状況プルダウンリスト取得
+	 * 
+	 * @return 状況プルダウンリスト
 	 */
-	void checkAuthority(AppSession session, boolean msgDispFlg);
-
-//	/** TODO
-//	 * グループキーにコードマスタ情報一覧を取得します。
-//	 *
-//	 * @param domain
-//	 *            検索条件
-//	 * @return コードマスタ情報一覧
-//	 */
-//	List<MsCd> listMsCdByGrpKey(String grpKey);
-//	/**
-//	 * 部門リスト選択内容を取得します。
-//	 *
-//	 * @param bmnList
-//	 *            部門リスト
-//	 * @param cmpCd
-//	 *            カンパニーコード
-//	 * @throws Exception
-//	 *             異常
-//	 */
-//	 String getBmnSel(List<SoshikiItem> bmnList, String cmpCd) throws Exception;
-//
-//	/**
-//	 * 部リスト選択内容を取得します。
-//	 *
-//	 * @param buList
-//	 *            部リスト
-//	 * @param cmpCd
-//	 *            カンパニーコード
-//	 * @param bmnCd
-//	 *            カンパニーコード
-//	 * @throws Exception
-//	 *             異常
-//	 */
-//	 String getBuSel(List<SoshikiItem> buList, String cmpCd, String bmnCd) throws Exception;
-
+	List<ListItem> getStatusList();
+	
 	/**
-	 * テンプパスワードを取得します。
-	 *
-	 * @return テンプパスワード
+	 * 氏名プルダウンリスト取得
+	 * 
+	 * @param userId
+	 *            ユーザＩＤ
+	 * @return 氏名プルダウンリスト
 	 */
-	 String findTempPw();
-
+	List<ListItem> getUserNameList(String userId);
+	
+	/**
+	 * 年度プルダウンリスト取得
+	 * 
+	 * @param year
+	 *           当年度
+	 * @return
+	 *           プルダウンリスト
+	 * @throws ParseException 
+	 */
+	List<ListItem> getYearList(Date date) throws ParseException;
+	
+	/**
+	 * プロジェクト名プルダウンリスト取得
+	 * 
+	 * @param userId
+	 *            ユーザＩＤ
+	 * @param date
+	 * 		           　日付
+	 * @return
+	 *            プロジェクト名プルダウンリスト
+	 */
+	List<ListItem> getProjectNameList(String userId, Date date);
+	
+	/**
+	 * 
+	 * 月報の提出状態を取得
+	 * 
+	 * @param userId ユーザID
+	 * @param date 日付
+	 * @return 月報の提出状態
+	 */
+	String getMonthStatus(String userId, String date);
 }

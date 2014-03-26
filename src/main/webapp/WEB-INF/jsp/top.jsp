@@ -38,7 +38,7 @@
             <div class="page-header">
                 <h1>Simple CRUD Page</h1>
             </div>
-            <form:form method="post" action="login" commandName="userInfo" class="form-vertical">
+            <form:form method="post" action="login01" commandName="userInfo" class="form-vertical">
 
                 <form:label path="userId">User ID</form:label>
                 <form:input path="userId" />
@@ -46,7 +46,7 @@
                 <form:input type="password" path="password" />
                 <input type="submit" value="Login" class="btn"/>
             </form:form>
-
+<a href="http://localhost:8080/opportunity.jsp">案件情報一覧</a>
         </div>
     </div>
 </div>

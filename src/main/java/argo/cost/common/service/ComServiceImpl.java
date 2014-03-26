@@ -1,15 +1,23 @@
 package argo.cost.common.service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.dao.DropdownListDao;
 import argo.cost.common.model.AppSession;
-import argo.cost.common.model.UserInfo;
+import argo.cost.common.model.ListItem;
+import argo.cost.common.model.entity.Status;
+import argo.cost.common.model.entity.Users;
 
 /**
  * {@inheritDoc}
@@ -24,14 +32,20 @@ public class ComServiceImpl implements ComService {
 	private ComDao comDao;
 
 	/**
+	 * 共通DAO
+	 */
+	@Autowired
+	private DropdownListDao listDao;
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AppSession initSession(String userId, String pwd) {
+	public AppSession initSession(String userName) {
 
 		AppSession session = new AppSession();
 
-		this.setupSession(session, userId, pwd);
+		this.setupSession(session, userName);
 
 		return session;
 	}
@@ -42,103 +56,241 @@ public class ComServiceImpl implements ComService {
 	@Override
 	public void flushSession(AppSession session) {
 
-		this.setupSession(session, session.getUserInfo().getUserId(), session.getUserInfo().getPassword());
+		this.setupSession(session, session.getUserInfo().getName());
 	}
-
 
 	/**
-	 * {@inheritDoc}
+	 * 状況プルダウンリスト取得
+	 * 
+	 * @return 状況プルダウンリスト
 	 */
 	@Override
-	public String findTempPw() {
+	public List<ListItem> getStatusList() {
 
-		// TODO
-		return comDao.findSysSetVal("key");
+		// 状況プルダウンリスト
+		List<Status> statusList = listDao.getStatusList();
+
+		// ドロップダウンリスト
+		List<ListItem> resultList = new ArrayList<ListItem>();
+		// ドロップダウン項目
+		ListItem item = null;
+
+		// ドロップダウンリスト設定
+		for (Status status : statusList) {
+			item = new ListItem();
+
+			// データを設定する
+			// 区分値 
+			item.setValue(status.getStatusCode());
+			// 区分名称
+			item.setName(status.getStatusName());
+
+			// リストに追加
+			resultList.add(item);
+		}
+
+		// 状況ドロップダウンリストを返却する。
+		return resultList;
 	}
+
+	/**
+	 * 氏名プルダウンリスト取得
+	 * 
+	 * @param userId
+	 *            ユーザＩＤ
+	 * @return 氏名プルダウンリスト
+	 */
+	@Override
+	public List<ListItem> getUserNameList(String userId) {
+
+		// 氏名プルダウンリスト
+		List<Users> userList = listDao.getUserList(userId);
+
+		// ドロップダウンリスト
+		List<ListItem> resultList = new ArrayList<ListItem>();
+		// ドロップダウン項目
+		ListItem item = null;
+
+		// ドロップダウンリスト設定
+		for (Users status : userList) {
+			item = new ListItem();
+
+			// データを設定する
+			// 区分値 
+			item.setValue(status.getId());
+			// 区分名称
+			item.setName(status.getName());
+
+			// リストに追加
+			resultList.add(item);
+		}
+
+		// 氏名ドロップダウンリストを返却する。
+		return resultList;
+	}
+
+	/**
+	 * 年度プルダウンリスト取得
+	 * 
+	 * @param year
+	 *           当年度
+	 * @return
+	 *           プルダウンリスト
+	 * @throws ParseException 
+	 */
+	@Override
+	public List<ListItem> getYearList(Date date) throws ParseException {
+
+		// 年度プルダウンリスト
+		List<ListItem> resultList = new ArrayList<ListItem>();
+		// ドロップダウン項目
+		ListItem item = null;
+
+		// ドロップダウンリスト設定
+		for (int i = 0; i <= 3; i++) {
+			item = new ListItem();
+
+			// データを設定する
+			// 区分値 
+			item.setValue(String.valueOf(getYear(date, i)));
+			// 区分名称
+			item.setName(formatJapanYear(getYear(date, i)));
+
+			// リストに追加
+			resultList.add(item);
+		}
+
+		// 年度ドロップダウンリストを返却する。
+		return resultList;
+	}
+
+	/**
+	 * プロジェクト名プルダウンリスト取得
+	 * 
+	 * @param userId
+	 *            ユーザＩＤ
+	 * @param date
+	 * 		           　日付
+	 * @return
+	 *            プロジェクト名プルダウンリスト
+	 */
+	@Override
+	public List<ListItem> getProjectNameList(String userId, Date date) {
+
+		//TODOプルダウンリスト
+		//listDao.getProjectList(userId, date);
+
+		// ドロップダウンリスト
+		List<ListItem> resultList = new ArrayList<ListItem>();
+		// ドロップダウン項目
+		ListItem item = null;
+
+		// ドロップダウンリスト設定
+		//for (Users status : userList) {
+			item = new ListItem();
+
+			// データを設定する
+			// 区分値 
+			item.setValue("");
+			// 区分名称
+			item.setName("");
+
+			// リストに追加
+			resultList.add(item);
+		//}
+
+		// プロジェクト名ドロップダウンリストを返却する。
+		return resultList;
+	}
+
+	/**
+	 * 
+	 * 月報の提出状態を取得
+	 * 
+	 * @param userId ユーザID
+	 * @param date 日付
+	 * @return 月報の提出状態
+	 */
+	@Override
+	public String getMonthStatus(String userId, String date) {
+		
+		// DBより、ロッジク未定です。
+		
+		return "作成中";
+	}
+
+	///////////////////////////////////
+	///////////////////////////////////
+
+	/**
+	 * 西暦年を取得
+	 * 
+	 * @param date
+	 * 		　日付
+	 * @param cnt
+	 * 		　年度差
+	 * @return
+	 *		  西暦年
+	 */
+	private int getYear(Date date, int cnt) {
+
+		// 日付の取得
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.YEAR, -cnt); 
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH);
+
+		// 現在年度の判定
+		if (month >= 1 && month <= 3) {
+			year = year - 1;
+		}
+
+		return year;
+	}
+	
+	/**
+	 * 和暦年取得
+	 * 
+	 * @param year
+	 * 　　　　　　　　	西暦年
+	 * @return　
+	 *          和暦年
+	 * @throws ParseException 
+	 */
+	private String formatJapanYear(Integer year) throws ParseException {
+		
+		SimpleDateFormat parseTime=new SimpleDateFormat("yyyy-MM-dd");
+		Date date= parseTime.parse(String.valueOf(year) + "-01-01");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		Locale locale = new Locale("ja", "JP", "JP");
+		DateFormat format = new SimpleDateFormat("GGGGyy年", locale);
+		
+		return format.format(cal.getTime());
+	}
+	
 
 	/**
 	 * セッション情報セットアップ
 	 *
-	 * @param userId
-	 *            ユーザID
-	 * @param ksnki
-	 *            決算期
+	 * @param userName
+	 *            ユーザ名
 	 * @return セッション情報
 	 */
-	private void setupSession(AppSession session, String userId, String pwd) {
+	private void setupSession(AppSession session, String userName) {
 
 		// ユーザ情報を取得します。
-		UserInfo user = comDao.findUserById(userId);
+		Users user = comDao.findByName(userName);
 		session.setUserInfo(user);
 
 		if (session.getUserInfo() == null) {
 
 			// 権限なしの異常を表示します。
 //			throw new InvalidAuthException();
-		} else {
-			// ユーザ情報のチェック
-			if (true) {
-				
-			} else {
-				// 登録の異常を表示します。
-//				throw new InvalidAuthException();
-			}
 		}
-
-		// 権限持てるフラグを設定します。
-		session.setAuthFlg(!StringUtils.equals(session.getUserInfo().getOpeKbn(), "01"));
 
 	}
-
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void checkAuthority(AppSession session, boolean msgDispFlg) {
-
-		// セッション情報をリフレシュー
-		this.flushSession(session);
-
-		// 初期の場合、更新不可にします。
-		session.setUpdFlg(false);
-
-		// 権限なしチェック
-		if (!session.isAuthFlg()) {
-//			throw new InvalidAuthException();
-		}
-//
-//		if (session.getSoshikiList() == null || session.getSoshikiList().isEmpty()) {
-//
-//			// 組織なしの場合、権限エラー画面に遷移します。
-//			throw new InvalidAuthException();
-//		}
-//
-//		if (ItochuStringUtils.equals(session.getUrl(), UrlConstant.URL_TOP)) {
-//			return;
-//		}
-
-		// アップロード無しの画面URL配列
-		Set<String> noUploadUrls = new HashSet<String>();
-		// お知らせ
-		noUploadUrls.add("01");
-		// ユーザ権限管理
-		noUploadUrls.add("02");
-
-		// 参照者チェック
-		if (StringUtils.equals(session.getUserInfo().getOpeKbn(), "XX")) {
-
-			if (msgDispFlg) {
-//				throw new ApplicationRecoverableException(MessageConstant.W_M0110);
-			} else {
-				return;
-			}
-		}
-
-		// 更新可にします。
-		session.setUpdFlg(true);
-	}
-
 
 }
