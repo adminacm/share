@@ -22,15 +22,16 @@
 				<td><input type='password'name='j_password'></td>
 			</tr>
 			<tr>
-				<td rowspan="2">
-					<input type="checkbox" name="_spring_security_remember_me" />RememberMe<br />
-				</td>
-			</tr>
-			<tr>
 				<td><input type="reset" name="reset"></td>
 				<td><input type='submit'name='login'></td>
 			</tr>
 		</table>
+		<br><br><br><br><br><br><br>
+		※ 一般ユーザ「ID:user01」、「Pwd：user01」、「権限：ROLE_USER」<br>
+		※ 管理者「ID:admin」、「Pwd：admin」、「権限：ROLE_USER,ROLE_ADMIN」<br>
+		&nbsp;&nbsp;&nbsp;「Login画面」は権限のリミットなし。<br>
+		&nbsp;&nbsp;&nbsp;「Menu画面」の権限リミット：ROLE_USER<br>
+		&nbsp;&nbsp;&nbsp;「案件一覧画面」の権限リミット：ROLE_ADMIN<br>
 	</form>
 </body>
 </html>
