@@ -2,15 +2,16 @@ package argo.cost.setup.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.dao.ComDaoImpl;
 import argo.cost.common.model.UserInfo;
 import argo.cost.common.model.entity.Shift;
 import argo.cost.common.model.entity.ShiftTime;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.dao.SetupDao;
+import argo.cost.setup.dao.SetupDaoImpl;
 import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
 
@@ -23,14 +24,12 @@ public class SetupServiceImpl implements SetupService {
 	/**
 	 * 個人設定DAO
 	 */
-	@Autowired
-	private SetupDao setupDao;
+	SetupDao setupDao = new SetupDaoImpl();
 
 	/**
 	 * 共通DAO
 	 */
-	@Autowired
-	private ComDao comDao;
+	ComDao comDao = new ComDaoImpl();
 	
 	/**
 	 * 個人設定情報を取得

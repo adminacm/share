@@ -21,7 +21,7 @@ public interface MonthlyReportStatusListDao {
 	 *           状況
 	 * @return 承認リスト
 	 */
-	public List<ApprovalList> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
+	List<ApprovalList> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
 
 	/**
 	 * 状況表示名を取得
@@ -30,5 +30,5 @@ public interface MonthlyReportStatusListDao {
 	 *           状況
 	 * @return 状況表示名
 	 */
-	public String getStatusName(String status);
+	String getStatusName(String status);
 }

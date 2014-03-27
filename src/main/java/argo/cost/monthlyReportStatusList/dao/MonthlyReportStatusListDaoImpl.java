@@ -34,7 +34,7 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 		ApprovalList appInfo = new ApprovalList();
 		appInfo.setApplyKbn("月報");
 		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("02");
+		appInfo.setStatus("01");
 		appInfo.setAffiliation("ＢＳ２");
 		appInfo.setId("aaa");
 		appInfo.setName("あｘｘｘｘｘ");
@@ -61,8 +61,14 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 	 */
 	@Override
 	public String getStatusName(String status) {
+
 		// TODO 仮の値を与える
-		return "提出";
+		if ("01".equals(status)) {
+			return "提出";
+		} else {
+
+			return "作成中";
+		}
 	}
 
 }
