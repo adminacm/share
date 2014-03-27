@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.approvalList.model.ApprovalListForm;
@@ -73,5 +74,32 @@ public class ApprovalListController extends AbstractController  {
     	form.setApprovalList(approvalList);
 
         return "approvalList";
+    }
+
+    /**
+     * リンクをクリック
+     * 
+     * @param form
+     *         画面情報
+     * @return
+     */
+    @RequestMapping(value = "/noClick", method = RequestMethod.POST)
+    public String noClick(ApprovalListForm form, @RequestParam("approvalNo}") Integer approvalNo, @RequestParam("approvalKbn") String approvalKbn) {
+    	
+    	//TODO
+    	String str = "";
+    	// 申請区分が月報の場合
+    	if ("月報".equals(approvalKbn)) {
+
+        	// 月報承認詳細画面
+    		str = "";
+    	} else if ("超勤振替申請".equals(approvalKbn)) {
+
+        	// 超勤振替申請承認詳細画面
+    		str = "";
+    	}
+    	
+    	// 画面へ遷移
+    	return str;
     }
 }
