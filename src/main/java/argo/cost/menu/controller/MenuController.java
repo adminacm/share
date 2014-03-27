@@ -16,7 +16,6 @@ import argo.cost.common.model.AppSession;
 import argo.cost.common.model.entity.Users;
 import argo.cost.menu.model.MenueForm;
 
-
 @Controller
 @RequestMapping("/menu")
 @SessionAttributes(types = { MenueForm.class })
@@ -59,6 +58,26 @@ public class MenuController extends AbstractController {
     	
     	form.setUserInfo(userInfo);
 		return "menu";
+    }
+    
+    /**
+	 * 初期化
+	 *
+	 * @param map
+	 *            マップ
+	 * @param loginId
+	 *            ユーザID
+	 * @return
+	 * @throws Exception
+	 *             Exception
+	 */
+    @RequestMapping("/att")
+    public String goAttdanceInput(Model model) {
+    	
+		// セッション情報設定
+    	getSession().setForm("Menu");
+
+		return "redirect:/attendanceInput/init";
     }
 
 }
