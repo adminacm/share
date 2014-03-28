@@ -191,9 +191,9 @@ public class ComServiceImpl implements ComService {
 
 			// データを設定する
 			// 区分値 
-			item.setValue("");
+			item.setValue("01");
 			// 区分名称
-			item.setName("");
+			item.setName("原価管理");
 
 			// リストに追加
 			resultList.add(item);

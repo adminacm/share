@@ -175,4 +175,30 @@ public class CostDateUtils extends DateUtils {
 			return false;
 		}
 	}
+	
+	/**
+	 * 時と分を取得。 <BR>
+	 * 
+	 * @param hhmm
+	 *            ｈｈ：ｍｍの時間
+	 * @return flag 0:hh 
+	 * 		   flag 1:mm
+	 */
+	public static String getHourOrMinute(String hhmm, int flag) {
+		
+		String str = StringUtils.EMPTY;
+		
+		// 期間は正解はないの場合
+		if (!StringUtils.isEmpty(hhmm) && StringUtils.contains(hhmm, ":")) {
+			int index = hhmm.indexOf(":");
+			if (flag == 0) {
+				str = hhmm.substring(0, index);
+			} else {
+				str = hhmm.substring(index+1);
+			}
+			
+		}
+		
+		return str;
+	}
 }

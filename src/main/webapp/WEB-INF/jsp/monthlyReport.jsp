@@ -69,7 +69,7 @@ function submitAction(action) {
 										<form:options items="${monthlyReportForm.userList}" itemValue="value" itemLabel="name"/>
 							</form:select>
 						</td>
-						<td style="padding-left:220px;"><input type="button" value="表示切替" /></td>
+						<td style="padding-left:220px;"><input type="button" value="表示切替" onclick="submitAction('/monthlyReport/search');"/></td>
 					</tr>
 				</table>
 			</div>
@@ -115,7 +115,7 @@ function submitAction(action) {
 						<c:forEach var="monthlyReport" items="${monthlyReportForm.mRList}">
 							<tr>
 								<td align="center" width="20PX;">
-									<a href="#">${monthlyReport.day}</a>
+									<a href="/attendanceInput/init?attDate=${monthlyReport.date}">${monthlyReport.day}</a>
 								</td>
 								<td align="center" width="20PX;">
 									${monthlyReport.week}
