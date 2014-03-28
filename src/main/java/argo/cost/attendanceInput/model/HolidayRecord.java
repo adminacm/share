@@ -37,6 +37,12 @@ public class HolidayRecord {
 	 * 集計処理日
 	 */
 	private String processDate;
+	
+	private String projectCode;
+	
+	private String projectName;
+	
+	private String workNaiyo;
 
 	public String getUserId() {
 		return userId;
@@ -100,6 +106,30 @@ public class HolidayRecord {
 
 	public void setProcessDate(String processDate) {
 		this.processDate = processDate;
+	}
+
+	public String getProjectCode() {
+		return projectCode;
+	}
+
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getWorkNaiyo() {
+		return workNaiyo;
+	}
+
+	public void setWorkNaiyo(String workNaiyo) {
+		this.workNaiyo = workNaiyo;
 	}
 	
 	

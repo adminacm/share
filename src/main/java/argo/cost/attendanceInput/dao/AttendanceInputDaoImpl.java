@@ -120,6 +120,9 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		record.setPayOutYM("");
 		record.setProcessKbn(0);
 		record.setProcessDate("20140501");
+		record.setProjectCode("01");
+		record.setProjectName("原価管理");
+		record.setWorkNaiyo("定期メンテナンス作業");
 		
 		if (StringUtils.equals("20140329", yyyymmdd)) {
 			return record;

@@ -91,29 +91,29 @@ function submitAction(action) {
 				</table>
 			</c:if>
 			<c:if test="${attendanceInputForm.kinmuKun == 2}">
-				<table style="margin:auto;width:300px;margin-top:10px;">
+				<table style="margin:auto;width:300px;margin-top:10px;border: 1px solid #333;">
 					<tr>
 						<td colspan="2" align="center"><b>［休日勤務］</b></td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">休日勤務区分</td>
-						<td align="left" width="150px"></td>
+						<td align="left" width="150px">休日振替勤務</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">勤務時間</td>
-						<td align="left" width="150px"></td>
+						<td align="left" width="150px">${attendanceInputForm.workSTime}～${attendanceInputForm.workETime}</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">振替日</td>
-						<td align="left" width="150px"></td>
+						<td align="left" width="150px">${attendanceInputForm.holidayRecord.exchangeDay}</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">プロジェクト名</td>
-						<td align="left" width="150px"></td>
+						<td align="left" width="150px">${attendanceInputForm.holidayRecord.projectName}</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">業務内容</td>
-						<td align="left" width="150px"></td>
+						<td align="left" width="150px">${attendanceInputForm.holidayRecord.workNaiyo}</td>
 					</tr>
 				</table>
 			</c:if>
@@ -127,11 +127,11 @@ function submitAction(action) {
 					</tr>
 					<tr>
 						<td align="left" width="120px">勤務開始時刻</td>
-						<td align="left" width="180px" colspan="2"><input type="text" style="width: 28px;"><input type="text" style="width: 28px; "></td>
+						<td align="left" width="180px" colspan="2"><form:input path="workSHour" maxlength="2" cssStyle="width:15%"/><form:input path="workSMinute"  maxlength="2" cssStyle="width:15%"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="120px">勤務終了時刻</td>
-						<td align="left" width="180px" colspan="2"><input type="text" style="width: 28px; "><input type="text" style="width: 28px; "></td>
+						<td align="left" width="180px" colspan="2"><form:input path="workEHour" maxlength="2" cssStyle="width:15%"/><form:input path="workEMinute"  maxlength="2" cssStyle="width:15%"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="120px">休暇欠勤区分</td>
@@ -151,36 +151,68 @@ function submitAction(action) {
 				<table class="table1">
 					<tr>
 						<td width="120px" colspan="2">休暇時間数</td>
-						<td></td>
+						<td>
+							<c:if test="${attendanceInputForm.kyukaHours != 0.0}">
+								${attendanceInputForm.kyukaHours}h
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td width="120px" colspan="2">勤務時間数</td>
-						<td></td>
+						<td>
+							<c:if test="${attendanceInputForm.workHours != 0.0}">
+								${attendanceInputForm.workHours}h
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td width="30px" rowspan="6" align="center">超過勤務</td>
 						<td width="90">開始時刻</td>
-						<td></td>
+						<td>
+							<c:if test="${! empty attendanceInputForm.choSTime}">
+								${attendanceInputForm.choSTime}
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td width="90">終了時刻</td>
-						<td></td>
+						<td>
+							<c:if test="${! empty attendanceInputForm.choETime}">
+								${attendanceInputForm.choETime}
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td width="90">平日割増</td>
-						<td></td>
+						<td>
+							<c:if test="${attendanceInputForm.choWeekday != 0.0}">
+								${attendanceInputForm.choWeekday}h
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td width="90">平日通常</td>
-						<td></td>
+						<td>
+							<c:if test="${attendanceInputForm.choWeekday_nomal != 0.0}">
+								${attendanceInputForm.choWeekday_nomal}h
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td width="90">休日</td>
-						<td></td>
+						<td>
+							<c:if test="${attendanceInputForm.choHoliday != 0.0}">
+								${attendanceInputForm.choHoliday}h
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<td width="90">深夜</td>
-						<td></td>
+						<td>
+							<c:if test="${attendanceInputForm.mNHours != 0.0}">
+								${attendanceInputForm.mNHours}h
+							</c:if>
+						</td>
 					</tr>
 				</table>
 				<table class="table2">
