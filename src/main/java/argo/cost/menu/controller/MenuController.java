@@ -77,7 +77,7 @@ public class MenuController extends AbstractController {
 		// セッション情報設定
     	getSession().setForm("Menu");
 
-		return "redirect:/attendanceInput/init";
+		return "redirect:/attendanceInput/init?attDate=";
     }
 
 }

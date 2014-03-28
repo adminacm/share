@@ -22,7 +22,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	private String attDate;
 	
 	/**
-	 * 日付
+	 * 日付(表示)
 	 */
 	private String attDateShow;
 	
@@ -45,11 +45,27 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	 * 勤務開始時刻(hhnn)
 	 */
 	private String workSTime;
+	/**
+	 * 勤務開始時刻(hh)
+	 */
+	private String workSHour;
+	/**
+	 * 勤務開始時刻(nn)
+	 */
+	private String workSMinute;
 	
 	/**
 	 * 勤務終了時刻(hhnn)
 	 */
 	private String workETime;
+	/**
+	 * 勤務終了時刻(hh)
+	 */
+	private String workEHour;
+	/**
+	 * 勤務終了時刻(nn)
+	 */
+	private String workEMinute;
 
 	/**
 	 * 休暇欠勤区分
@@ -115,9 +131,19 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	 */
 	private List<ListItem> locationItemList;
 	
+	/**
+	 * 休日勤務情報
+	 */
+	private HolidayRecord holidayRecord;
+	
+	/**
+	 * 休日勤務情報フラグ
+	 */
+	private Integer kinmuKun = 0;
+	
 
 	//#################################
-//#################################
+	//#################################
 	/**
 	 * 日付を取得する
 	 */
@@ -350,4 +376,55 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	public void setLocationItemList(List<ListItem> locationItemList) {
 		this.locationItemList = locationItemList;
 	}
+
+	public String getWorkSHour() {
+		return workSHour;
+	}
+
+	public void setWorkSHour(String workSHour) {
+		this.workSHour = workSHour;
+	}
+
+	public String getWorkSMinute() {
+		return workSMinute;
+	}
+
+	public void setWorkSMinute(String workSMinute) {
+		this.workSMinute = workSMinute;
+	}
+
+	public String getWorkEHour() {
+		return workEHour;
+	}
+
+	public void setWorkEHour(String workEHour) {
+		this.workEHour = workEHour;
+	}
+
+	public String getWorkEMinute() {
+		return workEMinute;
+	}
+
+	public void setWorkEMinute(String workEMinute) {
+		this.workEMinute = workEMinute;
+	}
+
+	public HolidayRecord getHolidayRecord() {
+		return holidayRecord;
+	}
+
+	public void setHolidayRecord(HolidayRecord holidayRecord) {
+		this.holidayRecord = holidayRecord;
+	}
+
+	public Integer getKinmuKun() {
+		return kinmuKun;
+	}
+
+	public void setKinmuKun(Integer kinmuKun) {
+		this.kinmuKun = kinmuKun;
+	}
+
+	
+	
 }

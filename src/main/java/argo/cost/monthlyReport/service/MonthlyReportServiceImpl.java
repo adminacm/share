@@ -1,6 +1,5 @@
 package argo.cost.monthlyReport.service;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -145,7 +144,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 
 		String formatDate = "";
 		Calendar calendar = new GregorianCalendar(); 
-		Date date = toDate(month);
+		Date date = CostDateUtils.toDate(month);
 		calendar.setTime(date);
 		 
 		// 年月の←ボタンを押すと、前の月に表示が切り替わる
@@ -183,28 +182,6 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	public String getUserMonth(String userId) {
 		
 		return dao.getUserMonth(userId);
-	}
-	
-	/**
-	 * 受け取った文字列を日付型に変換し返却するメソッド<BR>
-	 * 　1. 引数の西暦年月日がYYYYMMDD形式であるかチェックを行う<BR>
-	 * 　1-1. チェックの結果、YYYYMMDD形式でない場合、例外を投げる。<BR>
-	 * 　1-2. チェックの結果、YYYYMMDD形式の場合、日付型に変換を行い返却する。<BR>
-	 * 
-	 * @param yyyymmdd
-	 *            チェック対象となる西暦年月日
-	 * @return 日付型に変換した引数
-	 * @throws ParseException 
-	 */
-	@Override
-	public Date toDate(String yyyymmdd) throws ParseException {
-
-		// 動作パラメータがYYYYMMDD形式の場合、日付型に変換する。
-		DateFormat format = new SimpleDateFormat(YYYYMMDD);
-
-		// あいまいチェック：オフ
-		format.setLenient(false);
-		return format.parse(yyyymmdd);
 	}
 	
 	/**

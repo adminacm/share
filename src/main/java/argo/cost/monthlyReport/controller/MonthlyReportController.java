@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItem;
 import argo.cost.common.service.ComService;
+import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
 import argo.cost.monthlyReport.service.MonthlyReportService;
@@ -68,7 +69,7 @@ public class MonthlyReportController extends AbstractController {
     	// 最後の提出年月取得
     	String date = service.getUserMonth(loginId);
     	form.setYearMonth(date);
-    	Date formatDate = service.toDate(date);
+    	Date formatDate = CostDateUtils.toDate(date);
     	form.setYearMonthHyoji(service.ｇetDateFormat(formatDate));
     	// 提出状態取得
     	String status = comService.getMonthStatus(loginId, date);
@@ -89,7 +90,7 @@ public class MonthlyReportController extends AbstractController {
     public String search(MonthlyReportForm form) throws Exception {
     	
     	String userId = form.getUserCode();
-    	List<MonthlyReportInfo> resultList = service.getMonReList(service.toDate(form.getYearMonth()));
+    	List<MonthlyReportInfo> resultList = service.getMonReList(CostDateUtils.toDate(form.getYearMonth()));
     	
     	form.setmRList(resultList);
     	
@@ -107,7 +108,7 @@ public class MonthlyReportController extends AbstractController {
     	
     	form.setYearMonth(lastMonth);
     	
-    	form.setYearMonthHyoji(service.ｇetDateFormat(service.toDate(lastMonth)));
+    	form.setYearMonthHyoji(service.ｇetDateFormat(CostDateUtils.toDate(lastMonth)));
 
         return "monthlyReport";
     }
@@ -120,7 +121,7 @@ public class MonthlyReportController extends AbstractController {
     	
     	form.setYearMonth(nextMonth);
     	
-    	form.setYearMonthHyoji(service.ｇetDateFormat(service.toDate(nextMonth)));
+    	form.setYearMonthHyoji(service.ｇetDateFormat(CostDateUtils.toDate(nextMonth)));
 
         return "monthlyReport";
     }

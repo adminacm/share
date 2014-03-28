@@ -3,8 +3,10 @@ package argo.cost.attendanceInput.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
+import argo.cost.attendanceInput.model.HolidayRecord;
 import argo.cost.common.model.ListItem;
 
 @Repository
@@ -95,6 +97,35 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		list.add(itm);
 		
 		return list;
+	}
+
+	/**
+	 * 休日勤務情報を取得
+	 * 
+	 * @param userId
+	 * 			ユーザID
+	 * @param yyyymmdd 日付
+	 * @return 休日勤務情報
+	 */
+	@Override
+	public HolidayRecord getHolidayRecord(String userId, String yyyymmdd) {
+		// TODO 自動生成されたメソッド・スタブ
+		HolidayRecord record = new HolidayRecord();
+		
+		record.setDate("20140329");
+		record.setUserId("user01");
+		record.setLimitDate("20140630");
+		record.setExchangeDay("20140331");
+		record.setTransferAppDay("");
+		record.setPayOutYM("");
+		record.setProcessKbn(0);
+		record.setProcessDate("20140501");
+		
+		if (StringUtils.equals("20140329", yyyymmdd)) {
+			return record;
+		}
+		
+		return null;
 	}
 
 }

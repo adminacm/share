@@ -71,122 +71,165 @@ function submitAction(action) {
 			<b>勤怠入力</b>
 		</div>
 		<div style="margin-top: 20px;margin-bottom:10px;" >
-			<table style="margin:auto; width:300px; background:#ffddff;">
-				<tr>
-					<td align="right" width="30px"><input type="button" value="←" onclick="submitAction('/attendanceInput/lastMonth');" /></td>
-					<td align="center" width="160px" style="background: #CCFFFF">${attendanceInputForm.attDate}</td>
-					<td align="left" width="30px"><input type="button" value="→" onclick="submitAction('/attendanceInput/nextMonth');" /></td>
-				</tr>
-			</table>
-			<table style="margin:auto;width:300px;margin-top:30px;background:#ddddff;">
-				<tr>
-					<td align="left" width="120px">シフトコード</td>
-					<td align="left" width="180px" colspan="2"><input type="text" style="width: 60px; "></td>
-				</tr>
-				<tr>
-					<td align="left" width="120px">勤務開始時刻</td>
-					<td align="left" width="180px" colspan="2"><input type="text" style="width: 28px;"><input type="text" style="width: 28px; "></td>
-				</tr>
-				<tr>
-					<td align="left" width="120px">勤務終了時刻</td>
-					<td align="left" width="180px" colspan="2"><input type="text" style="width: 28px; "><input type="text" style="width: 28px; "></td>
-				</tr>
-				<tr>
-					<td align="left" width="120px">休暇欠勤区分</td>
-					<td align="left" width="180px" colspan="2">
-						<form:select path="kyukaKb" style="width:100%;" >
-							<form:option value=""></form:option>
-							<form:options items="${attendanceInputForm.kyukakbList}" itemValue="value" itemLabel="name"/>
-						</form:select>
-					</td>
-				</tr>
-			</table>
 			<table style="margin:auto; width:300px;">
 				<tr>
-					<td align="left" colspan="3"><input type="button" value="計算" onclick="submitAction('/attendanceInput/lastMonth');" /></td>
-				</tr>
-			</table>
-			<table class="table1">
-				<tr>
-					<td width="120px" colspan="2">休暇時間数</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="120px" colspan="2">勤務時間数</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="30px" rowspan="6" align="center">超過勤務</td>
-					<td width="90">開始時刻</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="90">終了時刻</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="90">平日割増</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="90">平日通常</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="90">休日</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td width="90">深夜</td>
-					<td></td>
-				</tr>
-			</table>
-			<table class="table2">
-				<thead>
-					<tr>
-						<td align="center" width="200px">プロジェクト名</td>
-						<td align="center" width="200px">作業</td>
-						<td align="center" width="40px">時間数</td>
-					</tr>
-				</thead>
-				<tbody>
-					<c:if test="${! empty attendanceInputForm.projectList}">
-						<c:forEach var="projectInfo" items="${attendanceInputForm.projectList}"  varStatus="st">
-							<tr id="tr${st.index}">
-								<td align="center" >
-									<form:select path="projectList[${st.index}].projectId" style="width:100%;" >
-										<form:option value=""></form:option>
-										<form:options items="${projectInfo.projectItemList}" itemValue="value" itemLabel="name"/>
-									</form:select>
-								</td>
-								<td align="center">
-									<form:select path="projectList[${st.index}].workId" style="width:100%;" >
-										<form:option value=""></form:option>
-										<form:options items="${projectInfo.workItemList}" itemValue="value" itemLabel="name"/>
-									</form:select>
-								</td>
-								<td align="center" ><form:input path="projectList[${st.index}].hours" size="4"/></td>
-							</tr>
-						</c:forEach>
+					<td align="right" width="30px"><input type="button" value="←" onclick="submitAction('/attendanceInput/lastDay');" /></td>
+					<c:if test="${attendanceInputForm.kinmuKun != 0}">
+						<td align="center" width="160px" style="background: #FF99CC">${attendanceInputForm.attDateShow}</td>
 					</c:if>
-				</tbody>
-			</table>
-			<table style="margin:auto; width:200px;margin-top:10px;">
-				<tr>
-					<td align="left" width="100px">ロケーション</td>
-					<td align="left" width="100px">
-						<form:select path="locationId" style="width:100%;" >
-							<form:options items="${attendanceInputForm.locationItemList}" itemValue="value" itemLabel="name"/>
-						</form:select>
-					</td>
+					<c:if test="${attendanceInputForm.kinmuKun == 0}">
+						<td align="center" width="160px" style="background: #CCFFFF">${attendanceInputForm.attDateShow}</td>
+					</c:if>
+					<td align="left" width="30px"><input type="button" value="→" onclick="submitAction('/attendanceInput/nextDay');" /></td>
 				</tr>
 			</table>
-			<table style="margin:auto; width:200px;">
-				<tr>
-					<td align="left" width="100px"><input type="button" value="保存" onclick="submitAction('/attendanceInput/save');" /></td>
-					<td align="right" width="100px"><input type="button" value="戻る" onclick="submitAction('/attendanceInput/back');" /></td>
-				</tr>
-			</table>
+			<c:if test="${attendanceInputForm.kinmuKun != 0}">
+				<table style="margin:auto; width:300px;">
+					<tr>
+						<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attOnHolidy');" /></td>
+					</tr>
+				</table>
+			</c:if>
+			<c:if test="${attendanceInputForm.kinmuKun == 2}">
+				<table style="margin:auto;width:300px;margin-top:10px;">
+					<tr>
+						<td colspan="2" align="center"><b>［休日勤務］</b></td>
+					</tr>
+					<tr>
+						<td align="left" width="150px">休日勤務区分</td>
+						<td align="left" width="150px"></td>
+					</tr>
+					<tr>
+						<td align="left" width="150px">勤務時間</td>
+						<td align="left" width="150px"></td>
+					</tr>
+					<tr>
+						<td align="left" width="150px">振替日</td>
+						<td align="left" width="150px"></td>
+					</tr>
+					<tr>
+						<td align="left" width="150px">プロジェクト名</td>
+						<td align="left" width="150px"></td>
+					</tr>
+					<tr>
+						<td align="left" width="150px">業務内容</td>
+						<td align="left" width="150px"></td>
+					</tr>
+				</table>
+			</c:if>
+			<c:if test="${attendanceInputForm.kinmuKun != 1}">
+				<table style="margin:auto;width:300px;margin-top:10px;">
+					<tr>
+						<td align="left" width="120px">シフトコード</td>
+						<td align="left" width="180px" colspan="2">
+							<form:input path="shiftCd" style="width: 60px; "/>
+						</td>
+					</tr>
+					<tr>
+						<td align="left" width="120px">勤務開始時刻</td>
+						<td align="left" width="180px" colspan="2"><input type="text" style="width: 28px;"><input type="text" style="width: 28px; "></td>
+					</tr>
+					<tr>
+						<td align="left" width="120px">勤務終了時刻</td>
+						<td align="left" width="180px" colspan="2"><input type="text" style="width: 28px; "><input type="text" style="width: 28px; "></td>
+					</tr>
+					<tr>
+						<td align="left" width="120px">休暇欠勤区分</td>
+						<td align="left" width="180px" colspan="2">
+							<form:select path="kyukaKb" style="width:100%;" >
+								<form:option value=""></form:option>
+								<form:options items="${attendanceInputForm.kyukakbList}" itemValue="value" itemLabel="name"/>
+							</form:select>
+						</td>
+					</tr>
+				</table>
+				<table style="margin:auto; width:300px;">
+					<tr>
+						<td align="left" colspan="3"><input type="button" value="計算" onclick="submitAction('/attendanceInput/lastMonth');" /></td>
+					</tr>
+				</table>
+				<table class="table1">
+					<tr>
+						<td width="120px" colspan="2">休暇時間数</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="120px" colspan="2">勤務時間数</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="30px" rowspan="6" align="center">超過勤務</td>
+						<td width="90">開始時刻</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="90">終了時刻</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="90">平日割増</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="90">平日通常</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="90">休日</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="90">深夜</td>
+						<td></td>
+					</tr>
+				</table>
+				<table class="table2">
+					<thead>
+						<tr>
+							<td align="center" width="200px">プロジェクト名</td>
+							<td align="center" width="200px">作業</td>
+							<td align="center" width="40px">時間数</td>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${! empty attendanceInputForm.projectList}">
+							<c:forEach var="projectInfo" items="${attendanceInputForm.projectList}"  varStatus="st">
+								<tr id="tr${st.index}">
+									<td align="center" >
+										<form:select path="projectList[${st.index}].projectId" style="width:100%;" >
+											<form:option value=""></form:option>
+											<form:options items="${projectInfo.projectItemList}" itemValue="value" itemLabel="name"/>
+										</form:select>
+									</td>
+									<td align="center">
+										<form:select path="projectList[${st.index}].workId" style="width:100%;" >
+											<form:option value=""></form:option>
+											<form:options items="${projectInfo.workItemList}" itemValue="value" itemLabel="name"/>
+										</form:select>
+									</td>
+									<td align="center" ><form:input path="projectList[${st.index}].hours" size="4"/></td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<table style="margin:auto; width:200px;margin-top:10px;">
+					<tr>
+						<td align="left" width="100px">ロケーション</td>
+						<td align="left" width="100px">
+							<form:select path="locationId" style="width:100%;" >
+								<form:options items="${attendanceInputForm.locationItemList}" itemValue="value" itemLabel="name"/>
+							</form:select>
+						</td>
+					</tr>
+				</table>
+				<table style="margin:auto; width:200px;">
+					<tr>
+						<td align="left" width="100px"><input type="button" value="保存" onclick="submitAction('/attendanceInput/save');" /></td>
+						<td align="right" width="100px"><input type="button" value="戻る" onclick="submitAction('/attendanceInput/back');" /></td>
+					</tr>
+				</table>
+			</c:if>
 		</div>
 	</div>
 	</form:form>

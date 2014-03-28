@@ -47,19 +47,6 @@ public interface MonthlyReportService {
 	String getUserMonth(String userId);
 	
 	/**
-	 * 受け取った文字列を日付型に変換し返却するメソッド<BR>
-	 * 　1. 引数の西暦年月日がYYYYMMDD形式であるかチェックを行う<BR>
-	 * 　1-1. チェックの結果、YYYYMMDD形式でない場合、例外を投げる。<BR>
-	 * 　1-2. チェックの結果、YYYYMMDD形式の場合、日付型に変換を行い返却する。<BR>
-	 * 
-	 * @param yyyymmdd
-	 *            チェック対象となる西暦年月日
-	 * @return 日付型に変換した引数
-	 * @throws ParseException 
-	 */
-	Date toDate(String yyyymmdd) throws ParseException;
-	
-	/**
 	 * ユーザの月報情報を取得し、月報リストに設定する
 	 * 
 	 * @param userId

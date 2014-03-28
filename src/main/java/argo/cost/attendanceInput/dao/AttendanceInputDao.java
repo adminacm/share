@@ -2,6 +2,7 @@ package argo.cost.attendanceInput.dao;
 
 import java.util.List;
 
+import argo.cost.attendanceInput.model.HolidayRecord;
 import argo.cost.common.model.ListItem;
 
 public interface AttendanceInputDao {
@@ -28,4 +29,14 @@ public interface AttendanceInputDao {
 	 * @return ロケーション情報
 	 */
 	List<ListItem> getLocationItemList();
+	
+	/**
+	 * 休日勤務情報を取得
+	 * 
+	 * @param userId
+	 * 			ユーザID
+	 * @param yyyymmdd 日付
+	 * @return 休日勤務情報
+	 */
+	HolidayRecord getHolidayRecord(String userId, String yyyymmdd);
 }
