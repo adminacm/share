@@ -5,12 +5,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.model.ListItem;
 import argo.cost.common.model.entity.ApprovalList;
 import argo.cost.monthlyReportStatusList.dao.MonthlyReportStatusListDao;
+import argo.cost.monthlyReportStatusList.dao.MonthlyReportStatusListDaoImpl;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
 
@@ -23,8 +23,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	/**
 	 * 月報状況一覧DAO
 	 */
-	@Autowired
-	private MonthlyReportStatusListDao mRSDao;
+	MonthlyReportStatusListDao mRSDao = new MonthlyReportStatusListDaoImpl();
 
 	/**
 	 * 月報状況一覧リストを取得
@@ -92,9 +91,12 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 			item = new ListItem();
 
 			// 年月を取得
-			cal.add(Calendar.YEAR, -i); 
+			if (i != 0){
+				
+				cal.add(Calendar.YEAR, -1); 
+			}
 			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH);
+			int month = cal.get(Calendar.MONTH) + 1;
 
 			// データを設定する
 			// 区分値 

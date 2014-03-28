@@ -20,7 +20,7 @@ public interface ApprovalListDao {
 	 *           状況
 	 * @return 承認リスト
 	 */
-	public List<ApprovalList> getApprovalList(String status);
+	List<ApprovalList> getApprovalList(String status);
 
 	/**
 	 * 状況表示名を取得
@@ -29,5 +29,5 @@ public interface ApprovalListDao {
 	 *           状況
 	 * @return 状況表示名
 	 */
-	public String getStatusName(String status);
+	String getStatusName(String status);
 }
