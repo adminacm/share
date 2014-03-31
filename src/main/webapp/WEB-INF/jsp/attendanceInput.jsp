@@ -245,6 +245,7 @@ function submitAction(action) {
 						</c:if>
 					</tbody>
 				</table>
+				<input type="button" value="行追加" onclick="submitAction('/attendanceInput/add');" />
 				<table style="margin:auto; width:200px;margin-top:10px;">
 					<tr>
 						<td align="left" width="100px">ロケーション</td>
