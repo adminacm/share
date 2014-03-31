@@ -2,22 +2,29 @@ package argo.cost.setup;
 
 import static org.junit.Assert.assertEquals;
 
+import javax.annotation.Resource;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.setup.model.SetupForm;
 import argo.cost.setup.service.SetupServiceImpl;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
 public class SetupTest {
+
+	// 個人設定サビース
+	@Resource
+	SetupServiceImpl setupS;
 	
 	/**
 	 * 個人設定情報取得をテスト
 	 */
 	@Test
 	public void testGetSetupInfo(){
-
-		// 個人設定サビース
-		SetupServiceImpl setupS = new SetupServiceImpl();
 		
 		// 個人設定情報取得
 		SetupForm setupInfo = setupS.getSetupInfo("caowy");
@@ -53,9 +60,6 @@ public class SetupTest {
 	 */
 	@Test
 	public void testGetSetupEditInfo(){
-
-		// 個人設定サビース
-		SetupServiceImpl setupS = new SetupServiceImpl();
 
 		// 画面の個人設定情報
 		SetupForm setupInfo = new SetupForm();
@@ -107,9 +111,6 @@ public class SetupTest {
 	 */
 	@Test
 	public void testChangeShift(){
-
-		// 個人設定サビース
-		SetupServiceImpl setupS = new SetupServiceImpl();
 
 		// 画面の個人設定情報
 		SetupForm setupInfo = new SetupForm();

@@ -3,10 +3,10 @@ package argo.cost.approvalList.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.approvalList.dao.ApprovalListDao;
-import argo.cost.approvalList.dao.ApprovalListDaoImpl;
 import argo.cost.approvalList.model.ApprovalListInfo;
 import argo.cost.common.model.entity.ApprovalList;
 
@@ -18,8 +18,9 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 
 	/**
 	 * 承認一覧DAO
-	 */
-	ApprovalListDao appDao = new ApprovalListDaoImpl();
+	 */	
+	@Autowired
+	ApprovalListDao appDao;
 
 	/**
 	 * 承認一覧リストを取得

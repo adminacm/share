@@ -8,7 +8,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.common.model.ListItem;
 import argo.cost.common.model.entity.ApprovalList;
@@ -16,11 +21,14 @@ import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListServiceImpl;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
 public class MonthlyReportStatusListTest {
 
 
 	// 月報状況一覧サビース
-	MonthlyReportStatusListServiceImpl monS = new MonthlyReportStatusListServiceImpl();
+	@Resource
+	MonthlyReportStatusListServiceImpl monS;
 	
 	/**
 	 * 月報状況一覧リスト取得をテスト

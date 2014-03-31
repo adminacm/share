@@ -6,7 +6,12 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.common.model.ListItem;
 import argo.cost.common.service.ComServiceImpl;
@@ -15,16 +20,19 @@ import argo.cost.common.service.ComServiceImpl;
  * プルダウンリスト取得テスト
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
 public class ComServiceTest {
+
+	// プルダウンリスト
+	@Resource
+	ComServiceImpl service;
 	
 	/**
 	 * 状況プルダウンリスト取得テスト
 	 */
 	@Test
 	public void testGetStatusList() {
-
-		// プルダウンリスト
-		ComServiceImpl service = new ComServiceImpl();
 		
 		//  状況プルダウンリスト取得
 		List<ListItem> statusList = service.getStatusList();
@@ -39,9 +47,6 @@ public class ComServiceTest {
 	 */
 	@Test
 	public void testGetUserNameList1() {
-
-		// プルダウンリスト
-		ComServiceImpl service = new ComServiceImpl();
 		
 		// ユーザＩＤ
 		String userId = null;
@@ -59,9 +64,6 @@ public class ComServiceTest {
 	 */
 	@Test
 	public void testGetUserNameList2() {
-
-		// プルダウンリスト
-		ComServiceImpl service = new ComServiceImpl();
 		
 		// ユーザＩＤ
 		String userId = "li";
@@ -77,9 +79,6 @@ public class ComServiceTest {
 	 */
 	@Test
 	public void testGetYearList() {
-
-		// プルダウンリスト
-		ComServiceImpl service = new ComServiceImpl();
 		
 		// 当年度
 		Date date = new Date();
@@ -101,9 +100,6 @@ public class ComServiceTest {
 	 */
 	@Test
 	public void testGetProjectName() {
-
-		// プルダウンリスト
-		ComServiceImpl service = new ComServiceImpl();
 
 		// ユーザＩＤ
 		String userId = "li";
