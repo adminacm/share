@@ -1,5 +1,7 @@
 package argo.cost.attendanceInput.controller;
 
+import java.text.ParseException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
+import argo.cost.attendanceInput.model.AttendanceProject;
 import argo.cost.attendanceInput.service.AttendanceInputService;
 import argo.cost.common.controller.AbstractController;
+import argo.cost.common.utils.CostDateUtils;
 
 @Controller
 @RequestMapping("/attendanceInput")
@@ -126,6 +130,25 @@ public class AttendanceInputController extends AbstractController {
 		} else {
 			return "redirect:/monthlyReport/init?newMonth=";
 		}
+	}
+	
+
+	/**
+	 * 戻る処理
+	 * 
+	 * @param model
+	 *            モデル
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping("/add")
+	public String doAddLine(AttendanceInputForm form) throws ParseException {
+
+		AttendanceProject pro = new AttendanceProject();
+		pro.setProjectItemList(comService.getProjectNameList(getSession().getUserInfo().getId(), CostDateUtils.toDate(form.getAttDate())));
+		pro.setWorkItemList(attService.getWorkItemList());
+		form.getProjectList().add(pro);
+		return "attendanceInput";
 	}
 
 }
