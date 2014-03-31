@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,11 +17,12 @@ import argo.cost.approvalList.service.ApprovalListServiceImpl;
 import argo.cost.common.model.entity.ApprovalList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
 public class ApprovalListTest {
 
-	// 承認一覧サビース
-	ApprovalListServiceImpl appS = new ApprovalListServiceImpl();
+	// 承認一覧サビース	
+	@Resource
+	ApprovalListServiceImpl appS;
 
 	/**
 	 * 承認一覧リスト取得をテスト

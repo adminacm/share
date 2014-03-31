@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.model.UserInfo;
 import argo.cost.common.model.entity.Status;
 import argo.cost.common.model.entity.Users;
 
