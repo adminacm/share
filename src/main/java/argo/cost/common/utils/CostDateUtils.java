@@ -183,22 +183,38 @@ public class CostDateUtils extends DateUtils {
 	 *            ｈｈ：ｍｍの時間
 	 * @return flag 0:hh 
 	 * 		   flag 1:mm
+	 * @throws ParseException 
 	 */
-	public static String getHourOrMinute(String hhmm, int flag) {
+	public static String getHourOrMinute(String hhmm, int flag) throws ParseException {
 		
 		String str = StringUtils.EMPTY;
-		
-		// 期間は正解はないの場合
-		if (!StringUtils.isEmpty(hhmm) && StringUtils.contains(hhmm, ":")) {
-			int index = hhmm.indexOf(":");
-			if (flag == 0) {
-				str = hhmm.substring(0, index);
-			} else {
-				str = hhmm.substring(index+1);
-			}
-			
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(format.parse(hhmm));
+		if (flag == 0) {
+			str = String.valueOf(cal.get(Calendar.HOUR));
+		} else {
+			str = String.valueOf(cal.get(Calendar.MINUTE));
 		}
+		return CostStringUtils.addZeroForNum(str, 2);
+	}
+
+	/**
+	 * 時と分を取得。 <BR>
+	 * 
+	 * @param hhmm
+	 *            ｈｈ：ｍｍの時間
+	 * @return flag 0:hh 
+	 * 		   flag 1:mm
+	 * @throws ParseException 
+	 */
+	public static String formatHHmm(String hhmm) throws ParseException {
 		
-		return str;
+		SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(format.parse(hhmm));
+		String str1 = String.valueOf(cal.get(Calendar.HOUR));
+		String str2 = String.valueOf(cal.get(Calendar.MINUTE));
+		return CostStringUtils.addZeroForNum(str1, 2).concat( CostStringUtils.addZeroForNum(str2, 2));
 	}
 }
