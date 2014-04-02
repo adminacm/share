@@ -141,6 +141,10 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	 */
 	private Integer kinmuKun = 0;
 	
+	/**
+	 * シフト情報
+	 */
+	private ShiftInfo shiftInfo;
 
 	//#################################
 	//#################################
@@ -425,6 +429,13 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.kinmuKun = kinmuKun;
 	}
 
-	
+	public ShiftInfo getShiftInfo() {
+		return shiftInfo;
+	}
+
+	public void setShiftInfo(ShiftInfo shiftInfo) {
+		this.shiftInfo = shiftInfo;
+	}
+
 	
 }

@@ -131,10 +131,9 @@ public class AttendanceInputController extends AbstractController {
 			return "redirect:/monthlyReport/init?newMonth=";
 		}
 	}
-	
 
 	/**
-	 * 戻る処理
+	 * 行追加処理
 	 * 
 	 * @param model
 	 *            モデル
@@ -151,4 +150,21 @@ public class AttendanceInputController extends AbstractController {
 		return "attendanceInput";
 	}
 
+	/**
+	 * 計算処理
+	 * 
+	 * @param model
+	 *            モデル
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping("/count")
+	public String doCount(AttendanceInputForm form) throws ParseException {
+
+		// チェックを実行する。TODO
+		// 勤務情報を計算する。
+		attService.calcWorkingRec(form);
+		
+		return "attendanceInput";
+	}
 }

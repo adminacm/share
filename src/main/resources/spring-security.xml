@@ -14,7 +14,7 @@
 		<access-denied-handler error-page="/accessDenied.jsp"/>
 		<!-- 实现免登陆验证 -->
 		<remember-me />
-		<session-management invalid-session-url="/timeout.jsp"
+		<session-management invalid-session-url="/login.jsp"
 			session-fixation-protection="none">
 			<concurrency-control max-sessions="1"
 				error-if-maximum-exceeded="true" />

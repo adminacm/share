@@ -122,7 +122,7 @@ function submitAction(action) {
 					<tr>
 						<td align="left" width="120px">シフトコード</td>
 						<td align="left" width="180px" colspan="2">
-							<form:input path="shiftCd" style="width: 60px; "/>
+							<form:input path="shiftCd" style="width: 60px; " />
 						</td>
 					</tr>
 					<tr>
@@ -145,7 +145,7 @@ function submitAction(action) {
 				</table>
 				<table style="margin:auto; width:300px;">
 					<tr>
-						<td align="left" colspan="3"><input type="button" value="計算" onclick="submitAction('/attendanceInput/lastMonth');" /></td>
+						<td align="left" colspan="3"><input type="button" value="計算" onclick="submitAction('/attendanceInput/count');" /></td>
 					</tr>
 				</table>
 				<table class="table1">
@@ -178,7 +178,7 @@ function submitAction(action) {
 						<td width="90">終了時刻</td>
 						<td>
 							<c:if test="${! empty attendanceInputForm.choETime}">
-								${attendanceInputForm.choETime}
+								${attendanceInputForm.choETime}.subString(0,2)
 							</c:if>
 						</td>
 					</tr>
@@ -245,7 +245,7 @@ function submitAction(action) {
 						</c:if>
 					</tbody>
 				</table>
-				<input type="button" value="行追加" onclick="submitAction('/attendanceInput/add');" />
+				<input type="button" value="行追加" onclick="submitAction('/attendanceInput/add');" style="margin-left:150px;"/>
 				<table style="margin:auto; width:200px;margin-top:10px;">
 					<tr>
 						<td align="left" width="100px">ロケーション</td>

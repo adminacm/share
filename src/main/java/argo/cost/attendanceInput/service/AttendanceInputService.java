@@ -95,4 +95,12 @@ public interface AttendanceInputService {
 	 * @return 更新結果　０：更新失敗　１：更新成功
 	 */
 	Integer updateAttdendanceInfo(AttendanceInputForm form);
+	/**
+	 * 各種値算出
+	 * 
+	 * @param form
+	 *            勤怠入力画面情報
+	 * @throws ParseException
+	 */
+	void calcWorkingRec(AttendanceInputForm form) throws ParseException;
 }
