@@ -2,7 +2,7 @@ package argo.cost.common.constant;
 
 /**
  * <p>
- * URL定数を定義します。
+ * URL遷移用クラス
  * </p>
  *
  * @author COST argo Corporation.

@@ -9,24 +9,24 @@ import argo.cost.common.model.ListItemVO;
 public class AtendanceOnHolidayForm extends AbstractForm implements Serializable {
 
 	/**
-	 * パジョンID
+	 * 繝代ず繝ｧ繝ｳID
 	 */
 	private static final long serialVersionUID = 1L;
-	// 日付
+	// 譌･莉�
 	private String strAtendanceDate;
-	// 勤務日区分
+	// 蜍､蜍呎律蛹ｺ蛻�
 	private List<ListItemVO> atendanceDayKbnList;
 	private String selectedAtendanceDayKbn;
-	// 勤務開始時間
+	// 蜍､蜍咎幕蟋区凾髢�
 	private String strAtendanceTimeStat;
-	// 勤務完了時間
+	// 蜍､蜍吝ｮ御ｺ�凾髢�
 	private String strAtendanceTimeEnd;
-	// 振替日　
+	// 謖ｯ譖ｿ譌･縲�
 	private String strHurikaeDate;
-	// プロジェクトコード
+	// 繝励Ο繧ｸ繧ｧ繧ｯ繝医さ繝ｼ繝�
 	private List<ListItemVO> projCdList;
 	private String selectedProjCd;
-	// 業務内容
+	// 讌ｭ蜍吝�螳ｹ
 	private String strCommont;
 
 	public String getStrAtendanceDate() {
