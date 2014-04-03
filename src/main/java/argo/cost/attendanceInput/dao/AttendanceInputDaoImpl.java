@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.attendanceInput.model.HolidayRecord;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 @Repository
 public class AttendanceInputDaoImpl implements AttendanceInputDao {
@@ -18,21 +18,21 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 	 * @return 休暇欠勤区分プルダウンリスト
 	 */
 	@Override
-	public List<ListItem> getHolidayLackingItem() {
+	public List<ListItemVO> getHolidayLackingItem() {
 		// TODO 自動生成されたメソッド・スタブ
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		
-		ListItem item1 = new ListItem();
+		ListItemVO item1 = new ListItemVO();
 		item1.setValue("01");
 		item1.setName("全休(有給休暇)");
 		resultList.add(item1);
 
-		item1 = new ListItem();
+		item1 = new ListItemVO();
 		item1.setValue("02");
 		item1.setName("半休(有給休暇)");
 		resultList.add(item1);
 
-		item1 = new ListItem();
+		item1 = new ListItemVO();
 		item1.setValue("03");
 		item1.setName("時間休(有給休暇)");
 		resultList.add(item1);
@@ -47,22 +47,22 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 	 * @return 個人勤怠プロジェクト情報
 	 */
 	@Override
-	public List<ListItem> getWorkItemList() {
+	public List<ListItemVO> getWorkItemList() {
 		
 		// TODO 自動生成されたメソッド・スタブ
-		List<ListItem> list = new ArrayList<ListItem>();
+		List<ListItemVO> list = new ArrayList<ListItemVO>();
 		
-		ListItem itm = new ListItem();
+		ListItemVO itm = new ListItemVO();
 		itm.setName("MUT");
 		itm.setValue("01");
 		list.add(itm);
 		
-		itm = new ListItem();
+		itm = new ListItemVO();
 		itm.setName("SI");
 		itm.setValue("02");
 		list.add(itm);
 		
-		itm = new ListItem();
+		itm = new ListItemVO();
 		itm.setName("BD");
 		itm.setValue("03");
 		list.add(itm);
@@ -77,21 +77,21 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 	 * @return ロケーション情報
 	 */
 	@Override
-	public List<ListItem> getLocationItemList() {
+	public List<ListItemVO> getLocationItemList() {
 		// TODO 自動生成されたメソッド・スタブ
-		List<ListItem> list = new ArrayList<ListItem>();
+		List<ListItemVO> list = new ArrayList<ListItemVO>();
 		
-		ListItem itm = new ListItem();
+		ListItemVO itm = new ListItemVO();
 		itm.setName("中国");
 		itm.setValue("01");
 		list.add(itm);
 		
-		itm = new ListItem();
+		itm = new ListItemVO();
 		itm.setName("日本");
 		itm.setValue("02");
 		list.add(itm);
 		
-		itm = new ListItem();
+		itm = new ListItemVO();
 		itm.setName("米国");
 		itm.setValue("03");
 		list.add(itm);

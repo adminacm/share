@@ -3,7 +3,7 @@ package argo.cost.attendanceInput.dao;
 import java.util.List;
 
 import argo.cost.attendanceInput.model.HolidayRecord;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 public interface AttendanceInputDao {
 
@@ -12,7 +12,7 @@ public interface AttendanceInputDao {
 	 * 
 	 * @return 休暇欠勤区分プルダウンリスト
 	 */
-	List<ListItem> getHolidayLackingItem();
+	List<ListItemVO> getHolidayLackingItem();
 	
 	/**
 	 * 個人勤怠プロジェクト情報取得
@@ -20,7 +20,7 @@ public interface AttendanceInputDao {
 	 * 
 	 * @return 個人勤怠プロジェクト情報
 	 */
-	List<ListItem> getWorkItemList();
+	List<ListItemVO> getWorkItemList();
 	
 	/**
 	 * ロケーション情報取得
@@ -28,7 +28,7 @@ public interface AttendanceInputDao {
 	 * 
 	 * @return ロケーション情報
 	 */
-	List<ListItem> getLocationItemList();
+	List<ListItemVO> getLocationItemList();
 	
 	/**
 	 * 休日勤務情報を取得

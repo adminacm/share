@@ -2,7 +2,7 @@ package argo.cost.monthlyReportStatusList.model;
 
 import java.util.List;
 
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 /**
  * <p>
@@ -23,7 +23,7 @@ public class MonthlyReportStatusListForm {
 	/**
 	 * 年月リスト
 	 */
-	private List<ListItem> yearMonthList;
+	private List<ListItemVO> yearMonthList;
 	
 	/**
 	 * 所属
@@ -33,7 +33,7 @@ public class MonthlyReportStatusListForm {
 	/**
 	 * 所属リスト
 	 */
-	private List<ListItem> affiliationList;
+	private List<ListItemVO> affiliationList;
 	/**
 	 * 状況
 	 */
@@ -42,7 +42,7 @@ public class MonthlyReportStatusListForm {
 	/**
 	 * 状況リスト
 	 */
-	private List<ListItem> statusList;
+	private List<ListItemVO> statusList;
 	
 	/**
 	 * 月報状況一覧リスト
@@ -61,11 +61,11 @@ public class MonthlyReportStatusListForm {
 		this.yearMonth = yearMonth;
 	}
 
-	public List<ListItem> getYearMonthList() {
+	public List<ListItemVO> getYearMonthList() {
 		return yearMonthList;
 	}
 
-	public void setYearMonthList(List<ListItem> yearMonthList) {
+	public void setYearMonthList(List<ListItemVO> yearMonthList) {
 		this.yearMonthList = yearMonthList;
 	}
 
@@ -77,11 +77,11 @@ public class MonthlyReportStatusListForm {
 		this.affiliation = affiliation;
 	}
 
-	public List<ListItem> getAffiliationList() {
+	public List<ListItemVO> getAffiliationList() {
 		return affiliationList;
 	}
 
-	public void setAffiliationList(List<ListItem> affiliationList) {
+	public void setAffiliationList(List<ListItemVO> affiliationList) {
 		this.affiliationList = affiliationList;
 	}
 
@@ -93,11 +93,11 @@ public class MonthlyReportStatusListForm {
 		this.status = status;
 	}
 
-	public List<ListItem> getStatusList() {
+	public List<ListItemVO> getStatusList() {
 		return statusList;
 	}
 
-	public void setStatusList(List<ListItem> statusList) {
+	public void setStatusList(List<ListItemVO> statusList) {
 		this.statusList = statusList;
 	}
 

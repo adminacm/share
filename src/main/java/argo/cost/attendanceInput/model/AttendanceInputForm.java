@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import argo.cost.common.model.AbstractForm;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 /**
  * 勤怠入力
@@ -74,7 +74,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * 休暇欠勤区分リスト
 	 */
-	private List<ListItem> kyukakbList;
+	private List<ListItemVO> kyukakbList;
 
 	/**
 	 * 休暇時間
@@ -129,7 +129,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * ロケーションリスト
 	 */
-	private List<ListItem> locationItemList;
+	private List<ListItemVO> locationItemList;
 	
 	/**
 	 * 休日勤務情報
@@ -340,11 +340,11 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.mNHours = mNHours;
 	}
 
-	public List<ListItem> getKyukakbList() {
+	public List<ListItemVO> getKyukakbList() {
 		return kyukakbList;
 	}
 
-	public void setKyukakbList(List<ListItem> kyukakbList) {
+	public void setKyukakbList(List<ListItemVO> kyukakbList) {
 		this.kyukakbList = kyukakbList;
 	}
 
@@ -373,11 +373,11 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.locationId = locationId;
 	}
 
-	public List<ListItem> getLocationItemList() {
+	public List<ListItemVO> getLocationItemList() {
 		return locationItemList;
 	}
 
-	public void setLocationItemList(List<ListItem> locationItemList) {
+	public void setLocationItemList(List<ListItemVO> locationItemList) {
 		this.locationItemList = locationItemList;
 	}
 

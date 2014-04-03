@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import argo.cost.attendanceOnHoliday.model.AtendanceOnHoliday;
+import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.utils.CostCheckUtil;
 
 public class AtendanceOnHolidayCheck implements Validator {
@@ -112,7 +112,7 @@ public class AtendanceOnHolidayCheck implements Validator {
 	@Override
 	public boolean supports(Class clazz) {
 		// TODO Auto-generated method stub
-		return clazz.equals(AtendanceOnHoliday.class);
+		return clazz.equals(AtendanceOnHolidayForm.class);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class AtendanceOnHolidayCheck implements Validator {
 	  	      errors, "selectedProjCd", "errors.required",new Object[]{"プロジェクト名"}, "this field is required!");
 	    ValidationUtils.rejectIfEmpty(
 		  	      errors, "strCommont", "errors.required",new Object[]{"業務内容"}, "this field is required!");
-	    AtendanceOnHoliday atendanceOnHoliday = (AtendanceOnHoliday) target;
+	    AtendanceOnHolidayForm atendanceOnHoliday = (AtendanceOnHolidayForm) target;
 	    
 	    // 勤務開始時刻チェック
 	    String strAtendanceTimeStat = atendanceOnHoliday.getStrAtendanceTimeStat();

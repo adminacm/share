@@ -19,7 +19,7 @@ import argo.cost.attendanceInput.model.HolidayRecord;
 import argo.cost.attendanceInput.model.ShiftInfo;
 import argo.cost.attendanceInput.model.WorkTimeDetail;
 import argo.cost.common.constant.CommonConstant;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
 
@@ -47,7 +47,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @return 休暇欠勤区分プルダウンリスト
 	 */
 	@Override
-	public List<ListItem> getHolidayLackingItem() {
+	public List<ListItemVO> getHolidayLackingItem() {
 
 		return attDao.getHolidayLackingItem();
 	}
@@ -59,9 +59,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @return 個人勤怠プロジェクト情報
 	 */
 	@Override
-	public List<ListItem> getWorkItemList() {
+	public List<ListItemVO> getWorkItemList() {
 		// TODO 自動生成されたメソッド・スタブ
-		List<ListItem> resultList = attDao.getWorkItemList();
+		List<ListItemVO> resultList = attDao.getWorkItemList();
 		return resultList;
 	}
 
@@ -72,9 +72,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @return ロケーション情報
 	 */
 	@Override
-	public List<ListItem> getLocationItemList() {
+	public List<ListItemVO> getLocationItemList() {
 		// TODO 自動生成されたメソッド・スタブ
-		List<ListItem> resultList = attDao.getLocationItemList();
+		List<ListItemVO> resultList = attDao.getLocationItemList();
 		return resultList;
 	}
 
@@ -158,8 +158,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		for (int i = 0; i < 1; i++) {
 			pro = new AttendanceProject();
 			pro.setHours(3.5);
-			pro.setProjectItemList(comService.getProjectNameList(userId,
-					CostDateUtils.toDate(yyyymmdd)));
+			pro.setProjectItemList(comService.getProjectNameList(userId));
 			pro.setProjectId("01");
 			pro.setWorkId("01");
 			pro.setWorkItemList(getWorkItemList());
@@ -282,7 +281,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 深夜
 		form.setmNHours(workDetail.getSynyaKinmuHours());
 		// 休暇欠勤区分リストを取得
-		List<ListItem> kyukakbList = getHolidayLackingItem();
+		List<ListItemVO> kyukakbList = getHolidayLackingItem();
 		form.setKyukakbList(kyukakbList);
 		// 個人倦怠プロジェクト情報リストを作成
 		List<AttendanceProject> prjList = getProjectList(userId, date);

@@ -1,13 +1,21 @@
 package argo.cost.attendanceOnHoliday.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AtendanceOnHoliday {
+import argo.cost.common.model.AbstractForm;
+import argo.cost.common.model.ListItemVO;
 
+public class AtendanceOnHolidayForm extends AbstractForm implements Serializable {
+
+	/**
+	 * パジョンID
+	 */
+	private static final long serialVersionUID = 1L;
 	// 日付
 	private String strAtendanceDate;
 	// 勤務日区分
-	private List<CodeNameMap> atendanceDayKbnList;
+	private List<ListItemVO> atendanceDayKbnList;
 	private String selectedAtendanceDayKbn;
 	// 勤務開始時間
 	private String strAtendanceTimeStat;
@@ -16,7 +24,7 @@ public class AtendanceOnHoliday {
 	// 振替日　
 	private String strHurikaeDate;
 	// プロジェクトコード
-	private List<CodeNameMap> projCdList;
+	private List<ListItemVO> projCdList;
 	private String selectedProjCd;
 	// 業務内容
 	private String strCommont;
@@ -77,19 +85,19 @@ public class AtendanceOnHoliday {
 		this.selectedProjCd = selectedProjCd;
 	}
 
-	public List<CodeNameMap> getAtendanceDayKbnList() {
+	public List<ListItemVO> getAtendanceDayKbnList() {
 		return atendanceDayKbnList;
 	}
 
-	public void setAtendanceDayKbnList(List<CodeNameMap> atendanceDayKbnList) {
+	public void setAtendanceDayKbnList(List<ListItemVO> atendanceDayKbnList) {
 		this.atendanceDayKbnList = atendanceDayKbnList;
 	}
 
-	public List<CodeNameMap> getProjCdList() {
+	public List<ListItemVO> getProjCdList() {
 		return projCdList;
 	}
 
-	public void setProjCdList(List<CodeNameMap> projCdList) {
+	public void setProjCdList(List<ListItemVO> projCdList) {
 		this.projCdList = projCdList;
 	}
 

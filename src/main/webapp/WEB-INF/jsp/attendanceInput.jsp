@@ -86,7 +86,7 @@ function submitAction(action) {
 			<c:if test="${attendanceInputForm.kinmuKun != 0}">
 				<table style="margin:auto; width:300px;">
 					<tr>
-						<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attOnHolidy');" /></td>
+						<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attendanceOnHoliday');" /></td>
 					</tr>
 				</table>
 			</c:if>

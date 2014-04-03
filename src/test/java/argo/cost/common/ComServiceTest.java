@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComServiceImpl;
 
 /**
@@ -35,7 +35,7 @@ public class ComServiceTest {
 	public void testGetStatusList() {
 		
 		//  状況プルダウンリスト取得
-		List<ListItem> statusList = service.getStatusList();
+		List<ListItemVO> statusList = service.getStatusList();
 		
 		assertEquals(statusList.size(), 6);
 	}
@@ -52,7 +52,7 @@ public class ComServiceTest {
 		String userId = null;
 		
 		// 氏名プルダウンリスト取得
-		List<ListItem> userNameList = service.getUserNameList(userId);
+		List<ListItemVO> userNameList = service.getUserNameList(userId);
 		
 		assertEquals(userNameList.size(), 2);
 	}
@@ -69,7 +69,7 @@ public class ComServiceTest {
 		String userId = "li";
 		
 		// 氏名プルダウンリスト取得
-		List<ListItem> userNameList = service.getUserNameList(userId);
+		List<ListItemVO> userNameList = service.getUserNameList(userId);
 		
 		assertEquals(userNameList.size(), 4);
 	}
@@ -84,7 +84,7 @@ public class ComServiceTest {
 		Date date = new Date();
 		
 		// 氏名プルダウンリスト取得
-		List<ListItem> yearList = null;
+		List<ListItemVO> yearList = null;
 		try {
 			yearList = service.getYearList(date);
 		} catch (ParseException e) {
@@ -95,20 +95,4 @@ public class ComServiceTest {
 		assertEquals(yearList.size(), 4);
 	}
 
-	/**
-	 * プロジェクト名プルダウンリスト取得テスト
-	 */
-	@Test
-	public void testGetProjectName() {
-
-		// ユーザＩＤ
-		String userId = "li";
-		// 日付
-		Date date = new Date();
-		
-		// 氏名プルダウンリスト取得
-		List<ListItem> projectList = service.getProjectNameList(userId, date);
-		
-		assertEquals(projectList.size(), 1);
-	}
 }

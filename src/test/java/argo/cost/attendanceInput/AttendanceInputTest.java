@@ -18,7 +18,7 @@ import argo.cost.attendanceInput.model.AttendanceProject;
 import argo.cost.attendanceInput.model.HolidayRecord;
 import argo.cost.attendanceInput.model.WorkTimeDetail;
 import argo.cost.attendanceInput.service.AttendanceInputServiceImpl;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,25 +39,25 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 	@Test
 	public void testGetHolidayLackingItem(){
 		
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		
-		ListItem item = new ListItem();
+		ListItemVO item = new ListItemVO();
 		item.setValue("01");
 		item.setName("全休(有給休暇)");
 		resultList.add(item);
 
-		item = new ListItem();
+		item = new ListItemVO();
 		item.setValue("02");
 		item.setName("半休(有給休暇)");
 		resultList.add(item);
 
-		item = new ListItem();
+		item = new ListItemVO();
 		item.setValue("03");
 		item.setName("時間休(有給休暇)");
 		resultList.add(item);
 
 		// 休暇欠勤区分プルダウンリスト取得
-		List<ListItem> holidayLackingList = attS.getHolidayLackingItem();
+		List<ListItemVO> holidayLackingList = attS.getHolidayLackingItem();
 		
 		// 休暇欠勤区分プルダウンリスト
 		assertEquals(holidayLackingList.size(), 3);
@@ -76,25 +76,25 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 	public void testGetWorkItemList(){
 		
 
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		
-		ListItem item = new ListItem();
+		ListItemVO item = new ListItemVO();
 		item.setName("MUT");
 		item.setValue("01");
 		resultList.add(item);
 		
-		item = new ListItem();
+		item = new ListItemVO();
 		item.setName("SI");
 		item.setValue("02");
 		resultList.add(item);
 		
-		item = new ListItem();
+		item = new ListItemVO();
 		item.setName("BD");
 		item.setValue("03");
 		resultList.add(item);
 
 		// 個人勤怠プロジェクト取得
-		List<ListItem> workItemList = attS.getWorkItemList();
+		List<ListItemVO> workItemList = attS.getWorkItemList();
 		
 		// 個人勤怠プロジェクト
 		assertEquals(workItemList.size(), 3);
@@ -112,25 +112,25 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 	@Test
 	public void testGetLocationItemList(){
 		
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		
-		ListItem itm = new ListItem();
+		ListItemVO itm = new ListItemVO();
 		itm.setName("中国");
 		itm.setValue("01");
 		resultList.add(itm);
 		
-		itm = new ListItem();
+		itm = new ListItemVO();
 		itm.setName("日本");
 		itm.setValue("02");
 		resultList.add(itm);
 		
-		itm = new ListItem();
+		itm = new ListItemVO();
 		itm.setName("米国");
 		itm.setValue("03");
 		resultList.add(itm);
 
 		// ロケーション情報取得
-		List<ListItem> locationList = attS.getLocationItemList();
+		List<ListItemVO> locationList = attS.getLocationItemList();
 		
 		// ロケーション情報
 		assertEquals(locationList.size(), 3);

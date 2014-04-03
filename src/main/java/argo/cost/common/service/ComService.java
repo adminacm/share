@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import argo.cost.common.model.AppSession;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 /**
  * <p>
@@ -39,7 +39,7 @@ public interface ComService {
 	 * 
 	 * @return 状況プルダウンリスト
 	 */
-	List<ListItem> getStatusList();
+	List<ListItemVO> getStatusList();
 	
 	/**
 	 * 氏名プルダウンリスト取得
@@ -48,7 +48,7 @@ public interface ComService {
 	 *            ユーザＩＤ
 	 * @return 氏名プルダウンリスト
 	 */
-	List<ListItem> getUserNameList(String userId);
+	List<ListItemVO> getUserNameList(String userId);
 	
 	/**
 	 * 年度プルダウンリスト取得
@@ -59,19 +59,17 @@ public interface ComService {
 	 *           プルダウンリスト
 	 * @throws ParseException 
 	 */
-	List<ListItem> getYearList(Date date) throws ParseException;
+	List<ListItemVO> getYearList(Date date) throws ParseException;
 	
 	/**
 	 * プロジェクト名プルダウンリスト取得
 	 * 
 	 * @param userId
 	 *            ユーザＩＤ
-	 * @param date
-	 * 		           　日付
 	 * @return
 	 *            プロジェクト名プルダウンリスト
 	 */
-	List<ListItem> getProjectNameList(String userId, Date date);
+	List<ListItemVO> getProjectNameList(String userId);
 	
 	/**
 	 * 

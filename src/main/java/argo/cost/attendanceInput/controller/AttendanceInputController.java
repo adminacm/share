@@ -4,6 +4,7 @@ import java.text.ParseException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.attendanceInput.model.AttendanceInputForm;
 import argo.cost.attendanceInput.model.AttendanceProject;
 import argo.cost.attendanceInput.service.AttendanceInputService;
+import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.utils.CostDateUtils;
 
 @Controller
-@RequestMapping("/attendanceInput")
+@RequestMapping(UrlConstant.URL_ATTENDANCE_INPUT)
 @SessionAttributes(types = { AttendanceInputForm.class })
 public class AttendanceInputController extends AbstractController {
 
@@ -36,7 +37,8 @@ public class AttendanceInputController extends AbstractController {
 	 * @throws Exception
 	 *             Exception
 	 */
-	@RequestMapping("/init")
+	@RequestMapping(value = INIT)
+	@Secured({"ROLE_USER"})
 	public String init(Model model, @RequestParam("attDate") String newDate)
 			throws Exception {
 
@@ -144,7 +146,7 @@ public class AttendanceInputController extends AbstractController {
 	public String doAddLine(AttendanceInputForm form) throws ParseException {
 
 		AttendanceProject pro = new AttendanceProject();
-		pro.setProjectItemList(comService.getProjectNameList(getSession().getUserInfo().getId(), CostDateUtils.toDate(form.getAttDate())));
+		pro.setProjectItemList(comService.getProjectNameList(form.getUserId()));
 		pro.setWorkItemList(attService.getWorkItemList());
 		form.getProjectList().add(pro);
 		return "attendanceInput";
@@ -166,5 +168,23 @@ public class AttendanceInputController extends AbstractController {
 		attService.calcWorkingRec(form);
 		
 		return "attendanceInput";
+	}
+
+	/**
+	 * 休日勤務入力画面へ
+	 * 
+	 * @param model
+	 *            モデル
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping("/attendanceOnHoliday")
+	public String goAttendanceOnHoliday(AttendanceInputForm form) throws ParseException {
+
+		// 勤務日付を取得
+		String attendanceDate = form.getAttDate();
+		
+		return REDIRECT + UrlConstant.URL_ATT_HOLIDAY + INIT 
+				+ QUESTION_MARK + ATTDENDANCE_DATE + "=" + attendanceDate;
 	}
 }

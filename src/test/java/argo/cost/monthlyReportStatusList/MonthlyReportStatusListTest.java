@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.entity.ApprovalList;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
@@ -102,7 +102,7 @@ public class MonthlyReportStatusListTest {
 		}
 		
 		// 年月プルダウンリスト取得
-		List<ListItem> yearMonthList = monS.getYearMonthList(date);
+		List<ListItemVO> yearMonthList = monS.getYearMonthList(date);
 		
 		// 年月プルダウンリストのサイズ
 		assertEquals(yearMonthList.size(), 4);
@@ -123,20 +123,20 @@ public class MonthlyReportStatusListTest {
 	@Test
 	public void testGetAffiliationList(){
 		
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
-		ListItem item = new ListItem();
+		ListItemVO item = new ListItemVO();
 		item.setValue("01");
 		item.setName("ＢＳ１");
 		resultList.add(item);
 		
-		item = new ListItem();
+		item = new ListItemVO();
 		item.setValue("02");
 		item.setName("ＢＳ２");
 		resultList.add(item);
 		
 		// 所属プルダウンリスト取得
-		List<ListItem> yearMonthList = monS.getAffiliationList();
+		List<ListItemVO> yearMonthList = monS.getAffiliationList();
 		
 		// 所属プルダウンリストのサイズ
 		assertEquals(yearMonthList.size(), 2);

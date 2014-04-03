@@ -27,7 +27,16 @@ public abstract class AbstractController {
 	 */
 	@Autowired
 	protected ComService comService;
+	
+	/**
+	 *　疑問符
+	 */
+	public static final String QUESTION_MARK = "?";
 
+	/**
+	 *　勤怠日付
+	 */
+	public static final String ATTDENDANCE_DATE = "attendanceDate";
 	/**
 	 * セッションの属性名です。
 	 */
@@ -36,6 +45,18 @@ public abstract class AbstractController {
 	 * フォワード属性名
 	 */
 	public static final String FORWARD = "forward";
+	/**
+	 * リダイレクト属性名
+	 */
+	public static final String REDIRECT = "redirect:";
+	/**
+	 * 初期化
+	 */
+	public static final String INIT = "/init";
+	/**
+	 * 保存
+	 */
+	public static final String SAVE = "/save";
 
 	/**
 	 * セッション情報取得
@@ -69,6 +90,7 @@ public abstract class AbstractController {
 			throw new Exception();
 		}
 
+		// ユーザIDを設定する
 		form.setUserId(session.getUserInfo().getId());
 
 		return form;

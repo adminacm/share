@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.entity.ApprovalList;
 import argo.cost.monthlyReportStatusList.dao.MonthlyReportStatusListDao;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
@@ -76,12 +76,12 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 * 	年月プルダウンリスト
 	 */
 	@Override
-	public List<ListItem> getYearMonthList(Date date) {
+	public List<ListItemVO> getYearMonthList(Date date) {
 
 		// ドロップダウンリスト
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
-		ListItem item = null;
+		ListItemVO item = null;
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
@@ -89,7 +89,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		// ドロップダウンリスト設定
 		for (int i = 0; i <= 3; i++) {
 			
-			item = new ListItem();
+			item = new ListItemVO();
 
 			// 年月を取得
 			if (i != 0){
@@ -121,17 +121,17 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 *        所属プルダウンリスト
 	 */
 	@Override
-	public List<ListItem> getAffiliationList() {
+	public List<ListItemVO> getAffiliationList() {
 		
 		//TODO ドロップダウンリスト
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
-		ListItem item = new ListItem();
+		ListItemVO item = new ListItemVO();
 		item.setValue("01");
 		item.setName("ＢＳ１");
 		resultList.add(item);
 		
-		item = new ListItem();
+		item = new ListItemVO();
 		item.setValue("02");
 		item.setName("ＢＳ２");
 		resultList.add(item);

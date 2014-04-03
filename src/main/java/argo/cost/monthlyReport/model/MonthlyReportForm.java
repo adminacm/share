@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import argo.cost.common.model.AbstractForm;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 /**
  * <p>
@@ -30,7 +30,7 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	/**
 	 * 氏名リスト
 	 */
-	private List<ListItem> userList;
+	private List<ListItemVO> userList;
 
 	/**
 	 * 処理状況
@@ -157,11 +157,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 		this.paperwork = paperwork;
 	}
 	
-	public List<ListItem> getUserList() {
+	public List<ListItemVO> getUserList() {
 		return userList;
 	}
 
-	public void setUserList(List<ListItem> userList) {
+	public void setUserList(List<ListItemVO> userList) {
 		this.userList = userList;
 	}
 	

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
@@ -56,7 +56,7 @@ public class MonthlyReportController extends AbstractController {
 		getSession().setUrl("monthlyReport");
     	
     	// 氏名リストを取得
-    	List<ListItem> userList = comService.getUserNameList(loginId);
+    	List<ListItemVO> userList = comService.getUserNameList(loginId);
     	form.setUserList(userList);
     	
     	// 氏名の初期値設定

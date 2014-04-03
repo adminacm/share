@@ -14,7 +14,7 @@ import argo.cost.approvalList.model.ApprovalListForm;
 import argo.cost.approvalList.model.ApprovalListInfo;
 import argo.cost.approvalList.service.ApprovalListService;
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 @Controller
 @RequestMapping("/approvalList")
@@ -42,7 +42,7 @@ public class ApprovalListController extends AbstractController  {
     	model.addAttribute(form);
     	
     	// 状況リストを取得
-    	List<ListItem> statusList = comService.getStatusList();
+    	List<ListItemVO> statusList = comService.getStatusList();
     	
     	// 状況リストを設定
     	form.setStatusList(statusList);

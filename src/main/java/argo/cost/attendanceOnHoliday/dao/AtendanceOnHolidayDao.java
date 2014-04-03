@@ -2,8 +2,8 @@ package argo.cost.attendanceOnHoliday.dao;
 
 import java.util.ArrayList;
 
-import argo.cost.attendanceOnHoliday.model.AtendanceOnHoliday;
-import argo.cost.attendanceOnHoliday.model.CodeNameMap;
+import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
+import argo.cost.common.model.ListItemVO;
 
 public interface AtendanceOnHolidayDao {
 
@@ -12,6 +12,8 @@ public interface AtendanceOnHolidayDao {
 	 * 
 	 * @param userId
 	 *            ユーザID
+	 * @param date
+	 *            当前の日付
 	 * @return ユーザ情報
 	 */
 	boolean atendanceOnHolidayDataChk(String userId, String date);
@@ -21,31 +23,26 @@ public interface AtendanceOnHolidayDao {
 	 * 
 	 * @param userId
 	 *            ユーザID
-	 * @return ユーザ情報
+	 * @param date
+	 *            当前の日付
+	 * @return 当日休日勤務情報
 	 */
-	AtendanceOnHoliday atendanceOnHolidayDataGet(String userId, String date);
+	AtendanceOnHolidayForm atendanceOnHolidayDataGet(String userId, String date);
 
 	/**
 	 * 勤務日区分リストを取得
 	 * 
 	 * @param userId
 	 *            ユーザID
-	 * @return ユーザ情報
+	 * @return 勤務日区分リスト
 	 */
-	ArrayList<CodeNameMap> getAtendanceDayKbnList();
-
-	/**
-	 * プロジェクトリストを取得
-	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @return ユーザ情報
-	 */
-	ArrayList<CodeNameMap> getProjectKbnList();
+	ArrayList<ListItemVO> getAtendanceDayKbnList();
 	
 	/**
 	 * 休日勤務データの削除
 	 * 
+	 * @param strAtendanceDate
+	 *            削除した勤務データの日付
 	 * @param userId
 	 *            ユーザID
 	 */
@@ -54,9 +51,11 @@ public interface AtendanceOnHolidayDao {
 	/**
 	 * 休日勤務データの保存
 	 * 
+	 * @param atendanceOnHoliday
+	 *            入力した勤務情報
 	 * @param userId
 	 *            ユーザID
 	 */
-	String saveAtendanceOnHoliday(AtendanceOnHoliday atendanceOnHoliday,String UserID);
+	String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday, String UserID);
 
 }

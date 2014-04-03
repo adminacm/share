@@ -3,7 +3,7 @@ package argo.cost.monthlyReportStatusList.service;
 import java.util.Date;
 import java.util.List;
 
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
 
@@ -34,7 +34,7 @@ public interface MonthlyReportStatusListService {
 	 * @return
 	 * 	             年月プルダウンリスト
 	 */
-	List<ListItem> getYearMonthList(Date date);
+	List<ListItemVO> getYearMonthList(Date date);
 
 	/**
 	 * 所属プルダウンリスト取得
@@ -42,6 +42,6 @@ public interface MonthlyReportStatusListService {
 	 * @return 
 	 *        所属プルダウンリスト
 	 */
-	List<ListItem> getAffiliationList();
+	List<ListItemVO> getAffiliationList();
 
 }

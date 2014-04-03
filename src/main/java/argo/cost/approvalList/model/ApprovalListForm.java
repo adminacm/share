@@ -2,7 +2,7 @@ package argo.cost.approvalList.model;
 
 import java.util.List;
 
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 
 /**
  * <p>
@@ -23,7 +23,7 @@ public class ApprovalListForm {
 	/**
 	 * 状況リスト
 	 */
-	private List<ListItem> statusList;
+	private List<ListItemVO> statusList;
 	
 	/**
 	 * 承認リスト
@@ -50,14 +50,14 @@ public class ApprovalListForm {
 	/**
 	 * 状況リストを取得する
 	 */
-	public List<ListItem> getStatusList() {
+	public List<ListItemVO> getStatusList() {
 		return statusList;
 	}
 
 	/**
 	 * 状況リストを設定する
 	 */
-	public void setStatusList(List<ListItem> statusList) {
+	public void setStatusList(List<ListItemVO> statusList) {
 		this.statusList = statusList;
 	}
 

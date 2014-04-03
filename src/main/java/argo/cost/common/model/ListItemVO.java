@@ -1,6 +1,6 @@
 package argo.cost.common.model;
 
-public class ListItem {
+public class ListItemVO {
 	/**
 	 * 区分値
 	 */

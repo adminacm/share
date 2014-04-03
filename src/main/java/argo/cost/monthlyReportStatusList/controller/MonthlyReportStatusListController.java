@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListService;
@@ -42,7 +42,7 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	model.addAttribute(form);
     	
     	// 状況リストを取得
-    	List<ListItem> statusList = comService.getStatusList();
+    	List<ListItemVO> statusList = comService.getStatusList();
     	
     	// 状況リストを設定
     	form.setStatusList(statusList);
@@ -51,7 +51,7 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	form.setStatus("");
     	
     	// 年月リストを取得
-    	List<ListItem> yearMonthList = service.getYearMonthList(new Date());
+    	List<ListItemVO> yearMonthList = service.getYearMonthList(new Date());
     	
     	// 年月リストを設定
     	form.setYearMonthList(yearMonthList);
@@ -60,7 +60,7 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	form.setYearMonth("");
     	
     	// 所属リストを取得
-    	List<ListItem> affiliationList = service.getAffiliationList();
+    	List<ListItemVO> affiliationList = service.getAffiliationList();
     	
     	// 所属リストを設定
     	form.setAffiliationList(affiliationList);

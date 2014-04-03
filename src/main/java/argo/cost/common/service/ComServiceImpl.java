@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import argo.cost.common.dao.ComDao;
 import argo.cost.common.dao.DropdownListDao;
 import argo.cost.common.model.AppSession;
-import argo.cost.common.model.ListItem;
+import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.entity.Status;
 import argo.cost.common.model.entity.Users;
 
@@ -65,19 +65,19 @@ public class ComServiceImpl implements ComService {
 	 * @return 状況プルダウンリスト
 	 */
 	@Override
-	public List<ListItem> getStatusList() {
+	public List<ListItemVO> getStatusList() {
 
 		// 状況プルダウンリスト
 		List<Status> statusList = listDao.getStatusList();
 
 		// ドロップダウンリスト
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
-		ListItem item = null;
+		ListItemVO item = null;
 
 		// ドロップダウンリスト設定
 		for (Status status : statusList) {
-			item = new ListItem();
+			item = new ListItemVO();
 
 			// データを設定する
 			// 区分値 
@@ -101,19 +101,19 @@ public class ComServiceImpl implements ComService {
 	 * @return 氏名プルダウンリスト
 	 */
 	@Override
-	public List<ListItem> getUserNameList(String userId) {
+	public List<ListItemVO> getUserNameList(String userId) {
 
 		// 氏名プルダウンリスト
 		List<Users> userList = listDao.getUserList(userId);
 
 		// ドロップダウンリスト
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
-		ListItem item = null;
+		ListItemVO item = null;
 
 		// ドロップダウンリスト設定
 		for (Users status : userList) {
-			item = new ListItem();
+			item = new ListItemVO();
 
 			// データを設定する
 			// 区分値 
@@ -139,16 +139,16 @@ public class ComServiceImpl implements ComService {
 	 * @throws ParseException 
 	 */
 	@Override
-	public List<ListItem> getYearList(Date date) throws ParseException {
+	public List<ListItemVO> getYearList(Date date) throws ParseException {
 
 		// 年度プルダウンリスト
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
-		ListItem item = null;
+		ListItemVO item = null;
 
 		// ドロップダウンリスト設定
 		for (int i = 0; i <= 3; i++) {
-			item = new ListItem();
+			item = new ListItemVO();
 
 			// データを設定する
 			// 区分値 
@@ -169,25 +169,23 @@ public class ComServiceImpl implements ComService {
 	 * 
 	 * @param userId
 	 *            ユーザＩＤ
-	 * @param date
-	 * 		           　日付
 	 * @return
 	 *            プロジェクト名プルダウンリスト
 	 */
 	@Override
-	public List<ListItem> getProjectNameList(String userId, Date date) {
+	public List<ListItemVO> getProjectNameList(String userId) {
 
 		//TODOプルダウンリスト
 		//listDao.getProjectList(userId, date);
 
 		// ドロップダウンリスト
-		List<ListItem> resultList = new ArrayList<ListItem>();
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
-		ListItem item = null;
+		ListItemVO item = null;
 
 		// ドロップダウンリスト設定
 		//for (Users status : userList) {
-			item = new ListItem();
+			item = new ListItemVO();
 
 			// データを設定する
 			// 区分値 

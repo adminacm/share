@@ -11,17 +11,18 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.entity.Users;
 import argo.cost.menu.model.MenueForm;
 
 @Controller
-@RequestMapping("/menu")
+@RequestMapping(UrlConstant.URL_MENU)
 @SessionAttributes(types = { MenueForm.class })
 public class MenuController extends AbstractController {
     
-    @RequestMapping("/init")
+    @RequestMapping(value = INIT)
     public String doLogin(Model model, HttpServletRequest request) {
     	
     	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
