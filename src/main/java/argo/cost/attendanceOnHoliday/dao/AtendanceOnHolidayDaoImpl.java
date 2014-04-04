@@ -11,8 +11,6 @@ import argo.cost.common.model.ListItemVO;
 @Repository
 public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 
-	// protected EntityManager em;
-
 	/**
 	 * 当日休日勤務情報有無チャック
 	 * 
@@ -20,11 +18,11 @@ public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 	 *            ユーザID
 	 * @param date
 	 *            当前の日付
-	 * @return ユーザ情報
+	 * @return 当日休日勤務情報有無
 	 */
 	@Override
 	public boolean atendanceOnHolidayDataChk(String userId, String date) {
-		// TODO DB取得
+		// TODO データベースで当日休日勤務情報を検索する
 		return false;
 	}
 
@@ -40,11 +38,11 @@ public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 	@Override
 	public AtendanceOnHolidayForm atendanceOnHolidayDataGet(String userId, String date) {
 		
-		// TODO ユーザーIDと当前の日付によって、DBから休日勤務情報取得、専用のEntityクラスが必要です。
+		// TODO ユーザーIDと当前の日付によって、DBから休日勤務情報取得、専用のEntityクラスが必要です
 		AtendanceOnHolidayForm atendanceOnHoliday = null;
 		
 		// 仮：データが存在する場合
-		if (StringUtils.equals("20140404", date)) {
+		if (StringUtils.equals("20140405", date)) {
 			
 			atendanceOnHoliday = new AtendanceOnHolidayForm();
 			
@@ -70,22 +68,16 @@ public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 	/**
 	 * 勤務日区分リストを取得
 	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @return ユーザ情報
+	 * @return 勤務日区分リスト
 	 */
 	@Override
 	public ArrayList<ListItemVO> getAtendanceDayKbnList() {
 
 		ArrayList<ListItemVO> atendanceDayKbnList = new ArrayList<ListItemVO>();
 
-		// TODO データベースから取得
+		// TODO データベースから勤務日区分リストを検索
 		ListItemVO item = new ListItemVO();
-//		item.setValue("01");
-//		item.setName("出勤");
-//		atendanceDayKbnList.add(item);
 
-		item = new ListItemVO();
 		item.setValue("02");
 		item.setName("休日");
 		atendanceDayKbnList.add(item);
@@ -94,11 +86,6 @@ public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 		item.setValue("03");
 		item.setName("休日振替勤務");
 		atendanceDayKbnList.add(item);
-		
-//		item = new ListItemVO();
-//		item.setValue("04");
-//		item.setName("振替休日");
-//		atendanceDayKbnList.add(item);
 
 		return atendanceDayKbnList;
 	}
@@ -107,18 +94,22 @@ public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 	 * 休日勤務データの削除
 	 * 
 	 * @param strAtendanceDate
-	 *            削除した勤務データの日付
+	 *            削除したい勤務データの日付
 	 * @param userId
-	 *            ユーザID
+	 *            ユーザーID 
+	 * @return　userId
+	 *            勤務情報データを削除結果フラグ
 	 */
 	@Override
 	public String deleteAtendanceOnHoliday(String strAtendanceDate,
-			String UserID) {
-		// TODO Auto-generated method stub
-
-		if ("20140505".equals(strAtendanceDate) && UserID.equals("xiongyl")) {
+			String userID) {
+		// TODO 当前の日付のデータを削除する
+		if (userID.equals("U0001")) {
+			System.out.println("勤務情報をDBから削除成功しました");
 			return "1";
 		} else {
+			
+			System.out.println("勤務情報をDBから失敗");
 			return "0";
 		}
 
@@ -131,12 +122,14 @@ public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 	 *            入力した勤務情報
 	 * @param userId
 	 *            ユーザID
+	 * @return　userId
+	 *            勤務情報データを削除結果フラグ
 	 */
 	@Override
 	public String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday,
 			String UserID) {
-		// TODO Auto-generated method stub
-		if (null != atendanceOnHoliday && "xiongyl".equals(UserID)) {
+		// TODO 入力データをDBに保存する
+		if (null != atendanceOnHoliday && "U0001".equals(UserID)) {
 			return "1";
 		} else {
 			return "0";

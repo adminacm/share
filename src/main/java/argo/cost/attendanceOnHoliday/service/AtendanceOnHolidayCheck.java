@@ -1,116 +1,17 @@
 package argo.cost.attendanceOnHoliday.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
-import argo.cost.common.utils.CostCheckUtil;
+import argo.cost.common.utils.CostDateUtils;
 
 public class AtendanceOnHolidayCheck implements Validator {
-	
-	
-//	public boolean checkAtendanceOnHoliday(AtendanceOnHoliday atendanceOnHoliday, Message message) {
-		
-//		// 勤務日区分が勤務日区分が「休日」「休日振替勤務」以外の場合
-//		if (!("02".equals(atendanceOnHoliday.getSelectedAtendanceDayKbn())||"03".equals(atendanceOnHoliday.getSelectedAtendanceDayKbn()))) {
-//			
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("勤務区分の値が不正です");
-//			return false;
-//			
-//		}
-//		// 勤務開始時刻が未入力の場合
-//		if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-//			message.setMessageID(messageID);
-//		    message.setMessgetTxt("勤務開始時刻が未入力です");
-//		    return false;
-//		}
-//		
-//		// 勤務開始時刻のhhnn形式値が数値以外の場合
-//		if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-//			
-//			
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("勤務開始時刻を正しく入力してください");
-//			return false;
-//		}
-//		// 勤務開始時刻の分の値が0、30以外の場合
-//		if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-//			
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("勤務開始時刻の分の値が0、30以外");
-//			return false;
-//		}
-//		
-//		// 勤務終了時刻が未入力の場合
-//		if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-//			message.setMessageID(messageID);
-//		    message.setMessgetTxt("勤務終了時刻が未入力です");
-//		    return false;
-//		}
-//		
-//		// 勤務終了時刻のhhnn形式値が数値以外の場合
-//		if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-//			
-//			
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("勤務終了時刻を正しく入力してください");
-//			return false;
-//		}
-//		// 勤務終了時刻の分の値が0、30以外の場合
-//		if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-//			
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("勤務終了時刻の分の値が0、30以外");
-//			return false;
-//		}
-//		// TODO 勤務開始時刻～勤務終了時刻が２４時間を越えている場合
-//		if ()
-//		// 勤務区分が「休日振替勤務」で振替休日が未入力の場合
-//		if ("03".equals(atendanceOnHoliday.getSelectedAtendanceDayKbn()) && CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrHurikaeDate())) {
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("振替休日を入力してください");
-//			return false;
-//		}
-//		// 勤務区分が「休日振替勤務」で振替休日に日付以外が入力されている場合
-//		// 勤務区分が「休日振替勤務」で振替休日が当日の日付
-//		if ("03".equals(atendanceOnHoliday.getSelectedAtendanceDayKbn()) && CheckUtil.compareToSystemDate(atendanceOnHoliday.getStrHurikaeDate())) {
-//			
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("振替休日を入力してください");
-//			return false;
-//		}
-//		// 勤務区分が「休日振替勤務」で振替休日の日付の就業データが処理済の場合
-//		// 勤務区分が「休日振替勤務」以外で振替休日が入力されている
-//		if ((!"03".equals(atendanceOnHoliday.getSelectedAtendanceDayKbn())) && CheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrHurikaeDate())) {
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("振替休日が当日の日付です");
-//			return false;
-//		}
-//		// プロジェクト名未選択の場合
-//		if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getSelectedProjCd())) {
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("プロジェクト名を選択してください");
-//			return false;
-//		}
-//		// プロジェクト名未入力の場合
-//	    if (CheckUtil.checkNullOrBlank(atendanceOnHoliday.getSelectedProjCd())) {
-//			message.setMessageID(messageID);
-//			message.setMessgetTxt("業務内容を入力してください");
-//			return false;
-//		}
-//		
-//		return true;
-//		
-//		
-//	}
 
 	@Override
-	public boolean supports(Class clazz) {
+	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub
 		return clazz.equals(AtendanceOnHolidayForm.class);
 	}
@@ -121,67 +22,64 @@ public class AtendanceOnHolidayCheck implements Validator {
 		
 		// 必須チェック
 	    ValidationUtils.rejectIfEmpty(
-	      errors, "strAtendanceTimeStat", "errors.required",new Object[]{"勤務開始時刻"}, "this field is required!");
+	      errors, "strAtendanceTimeStat", "E001",new Object[]{"勤務開始時刻"}, "{0}が未入力です！");
 	    ValidationUtils.rejectIfEmpty(
-	  	      errors, "strAtendanceTimeEnd", "errors.required",new Object[]{"勤務終了時刻"}, "this field is required!");
+	  	      errors, "strAtendanceTimeEnd", "E001",new Object[]{"勤務終了時刻"}, "{0}が未入力です！");
 	    ValidationUtils.rejectIfEmpty(
-	  	      errors, "selectedProjCd", "errors.required",new Object[]{"プロジェクト名"}, "this field is required!");
+	  	      errors, "selectedProjCd", "E002",new Object[]{"プロジェクト名"}, "{0}を選択してください！");
 	    ValidationUtils.rejectIfEmpty(
-		  	      errors, "strCommont", "errors.required",new Object[]{"業務内容"}, "this field is required!");
+		  	      errors, "strCommont", "E001",new Object[]{"業務内容"}, "{0}が未入力です！");
 	    AtendanceOnHolidayForm atendanceOnHoliday = (AtendanceOnHolidayForm) target;
 	    
-	    // 勤務開始時刻チェック
-	    String strAtendanceTimeStat = atendanceOnHoliday.getStrAtendanceTimeStat();
-	    if (!CostCheckUtil.checkNullOrBlank(strAtendanceTimeStat)) {
-	      SimpleDateFormat formatter = new SimpleDateFormat("hhhh");
-	      formatter.setLenient(false);
-	      try {
-	           formatter.parse(strAtendanceTimeStat);
-	      } catch(ParseException e) {
-	        errors.rejectValue("date", "errors.date", new Object[]{"勤務開始時刻"}, "this field is not a date");
-	      }      
-	    }
-	    // 勤務終了時刻チェック
-	    String strAtendanceTimeEnd = atendanceOnHoliday.getStrAtendanceTimeEnd();
-	    if (!CostCheckUtil.checkNullOrBlank(strAtendanceTimeEnd)) {
-		      SimpleDateFormat formatter = new SimpleDateFormat("hhhh");
-		      formatter.setLenient(false);
-		      try {
-		           formatter.parse(strAtendanceTimeEnd);
-		      } catch(ParseException e) {
-		        errors.rejectValue("date", "errors.date", new Object[]{"勤務終了時刻"}, "this field is not a date");
-		      }      
+	    // 必須チェックでエラーはないの場合
+	    if (!errors.hasErrors()) {
+	    	// 勤務開始時刻チェック　
+	    	// TODO:時刻のチェックメソッドはチェック不能「09:3a」
+		    String strAtendanceTimeStat = atendanceOnHoliday.getStrAtendanceTimeStat();
+		    if (!CostDateUtils.isTimeHHnn(strAtendanceTimeStat)) {
+		    	errors.rejectValue("strAtendanceTimeStat", "E003", new Object[]{"勤務開始時刻"}, "{0}を正しく入力してください");
+		    } else if (!CostDateUtils.isHalfHour(strAtendanceTimeStat)) {
+		    	errors.rejectValue("strAtendanceTimeStat", "E004", new Object[]{"勤務開始時刻"}, "{0}は30分単位で入力してください");
 		    }
-	    
-	    // 他の相関チェック
-		// 勤務日区分が勤務日区分が「休日」「休日振替勤務」以外の場合
-		if (!("02".equals(atendanceOnHoliday.getSelectedAtendanceDayKbn())||"03".equals(atendanceOnHoliday.getSelectedAtendanceDayKbn()))) {
-			errors.rejectValue("selectedAtendanceDayKbn", "errors.selectedAtendanceDayKbn", "勤務区分の値が不正です");
-			
-		}
-	    
-		// TODO　勤務開始時刻の分の値が0、30以外の場合
-		if (CostCheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-			errors.rejectValue("strAtendanceTimeStat", "errors.strAtendanceTimeStat", "勤務終了時刻は30分単位で入力してください");
-			
-		}
-		
-		// TODO　勤務終了時刻が勤務開始時刻以前の時刻
-		if (CostCheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-			errors.rejectValue("strAtendanceTimeStat", "errors.strAtendanceTimeStat", "勤務終了時刻は勤務開始時刻より後の時刻を入力してください");
-					
-		}
-		// TODO　勤務終了時刻の分の値が0、30以外の場合		
-		if (CostCheckUtil.checkNullOrBlank(atendanceOnHoliday.getStrAtendanceTimeStat())) {
-			errors.rejectValue("strAtendanceTimeEnd", "errors.strAtendanceTimeEnd", "勤務終了時刻は30分単位で入力してください");
-			
-			}
+		    // 勤務終了時刻チェック
+		    String strAtendanceTimeEnd = atendanceOnHoliday.getStrAtendanceTimeEnd();
+		    if (!CostDateUtils.isTimeHHnn(strAtendanceTimeEnd)) {
+		    	errors.rejectValue("strAtendanceTimeEnd", "E003", new Object[]{"勤務終了時刻"}, "{0}を正しく入力してください");
+		    } else if (!CostDateUtils.isHalfHour(strAtendanceTimeEnd)) {
+		    	errors.rejectValue("strAtendanceTimeEnd", "E004", new Object[]{"勤務終了時刻"}, "{0}は30分単位で入力してください");
+		    }
+		    
+		    // 他の相関チェック
+		    // 勤務終了時刻が勤務開始時刻以前の時刻
+		    if (strAtendanceTimeEnd.compareTo(strAtendanceTimeStat) < 0) {
+		    	errors.rejectValue("strAtendanceTimeEnd", "er1111", new Object[]{"勤務終了時刻","勤務開始時刻"}, "{0}は{1}より後の時刻を入力してください");
+		    }
+		    
+			// 勤務区分が「休日振替勤務」で
+	    	String hurikaeDate = atendanceOnHoliday.getStrHurikaeDate();
+		    if (StringUtils.equals("03", atendanceOnHoliday.getSelectedAtendanceDayKbn())) {
+		    	// 振替休日が未入力
+		    	if (StringUtils.isEmpty(hurikaeDate)) {
+		    		errors.rejectValue("strHurikaeDate", "er1118", new Object[]{"振替休日"}, "{0}を入力してください");
+		    	// 振替休日に日付以外が入力されている
+		    	} else if (!CostDateUtils.isValidDate(hurikaeDate)) {
+		    		errors.rejectValue("strAtendanceTimeStat", "E003", new Object[]{"振替休日"}, "{0}を正しく入力してください");
+		    	// 振替休日が当日の日付
+		    	} else if (StringUtils.equals(hurikaeDate, atendanceOnHoliday.getStrAtendanceDate())) {
+		    		errors.rejectValue("strAtendanceTimeStat", "E006", new Object[]{"振替休日"}, "{0}が当日の日付です");
+		    	}
+		    	
+		    } else {
+		    	if (!StringUtils.isEmpty(hurikaeDate)) {
+		    		errors.rejectValue("strHurikaeDate", "E007", new Object[]{"休日振替勤務","振替休日"}, "{0}以外のときは{1}は入力できません");
+		    	// 振替休日に日付以外が入力されている
+		    	}
+		    }
+	    }
+	   
 	    
 		
 	}
 		
-		// TODO DBに保存する		
-		
-	
 
 }

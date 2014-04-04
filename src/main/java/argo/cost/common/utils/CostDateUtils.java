@@ -20,6 +20,11 @@ import argo.cost.common.constant.CommonConstant;
 public class CostDateUtils extends DateUtils {
 
 	/**
+	 *　時刻フォーマットhhnn形式を表す文字列
+	 */
+	private static final String HHNN = "HH:mm";
+	
+	/**
 	 * 　数字を時間に変換する。
 	 * 
 	 * @param time
@@ -54,6 +59,28 @@ public class CostDateUtils extends DateUtils {
 
 		// 日付フォーマット
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		dateFormat.setLenient(false);
+		try {
+			// 日付変換
+			dateFormat.parse(date);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	/**
+	 * 時刻のフォマーとチェック：hhnn
+	 * 
+	 * @param time
+	 *            時刻
+	 * @return チェック結果
+	 * 			true:時刻は「hhnn」の時刻です
+	 * 			false:時刻は「hhnn」以外、または、時刻以外
+	 */
+	public static boolean isTimeHHnn(String date) {
+
+		// 日付フォーマット
+		SimpleDateFormat dateFormat = new SimpleDateFormat(HHNN);
 		dateFormat.setLenient(false);
 		try {
 			// 日付変換
@@ -217,4 +244,29 @@ public class CostDateUtils extends DateUtils {
 		String str2 = String.valueOf(cal.get(Calendar.MINUTE));
 		return CostStringUtils.addZeroForNum(str1, 2).concat( CostStringUtils.addZeroForNum(str2, 2));
 	}
+	
+
+	/**
+	 * 時と分を取得。 <BR>
+	 * 
+	 * @param time
+	 *            時刻
+	 * @return true:00,30
+	 * 		   false:以外
+	 */
+	public static boolean isHalfHour(String time) {
+		
+		try {
+			// 分を取得
+			String nn = time.substring(3);
+			if (StringUtils.equals("00", nn) || StringUtils.equals("30", nn)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 }

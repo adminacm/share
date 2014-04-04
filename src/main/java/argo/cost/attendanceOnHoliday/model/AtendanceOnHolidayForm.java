@@ -3,30 +3,64 @@ package argo.cost.attendanceOnHoliday.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 
+/**
+ * <p>
+ * 休日勤務画面フォーム情報クラス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 public class AtendanceOnHolidayForm extends AbstractForm implements Serializable {
 
 	/**
-	 * 繝代ず繝ｧ繝ｳID
+	 * パジョンID
 	 */
 	private static final long serialVersionUID = 1L;
-	// 譌･莉�
+	/**
+	 *　勤務日付
+	 */
 	private String strAtendanceDate;
-	// 蜍､蜍呎律蛹ｺ蛻�
+	/**
+	 *　勤務日付_表示
+	 */
+	private String strAtendanceDateShow;
+	/**
+	 *　勤務日区分リスト
+	 */
 	private List<ListItemVO> atendanceDayKbnList;
+	/**
+	 *　勤務日区分
+	 */
+	@NotBlank(message = "勤務日区分を選択してください")
 	private String selectedAtendanceDayKbn;
-	// 蜍､蜍咎幕蟋区凾髢�
+	/**
+	 *　勤務開始時間
+	 */
 	private String strAtendanceTimeStat;
-	// 蜍､蜍吝ｮ御ｺ�凾髢�
+	/**
+	 *　勤務終了時間
+	 */
 	private String strAtendanceTimeEnd;
-	// 謖ｯ譖ｿ譌･縲�
+	/**
+	 *　振替日
+	 */
 	private String strHurikaeDate;
-	// 繝励Ο繧ｸ繧ｧ繧ｯ繝医さ繝ｼ繝�
+	/**
+	 *　プロジェクト名リスト
+	 */
 	private List<ListItemVO> projCdList;
+	/**
+	 *　プロジェクト名区分
+	 */
 	private String selectedProjCd;
-	// 讌ｭ蜍吝�螳ｹ
+	/**
+	 *　業務内容
+	 */
 	private String strCommont;
 
 	public String getStrAtendanceDate() {
@@ -35,6 +69,14 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 
 	public void setStrAtendanceDate(String strAtendanceDate) {
 		this.strAtendanceDate = strAtendanceDate;
+	}
+
+	public String getStrAtendanceDateShow() {
+		return strAtendanceDateShow;
+	}
+
+	public void setStrAtendanceDateShow(String strAtendanceDateShow) {
+		this.strAtendanceDateShow = strAtendanceDateShow;
 	}
 
 	public String getStrAtendanceTimeStat() {

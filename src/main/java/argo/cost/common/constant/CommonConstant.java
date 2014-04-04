@@ -25,5 +25,10 @@ public class CommonConstant {
 	 *　YYYYMMDD形式を表す文字列
 	 */
 	public static final String YYYYMMDD_KANJI = "yyyy年MM月dd日";
+	
+	/**
+	 *　YYYYMMDD形式を表す文字列
+	 */
+	public static final String YYYY_MM_DD = "yyyy/MM/dd";
 
 }

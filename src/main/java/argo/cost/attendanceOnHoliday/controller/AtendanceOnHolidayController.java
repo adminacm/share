@@ -1,13 +1,10 @@
 package argo.cost.attendanceOnHoliday.controller;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +16,13 @@ import argo.cost.attendanceOnHoliday.service.AtendanceOnHolidayService;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 
+/**
+ * <p>
+ * 休日勤務画面業務クラス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Controller
 @RequestMapping(UrlConstant.URL_ATT_HOLIDAY)
 @SessionAttributes(types = {AtendanceOnHolidayForm.class})
@@ -79,12 +83,10 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * @return 休日勤務入力画面の初期化の情報
 	 */
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String save(
-			@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm atendanceOnHolidayInfo,
-			BindingResult result, Map<String, Object> map) {
+	public String save(@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm atendanceOnHolidayInfo,
+			BindingResult result) {
 
-		String strSaveMes = "";
-
+		// TODO 画面から全角文字の取得不正
 		// TODO チェック処理を呼ぶ
 		AtendanceOnHolidayCheck atendanceOnHolidayCheck = new AtendanceOnHolidayCheck();
 		atendanceOnHolidayCheck.validate(atendanceOnHolidayInfo, result);
@@ -119,19 +121,14 @@ public class AtendanceOnHolidayController extends AbstractController {
 			if ("1".equals(service.saveAtendanceOnHoliday(atendanceOnHoliday,
 					getSession().getUserInfo().getId()))) {
 
-				strSaveMes = " save OK";
-
-				map.put("strSaveMes", "save OK");
 				// TODO 保存失敗の場合、エラーメッセージを出力する、
+				// 勤怠入力画面へ遷移する
+				return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK 
+						+ "attDate=" + atendanceOnHolidayInfo.getStrAtendanceDate().replace("/", "");
 			} else {
 
-				strSaveMes = "save error";
-
-				map.put("strSaveMes", "save error");
+				return ATTENDANCE_HOLIDAY;
 			}
-
-			map.put("atendanceOnHoliday", atendanceOnHoliday);
-			return "atendanceOnHoliday";
 
 		} else {
 			return ATTENDANCE_HOLIDAY;
@@ -147,23 +144,22 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * @param map
 	 * @return 休日勤務入力画面の初期化の情報
 	 */
-	@RequestMapping("/delete/{strAtendanceDate}")
-	public String delete(
-			@PathVariable("strAtendanceDate") String strAtendanceDate) {
+	@RequestMapping(value = DELETE)
+	public String delete(@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm form) {
 
-		// TODO ユーザーIDを取得する
-		service.deleteAtendanceOnHoliday(strAtendanceDate, getSession()
-				.getUserInfo().getId());
+		// 勤務日付
+		String strAtendanceDate = form.getStrAtendanceDate();
 
 		// TODO 削除失敗する場合
-		if (1 == 1) {
+		if (service.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getUserId()) == 0) {
 			
+			System.out.println("勤務情報を削除失敗");
 			// TODO エラーメッセジーを設定し、表示する
-			return "attendanceInput";
+			return ATTENDANCE_HOLIDAY;
 		}
-		
+		System.out.println("削除成功する場合、勤怠入力画面に遷移する");
 		// 削除成功する場合、勤怠入力画面に遷移する
-		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + "attDate=" + strAtendanceDate;
+		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + "attDate=" + strAtendanceDate.replace("/", "");
 		
 
 	}
@@ -173,11 +169,11 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * 
 	 * @return 勤怠入力画面の初期化の情報
 	 */
-	@RequestMapping("/modoru")
-	public String returnToKintaiInput() {
+	@RequestMapping(value = BACK)
+	public String returnToKintaiInput(@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm form) {
 
 		// TODO 戻るボタンを押すと入力内容が破棄され、勤怠入力画面へ戻る
-		return "attendanceInput";
+		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + "attDate=" + form.getStrAtendanceDate().replace("/", "");
 
 	}
 

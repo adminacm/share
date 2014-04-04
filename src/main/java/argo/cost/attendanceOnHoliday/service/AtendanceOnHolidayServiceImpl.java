@@ -3,9 +3,9 @@ package argo.cost.attendanceOnHoliday.service;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import argo.cost.attendanceOnHoliday.dao.AtendanceOnHolidayDao;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
@@ -22,7 +22,8 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	// 勤務日区分のプルダウンリストを取得
 	@Override
 	public ArrayList<ListItemVO> getAtendanceDayKbnList() {
-		// TODO Auto-generated method stub
+		
+		// TODO 勤務日区分のプルダウンリストを取得
 		return atendanceOnHolidayDao.getAtendanceDayKbnList();
 	}
 
@@ -39,8 +40,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 */
 	@Override
 	public void setAtendanceOnHolidayInfo(AtendanceOnHolidayForm form, String date) throws ParseException {
-		
-		// TODO Auto-generated method stub
+
 		// 休日勤務データを取得する
 		AtendanceOnHolidayForm entity = atendanceOnHolidayDao
 				.atendanceOnHolidayDataGet(form.getUserId(), date);
@@ -48,7 +48,8 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 勤務日付
 		String attDate = CostDateUtils.formatDate(date, CommonConstant.YYYYMMDD_KANJI);
 		String weekday = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
-		form.setStrAtendanceDate(attDate.concat("(").concat(weekday).concat(")"));
+		form.setStrAtendanceDate(CostDateUtils.formatDate(date, CommonConstant.YYYY_MM_DD));
+		form.setStrAtendanceDateShow(attDate.concat("(").concat(weekday).concat(")"));
 		// 当然日付のデータが存在する場合
 		if (entity != null) {
 
@@ -71,32 +72,46 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		}
 	}
 
-	// 休日勤務入力画面の保存処理
+	/**
+	 * 休日勤務入力画面の保存処理
+	 * 
+	 * @param atendanceOnHoliday
+	 *            休日勤務画面情報
+	 * @param UserID
+	 *            ユーザーID
+	 *            
+	 * @return　saveFlg
+	 *            勤務情報データの保存結果フラグ
+	 */
+	@Override 
 	public String saveAtendanceOnHoliday(
 			AtendanceOnHolidayForm atendanceOnHoliday, String UserID) {
 
-		// TODO DBに保存する
-		// em.persist(atendanceOnHoliday);
-		return atendanceOnHolidayDao.saveAtendanceOnHoliday(atendanceOnHoliday,
-				UserID);
+		// TODO 勤務情報データDBに保存する
+		return atendanceOnHolidayDao.saveAtendanceOnHoliday(atendanceOnHoliday, UserID);
 	}
 
-	@Transactional
-	public String deleteAtendanceOnHoliday(String strAtendanceDate,
+	/**
+	 * 休日勤務入力画面の削除処理
+	 * 
+	 * @param strAtendanceDate
+	 *            休日勤務日付
+	 * @param UserID
+	 *            ユーザーID
+	 *            
+	 * @return　deleteFlg
+	 *            勤務情報データの保存結果フラグ
+	 */
+	@Override
+	public Integer deleteAtendanceOnHoliday(String strAtendanceDate,
 			String userID) {
 
-		// TODO DBで削除する
-		// AtendanceOnHoliday atendanceOnHoliday =
-		// em.find(AtendanceOnHoliday.class, strAtendanceDate);
-		AtendanceOnHolidayForm atendanceOnHoliday = new AtendanceOnHolidayForm();
-
-		if (null != atendanceOnHoliday) {
-			// em.remove(atendanceOnHoliday);
-			// return
-			// atendanceOnHolidayDao.deleteAtendanceOnHoliday(strAtendanceDate,userID);
-			return "1";
+		// TODO DBで当前の勤務データの日付対応したデータを削除する
+		// 仮:削除成功
+		if (StringUtils.equals("1", atendanceOnHolidayDao.deleteAtendanceOnHoliday(strAtendanceDate, userID))) {
+			return 1;
 		} else {
-			return "0";
+			return 0;
 		}
 
 	}

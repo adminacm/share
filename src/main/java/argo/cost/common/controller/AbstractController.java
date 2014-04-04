@@ -57,6 +57,14 @@ public abstract class AbstractController {
 	 * 保存
 	 */
 	public static final String SAVE = "/save";
+	/**
+	 * 削除
+	 */
+	public static final String DELETE = "/delete";
+	/**
+	 * 戻る
+	 */
+	public static final String BACK = "/back";
 
 	/**
 	 * セッション情報取得

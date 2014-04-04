@@ -26,6 +26,6 @@ public interface AtendanceOnHolidayService {
 	String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday,String UserID);
 	
 	// 休日勤務データ削除
-	String deleteAtendanceOnHoliday(String strAtendanceDate, String UserID);
+	Integer deleteAtendanceOnHoliday(String strAtendanceDate, String UserID);
 
 }
