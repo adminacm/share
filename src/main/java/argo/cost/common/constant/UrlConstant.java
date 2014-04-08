@@ -24,5 +24,10 @@ public class UrlConstant {
 	 */
 	public static final String URL_ATTENDANCE_INPUT = "/attendanceInput";
 
+	/**
+	 * 休暇管理画面
+	 */
+	public static final String URL_HOLIDAY_RECORD = "/holidayRecord";
+
 
 }

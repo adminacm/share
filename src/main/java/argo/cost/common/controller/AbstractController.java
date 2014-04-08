@@ -65,6 +65,11 @@ public abstract class AbstractController {
 	 * 戻る
 	 */
 	public static final String BACK = "/back";
+	/**
+	 * 検索
+	 */
+	public static final String SEARCH = "/search";
+	
 
 	/**
 	 * セッション情報取得

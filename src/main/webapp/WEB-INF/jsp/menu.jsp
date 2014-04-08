@@ -40,7 +40,7 @@
 	            	<ul>
 	            		<li style="margin-left:20px;"><a href="/menu/att">勤怠入力</a></li>
 	            		<li style="margin-left:20px;"><a href="/monthlyReport/init?newMonth=">月報</a></li>
-	            		<li style="margin-left:20px;"><a href="#">休暇管理</a></li>
+	            		<li style="margin-left:20px;"><a href="/holidayRecord/init">休暇管理</a></li>
 	            		<li style="margin-left:20px;"><a href="/atendanceOnHoliday/init">休日出勤管理</a></li>
 	            		<li style="margin-left:20px;"><a href="/setup/init">個人設定</a></li>
 	            		<li style="margin-left:20px;"><a href="/approvalList/init">承認一覧</a></li>

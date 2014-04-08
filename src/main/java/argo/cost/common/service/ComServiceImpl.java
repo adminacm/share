@@ -237,8 +237,8 @@ public class ComServiceImpl implements ComService {
 		cal.setTime(date);
 		cal.add(Calendar.YEAR, -cnt); 
 		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH);
-
+		int month = cal.get(Calendar.MONTH) + 1;
+		
 		// 現在年度の判定
 		if (month >= 1 && month <= 3) {
 			year = year - 1;
@@ -264,7 +264,7 @@ public class ComServiceImpl implements ComService {
 		cal.setTime(date);
 		
 		Locale locale = new Locale("ja", "JP", "JP");
-		DateFormat format = new SimpleDateFormat("GGGGyy年", locale);
+		DateFormat format = new SimpleDateFormat("GGGGyy年度", locale);
 		
 		return format.format(cal.getTime());
 	}
