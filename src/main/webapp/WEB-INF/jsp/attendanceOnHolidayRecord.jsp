@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>休暇管理</title>
+<title>休日出勤管理</title>
 
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,10 +24,6 @@
 	border-top-color: #0080FF;
 	border-top-style: dotted;
 	border-top-width: 3px
-}
-.tab1 {
-	margin-bottom: 1px;
-	float: left;
 }
 .resultStyle {
 	width: 800px;
@@ -67,10 +63,10 @@ function submitAction(action) {
 </script>
 </head>
 <body>
-	<form:form modelAttribute="holidayRecordInfo">
+	<form:form modelAttribute="attendanceOnHolidayRecordInfo">
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
-				<font size="5"><b>休暇管理</b></font>
+				<font size="5"><b>休日出勤管理</b></font>
 			</div>
 			<table>
 				<tr>
@@ -84,11 +80,17 @@ function submitAction(action) {
 								<td style="padding-left:25px;width:30px">年度</td>
 								<td style="width:130px">
 									<form:select path="yearPeriod" style="width:100%;border:2px solid #333333;" id="yearPeriod">
-										<form:options items="${holidayRecordInfo.yearPeriodList}" itemValue="value" itemLabel="name"/>
+										<form:options items="${attendanceOnHolidayRecordInfo.yearPeriodList}" itemValue="value" itemLabel="name"/>
 									</form:select>
 								</td>
-								<td style="width:100px">
-									<input type="button" value="表示切替" onclick="submitAction('/holidayRecord/search');" />
+								<td style="padding-left:25px;width:30px">氏名</td>
+								<td style="width:130px">
+									<form:select path="userName" style="width:100%;border:2px solid #333333;" id="userName">
+										<form:options items="${attendanceOnHolidayRecordInfo.userNameList}" itemValue="value" itemLabel="name"/>
+									</form:select>
+								</td>
+								<td style="width:100px;padding-left:100px;">
+									<input type="button" value="表示切替" onclick="submitAction('/attendanceOnHolidayRecord/search');" />
 								</td>
 								<td>&nbsp;</td>
 							</tr>
@@ -100,34 +102,26 @@ function submitAction(action) {
 				</tr>
 				<tr>
 					<td style="width: 10px">&nbsp;</td>
-					<td><b>有給休暇</b></td>
+					<td><b>休日振替勤務</b></td>
 				</tr>
 				<tr>
 					<td style="width: 10px">&nbsp;</td>
 					<td>
-						<table class="resultStyle" id="payHolidayList" style="margin-left:2px;width:440px">
+						<table class="resultStyle" id="holidayExchangeWorkList" style="margin-left:2px;width:200px">
 							<thead>
 								<tr class="headStyle">
 									<th>日付</th>
-									<th>休暇区分</th>
-									<th>日数</th>
-									<th>時間数</th>
+									<th>振替休日</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="payHoliday" items="${holidayRecordInfo.payHolidayList}">
+								<c:forEach var="holidayExchangeWork" items="${attendanceOnHolidayRecordInfo.holidayExchangeWorkList}">
 									<tr align="center">
 										<td style="width:100px">
-											${payHoliday.payHolidayDate}
+											<a href="submitAction('/attendanceOnHolidayRecordDetail/init?${holidayExchangeWork.holidayTurnedWorkingDate}');">${holidayExchangeWork.holidayTurnedWorkingDate}</a>
 										</td>
-										<td style="width:150px">
-											${payHoliday.holidayKbnName}
-										</td>
-										<td style="text-align:right;width:100px">
-											${payHoliday.dayQuantity}
-										</td>
-										<td style="text-align:right">
-											${payHoliday.hourQuantity}
+										<td>
+											${holidayExchangeWork.workingDayTurnedHolidayDate}
 										</td>
 									</tr>
 								</c:forEach>
@@ -137,59 +131,34 @@ function submitAction(action) {
 				</tr>
 				<tr>
 					<td style="width: 10px">&nbsp;</td>
-					<td><b>欠勤</b></td>
+					<td><b>休日勤務</b></td>
 				</tr>
 				<tr>
 					<td style="width: 10px">&nbsp;</td>
 					<td>
-						<table class="resultStyle" id="absenceList" style="margin-left:2px;width:300px ">
-							<thead>
-								<tr  class="headStyle">
-									<th>日付</th>
-									<th>日数</th>
-									<th>時間数</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="absenceInfo" items="${holidayRecordInfo.absenceList}">
-									<tr align="center">
-										<td style="width:100px">
-											${absenceInfo.absentDate}
-										</td>
-										<td style="text-align:right;width:100px">
-											${absenceInfo.dayQuantity}
-										</td>
-										<td style="text-align:right">
-											${absenceInfo.hourQuantity}
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td style="width: 10px">&nbsp;</td>
-					<td><b>特別休暇</b></td>
-				</tr>
-				<tr>
-					<td style="width: 10px">&nbsp;</td>
-					<td>
-						<table class="resultStyle" id="specialHolidayList" style="margin-left:2px;width:200px ">
+						<table class="resultStyle" id="holidayOverWorkList" style="margin-left:2px;width:450px ">
 							<thead>
 								<tr class="headStyle">
 									<th>日付</th>
-									<th>日数</th>
+									<th>代休期限</th>
+									<th>代休日</th>
+									<th>超勤振替申請日</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="specialHoliday" items="${holidayRecordInfo.specialHolidayList}">
+								<c:forEach var="holidayOverWork" items="${attendanceOnHolidayRecordInfo.holidayOverWorkList}">
 									<tr align="center">
 										<td style="width:100px">
-											${specialHoliday.specialHolidayDate}
+											<a href="submitAction('/attendanceOnHolidayRecordDetail/init?${holidayOverWork.holidayOverWorkDate}');">${holidayOverWork.holidayOverWorkDate}</a>
 										</td>
-										<td style="text-align:right">
-											${specialHoliday.dayQuantity}
+										<td style="width:100px">
+											${holidayOverWork.turnedHolidayEndDate}
+										</td>
+										<td style="width:100px">
+											${holidayOverWork.turnedHolidayDate}
+										</td>
+										<td>
+											${holidayOverWork.overWorkTurnedReqDate}
 										</td>
 									</tr>
 								</c:forEach>

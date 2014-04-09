@@ -24,6 +24,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 	 * @param form
 	 *            休暇管理画面情報
 	 */
+	@Override
 	public void searchHolidayRecord(HolidayRecordForm holidayRecordForm) {
 		String strYearPeriod =  holidayRecordForm.getYearPeriod();
 		// 有給休暇情報の取得

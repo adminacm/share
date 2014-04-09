@@ -15,6 +15,7 @@ public interface HolidayRecordDao {
 	 *            年度
 	 */
 	List<PayHolidayVO> searchPayHolidayList(String yearPeriod);
+	
 	/**
 	 * 欠勤情報取得
 	 * 
@@ -22,6 +23,7 @@ public interface HolidayRecordDao {
 	 *            年度
 	 */
 	List<AbsenceVO> searchAbsenceList(String yearPeriod);
+	
 	/**
 	 * 特別休暇情報取得
 	 * 
