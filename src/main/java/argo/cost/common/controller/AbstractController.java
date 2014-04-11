@@ -78,6 +78,10 @@ public abstract class AbstractController {
 	 * 超勤に振替える
 	 */
 	public static final String OVERWORK_EXCHANGE = "/overWorkExchange";
+	/**
+	 * 申請Ｎｏリンク
+	 */
+	public static final String APPLYNO_CLICK = "/applyNoClick";
 	
 	/**
 	 * セッション情報取得

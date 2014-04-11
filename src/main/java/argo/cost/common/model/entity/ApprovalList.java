@@ -12,6 +12,11 @@ public class ApprovalList {
 	// ** フィールド **
 	// ********************
 	/**
+	 * 申請番号
+	 */
+	private String applyNo;
+	
+	/**
 	 * 申請区分
 	 */
 	private String applyKbn;
@@ -44,6 +49,14 @@ public class ApprovalList {
 	// ************************
 	// ** アクセサメソッド　** 
 	// ************************
+
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
 	
 	public String getApplyKbn() {
 		return applyKbn;

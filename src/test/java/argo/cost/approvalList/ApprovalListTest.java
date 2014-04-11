@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import argo.cost.approvalList.model.ApprovalListInfo;
+import argo.cost.approvalList.model.ApprovalListVo;
 import argo.cost.approvalList.service.ApprovalListServiceImpl;
 import argo.cost.common.model.entity.ApprovalList;
 
@@ -52,7 +52,7 @@ public class ApprovalListTest {
 		String status = "01";
 		
 		// 承認一覧リスト取得
-		List<ApprovalListInfo> approvalList = appS.getApprovalList(status);
+		List<ApprovalListVo> approvalList = appS.getApprovalList(status);
 		
 		// 承認一覧リストのサイズ
 		assertEquals(approvalList.size(), 2);

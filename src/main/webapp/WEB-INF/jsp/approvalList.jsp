@@ -94,10 +94,6 @@ function submitAction(action) {
 				</tr>
 				<tr>
 					<td style="width: 10px">&nbsp;</td>
-					<td><b>有給休暇</b></td>
-				</tr>
-				<tr>
-					<td style="width: 10px">&nbsp;</td>
 					<td>
 						<table class="resultStyle" id="payHolidayList" style="margin-left:2px;">
 							<thead>
@@ -114,7 +110,7 @@ function submitAction(action) {
 								<c:forEach var="approval" items="${approvalListForm.approvalList}">
 									<tr>
 										<td align="center">
-											<a href="submitAction('/approvalList/noClick?${approval.no}&${approval.applyKbn}');">${approval.no}</a>
+											<a href="submitAction('/approvalList/applyNoClick?${approval.applyNo}&${approval.applyKbn}');">${approval.applyNo}</a>
 										</td>
 										<td>
 											${approval.applyKbn}

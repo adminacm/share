@@ -2,7 +2,7 @@ package argo.cost.approvalList.service;
 
 import java.util.List;
 
-import argo.cost.approvalList.model.ApprovalListInfo;
+import argo.cost.approvalList.model.ApprovalListVo;
 
 /**
  * <p>
@@ -20,6 +20,6 @@ public interface ApprovalListService {
 	 *           状況
 	 * @return 承認リスト
 	 */
-	List<ApprovalListInfo> getApprovalList(String status);
+	List<ApprovalListVo> getApprovalList(String status);
 
 }

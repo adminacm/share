@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.approvalList.dao.ApprovalListDao;
-import argo.cost.approvalList.model.ApprovalListInfo;
+import argo.cost.approvalList.model.ApprovalListVo;
 import argo.cost.common.model.entity.ApprovalList;
 
-/**
- * {@inheritDoc}
- */
 @Service
 public class ApprovalListServiceImpl implements ApprovalListService {
 
@@ -20,7 +17,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 * 承認一覧DAO
 	 */	
 	@Autowired
-	ApprovalListDao appDao;
+	private ApprovalListDao appDao;
 
 	/**
 	 * 承認一覧リストを取得
@@ -30,10 +27,10 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 * @return 承認リスト
 	 */
 	@Override
-	public List<ApprovalListInfo> getApprovalList(String status) {
+	public List<ApprovalListVo> getApprovalList(String status) {
 		
 		// 承認一覧リスト
-		List<ApprovalListInfo> appList = new ArrayList<ApprovalListInfo>();
+		List<ApprovalListVo> appList = new ArrayList<ApprovalListVo>();
 		
 		// ＤＢから、承認一覧リストを取得
 		List<ApprovalList> appEList = appDao.getApprovalList(status);
@@ -42,9 +39,9 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 		if (appEList != null && appEList.size() > 0) {
 			for (int i = 0; i < appEList.size(); i++) {
 				ApprovalList approval = appEList.get(i);
-				ApprovalListInfo appInfo = new ApprovalListInfo();
+				ApprovalListVo appInfo = new ApprovalListVo();
 				// No.
-				appInfo.setNo(String.valueOf(i+1));
+				appInfo.setApplyNo(approval.getApplyNo());
 				// 申請区分
 				appInfo.setApplyKbn(approval.getApplyKbn());
 				// 申請内容

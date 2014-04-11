@@ -38,6 +38,11 @@ public class UrlConstant {
 	 * 休暇管詳細画面
 	 */
 	public static final String URL_ATTENDANCE_ONHOLIDAY_RECORD_DETAIL = "/attendanceOnHolidayRecordDetail";
+	
+	/**
+	 * 承認一覧画面
+	 */
+	public static final String URL_APPROVALLIST = "/approvalList";
 
 
 }

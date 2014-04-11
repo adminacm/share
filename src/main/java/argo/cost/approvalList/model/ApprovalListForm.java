@@ -1,20 +1,27 @@
 package argo.cost.approvalList.model;
 
+import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 
 /**
  * <p>
- * 承認一覧画面情報を記載します。
+ * 承認一覧画面フォーム情報クラス
  * </p>
  *
  */
-public class ApprovalListForm {
+public class ApprovalListForm extends AbstractForm implements Serializable {
 	
 	// ********************
 	// ** フィールド **
 	// ********************
+	/**
+	 * パジョンID
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * 状況
 	 */
@@ -28,7 +35,7 @@ public class ApprovalListForm {
 	/**
 	 * 承認リスト
 	 */
-	private List<ApprovalListInfo> approvalList;
+	private List<ApprovalListVo> approvalList;
 	
 	// ************************
 	// ** アクセサメソッド　** 
@@ -64,14 +71,14 @@ public class ApprovalListForm {
 	/**
 	 * 承認リストを取得する
 	 */
-	public List<ApprovalListInfo> getApprovalList() {
+	public List<ApprovalListVo> getApprovalList() {
 		return approvalList;
 	}
 
 	/**
 	 * 承認リストを設定する
 	 */
-	public void setApprovalList(List<ApprovalListInfo> approvalList) {
+	public void setApprovalList(List<ApprovalListVo> approvalList) {
 		this.approvalList = approvalList;
 	}
 	

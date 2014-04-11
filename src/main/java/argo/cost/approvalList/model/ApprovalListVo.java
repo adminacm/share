@@ -6,15 +6,15 @@ package argo.cost.approvalList.model;
  * </p>
  *
  */
-public class ApprovalListInfo {
+public class ApprovalListVo {
 	
 	// ********************
 	// ** フィールド **
 	// ********************
 	/**
-	 * No.
+	 * 申請No.
 	 */
-	private String no;
+	private String applyNo;
 	
 	/**
 	 * 申請区分
@@ -44,12 +44,12 @@ public class ApprovalListInfo {
 	// ************************
 	// ** アクセサメソッド　** 
 	// ************************
-	public String getNo() {
-		return no;
+	public String getApplyNo() {
+		return applyNo;
 	}
 
-	public void setNo(String no) {
-		this.no = no;
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
 	}
 
 	public String getApplyKbn() {
