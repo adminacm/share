@@ -33,6 +33,11 @@ public class UrlConstant {
 	 * 休暇管理画面
 	 */
 	public static final String URL_ATTENDANCE_ONHOLIDAY_RECORD = "/attendanceOnHolidayRecord";
+	
+	/**
+	 * 休暇管詳細画面
+	 */
+	public static final String URL_ATTENDANCE_ONHOLIDAY_RECORD_DETAIL = "/attendanceOnHolidayRecordDetail";
 
 
 }

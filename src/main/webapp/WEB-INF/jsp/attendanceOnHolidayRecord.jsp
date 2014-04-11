@@ -118,7 +118,7 @@ function submitAction(action) {
 								<c:forEach var="holidayExchangeWork" items="${attendanceOnHolidayRecordInfo.holidayExchangeWorkList}">
 									<tr align="center">
 										<td style="width:100px">
-											<a href="submitAction('/attendanceOnHolidayRecordDetail/init?${holidayExchangeWork.holidayTurnedWorkingDate}');">${holidayExchangeWork.holidayTurnedWorkingDate}</a>
+											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayExchangeWork.holidayTurnedWorkingDate}&workKbn=03">${holidayExchangeWork.holidayTurnedWorkingDate}</a>
 										</td>
 										<td>
 											${holidayExchangeWork.workingDayTurnedHolidayDate}
@@ -149,7 +149,7 @@ function submitAction(action) {
 								<c:forEach var="holidayOverWork" items="${attendanceOnHolidayRecordInfo.holidayOverWorkList}">
 									<tr align="center">
 										<td style="width:100px">
-											<a href="submitAction('/attendanceOnHolidayRecordDetail/init?${holidayOverWork.holidayOverWorkDate}');">${holidayOverWork.holidayOverWorkDate}</a>
+											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayOverWork.holidayOverWorkDate}&workKbn=01">${holidayOverWork.holidayOverWorkDate}</a>
 										</td>
 										<td style="width:100px">
 											${holidayOverWork.turnedHolidayEndDate}

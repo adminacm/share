@@ -22,10 +22,10 @@ public class AttendanceOnHolidayRecordTest extends AbstractTransactionalJUnit4Sp
 	AttendanceOnHolidayRecordServiceImpl serviceImpl;
 
 	/**
-	 * 休暇管理情報取得をテスト
+	 * 休日出勤管理情報取得をテスト
 	 */
 	@Test
-	public void testGetHolidayRecord() {
+	public void testAttendanceOnHolidayRecord() {
 		
 		AttendanceOnHolidayRecordForm form = new AttendanceOnHolidayRecordForm();
 		

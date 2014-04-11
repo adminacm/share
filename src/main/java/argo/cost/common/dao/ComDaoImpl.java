@@ -115,4 +115,32 @@ public class ComDaoImpl implements ComDao {
 		}
 		return userkg;
 	}
+
+	/**
+	 * 勤務区分名を取得
+	 * 
+	 * @param workKbn
+	 *               勤務区分ＩＤ
+	 * @return
+	 *        勤務区分名
+	 */
+	@Override
+	public String findWorkKbnName(String workKbn) {
+
+		String workKbnName = "";
+		if ("01".equals(workKbn)) {
+
+			workKbnName = "出勤";
+		} else if ("02".equals(workKbn)) {
+
+			workKbnName = "休日";
+		} else if ("03".equals(workKbn)) {
+
+			workKbnName = "休日振替勤務";
+		} else if ("04".equals(workKbn)) {
+
+			workKbnName = "振替休日";
+		} 
+		return workKbnName;
+	}
 }

@@ -51,4 +51,14 @@ public interface ComDao {
 	 * @return ユーザ権限情報
 	 */
 	UserKengen findUserKengenById(String userId);
+
+	/**
+	 * 勤務区分名を取得
+	 * 
+	 * @param workKbn
+	 *               勤務区分ＩＤ
+	 * @return
+	 *        勤務区分名
+	 */
+	String findWorkKbnName(String workKbn);
 }

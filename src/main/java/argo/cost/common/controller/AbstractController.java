@@ -32,6 +32,11 @@ public abstract class AbstractController {
 	 *　疑問符
 	 */
 	public static final String QUESTION_MARK = "?";
+	
+	/**
+	 *　且つ符
+	 */
+	public static final String AND_MARK = "&";
 
 	/**
 	 *　勤怠日付
@@ -69,8 +74,11 @@ public abstract class AbstractController {
 	 * 検索
 	 */
 	public static final String SEARCH = "/search";
+	/**
+	 * 超勤に振替える
+	 */
+	public static final String OVERWORK_EXCHANGE = "/overWorkExchange";
 	
-
 	/**
 	 * セッション情報取得
 	 *
