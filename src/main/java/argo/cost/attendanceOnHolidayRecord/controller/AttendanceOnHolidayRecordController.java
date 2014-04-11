@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.attendanceOnHolidayRecord.model.AttendanceOnHolidayRecordForm;
@@ -31,11 +32,6 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	 */
 	@Autowired
 	protected AttendanceOnHolidayRecordService recordService;
-
-	/**
-	 * 休日出勤管理情報
-	 */
-	private static final String ATTENDANCE_ONHOLIDAY_RECORD_INFO = "attendanceOnHolidayRecordInfo";
 
 	/**
 	 * 休日出勤管理画面URL
@@ -70,7 +66,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		// 画面情報を設定する。
 		recordService.searchAttendanceOnHolidayRecord(form);
 		
-		model.addAttribute(ATTENDANCE_ONHOLIDAY_RECORD_INFO, form);
+		model.addAttribute(form);
 
 		return ATTENDANCE_ONHOLIDAY_RECORD;
 
@@ -83,7 +79,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	 *            休日出勤管理画面情報
 	 * @return 休日出勤管理画面
 	 */
-	@RequestMapping(value = SEARCH)
+	@RequestMapping(value = SEARCH, method = RequestMethod.POST)
 	public String searchAttendanceOnHolidayRecord(AttendanceOnHolidayRecordForm form) {
 		
 		// 画面情報を設定する。

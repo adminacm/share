@@ -63,7 +63,7 @@ function submitAction(action) {
 </script>
 </head>
 <body>
-	<form:form modelAttribute="attendanceOnHolidayRecordInfo">
+	<form:form modelAttribute="attendanceOnHolidayRecordForm">
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
 				<font size="5"><b>休日出勤管理</b></font>
@@ -80,13 +80,13 @@ function submitAction(action) {
 								<td style="padding-left:25px;width:30px">年度</td>
 								<td style="width:130px">
 									<form:select path="yearPeriod" style="width:100%;border:2px solid #333333;" id="yearPeriod">
-										<form:options items="${attendanceOnHolidayRecordInfo.yearPeriodList}" itemValue="value" itemLabel="name"/>
+										<form:options items="${attendanceOnHolidayRecordForm.yearPeriodList}" itemValue="value" itemLabel="name"/>
 									</form:select>
 								</td>
 								<td style="padding-left:25px;width:30px">氏名</td>
 								<td style="width:130px">
 									<form:select path="userName" style="width:100%;border:2px solid #333333;" id="userName">
-										<form:options items="${attendanceOnHolidayRecordInfo.userNameList}" itemValue="value" itemLabel="name"/>
+										<form:options items="${attendanceOnHolidayRecordForm.userNameList}" itemValue="value" itemLabel="name"/>
 									</form:select>
 								</td>
 								<td style="width:100px;padding-left:100px;">
@@ -115,7 +115,7 @@ function submitAction(action) {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="holidayExchangeWork" items="${attendanceOnHolidayRecordInfo.holidayExchangeWorkList}">
+								<c:forEach var="holidayExchangeWork" items="${attendanceOnHolidayRecordForm.holidayExchangeWorkList}">
 									<tr align="center">
 										<td style="width:100px">
 											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayExchangeWork.holidayTurnedWorkingDate}&workKbn=03">${holidayExchangeWork.holidayTurnedWorkingDate}</a>
@@ -146,7 +146,7 @@ function submitAction(action) {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="holidayOverWork" items="${attendanceOnHolidayRecordInfo.holidayOverWorkList}">
+								<c:forEach var="holidayOverWork" items="${attendanceOnHolidayRecordForm.holidayOverWorkList}">
 									<tr align="center">
 										<td style="width:100px">
 											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayOverWork.holidayOverWorkDate}&workKbn=01">${holidayOverWork.holidayOverWorkDate}</a>
