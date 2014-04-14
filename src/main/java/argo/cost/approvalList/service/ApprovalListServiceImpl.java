@@ -49,8 +49,10 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 				ApprovalListVo appInfo = new ApprovalListVo();
 				// No.
 				appInfo.setApplyNo(approval.getApplyNo());
-				// 申請区分
-				appInfo.setApplyKbn(approval.getApplyKbn());
+				// 申請区分コード
+				appInfo.setApplyKbnCd(approval.getApplyKbn());
+				// 申請区分名
+				appInfo.setApplyKbnName(appDao.findApplyKbnName(approval.getApplyKbn()));
 				// 申請内容
 				appInfo.setApplyDetail(approval.getApplyDetail());
 				// 状況

@@ -19,7 +19,12 @@ public class ApprovalListVo {
 	/**
 	 * 申請区分
 	 */
-	private String applyKbn;
+	private String applyKbnCd;
+	
+	/**
+	 * 申請区分表示名
+	 */
+	private String applyKbnName;
 	
 	/**
 	 * 申請内容
@@ -52,12 +57,20 @@ public class ApprovalListVo {
 		this.applyNo = applyNo;
 	}
 
-	public String getApplyKbn() {
-		return applyKbn;
+	public String getApplyKbnCd() {
+		return applyKbnCd;
 	}
 
-	public void setApplyKbn(String applyKbn) {
-		this.applyKbn = applyKbn;
+	public void setApplyKbnCd(String applyKbnCd) {
+		this.applyKbnCd = applyKbnCd;
+	}
+
+	public String getApplyKbnName() {
+		return applyKbnName;
+	}
+
+	public void setApplyKbnName(String applyKbnName) {
+		this.applyKbnName = applyKbnName;
 	}
 
 	public String getApplyDetail() {

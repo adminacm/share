@@ -62,6 +62,12 @@ public class MonthlyReportApprovalController extends AbstractController {
 		
 		// 月報承認画面情報初期化
 		MonthlyReportApprovalForm form = initForm(MonthlyReportApprovalForm.class);
+		
+		// 処理状況を取得
+		String status = service.getStatus(applyNo);
+		
+		// 処理状況設定
+		form.setProStatus(status);
 
 		// 月報承認データを取得
 		List<MonthlyReportApprovalVo> monthlyReportApprovalList = service.getMonthReportList(applyNo);
