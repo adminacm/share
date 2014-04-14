@@ -44,5 +44,11 @@ public class UrlConstant {
 	 */
 	public static final String URL_APPROVALLIST = "/approvalList";
 
+	/**
+	 * 月報承認画面
+	 */
+	public static final String URL_MONTHLYREPORT_APPROVAL = "/monthlyReportApproval";
+	
+
 
 }

@@ -70,25 +70,5 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		
 		return appList;
 	}
-	
-	/**
-	 * 状況表示名を取得
-	 * 
-	 * @param status
-	 *           状況
-	 * @return 状況表示名
-	 */
-	@Override
-	public String getStatusName(String status) {
-		
-		// TODO 仮の値を与える
-		if ("02".equals(status)) {
-
-			return "提出";
-		} else {
-			
-			return "申請";
-		}
-	}
 
 }

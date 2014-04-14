@@ -143,4 +143,37 @@ public class ComDaoImpl implements ComDao {
 		} 
 		return workKbnName;
 	}
+	
+	/**
+	 * 状況表示名を取得
+	 * 
+	 * @param status
+	 *           状況
+	 * @return 状況表示名
+	 */
+	@Override
+	public String findStatusName(String status) {
+		
+		// TODO 仮の値を与える
+		String statusName = "";
+		if ("01".equals(status)) {
+
+			statusName = "作成中";
+		} else if ("02".equals(status)) {
+
+			statusName = "提出";
+		} else if ("03".equals(status)) {
+
+			statusName = "承認";
+		} else if ("04".equals(status)) {
+
+			statusName = "差戻";
+		} else if ("05".equals(status)) {
+
+			statusName = "処理済";
+		}
+		
+		return statusName;
+
+	}
 }

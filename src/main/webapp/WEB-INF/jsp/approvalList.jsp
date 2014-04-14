@@ -110,7 +110,7 @@ function submitAction(action) {
 								<c:forEach var="approval" items="${approvalListForm.approvalList}">
 									<tr>
 										<td align="center">
-											<a href="submitAction('/approvalList/applyNoClick?${approval.applyNo}&${approval.applyKbn}');">${approval.applyNo}</a>
+											<a href="/approvalList/applyNoClick?applyNo=${approval.applyNo}&applyKbnCd=02">${approval.applyNo}</a>
 										</td>
 										<td>
 											${approval.applyKbn}
@@ -131,6 +131,7 @@ function submitAction(action) {
 								</c:forEach>
 							</tbody>
 						</table>
+						
 					</td>
 				</tr>
 			</table>

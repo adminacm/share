@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import argo.cost.approvalList.dao.ApprovalListDao;
 import argo.cost.approvalList.model.ApprovalListVo;
+import argo.cost.common.dao.ComDao;
 import argo.cost.common.model.entity.ApprovalList;
 
 @Service
@@ -18,6 +19,12 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 */	
 	@Autowired
 	private ApprovalListDao appDao;
+	
+	/**
+	 * 共通DAO
+	 */	
+	@Autowired
+	private ComDao comDao;
 
 	/**
 	 * 承認一覧リストを取得
@@ -47,7 +54,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 				// 申請内容
 				appInfo.setApplyDetail(approval.getApplyDetail());
 				// 状況
-				String statusName = appDao.getStatusName(approval.getStatus());
+				String statusName = comDao.findStatusName(approval.getStatus());
 				appInfo.setStatus(statusName);
 				// 所属
 				appInfo.setAffiliation(approval.getAffiliation());

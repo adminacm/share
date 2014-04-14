@@ -61,4 +61,13 @@ public interface ComDao {
 	 *        勤務区分名
 	 */
 	String findWorkKbnName(String workKbn);
+
+	/**
+	 * 状況表示名を取得
+	 * 
+	 * @param status
+	 *           状況
+	 * @return 状況表示名
+	 */
+	String findStatusName(String status);
 }

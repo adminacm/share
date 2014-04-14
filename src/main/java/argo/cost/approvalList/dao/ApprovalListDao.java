@@ -21,13 +21,4 @@ public interface ApprovalListDao {
 	 * @return 承認リスト
 	 */
 	List<ApprovalList> getApprovalList(String status);
-
-	/**
-	 * 状況表示名を取得
-	 * 
-	 * @param status
-	 *           状況
-	 * @return 状況表示名
-	 */
-	String getStatusName(String status);
 }
