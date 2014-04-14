@@ -55,14 +55,14 @@ public class ApprovalListTest {
 		List<ApprovalListVo> approvalList = appS.getApprovalList(status);
 		
 		// 承認一覧リストのサイズ
-		assertEquals(approvalList.size(), 2);
-		assertEquals(approvalList.get(0).getApplyKbn(), appList.get(0).getApplyKbn());
+		assertEquals(approvalList.size(), 4);
+		assertEquals(approvalList.get(0).getApplyKbnName(), appList.get(0).getApplyKbn());
 		assertEquals(approvalList.get(0).getApplyDetail(), appList.get(0).getApplyDetail());
 		assertEquals(approvalList.get(0).getStatus(), appList.get(0).getStatus());
 		assertEquals(approvalList.get(0).getAffiliation(), appList.get(0).getAffiliation());
 		assertEquals(approvalList.get(0).getName(), appList.get(0).getName());
 		
-		assertEquals(approvalList.get(1).getApplyKbn(), appList.get(1).getApplyKbn());
+		assertEquals(approvalList.get(1).getApplyKbnName(), appList.get(1).getApplyKbn());
 		assertEquals(approvalList.get(1).getApplyDetail(), appList.get(1).getApplyDetail());
 		assertEquals(approvalList.get(1).getStatus(), appList.get(1).getStatus());
 		assertEquals(approvalList.get(1).getAffiliation(), appList.get(1).getAffiliation());
