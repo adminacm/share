@@ -94,9 +94,10 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	@Override
 	public String updateProStatus(String applyNo, String proStatus) {
 
-		// プロジェクト情報を取得
+		// 更新実行
 		String updateFlg = monApprovalDao.updateProStatus(applyNo, proStatus);
 		
+		// 更新フラグ
 		return updateFlg;
 	}
 }

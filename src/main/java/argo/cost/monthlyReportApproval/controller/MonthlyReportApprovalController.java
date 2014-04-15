@@ -47,13 +47,12 @@ public class MonthlyReportApprovalController extends AbstractController {
 	/**
 	 * 月報承認画面の初期化処理
 	 * 
-	 * @param map
-	 *            画面情報マープ
-	 * @param userId
-	 *            ユーザID
-	 * @param date
-	 *            勤怠入力画面から渡した休日の日付
-	 * @return 月報承認画面の初期化の情報
+	 * @param model
+	 *            画面情報モデル
+	 * @param applyNo
+	 *            申請番号
+	 * @return 
+	 *        月報承認画面の初期化の情報
 	 * 
 	 * @throws Exception 
 	 */
@@ -105,7 +104,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		String updateFlg = service.updateProStatus(form.getApplyNo(), proStatus);
 		
 		if ("1".equals(updateFlg)) {
-			System.out.print("申請状況が承認に更新しました");
+			System.out.print("月報承認画面申請状況が承認に更新しました");
 		}
 
 		// 承認一覧画面へ遷移する
@@ -128,7 +127,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		String updateFlg = service.updateProStatus(form.getApplyNo(), proStatus);
 		
 		if ("1".equals(updateFlg)) {
-			System.out.print("申請状況が差戻に更新しました");
+			System.out.print("月報承認画面申請状況が差戻に更新しました");
 		}
 		
 		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する

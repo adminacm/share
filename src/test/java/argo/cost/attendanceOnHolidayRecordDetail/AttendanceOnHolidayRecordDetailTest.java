@@ -17,7 +17,7 @@ import argo.cost.attendanceOnHolidayRecordDetail.service.AttendanceOnHolidayReco
 @ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
 public class AttendanceOnHolidayRecordDetailTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
-	// 休暇管理
+	// 休日出勤管理詳細
 	@Resource
 	AttendanceOnHolidayRecordDetailServiceImpl serviceImpl;
 
@@ -25,7 +25,7 @@ public class AttendanceOnHolidayRecordDetailTest extends AbstractTransactionalJU
 	 * 休日出勤管理詳細取得をテスト１
 	 */
 	@Test
-	public void testAttendanceOnHolidayRecordDetail1() {
+	public void testgetAttendanceOnHolidayRecordDetail1() {
 		
 		// ユーザＩＤ
 		String userId = "067";
@@ -57,7 +57,7 @@ public class AttendanceOnHolidayRecordDetailTest extends AbstractTransactionalJU
 	 * 休日出勤管理詳細取得をテスト２
 	 */
 	@Test
-	public void testAttendanceOnHolidayRecordDetail2() {
+	public void testgetAttendanceOnHolidayRecordDetail2() {
 		
 		// ユーザＩＤ
 		String userId = "067";
@@ -89,7 +89,7 @@ public class AttendanceOnHolidayRecordDetailTest extends AbstractTransactionalJU
 	 * 休日出勤管理詳細取得をテスト３
 	 */
 	@Test
-	public void testAttendanceOnHolidayRecordDetail3() {
+	public void testgetAttendanceOnHolidayRecordDetail3() {
 		
 		// ユーザＩＤ
 		String userId = "067";
@@ -123,7 +123,7 @@ public class AttendanceOnHolidayRecordDetailTest extends AbstractTransactionalJU
 	 * 休日出勤管理詳細取得をテスト４
 	 */
 	@Test
-	public void testAttendanceOnHolidayRecordDetail4() {
+	public void testgetAttendanceOnHolidayRecordDetail4() {
 		
 		// ユーザＩＤ
 		String userId = "067";

@@ -9,7 +9,9 @@ import argo.cost.common.dao.ComDao;
 @Repository
 public class AttendanceOnHolidayRecordDetailDaoImpl implements AttendanceOnHolidayRecordDetailDao {
 
-	
+	/**
+	 * 共通DAO
+	 */
 	@Autowired
 	private ComDao comDao;
 	

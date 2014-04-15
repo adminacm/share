@@ -108,7 +108,7 @@ public class ApprovalListController extends AbstractController  {
     	} else if ("2".equals(applyKbnCd)) {
 
         	// 超勤振替申請承認詳細画面
-    		str = "";
+    		str = REDIRECT + UrlConstant.URL_HOLIDAYFOROVERTIME_APPROVAL + INIT + QUESTION_MARK + "applyNo=" + applyNo;
     	}
     	
     	// 画面へ遷移

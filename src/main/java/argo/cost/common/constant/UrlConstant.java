@@ -48,7 +48,10 @@ public class UrlConstant {
 	 * 月報承認画面
 	 */
 	public static final String URL_MONTHLYREPORT_APPROVAL = "/monthlyReportApproval";
-	
 
+	/**
+	 * 超勤振替申請承認画面
+	 */
+	public static final String URL_HOLIDAYFOROVERTIME_APPROVAL = "/holidayForOvertimeApproval";
 
 }
