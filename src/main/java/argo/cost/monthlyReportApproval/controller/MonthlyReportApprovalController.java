@@ -73,7 +73,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		form.setProStatus(status);
 
 		// 月報承認データを取得
-		List<MonthlyReportApprovalVo> monthlyReportApprovalList = service.getMonthReportList(applyNo);
+		List<MonthlyReportApprovalVo> monthlyReportApprovalList = service.getMonReApprovalList(applyNo);
 		
 		// 月報承認リスト設定
 		form.setMonthlyReportApprovalList(monthlyReportApprovalList);

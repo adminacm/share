@@ -46,96 +46,96 @@ public class MonthlyReportApprovalTest {
 		
 		// 申請番号(主なキー)
 	    String applyNo = "user01120140300";
-		List<MonthlyReportApprovalVo> monthReportList = serviceImpl.getMonthReportList(applyNo);
+		List<MonthlyReportApprovalVo> resultList = serviceImpl.getMonReApprovalList(applyNo);
 		
-		assertEquals(monthReportList.size(), 4);
+		assertEquals(resultList.size(), 31);
 		// 日付(表示用)
-		assertEquals(monthReportList.get(0).getDay(), "01");
+		assertEquals(resultList.get(0).getDay(), "01");
 		// 曜日
-        assertEquals(monthReportList.get(0).getWeek(), "水");
+        assertEquals(resultList.get(0).getWeek(), "水");
         // 勤務区分名
-        assertEquals(monthReportList.get(0).getWorkKbnName(), "出勤日");
+        assertEquals(resultList.get(0).getWorkKbnName(), "出勤日");
         // ｼﾌﾄ
-        assertEquals(monthReportList.get(0).getShift(), "0900");
+        assertEquals(resultList.get(0).getShift(), "0900");
         // 出勤
-        assertEquals(monthReportList.get(0).getWorkSTime(), "10:00");
+        assertEquals(resultList.get(0).getWorkSTime(), "10:00");
         // 退勤
-        assertEquals(monthReportList.get(0).getWorkETime(), "20:30");
+        assertEquals(resultList.get(0).getWorkETime(), "20:30");
         // 休暇欠勤区分名
-        assertEquals(monthReportList.get(0).getRestKbnName(), "時間休(有給休暇)	");
+        assertEquals(resultList.get(0).getRestKbnName(), "時間休(有給休暇)	");
         // 勤務時間数
-        assertEquals(monthReportList.get(0).getWorkHours(), Double.valueOf(9.0));
+        assertEquals(resultList.get(0).getWorkHours(), Double.valueOf(9.0));
         // 超勤開始
-        assertEquals(monthReportList.get(0).getChoSTime(), "18:00");
+        assertEquals(resultList.get(0).getChoSTime(), "18:00");
         // 超勤終了
-        assertEquals(monthReportList.get(0).getChoETime(), "20:30");
+        assertEquals(resultList.get(0).getChoETime(), "20:30");
         // 超勤平増
-        assertEquals(monthReportList.get(0).getChoWeekday(),  Double.valueOf(1.5));
+        assertEquals(resultList.get(0).getChoWeekday(),  Double.valueOf(1.5));
         // 超勤平常
-        assertEquals(monthReportList.get(0).getChoWeekdayNomal(),  Double.valueOf(1.0));
+        assertEquals(resultList.get(0).getChoWeekdayNomal(),  Double.valueOf(1.0));
 
 		// 日付(表示用)
-        assertEquals(monthReportList.get(1).getDay(), "02");
+        assertEquals(resultList.get(1).getDay(), "02");
 		// 曜日
-		assertEquals(monthReportList.get(1).getWeek(), "木");
+		assertEquals(resultList.get(1).getWeek(), "木");
         // 勤務区分名
-		assertEquals(monthReportList.get(1).getWorkKbnName(), "出勤日");
+		assertEquals(resultList.get(1).getWorkKbnName(), "出勤日");
         // ｼﾌﾄ
-		assertEquals(monthReportList.get(1).getShift(), "0800");
+		assertEquals(resultList.get(1).getShift(), "0800");
         // 出勤
-		assertEquals(monthReportList.get(1).getWorkSTime(), "09:00");
+		assertEquals(resultList.get(1).getWorkSTime(), "09:00");
         // 退勤
-		assertEquals(monthReportList.get(1).getWorkETime(), "16:30");
+		assertEquals(resultList.get(1).getWorkETime(), "16:30");
         // 勤務時間数
-		assertEquals(monthReportList.get(1).getWorkHours(), Double.valueOf(6.5));
+		assertEquals(resultList.get(1).getWorkHours(), Double.valueOf(6.5));
 
 		// 日付(表示用)
-		assertEquals(monthReportList.get(2).getDay(), "03");
+		assertEquals(resultList.get(2).getDay(), "03");
 		// 曜日
-		assertEquals(monthReportList.get(2).getWeek(), "金");
+		assertEquals(resultList.get(2).getWeek(), "金");
         // 勤務区分名
-		assertEquals(monthReportList.get(2).getWorkKbnName(), "出勤日");
+		assertEquals(resultList.get(2).getWorkKbnName(), "出勤日");
         // ｼﾌﾄ
-		assertEquals(monthReportList.get(2).getShift(), "0900");
+		assertEquals(resultList.get(2).getShift(), "0900");
         // 出勤
-		assertEquals(monthReportList.get(2).getWorkSTime(), "09:00");
+		assertEquals(resultList.get(2).getWorkSTime(), "09:00");
         // 退勤
-		assertEquals(monthReportList.get(2).getWorkETime(), "19:00");
+		assertEquals(resultList.get(2).getWorkETime(), "19:00");
         // 勤務時間数
-		assertEquals(monthReportList.get(2).getWorkHours(), Double.valueOf(8.5));
+		assertEquals(resultList.get(2).getWorkHours(), Double.valueOf(8.5));
         // 超勤開始
-		assertEquals(monthReportList.get(2).getChoSTime(), "18:00");
+		assertEquals(resultList.get(2).getChoSTime(), "18:00");
         // 超勤終了
-		assertEquals(monthReportList.get(2).getChoETime(), "19:00");
+		assertEquals(resultList.get(2).getChoETime(), "19:00");
         // 超勤平増
-		assertEquals(monthReportList.get(2).getChoWeekday(), Double.valueOf(1.0));
+		assertEquals(resultList.get(2).getChoWeekday(), Double.valueOf(1.0));
 		// ﾛｹｰｼｮﾝ名
-		assertEquals(monthReportList.get(2).getLocationName(), "日本");
+		assertEquals(resultList.get(2).getLocationName(), "日本");
 
 		// 日付(表示用)
-		assertEquals(monthReportList.get(3).getDay(), "04");
+		assertEquals(resultList.get(3).getDay(), "04");
 		// 曜日
-		assertEquals(monthReportList.get(3).getWeek(), "土");
+		assertEquals(resultList.get(3).getWeek(), "土");
         // 勤務区分名
-		assertEquals(monthReportList.get(3).getWorkKbnName(), "休日");
+		assertEquals(resultList.get(3).getWorkKbnName(), "休日");
         // ｼﾌﾄ
-		assertEquals(monthReportList.get(3).getShift(), "0900");
+		assertEquals(resultList.get(3).getShift(), "0900");
         // 出勤
-		assertEquals(monthReportList.get(3).getWorkSTime(), "09:00");
+		assertEquals(resultList.get(3).getWorkSTime(), "09:00");
         // 退勤
-		assertEquals(monthReportList.get(3).getWorkETime(), "23:30");
+		assertEquals(resultList.get(3).getWorkETime(), "23:30");
         // 勤務時間数
-		assertEquals(monthReportList.get(3).getWorkHours(), Double.valueOf(12.0));
+		assertEquals(resultList.get(3).getWorkHours(), Double.valueOf(12.0));
         // 超勤開始
-		assertEquals(monthReportList.get(3).getChoSTime(), "18:00");
+		assertEquals(resultList.get(3).getChoSTime(), "18:00");
         // 超勤終了
-		assertEquals(monthReportList.get(3).getChoETime(), "23:30");
+		assertEquals(resultList.get(3).getChoETime(), "23:30");
 		// 超勤休日
-		assertEquals(monthReportList.get(3).getChoHoliday(), Double.valueOf(4.5));
+		assertEquals(resultList.get(3).getChoHoliday(), Double.valueOf(4.5));
 		// 超勤深夜
-		assertEquals(monthReportList.get(3).getmNHours(), Double.valueOf(0.5));
+		assertEquals(resultList.get(3).getmNHours(), Double.valueOf(0.5));
 		// ﾛｹｰｼｮﾝ名
-		assertEquals(monthReportList.get(3).getLocationName(), "日本");
+		assertEquals(resultList.get(3).getLocationName(), "日本");
 	}
 	
 	/**
@@ -148,7 +148,7 @@ public class MonthlyReportApprovalTest {
 	    String applyNo = "user01120140300";
 		List<ProjectVo> projectList = serviceImpl.getProjectList(applyNo);
 		
-		assertEquals(projectList.size(), 2);
+		assertEquals(projectList.size(), 3);
 
 		assertEquals(projectList.get(0).getProjName(), "SPA収益計画システム");
 		assertEquals(projectList.get(0).getProjHours(), Double.valueOf(162.0));

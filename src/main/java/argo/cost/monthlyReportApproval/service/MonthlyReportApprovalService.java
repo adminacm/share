@@ -26,7 +26,7 @@ public interface MonthlyReportApprovalService {
 	 * @return
 	 *        月報承認データ一覧リスト
 	 */
-	List<MonthlyReportApprovalVo> getMonthReportList(String applyNo);
+	List<MonthlyReportApprovalVo> getMonReApprovalList(String applyNo);
 	
 	/**
 	 * 【PJ別作業時間集計】情報を取得

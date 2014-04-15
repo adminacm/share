@@ -34,7 +34,7 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 *        月報承認データ一覧リスト
 	*/
 	@Override
-	public List<MonthlyReportApprovalVo> searchMonthReportList(String applyNo) {
+	public List<MonthlyReportApprovalVo> searchMonthReportApprovalList(String applyNo) {
 		// TODO 自動生成されたメソッド・スタブ
 		List<MonthlyReportApprovalVo> monthlyReportApprovalList = new ArrayList<MonthlyReportApprovalVo>();
 		MonthlyReportApprovalVo monthlyReportVo = new MonthlyReportApprovalVo();

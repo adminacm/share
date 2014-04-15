@@ -26,7 +26,7 @@ public interface MonthlyReportApprovalDao {
 	 * @return
 	 *        月報承認データ一覧リスト
 	*/
-	List<MonthlyReportApprovalVo> searchMonthReportList(String applyNo);
+	List<MonthlyReportApprovalVo> searchMonthReportApprovalList(String applyNo);
 
 	/**
 	 * プロジェクト情報を取得

@@ -55,10 +55,10 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 *        月報承認データ一覧リスト
 	 */
 	@Override
-	public List<MonthlyReportApprovalVo> getMonthReportList(String applyNo) {
+	public List<MonthlyReportApprovalVo> getMonReApprovalList(String applyNo) {
 
 		// 月報承認データを取得
-		List<MonthlyReportApprovalVo> monthlyReportApprovalList = monApprovalDao.searchMonthReportList(applyNo);
+		List<MonthlyReportApprovalVo> monthlyReportApprovalList = monApprovalDao.searchMonthReportApprovalList(applyNo);
 		
 		return monthlyReportApprovalList;
 	}
