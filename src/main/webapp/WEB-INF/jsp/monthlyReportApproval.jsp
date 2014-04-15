@@ -60,15 +60,15 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
 				<table style="width:800px;margin-left:40px;margin-right:40px;">
 					<tr>
-						<td style="border:1px solid #333333;" align="center">${monthlyReportApprovalInfo.proStatus}</td>
-						<td width="130px">
-							<input type="button" value="承認" onclick="submitAction('/monthlyReportApproval/approval');" />
+						<td style="border:1px solid #333333;width:60px" align="center">${monthlyReportApprovalInfo.proStatus}</td>
+						<td style="width:240px" align="center">
+							<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/monthlyReportApproval/approval');" />
+						</td>
+						<td style="width:185px">
+							<input type="button" style="width:120px; height:25px" value="差戻" onclick="submitAction('/monthlyReportApproval/remand');" />
 						</td>
 						<td>
-							<input type="button" value="差戻" onclick="submitAction('/monthlyReportApproval/remand');" />
-						</td>
-						<td>
-							<input type="button" value="戻る" onclick="submitAction('/monthlyReportApproval/back');" />
+							<input type="button" style="width:120px; height:25px" value="戻る" onclick="submitAction('/monthlyReportApproval/back');" />
 						</td>
 					</tr>
 				</table>
@@ -150,36 +150,47 @@ function submitAction(action) {
 					</tbody>
 				</table>
 			</div>
-			【PJ別作業時間集計】
-			<div>
-				<table>
+			<div style="margin-left:40px;">
+				【PJ別作業時間集計】
+			</div>
+			<div style="margin-left:80px;">
+				<table style="width:400px">
 					<c:forEach var="projectInfo" items="${monthlyReportApprovalInfo.projectList}">
 						<tr>
-							<td>
+							<td style="width:200px" colspan="2">
 								${projectInfo.projName}
 							</td>
 							<td>
 								${projectInfo.projHours}
 							</td>
 						</tr>
-						<tr>
-							<td>プロジェクト管理</td>
-							<td>
-								${projectInfo.projManageHours}
-							</td>
-						</tr>
-						<tr>
-							<td>基本設計</td>
-							<td>
-								${projectInfo.basicDesignHours}
-							</td>
-						</tr>
-						<tr>
-							<td>会議</td>
-							<td>
-								${projectInfo.meetingHours}
-							</td>
-						</tr>
+						<c:if test="${not empty projectInfo.projManageHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>プロジェクト管理</td>
+								<td>
+									${projectInfo.projManageHours}
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty projectInfo.basicDesignHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>基本設計</td>
+								<td>
+									${projectInfo.basicDesignHours}
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty projectInfo.meetingHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>会議</td>
+								<td>
+									${projectInfo.meetingHours}
+								</td>
+							</tr>
+						</c:if>
 					</c:forEach>
 				</table>
 			</div>

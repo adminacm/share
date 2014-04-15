@@ -33,17 +33,17 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		List<ApprovalList> appList = new ArrayList<ApprovalList>();
 		
 		ApprovalList appInfo = new ApprovalList();
-		appInfo.setApplyNo("0001");
-		appInfo.setApplyKbn("01");
-		appInfo.setApplyDetail("2014年5月分");
+		appInfo.setApplyNo("user01120140300");
+		appInfo.setApplyKbn("1");
+		appInfo.setApplyDetail("2014年4月分");
 		appInfo.setStatus("02");
 		appInfo.setAffiliation("ＢＳ２");
 		appInfo.setName("あｘｘｘｘｘ");
 		appList.add(appInfo);
 		
 		appInfo = new ApprovalList();
-		appInfo.setApplyNo("0002");
-		appInfo.setApplyKbn("01");
+		appInfo.setApplyNo("user01120140400");
+		appInfo.setApplyKbn("1");
 		appInfo.setApplyDetail("2014年5月分");
 		appInfo.setStatus("02");
 		appInfo.setAffiliation("ＢＳ２");
@@ -51,8 +51,8 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appList.add(appInfo);
 		
 		appInfo = new ApprovalList();
-		appInfo.setApplyNo("0003");
-		appInfo.setApplyKbn("02");
+		appInfo.setApplyNo("user01220140505");
+		appInfo.setApplyKbn("2");
 		appInfo.setApplyDetail("休日勤務日：2014/5/5");
 		appInfo.setStatus("05");
 		appInfo.setAffiliation("ＢＳ２");
@@ -60,9 +60,9 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appList.add(appInfo);
 
 		appInfo = new ApprovalList();
-		appInfo.setApplyNo("0004");
-		appInfo.setApplyKbn("02");
-		appInfo.setApplyDetail("休日勤務日：2014/5/5");
+		appInfo.setApplyNo("user01220140405");
+		appInfo.setApplyKbn("2");
+		appInfo.setApplyDetail("休日勤務日：2014/4/5");
 		appInfo.setStatus("05");
 		appInfo.setAffiliation("ＢＳ２");
 		appInfo.setName("うｘｘｘｘｘ");
@@ -84,10 +84,10 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		// TODO 自動生成されたメソッド・スタブ
 		String name = "";
 		
-		if ("01".equals(applyKbnCd)) {
+		if ("1".equals(applyKbnCd)) {
 			
 			name = "月報";
-		} else if ("02".equals(applyKbnCd)) {
+		} else if ("2".equals(applyKbnCd)) {
 			
 			name = "超勤振替申請";
 		}

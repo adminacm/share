@@ -19,6 +19,11 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	// ** フィールド **
 	// ********************
 	/**
+	 * 申請番号
+	 */
+	private String applyNo;
+	
+	/**
 	 * 処理状況
 	 */
 	private String proStatus;
@@ -36,6 +41,14 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	//#################################
 	//#################################
 
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
+	
 	public String getProStatus() {
 		return proStatus;
 	}

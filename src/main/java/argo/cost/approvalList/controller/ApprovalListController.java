@@ -101,11 +101,11 @@ public class ApprovalListController extends AbstractController  {
     	
     	String str = "";
     	// TODO 申請区分が月報の場合（区分コードが未定です）
-    	if ("01".equals(applyKbnCd)) {
+    	if ("1".equals(applyKbnCd)) {
 
         	// 月報承認詳細画面
     		str = REDIRECT + UrlConstant.URL_MONTHLYREPORT_APPROVAL + INIT + QUESTION_MARK + "applyNo=" + applyNo;
-    	} else if ("02".equals(applyKbnCd)) {
+    	} else if ("2".equals(applyKbnCd)) {
 
         	// 超勤振替申請承認詳細画面
     		str = "";

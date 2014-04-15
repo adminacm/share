@@ -63,6 +63,9 @@ public class MonthlyReportApprovalController extends AbstractController {
 		// 月報承認画面情報初期化
 		MonthlyReportApprovalForm form = initForm(MonthlyReportApprovalForm.class);
 		
+		//　申請番号を設定
+		form.setApplyNo(applyNo);
+		
 		// 処理状況を取得
 		String status = service.getStatus(applyNo);
 		
@@ -84,6 +87,65 @@ public class MonthlyReportApprovalController extends AbstractController {
 		model.addAttribute(MONTHLYREPORT_APPROVAL_INFO, form);
 
 		return MONTHLYREPORT_APPROVAL;
+
+	}
+
+	/**
+	 * 月報承認画面の承認処理
+	 * 
+	 * @return 承認一覧画面
+	 */
+	@RequestMapping(value = APPROVAL)
+	public String doApproval(MonthlyReportApprovalForm form) {
+		
+		// 申請状況「承認」
+		String proStatus = "03";
+		
+		// 申請状況が承認に更新
+		String updateFlg = service.updateProStatus(form.getApplyNo(), proStatus);
+		
+		if ("1".equals(updateFlg)) {
+			System.out.print("申請状況が承認に更新しました");
+		}
+
+		// 承認一覧画面へ遷移する
+		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+
+	}
+
+	/**
+	 * 月報承認画面の差戻処理
+	 * 
+	 * @return 承認一覧画面
+	 */
+	@RequestMapping(value = REMAND)
+	public String doRemand(MonthlyReportApprovalForm form) {
+
+		// 申請状況「差戻」
+		String proStatus = "04";
+		
+		// 申請状況が差戻しに更新
+		String updateFlg = service.updateProStatus(form.getApplyNo(), proStatus);
+		
+		if ("1".equals(updateFlg)) {
+			System.out.print("申請状況が差戻に更新しました");
+		}
+		
+		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する
+		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+
+	}
+
+	/**
+	 * 月報承認画面の戻る処理
+	 * 
+	 * @return 承認一覧画面
+	 */
+	@RequestMapping(value = BACK)
+	public String doBack(MonthlyReportApprovalForm form) {
+
+		// 戻るボタンを押すと、承認一覧画面へ戻る
+		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
 
 	}
 }

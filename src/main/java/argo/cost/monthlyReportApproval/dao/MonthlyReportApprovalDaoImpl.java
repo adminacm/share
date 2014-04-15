@@ -91,6 +91,114 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		monthlyReportVo.setLocationName("日本");
 		monthlyReportApprovalList.add(monthlyReportVo);
 		
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("05");
+		monthlyReportVo.setWeek("日");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("06");
+		monthlyReportVo.setWeek("月");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("07");
+		monthlyReportVo.setWeek("火");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("08");
+		monthlyReportVo.setWeek("水");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("09");
+		monthlyReportVo.setWeek("木");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("10");
+		monthlyReportVo.setWeek("金");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("11");
+		monthlyReportVo.setWeek("土");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("12");
+		monthlyReportVo.setWeek("日");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("13");
+		monthlyReportVo.setWeek("月");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("14");
+		monthlyReportVo.setWeek("火");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("15");
+		monthlyReportVo.setWeek("水");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("16");
+		monthlyReportVo.setWeek("木");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("17");
+		monthlyReportVo.setWeek("金");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("18");
+		monthlyReportVo.setWeek("土");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("19");
+		monthlyReportVo.setWeek("日");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("20");
+		monthlyReportVo.setWeek("月");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("21");
+		monthlyReportVo.setWeek("火");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("22");
+		monthlyReportVo.setWeek("水");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("23");
+		monthlyReportVo.setWeek("木");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("24");
+		monthlyReportVo.setWeek("金");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("25");
+		monthlyReportVo.setWeek("土");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo.setDay("26");
+		monthlyReportVo.setWeek("日");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("27");
+		monthlyReportVo.setWeek("月");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("28");
+		monthlyReportVo.setWeek("火");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("29");
+		monthlyReportVo.setWeek("水");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("30");
+		monthlyReportVo.setWeek("木");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		monthlyReportVo = new MonthlyReportApprovalVo();
+		monthlyReportVo.setDay("31");
+		monthlyReportVo.setWeek("金");
+		monthlyReportApprovalList.add(monthlyReportVo);
+		
 		return monthlyReportApprovalList;
 	}
 
@@ -123,6 +231,26 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		projectInfo.setMeetingHours(15.0);
 		projectList.add(projectInfo);
 		
+		projectInfo = new ProjectVo();
+		projectInfo.setProjName("事務処理・社内会議");
+		projectList.add(projectInfo);
+		
 		return projectList;
+	}
+
+	/**
+	 * 申請状況更新
+	 * 
+	 * @param applyNo
+	 *               申請番号
+	 * @param proStatus
+	 *                 申請状況
+	 * @return
+	 *        更新フラグ
+	 */
+	@Override
+	public String updateProStatus(String applyNo, String proStatus) {
+		// TODO 自動生成されたメソッド・スタブ
+		return "1";
 	}
 }

@@ -52,11 +52,16 @@ public class DropdownListDaoImpl implements DropdownListDao {
 		
 		statusInfo = new Status();
 		statusInfo.setStatusCode("04");
-		statusInfo.setStatusName("処理済");
+		statusInfo.setStatusName("差戻");
 		statusList.add(statusInfo);
 		
 		statusInfo = new Status();
 		statusInfo.setStatusCode("05");
+		statusInfo.setStatusName("処理済");
+		statusList.add(statusInfo);
+		
+		statusInfo = new Status();
+		statusInfo.setStatusCode("06");
 		statusInfo.setStatusName("申請");
 		statusList.add(statusInfo);
 		

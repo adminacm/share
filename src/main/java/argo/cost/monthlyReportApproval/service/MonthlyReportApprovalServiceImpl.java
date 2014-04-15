@@ -71,6 +71,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 * @return
 	 *        プロジェクト情報
 	 */
+	@Override
 	public List<ProjectVo> getProjectList(String applyNo) {
 
 		// プロジェクト情報を取得
@@ -78,5 +79,24 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 		
 		return projectList;
 		
+	}
+
+	/**
+	 * 申請状況更新
+	 * 
+	 * @param applyNo
+	 *               申請番号
+	 * @param proStatus
+	 *                 申請状況
+	 * @return
+	 *        更新フラグ
+	 */
+	@Override
+	public String updateProStatus(String applyNo, String proStatus) {
+
+		// プロジェクト情報を取得
+		String updateFlg = monApprovalDao.updateProStatus(applyNo, proStatus);
+		
+		return updateFlg;
 	}
 }

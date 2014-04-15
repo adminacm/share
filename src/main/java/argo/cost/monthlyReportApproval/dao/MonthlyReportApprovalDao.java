@@ -37,4 +37,16 @@ public interface MonthlyReportApprovalDao {
 	 *        プロジェクト情報リスト
 	 */
 	List<ProjectVo> searchProjectList(String applyNo);
+
+	/**
+	 * 申請状況更新
+	 * 
+	 * @param applyNo
+	 *               申請番号
+	 * @param proStatus
+	 *                 申請状況
+	 * @return
+	 *        更新フラグ
+	 */
+	String updateProStatus(String applyNo, String proStatus);
 }

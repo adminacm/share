@@ -30,7 +30,7 @@ public class MonthlyReportApprovalTest {
 	public void testGetStatus() {
 
 		// 申請番号
-		String applyNo = "0001";
+		String applyNo = "user01120140300";
 		
 		// 処理状況表示名
 		String status = serviceImpl.getStatus(applyNo);
@@ -45,7 +45,7 @@ public class MonthlyReportApprovalTest {
 	public void testGetMonthlyReportApproval() {
 		
 		// 申請番号(主なキー)
-	    String applyNo = "0001";
+	    String applyNo = "user01120140300";
 		List<MonthlyReportApprovalVo> monthReportList = serviceImpl.getMonthReportList(applyNo);
 		
 		assertEquals(monthReportList.size(), 4);
@@ -145,7 +145,7 @@ public class MonthlyReportApprovalTest {
 	public void testGetProject() {
 
 		// 申請番号(主なキー)
-	    String applyNo = "0001";
+	    String applyNo = "user01120140300";
 		List<ProjectVo> projectList = serviceImpl.getProjectList(applyNo);
 		
 		assertEquals(projectList.size(), 2);
@@ -161,6 +161,22 @@ public class MonthlyReportApprovalTest {
 		assertEquals(projectList.get(1).getProjManageHours(), Double.valueOf(50.0));
 		assertEquals(projectList.get(1).getBasicDesignHours(), Double.valueOf(20.0));
 		assertEquals(projectList.get(1).getMeetingHours(), Double.valueOf(15.0));
+	}
+	
+	/**
+	 * 申請状況更新をテスト
+	 */
+	@Test
+	public void testUpdateProStatus() {
+
+		// 申請番号
+		String applyNo = "user01120140300";
+		// 申請状況
+		String proStatus = "03";
+		
+		String resultFlg = serviceImpl.updateProStatus(applyNo, proStatus);
+		
+		assertEquals(resultFlg, "1");
 	}
 
 }

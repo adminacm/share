@@ -82,6 +82,14 @@ public abstract class AbstractController {
 	 * 申請Ｎｏリンク
 	 */
 	public static final String APPLYNO_CLICK = "/applyNoClick";
+	/**
+	 * 承認
+	 */
+	public static final String APPROVAL = "/approval";
+	/**
+	 * 差戻
+	 */
+	public static final String REMAND = "/remand";
 	
 	/**
 	 * セッション情報取得
