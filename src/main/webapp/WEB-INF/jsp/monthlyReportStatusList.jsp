@@ -58,7 +58,7 @@ function submitAction(action) {
 				<b>月報状況一覧</b>
 			</div>
 			<div>
-				<table style="width:700px;margin-left:40px;margin-right:40px;margin-bottom:30px;border:1px solid #ccc;">
+				<table style="width:700px;margin:40px;border:1px solid #ccc;">
 					<tr>
 						<td colspan="7" style="">検索条件</td>
 					</tr>
@@ -122,6 +122,9 @@ function submitAction(action) {
 						</c:forEach>
 					</tbody>
 				</table>
+			</div>
+			<div align="right" style="width:740px; height:50px">
+				<input type="button" value="給与奉行向けCSV出力" onclick="submitAction('/monthlyReportStatusList/csvOutput');"/>
 			</div>
 		</div>	
 	</form:form>

@@ -3,6 +3,8 @@ package argo.cost.monthlyReportStatusList.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
@@ -43,5 +45,16 @@ public interface MonthlyReportStatusListService {
 	 *        所属プルダウンリスト
 	 */
 	List<ListItemVO> getAffiliationList();
+
+	/**
+	 * 
+	 * CSVファイルを作成
+	 * 
+	 * @param form
+	 *           月報状況一覧情報
+     * @param response
+     *         レスポンス
+	 */
+	void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception;
 
 }

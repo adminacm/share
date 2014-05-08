@@ -54,4 +54,9 @@ public class UrlConstant {
 	 */
 	public static final String URL_HOLIDAYFOROVERTIME_APPROVAL = "/holidayForOvertimeApproval";
 
+	/**
+	 * 月報状況一覧画面
+	 */
+	public static final String URL_MONTHLYREPORT_STATUS_LIST = "/monthlyReportStatusList";
+	
 }

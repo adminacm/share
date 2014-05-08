@@ -1,7 +1,9 @@
 package argo.cost.monthlyReportStatusList.model;
 
+import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 
 /**
@@ -10,7 +12,9 @@ import argo.cost.common.model.ListItemVO;
  * </p>
  *
  */
-public class MonthlyReportStatusListForm {
+public class MonthlyReportStatusListForm  extends AbstractForm implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	// ********************
 	// ** フィールド **
