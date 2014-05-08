@@ -37,7 +37,7 @@ public class ComServiceTest {
 		//  状況プルダウンリスト取得
 		List<ListItemVO> statusList = service.getStatusList();
 		
-		assertEquals(statusList.size(), 6);
+		assertEquals(statusList.size(), 7);
 	}
 	
 	/**
