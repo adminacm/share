@@ -29,14 +29,22 @@ public interface MonthlyReportStatusListService {
 	List<MonthlyReportStatusListInfo> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
 
 	/**
-	 * 年月プルダウンリスト取得
+	 * 年プルダウンリスト取得
 	 * 
 	 * @param date
 	 * 	      　　　　　　日付
 	 * @return
-	 * 	             年月プルダウンリスト
+	 * 	             年プルダウンリスト
 	 */
-	List<ListItemVO> getYearMonthList(Date date);
+	List<ListItemVO> getYearList(Date date);
+	
+	/**
+	 * 月プルダウンリスト取得
+	 * 
+	 * @return
+	 * 	             月プルダウンリスト
+	 */
+	List<ListItemVO> getMonthList();
 
 	/**
 	 * 所属プルダウンリスト取得
@@ -56,5 +64,4 @@ public interface MonthlyReportStatusListService {
      *         レスポンス
 	 */
 	void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception;
-
 }

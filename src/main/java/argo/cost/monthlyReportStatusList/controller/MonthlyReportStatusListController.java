@@ -1,5 +1,6 @@
 package argo.cost.monthlyReportStatusList.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -62,11 +63,17 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	// 状況リストを設定
     	form.setStatusList(statusList);
     	
-    	// 年月リストを取得
-    	List<ListItemVO> yearMonthList = monthlyReportStatusListService.getYearMonthList(new Date());
+    	// 年リストを取得
+    	List<ListItemVO> yearList = monthlyReportStatusListService.getYearList(new Date());
     	
-    	// 年月リストを設定
-    	form.setYearMonthList(yearMonthList);
+    	// 年リストを設定
+    	form.setYearList(yearList);
+    	
+    	// 月リストを取得
+    	List<ListItemVO> monthList = monthlyReportStatusListService.getMonthList();
+    	
+    	// 月リストを設定
+    	form.setMonthList(monthList);
 
     	// 所属リストを取得
     	List<ListItemVO> affiliationList = monthlyReportStatusListService.getAffiliationList();
@@ -82,10 +89,17 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	//TODO 初期値設定
     	// 状況
     	form.setStatus("");
-    	// 年月
-    	form.setYearMonth("");
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
+    	// 当年
+    	form.setYear(String.valueOf(year));
+    	// 当月
+    	form.setMonth(String.valueOf(month));
     	// 所属
-    	form.setAffiliation("");
+    	form.setAffiliation("00");
     	
         return MONTHLYREPORT_STATUS_LIST;
     }

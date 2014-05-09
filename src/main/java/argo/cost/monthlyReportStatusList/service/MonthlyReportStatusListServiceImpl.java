@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,13 +84,15 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	}
 
 	/**
-	 * 年月プルダウンリスト取得
+	 * 年プルダウンリスト取得
 	 * 
+	 * @param date
+	 * 	      　　　　　　日付
 	 * @return
-	 * 	年月プルダウンリスト
+	 * 	             年プルダウンリスト
 	 */
 	@Override
-	public List<ListItemVO> getYearMonthList(Date date) {
+	public List<ListItemVO> getYearList(Date date) {
 
 		// ドロップダウンリスト
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
@@ -100,33 +103,62 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		cal.setTime(date);
 
 		// ドロップダウンリスト設定
-		for (int i = 0; i <= 3; i++) {
+		for (int i = 0; i < 3; i++) {
 			
 			item = new ListItemVO();
 
-			// 年月を取得
+			// 年を取得
 			if (i != 0){
 				
 				cal.add(Calendar.YEAR, -1); 
 			}
 			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH) + 1;
 
 			// データを設定する
 			// 区分値 
-			if (String.valueOf(month).length() == 1) {
-				item.setValue(String.valueOf(year) + "0" + String.valueOf(month));
-			} else {
-				item.setValue(String.valueOf(year) + String.valueOf(month));
-			}
+			item.setValue(String.valueOf(year));
 			// 区分名称
-			item.setName(year + "年" + month + "月");
+			item.setName(year + "年");
 
 			// リストに追加
 			resultList.add(item);
 		}
 		
-		// 年月ドロップダウンリストを返却する。
+		// 年ドロップダウンリストを返却する。
+		return resultList;
+	
+	}
+
+	/**
+	 * 月プルダウンリスト取得
+	 * 
+	 * @return
+	 * 	             月プルダウンリスト
+	 */
+	@Override
+	public List<ListItemVO> getMonthList() {
+
+		// ドロップダウンリスト
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
+		// ドロップダウン項目
+		ListItemVO item = null;
+
+		// ドロップダウンリスト設定
+		for (int i = 1; i <= 12; i++) {
+			
+			item = new ListItemVO();
+
+			// データを設定する
+			// 区分値 
+			item.setValue(String.valueOf(i));
+			// 区分名称
+			item.setName(String.valueOf(i) + "月");
+
+			// リストに追加
+			resultList.add(item);
+		}
+		
+		// 月ドロップダウンリストを返却する。
 		return resultList;
 	
 	}
@@ -165,7 +197,10 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		List<PayMagistrateCsvInfo> csvDetailList = mRSDao.getPayMagistrateCsvList(form);
 		try {
 			String path = "D:\\";
-        	String filaName = form.getYearMonth().substring(2, 4) + "年" + form.getYearMonth().substring(4, 6) + "月";
+			
+			SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyyMMddHHmmss");
+			// 日付設定
+			String filaName = sdfYearM.format(new Date());
    		 	// CSV ダウンロード
         	exportCsvfiles(path, filaName, getTitleList(), csvDetailList, response);
        } catch (Exception e) {

@@ -12,8 +12,45 @@
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="../css/common.css" rel="stylesheet" type="text/css">
+<STYLE TYPE="text/CSS">   
+.tableborder {
+	width: 800px;
+	height: 100%;
+	margin: 0px auto;
+	margin-bottom: 20px;
+	background-color: #F0FBEB;
+	white-space: nowrap;
+	border: 1px solid #9BDF70;
+	border-top-color: #0080FF;
+	border-top-style: dotted;
+	border-top-width: 3px
+}
+.resultStyle {
+	width: 800px;
+	height: 100%;
+	margin: 0px auto;
+	margin-bottom: 20px;
+	border: 1px solid #73BF00;
+	background-color: #FFFFF7;
+}
+.headStyle {
+	margin-left: 20px;
+	background-color: #007500;
+	height: 100%;
+	font-weight: 600;
+	text-align: center;
+	color: white;
+	border: 1px;
+	style: border-collapse:collapse;
+	frame: hsides;
+	rules: rows;
+	width: 50px;
+	border-bottom: 1px solid #CCC;
+}
 
+</STYLE>
+
+<link href="../css/common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 /* アクション提出 */
 function submitAction(action) {
@@ -23,107 +60,94 @@ function submitAction(action) {
 }
 
 </script>
-<style type="text/css">
-
-.table1 {
-	width:700px;
-	margin-top:10px;
-	margin-left:40px;
-	margin-bottom: 30px;
-	white-space: nowrap;
-	border: 1px solid #ccc;
-	border-collapse:collapse;
-}
-
-.table1 th {
-	white-space: nowrap;
-	padding:2px;
-	align:center;
-	font-weight:normal;
-	border: 1px solid #ccc;
-}
-
-.table1 td {
-	white-space: nowrap;
-	padding:2px;
-	font-weight:normal;
-	border: 1px solid #ccc;
-}
-</style>
 </head>
 <body>
 	<form:form modelAttribute="monthlyReportStatusListForm">
-		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:800px;">
+		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
 				<b>月報状況一覧</b>
 			</div>
-			<div>
-				<table style="width:700px;margin:40px;border:1px solid #ccc;">
-					<tr>
-						<td colspan="7" style="">検索条件</td>
-					</tr>
-					<tr>
-						<td style="width:40px;">年月</td>
-						<td style="width:130px;">
-							<form:select path="yearMonth" style="width:100px;border:2px solid #333333;" id="yearMonth">
-								<form:options items="${monthlyReportStatusListForm.yearMonthList}" itemValue="value" itemLabel="name"/>
-							</form:select>
-						</td>
-						<td style="width:40px;">所属</td>
-						<td style="width:130px;">
-							<form:select path="affiliation" style="width:100px;border:2px solid #333333;" id="affiliation">
-								<form:options items="${monthlyReportStatusListForm.affiliationList}" itemValue="value" itemLabel="name"/>
-							</form:select>
-						</td>
-						<td style="width:40px;">状況</td>
-						<td style="width:200px;">
-							<form:select path="status" style="width:100px;border:2px solid #333333;" id="status">
-								<form:options items="${monthlyReportStatusListForm.statusList}" itemValue="value" itemLabel="name"/>
-							</form:select>
-						</td>
-						<td><input type="button" value="表示切替" onclick="submitAction('/monthlyReportStatusList/search');"/></td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<table class="table1" id="resultList">
-					<thead>
-						<tr>
-							<th>所属</th>
-							<th>ID</th>
-							<th>氏名</th>
-							<th>申請区分</th>
-							<th>申請内容</th>
-							<th>状況</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="mRS" items="${monthlyReportStatusListForm.mRSList}">
+			<table>
+				<tr>
+					<td style="width: 10px">&nbsp;</td>
+					<td>
+						<table class="tableborder">
 							<tr>
-								<td>
-									${mRS.affiliation}
-								</td>
-								<td>
-									${mRS.id}
-								</td>
-								<td>
-									${mRS.name}
-								</td>
-								<td>
-									${mRS.applyKbn}
-								</td>
-								<td>
-									${mRS.applyDetail}
-								</td>
-								<td>
-									${mRS.status}
-								</td>
+								<td colspan="9" style="">検索条件</td>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
-			<div align="right" style="width:740px; height:50px">
+							<tr>
+								<td style="width:20px;padding-left:40px;">年</td>
+								<td style="width:100px;">
+									<form:select path="year" style="width:80px;border:2px solid #333333;" id="year">
+										<form:options items="${monthlyReportStatusListForm.yearList}" itemValue="value" itemLabel="name"/>
+									</form:select>
+								</td>
+								<td style="width:20px;">月</td>
+								<td style="width:100px;">
+									<form:select path="month" style="width:80px;border:2px solid #333333;" id="month">
+										<form:options items="${monthlyReportStatusListForm.monthList}" itemValue="value" itemLabel="name"/>
+									</form:select>
+								</td>
+								<td style="width:40px;">所属</td>
+								<td style="width:120px;">
+									<form:select path="affiliation" style="width:100px;border:2px solid #333333;" id="affiliation">
+										<form:options items="${monthlyReportStatusListForm.affiliationList}" itemValue="value" itemLabel="name"/>
+									</form:select>
+								</td>
+								<td style="width:40px;">状況</td>
+								<td style="width:150px;">
+									<form:select path="status" style="width:100px;border:2px solid #333333;" id="status">
+										<form:options items="${monthlyReportStatusListForm.statusList}" itemValue="value" itemLabel="name"/>
+									</form:select>
+								</td>
+								<td><input type="button" value="表示切替" onclick="submitAction('/monthlyReportStatusList/search');"/></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 10px">&nbsp;</td>
+					<td>
+						<table class="resultStyle" id="payHolidayList" style="margin-left:2px;">
+							<thead>
+								<tr class="headStyle">
+									<th>所属</th>
+									<th>ID</th>
+									<th>氏名</th>
+									<th>申請区分</th>
+									<th>申請内容</th>
+									<th>状況</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="mRS" items="${monthlyReportStatusListForm.mRSList}">
+									<tr>
+										<td>
+											${mRS.affiliation}
+										</td>
+										<td>
+											${mRS.id}
+										</td>
+										<td>
+											${mRS.name}
+										</td>
+										<td>
+											${mRS.applyKbn}
+										</td>
+										<td>
+											${mRS.applyDetail}
+										</td>
+										<td>
+											${mRS.status}
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<div align="right" style="width:818px; height:50px">
 				<input type="button" value="給与奉行向けCSV出力" onclick="submitAction('/monthlyReportStatusList/csvOutput');"/>
 			</div>
 		</div>	

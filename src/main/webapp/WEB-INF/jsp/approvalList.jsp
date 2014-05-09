@@ -131,7 +131,6 @@ function submitAction(action) {
 								</c:forEach>
 							</tbody>
 						</table>
-						
 					</td>
 				</tr>
 			</table>

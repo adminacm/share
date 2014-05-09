@@ -67,6 +67,11 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
 		ListItemVO item = new ListItemVO();
+		item.setValue("00");
+		item.setName("");
+		resultList.add(item);
+		
+		item = new ListItemVO();
 		item.setValue("01");
 		item.setName("ＢＳ１");
 		resultList.add(item);
