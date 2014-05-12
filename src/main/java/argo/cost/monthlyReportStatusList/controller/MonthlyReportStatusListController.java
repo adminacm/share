@@ -86,9 +86,9 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	
     	form.setmRSList(mRSList);;
 
-    	//TODO 初期値設定
+    	// 初期値設定
     	// 状況
-    	form.setStatus("");
+    	form.setStatus("01");
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
