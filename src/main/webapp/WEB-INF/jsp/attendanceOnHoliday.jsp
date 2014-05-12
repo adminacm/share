@@ -24,6 +24,7 @@ function submitAction(action) {
 
 <body>
 	<form:form modelAttribute="attendanceInputForm" commandName="attendanceOnHolidayInfo">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:500px;">
 			<div style="padding:2px;">
 				<b>休日勤務入力</b>

@@ -1,0 +1,25 @@
+package argo.cost.common.security;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+public class MyLogoutSuccessHandler extends AbstractAuthenticationTargetUrlRequestHandler implements LogoutSuccessHandler {
+
+	public void onLogoutSuccess(HttpServletRequest request,
+			HttpServletResponse response, Authentication authentication)
+			throws IOException, ServletException {
+
+		if (authentication != null) {
+			System.out.print(authentication.getName() + "Logout");
+		}
+		super.handle(request, response, authentication);
+	}
+
+}

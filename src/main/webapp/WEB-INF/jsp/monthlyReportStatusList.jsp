@@ -63,6 +63,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="monthlyReportStatusListForm">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
 				<b>月報状況一覧</b>

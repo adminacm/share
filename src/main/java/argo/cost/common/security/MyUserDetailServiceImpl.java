@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -12,13 +11,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ResourcesDao;
 import argo.cost.common.dao.UsersDao;
 import argo.cost.common.model.entity.Resources;
 import argo.cost.common.model.entity.Roles;
 import argo.cost.common.model.entity.Users;
-
+@Service
 public class MyUserDetailServiceImpl implements UserDetailsService {  
     
 	@Autowired
@@ -26,22 +26,6 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private ResourcesDao resourcesDao;
-
-	public UsersDao getUsersDao() {
-		return usersDao;
-	}
-	
-	public void setUsersDao(UsersDao usersDao) {
-		this.usersDao = usersDao;
-	}
-       
-    public ResourcesDao getResourcesDao() {
-		return resourcesDao;
-	}
-
-	public void setResourcesDao(ResourcesDao resourcesDao) {
-		this.resourcesDao = resourcesDao;
-	}
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {  
         System.out.println("username is " + username);  

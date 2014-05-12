@@ -10,6 +10,7 @@
 	<title>登録</title>
 </head>
 <body>
+<%@ include file="includes/header.jsp"%>
 	<span style="color:red">${errorMessages} ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message }</span>
 	<form action="j_spring_security_check" method="POST">
 		<table>

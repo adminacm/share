@@ -10,6 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<title>拒絶訪問</title>
 </head>
 <body>
+<%@ include file="../includes/header.jsp"%>
     <font size="5">Access Deny!</font><br>
     ${requestScope['SPRING_SECURITY_403_EXCEPTION'].message}
   </body>
