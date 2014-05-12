@@ -16,6 +16,7 @@ import argo.cost.monthlyReport.dao.MonthlyReportDao;
 import argo.cost.monthlyReport.dao.MonthlyReportDaoImpl;
 import argo.cost.monthlyReport.model.MonthlyReportEntity;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
+import argo.cost.monthlyReport.model.ProjectVo;
 
 @Service
 public class MonthlyReportServiceImpl implements MonthlyReportService {
@@ -240,6 +241,22 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 			}
 			
 		}
+	}
+
+	/**
+	 * 【PJ別作業時間集計】情報を取得
+	 * 
+	 * @param userId
+	 * 			ユーザID
+	 * @param date 
+	 * 			日付
+	 * @return
+	 *        プロジェクト情報
+	 */
+	@Override
+	public List<ProjectVo> getProjectList(String userId, String date) {
+		// TODO 自動生成されたメソッド・スタブ
+		return dao.getProjectList(userId, date);
 	}
 
 }

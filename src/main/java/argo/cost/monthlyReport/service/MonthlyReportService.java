@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
+import argo.cost.monthlyReport.model.ProjectVo;
 
 public interface MonthlyReportService {
 
@@ -55,4 +56,17 @@ public interface MonthlyReportService {
 	 * 			日付
 	 */
 	void setUserMonthReport(String userId, String date, List<MonthlyReportInfo> monthList);
+	
+	/**
+	 * 【PJ別作業時間集計】情報を取得
+	 * 
+	 * @param userId
+	 * 			ユーザID
+	 * @param date 
+	 * 			日付
+	 * @return
+	 *        プロジェクト情報
+	 */
+	List<ProjectVo> getProjectList(String userId, String date);
+
 }

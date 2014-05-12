@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<http use-expressions="true" auto-config="true">
+	<http use-expressions="true" auto-config="true" >
 		<form-login login-page="/login" default-target-url="/login"
 			always-use-default-target="true" authentication-failure-url="/login?login_error=1" />
 		<logout invalidate-session="true" success-handler-ref="logoutSuccessHandler"
@@ -12,7 +12,9 @@
 		<access-denied-handler error-page="/denied"/>
 		<!-- 实现免登陆验证 -->
 		<remember-me />
-		<session-management session-authentication-strategy-ref="concurrentSessionControlStrategy">
+		<session-management invalid-session-url="/login">
+			<concurrency-control max-sessions="1"
+				error-if-maximum-exceeded="true"/>
 		</session-management>
 		<custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" />
 	</http>
@@ -38,14 +40,9 @@
 		class="argo.cost.common.security.MySecurityMetadataSource">
 		<beans:constructor-arg name="resourcesDao" ref="resourcesDao"></beans:constructor-arg>
 	</beans:bean>
-	<beans:bean id="concurrentSessionControlStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
-		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
-		<beans:property name="maximumSessions" value="1"></beans:property>  
-	</beans:bean>
 	<beans:bean id="myUserDetailServiceImpl"
 		class="argo.cost.common.security.MyUserDetailServiceImpl">
 	</beans:bean>
 	<beans:bean id="resourcesDao" class="argo.cost.common.dao.ResourcesDaoImpl"></beans:bean>
 	<beans:bean id="usersDao" class="argo.cost.common.dao.UsersDaoImpl"></beans:bean>
-	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
 </beans:beans>  

@@ -67,10 +67,10 @@ function submitAction(action) {
 						<td style="padding-left:40px;">氏名</td>
 						<td>
 							<form:select path="userCode" style="width:100%;border:2px solid #333333;" id="usCode">
-										<form:options items="${monthlyReportForm.userList}" itemValue="value" itemLabel="name"/>
+								<form:options items="${monthlyReportForm.userList}" itemValue="value" itemLabel="name"/>
 							</form:select>
 						</td>
-						<td style="padding-left:220px;"><input type="button" value="表示切替" onclick="submitAction('/monthlyReport/search');"/></td>
+						<td style="padding-left:520px;"><input type="button" value="表示切替" onclick="submitAction('/monthlyReport/search');"/></td>
 					</tr>
 				</table>
 			</div>
@@ -163,7 +163,50 @@ function submitAction(action) {
 							</tr>
 						</c:forEach>
 					</tbody>
-					
+				</table>
+			</div>
+			<div style="margin-left:40px;">
+				【PJ別作業時間集計】
+			</div>
+			<div style="margin-left:80px;">
+				<table style="width:400px">
+					<c:forEach var="projectInfo" items="${monthlyReportForm.projectList}">
+						<tr>
+							<td style="width:200px" colspan="2">
+								${projectInfo.projName}
+							</td>
+							<td>
+								${projectInfo.projHours}
+							</td>
+						</tr>
+						<c:if test="${not empty projectInfo.projManageHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>プロジェクト管理</td>
+								<td>
+									${projectInfo.projManageHours}
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty projectInfo.basicDesignHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>基本設計</td>
+								<td>
+									${projectInfo.basicDesignHours}
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty projectInfo.meetingHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>会議</td>
+								<td>
+									${projectInfo.meetingHours}
+								</td>
+							</tr>
+						</c:if>
+					</c:forEach>
 				</table>
 			</div>
 		</div>

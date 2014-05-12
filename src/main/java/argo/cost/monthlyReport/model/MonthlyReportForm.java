@@ -76,9 +76,14 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	 * 事務処理・社内会議
 	 */
 	private String paperwork;
+	/**
+	 * プロジェクト情報
+	 */
+	private List<ProjectVo> projectList;
 	
-//#################################
-//#################################
+
+	//#################################
+	//#################################
 	/**
 	 * 氏名を取得する
 	 */
@@ -173,4 +178,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 		this.yearMonthHyoji = yearMonthHyoji;
 	}
 
+	public List<ProjectVo> getProjectList() {
+		return projectList;
+	}
+
+	public void setProjectList(List<ProjectVo> projectList) {
+		this.projectList = projectList;
+	}
 }
