@@ -13,15 +13,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
 import argo.cost.monthlyReport.service.MonthlyReportService;
+import argo.cost.monthlyReport.model.ProjectVo;
 
 @Controller
-@RequestMapping("/monthlyReport")
+@RequestMapping(UrlConstant.URL_MONTHLYREPORT)
 @SessionAttributes(types = { MonthlyReportForm.class })
 public class MonthlyReportController extends AbstractController {
 	
@@ -30,6 +32,18 @@ public class MonthlyReportController extends AbstractController {
 	 */
 	@Autowired
 	protected MonthlyReportService service;
+	/**
+	 * 月報画面URL
+	 */
+	private static final String MONTHLYREPORT = "monthlyReport";
+	/**
+	 * 先月URL
+	 */
+	private static final String LASTMONTH = "/lastMonth";
+	/**
+	 * 来月URL
+	 */
+	private static final String nextMONTH = "/nextMonth";
 
 	/**
 	 * 初期化
@@ -43,7 +57,7 @@ public class MonthlyReportController extends AbstractController {
 	 * @throws Exception
 	 *             Exception
 	 */
-    @RequestMapping("/init")
+    @RequestMapping(value = INIT)
     public String init(Model model, @RequestParam("newMonth") String newMonth) throws Exception {
     	
     	String loginId = getSession().getUserInfo().getId();
@@ -77,14 +91,28 @@ public class MonthlyReportController extends AbstractController {
     	List<MonthlyReportInfo> resultList = service.getMonReList(formatDate);
     	
     	form.setmRList(resultList);
-    	
     	// 月報情報の設定
     	service.setUserMonthReport(loginId, date, resultList);
     	
-        return "monthlyReport";
+		// 【PJ別作業時間集計】を取得
+		List<ProjectVo> projectList = service.getProjectList(loginId, date);
+		
+		// プロジェクト情報設定
+		form.setProjectList(projectList);
+		
+        return MONTHLYREPORT;
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    /**
+	 * 検索処理
+	 *
+	 * @param form
+	 *            画面フォーム情報
+	 * @return 月報画面
+	 * @throws Exception
+	 *             Exception
+	 */
+    @RequestMapping(value = SEARCH, method = RequestMethod.POST)
     public String search(MonthlyReportForm form) throws Exception {
     	
     	String userId = form.getUserCode();
@@ -95,25 +123,25 @@ public class MonthlyReportController extends AbstractController {
     	// 月報情報の設定
     	service.setUserMonthReport(userId, form.getYearMonth(), resultList);
     	
-        return "monthlyReport";
+        return MONTHLYREPORT;
     }
     
-    @RequestMapping(value = "/lastMonth", method = RequestMethod.POST)
+    @RequestMapping(value = LASTMONTH, method = RequestMethod.POST)
     public String getLastMonth(MonthlyReportForm form) throws Exception {
     	
     	// 先月を取得
     	String lastMonth = service.changeYearMonth("last", form.getYearMonth());
     	
-        return "redirect:/monthlyReport/init?newMonth=" + lastMonth;
+        return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + lastMonth;
     }
     
-    @RequestMapping(value = "/nextMonth", method = RequestMethod.POST)
+    @RequestMapping(value = nextMONTH, method = RequestMethod.POST)
     public String getNextMonth(MonthlyReportForm form) throws Exception {
     	
     	// 来月を取得
     	String nextMonth = service.changeYearMonth("next", form.getYearMonth());
 
-        return "redirect:/monthlyReport/init?newMonth=" + nextMonth;
+        return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + nextMonth;
     }
 
 }
