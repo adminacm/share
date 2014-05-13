@@ -196,12 +196,29 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	@Override
 	public void setUserMonthReport(String userId, String date, List<MonthlyReportInfo> monthList) {
 		
-		List<MonthlyReportEntity> reportList = dao.getUserMonthReport(userId, date);
+		// 合計休暇時間数
+		Double totleRestHours = 0.0;
+		// 合計勤務時間数
+		Double totleWorkHours = 0.0;
+		// 合計超勤平増
+		Double totleChoWeekday = 0.0;
+		// 合計超勤平常
+		Double totleChoWeekdayNomal = 0.0;
+		// 合計超勤休日
+		Double totleChoHoliday = 0.0;
+		// 合計超勤深夜
+		Double totleMNHours = 0.0;
+		// 合計情報
+		MonthlyReportInfo totleInfo = new MonthlyReportInfo();
 		
-		for (MonthlyReportEntity rep : reportList) {
+		List<MonthlyReportEntity> reportList = dao.getUserMonthReport(userId, date);
+
+		for (int i = 0; i < monthList.size(); i++) {
 			
-			for (MonthlyReportInfo info : monthList) {
-				
+			MonthlyReportInfo info = monthList.get(i);
+			
+			for (MonthlyReportEntity rep : reportList) {
+			
 				if (info.getDate().equals(rep.getWorkDate())) {
 					
 					// シフトコード
@@ -214,10 +231,8 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 					info.setWorkSTime(CostDateUtils.formatIntegerToTime(rep.getWorkSTime()));
 					// 退勤
 					info.setWorkETime(CostDateUtils.formatIntegerToTime(rep.getWorkETime()));
-					// 休暇欠勤区分
-					info.setRestKbn(rep.getRestKbn());
-					// 休暇欠勤区分名
-					info.setRestKbnName(rep.getRestKbnName());
+					// 休暇時間数
+					info.setRestHours(rep.getRestHours());
 					// 勤務時間数
 					info.setWorkHours(rep.getWorkHours());
 					// 超勤開始
@@ -236,11 +251,61 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 					info.setLocationCode(rep.getLocationCode());
 					// ロケーション名
 					info.setLocationName(rep.getLocationName());
+					
+					if (info.getRestHours() != null) {
+
+						totleRestHours += info.getRestHours();
+					}
+					if (info.getWorkHours() != null) {
+
+						totleWorkHours += info.getWorkHours();
+					}
+					if (info.getChoWeekday() != null) {
+
+						totleChoWeekday += info.getChoWeekday();
+					}
+					if (info.getChoWeekdayNomal() != null) {
+
+						totleChoWeekdayNomal += info.getChoWeekdayNomal();
+					}
+					if (info.getChoHoliday() != null) {
+
+						totleChoHoliday += info.getChoHoliday();
+					}
+					if (info.getmNHours() != null) {
+
+						totleMNHours += info.getmNHours();
+					}
 					break;
 				}
 			}
 			
+			if (i + 1 == monthList.size()) {
+				
+				// 合計フラグ
+				totleInfo.setTotleFlg(true);
+				if (totleRestHours != 0) {
+					totleInfo.setRestHours(totleRestHours);
+				}
+				if (totleWorkHours != 0) {
+					totleInfo.setWorkHours(totleWorkHours);
+				}
+				if (totleChoWeekday != 0) {
+					totleInfo.setChoWeekday(totleChoWeekday);
+				}
+				if (totleChoWeekdayNomal != 0) {
+					totleInfo.setChoWeekdayNomal(totleChoWeekdayNomal);
+				}
+				if (totleChoHoliday != 0) {
+					totleInfo.setChoHoliday(totleChoHoliday);
+				}
+				if (totleMNHours != 0) {
+					totleInfo.setmNHours(totleMNHours);
+				}
+			}
 		}
+		
+		monthList.add(totleInfo);
 	}
 
 	/**

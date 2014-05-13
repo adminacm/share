@@ -64,7 +64,7 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		enty1.setOverHoursNight(0.0);
 		enty1.setOverHoursOrdinary(1.5);
 		enty1.setRepDate("20140401");
-		enty1.setRestHours(0.0);
+		enty1.setRestHours(1.5);
 		enty1.setRestKbn("01");
 		enty1.setRestKbnName("時間休(有給休暇)");
 		enty1.setShiftCode("0900");
@@ -89,7 +89,7 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		enty2.setOverHoursNight(0.0);
 		enty2.setOverHoursOrdinary(1.5);
 		enty2.setRepDate("20140401");
-		enty2.setRestHours(0.0);
+		enty2.setRestHours(1.5);
 		enty2.setRestKbn("04");
 		enty2.setRestKbnName("特別休暇");
 		enty2.setShiftCode("0900");

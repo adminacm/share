@@ -46,14 +46,9 @@ public class MonthlyReportInfo {
 	private String workETime;
 
 	/**
-	 * 休暇欠勤区分
+	 * 休暇時間数
 	 */
-	private String restKbn;
-
-	/**
-	 * 休暇欠勤区分名
-	 */
-	private String restKbnName;
+	private Double restHours;
 	
 	/**
 	 * 勤務時間数
@@ -99,25 +94,14 @@ public class MonthlyReportInfo {
 	 * ﾛｹｰｼｮﾝ名
 	 */
 	private String locationName;
-	
+
+	/**
+	 * 合計行フラグ
+	 */
+	private Boolean totleFlg;
+
 	//#################################
 	//#################################
-
-	public String getLocationCode() {
-		return locationCode;
-	}
-
-	public void setLocationCode(String locationCode) {
-		this.locationCode = locationCode;
-	}
-
-	public String getLocationName() {
-		return locationName;
-	}
-
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
 
 	public String getDay() {
 		return day;
@@ -183,6 +167,14 @@ public class MonthlyReportInfo {
 		this.workETime = workETime;
 	}
 
+	public Double getRestHours() {
+		return restHours;
+	}
+
+	public void setRestHours(Double restHours) {
+		this.restHours = restHours;
+	}
+
 	public Double getWorkHours() {
 		return workHours;
 	}
@@ -239,20 +231,28 @@ public class MonthlyReportInfo {
 		this.mNHours = mNHours;
 	}
 
-	public String getRestKbn() {
-		return restKbn;
+	public String getLocationCode() {
+		return locationCode;
 	}
 
-	public void setRestKbn(String restKbn) {
-		this.restKbn = restKbn;
+	public void setLocationCode(String locationCode) {
+		this.locationCode = locationCode;
 	}
 
-	public String getRestKbnName() {
-		return restKbnName;
+	public String getLocationName() {
+		return locationName;
 	}
 
-	public void setRestKbnName(String restKbnName) {
-		this.restKbnName = restKbnName;
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public Boolean getTotleFlg() {
+		return totleFlg;
+	}
+
+	public void setTotleFlg(Boolean totleFlg) {
+		this.totleFlg = totleFlg;
 	}
 	
 }
