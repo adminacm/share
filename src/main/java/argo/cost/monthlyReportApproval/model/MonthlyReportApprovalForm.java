@@ -29,18 +29,18 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	private String proStatus;
 	
 	/**
-	 * 月報承認一覧
+	 * 月報承認明細一覧
 	 */
 	private List<MonthlyReportApprovalVo> monthlyReportApprovalList;
-	
+
 	/**
 	 * プロジェクト情報
 	 */
 	private List<ProjectVo> projectList;
-	
-	//#################################
-	//#################################
 
+	//#################################
+	//#################################
+	
 	public String getApplyNo() {
 		return applyNo;
 	}
@@ -48,7 +48,7 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	public void setApplyNo(String applyNo) {
 		this.applyNo = applyNo;
 	}
-	
+
 	public String getProStatus() {
 		return proStatus;
 	}
@@ -61,7 +61,8 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 		return monthlyReportApprovalList;
 	}
 
-	public void setMonthlyReportApprovalList(List<MonthlyReportApprovalVo> monthlyReportApprovalList) {
+	public void setMonthlyReportApprovalList(
+			List<MonthlyReportApprovalVo> monthlyReportApprovalList) {
 		this.monthlyReportApprovalList = monthlyReportApprovalList;
 	}
 
@@ -72,4 +73,5 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	public void setProjectList(List<ProjectVo> projectList) {
 		this.projectList = projectList;
 	}
+	
 }

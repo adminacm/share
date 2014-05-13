@@ -61,8 +61,8 @@ public class MonthlyReportApprovalTest {
         assertEquals(resultList.get(0).getWorkSTime(), "10:00");
         // 退勤
         assertEquals(resultList.get(0).getWorkETime(), "20:30");
-        // 休暇欠勤区分名
-        assertEquals(resultList.get(0).getRestKbnName(), "時間休(有給休暇)	");
+        // 休暇時間数
+        assertEquals(resultList.get(0).getRestHours(), Double.valueOf(1.0));
         // 勤務時間数
         assertEquals(resultList.get(0).getWorkHours(), Double.valueOf(9.0));
         // 超勤開始
