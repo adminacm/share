@@ -75,10 +75,6 @@ public abstract class AbstractController {
 	 */
 	public static final String SEARCH = "/search";
 	/**
-	 * 超勤に振替える
-	 */
-	public static final String OVERWORK_EXCHANGE = "/overWorkExchange";
-	/**
 	 * 申請Ｎｏリンク
 	 */
 	public static final String APPLYNO_CLICK = "/applyNoClick";

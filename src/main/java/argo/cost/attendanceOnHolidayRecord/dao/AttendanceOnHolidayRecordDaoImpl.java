@@ -22,7 +22,7 @@ public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayReco
 	 *        休日振替勤務リスト
 	 */
 	@Override
-	public List<HolidayExchangeWorkVO> searchholidayExchangeWorkList(
+	public List<HolidayExchangeWorkVO> getHolidayExchangeWorkList(
 			String yearPeriod, String userName) {
 
 		// TODO ＤＢから休日振替勤務情報を取得
@@ -46,7 +46,7 @@ public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayReco
 	 *        休日勤務リスト
 	 */
 	@Override
-	public List<HolidayOverWorkVO> searchholidayOverWorkList(String yearPeriod,
+	public List<HolidayOverWorkVO> getHolidayOverWorkList(String yearPeriod,
 			String userName) {
 
 		// TODO ＤＢから休日勤務情報を取得
