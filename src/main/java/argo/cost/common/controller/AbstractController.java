@@ -75,10 +75,6 @@ public abstract class AbstractController {
 	 */
 	public static final String SEARCH = "/search";
 	/**
-	 * 申請Ｎｏリンク
-	 */
-	public static final String APPLYNO_CLICK = "/applyNoClick";
-	/**
 	 * 承認
 	 */
 	public static final String APPROVAL = "/approval";

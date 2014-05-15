@@ -18,7 +18,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 * 承認一覧DAO
 	 */	
 	@Autowired
-	private ApprovalListDao appDao;
+	private ApprovalListDao approvalListDao;
 	
 	/**
 	 * 共通DAO
@@ -40,7 +40,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 		List<ApprovalListVo> appList = new ArrayList<ApprovalListVo>();
 		
 		// ＤＢから、承認一覧リストを取得
-		List<ApprovalList> appEList = appDao.getApprovalList(status);
+		List<ApprovalList> appEList = approvalListDao.getApprovalList(status);
 		
 		// TODO
 		if (appEList != null && appEList.size() > 0) {
@@ -52,7 +52,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 				// 申請区分コード
 				appInfo.setApplyKbnCd(approval.getApplyKbn());
 				// 申請区分名
-				appInfo.setApplyKbnName(appDao.findApplyKbnName(approval.getApplyKbn()));
+				appInfo.setApplyKbnName(approvalListDao.findApplyKbnName(approval.getApplyKbn()));
 				// 申請内容
 				appInfo.setApplyDetail(approval.getApplyDetail());
 				// 状況
