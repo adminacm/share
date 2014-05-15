@@ -31,7 +31,7 @@ public class HolidayRecordTest extends AbstractTransactionalJUnit4SpringContextT
 		
 		form.setYearPeriod("2014");
 		
-		holidayS.searchHolidayRecord(form);
+		holidayS.setHolidayRecordInfo(form);
 		
 		assertEquals(form.getPayHolidayList().size(), 5);
 		assertEquals(form.getPayHolidayList().get(0).getPayHolidayDate(), "2013/5/1");

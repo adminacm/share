@@ -19,7 +19,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 *            年度
 	 */
 	@Override
-	public List<PayHolidayVO> searchPayHolidayList(String yearPeriod) {
+	public List<PayHolidayVO> getPayHolidayList(String yearPeriod) {
 		// TODO ＤＢから有給休暇情報を取得
 		List<PayHolidayVO> payHolidayList = new ArrayList<PayHolidayVO>();
 		PayHolidayVO payHolidayVO = new PayHolidayVO();
@@ -63,7 +63,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 *            年度
 	 */
 	@Override
-	public List<AbsenceVO> searchAbsenceList(String yearPeriod) {
+	public List<AbsenceVO> getAbsenceList(String yearPeriod) {
 		// TODO ＤＢから欠勤情報を取得
 		List<AbsenceVO> absenceList = new ArrayList<AbsenceVO>();
 		AbsenceVO absenceVO = new AbsenceVO();
@@ -86,7 +86,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 *            年度
 	 */
 	@Override
-	public List<SpecialHolidayVO> searchSpecialHolidayList(String yearPeriod) {
+	public List<SpecialHolidayVO> getSpecialHolidayList(String yearPeriod) {
 		// TODO 特別休暇情報を取得
 		List<SpecialHolidayVO> specialHolidayList = new ArrayList<SpecialHolidayVO>();
 		SpecialHolidayVO specialHolidayVO = new SpecialHolidayVO();
