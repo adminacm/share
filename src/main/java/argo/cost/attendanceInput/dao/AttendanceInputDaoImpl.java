@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
+import argo.cost.attendanceInput.model.AttendanceInputForm;
 import argo.cost.attendanceInput.model.AttendanceProject;
 import argo.cost.attendanceInput.model.HolidayRecord;
 import argo.cost.attendanceInput.model.WorkTimeDetail;
@@ -193,5 +194,24 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * 就業データを取得
+	 * 
+	 * @param form 
+	 * 				画面情報
+	 * 
+	 * @return 更新結果　０：更新失敗　１：更新成功
+	 */
+	@Override
+	public Integer updateAttdendanceInfo(AttendanceInputForm form) {
+		// TODO 自動生成されたメソッド・スタブ
+
+		// 更新成功の場合
+		if ("user01".equals(form.getUserId())) {
+			return 1;
+		}
+		return 0;
 	}
 }

@@ -38,7 +38,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	protected ComService comService;
 
 	@Autowired
-	AttendanceInputDao attDao;
+	AttendanceInputDao attendanceInputDao;
 
 	/**
 	 * 休暇欠勤区分プルダウンリスト取得
@@ -48,7 +48,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public List<ListItemVO> getHolidayLackingItem() {
 
-		return attDao.getHolidayLackingItem();
+		return attendanceInputDao.getHolidayLackingItem();
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public List<ListItemVO> getWorkItemList() {
 		// TODO 自動生成されたメソッド・スタブ
-		List<ListItemVO> resultList = attDao.getWorkItemList();
+		List<ListItemVO> resultList = attendanceInputDao.getWorkItemList();
 		return resultList;
 	}
 
@@ -73,7 +73,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public List<ListItemVO> getLocationItemList() {
 		// TODO 自動生成されたメソッド・スタブ
-		List<ListItemVO> resultList = attDao.getLocationItemList();
+		List<ListItemVO> resultList = attendanceInputDao.getLocationItemList();
 		return resultList;
 	}
 
@@ -133,7 +133,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public HolidayRecord getHolidayRecord(String userId, String yyyymmdd) {
 		// TODO 自動生成されたメソッド・スタブ
-		HolidayRecord record = attDao.getHolidayRecord(userId, yyyymmdd);
+		HolidayRecord record = attendanceInputDao.getHolidayRecord(userId, yyyymmdd);
 		return record;
 	}
 
@@ -151,7 +151,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	public List<AttendanceProject> getProjectList(String userId, String yyyymmdd)
 			throws ParseException {
 		// TODO 自動生成されたメソッド・スタブ　
-		List<AttendanceProject> result = attDao.getProjectList(userId, yyyymmdd);
+		List<AttendanceProject> result = attendanceInputDao.getProjectList(userId, yyyymmdd);
 
 		for (int i = 0; i < result.size(); i++) {
 			AttendanceProject pro = result.get(i);
@@ -175,7 +175,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public WorkTimeDetail getWorkTimeDetail(String userId, String yyyymmdd) {
 		// TODO 自動生成されたメソッド・スタブ Daoへ移動予定
-		WorkTimeDetail info = attDao.getWorkTimeDetail(userId, yyyymmdd);
+		WorkTimeDetail info = attendanceInputDao.getWorkTimeDetail(userId, yyyymmdd);
 		return info;
 	}
 
@@ -269,24 +269,16 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	}
 
 	/**
-	 * 就業データを取得
+	 * 就業データを更新
 	 * 
 	 * @param form
 	 *            画面情報
-	 * @param newDate
-	 *            日付
-	 * @param userId
-	 *            ユーザID
 	 */
 	@Override
 	public Integer updateAttdendanceInfo(AttendanceInputForm form) {
 		// TODO 自動生成されたメソッド・スタブ
 
-		// 更新成功の場合
-		if (true) {
-			return 1;
-		}
-		return 0;
+		return attendanceInputDao.updateAttdendanceInfo(form);
 	}
 
 	/**
