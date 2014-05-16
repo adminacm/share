@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.dao.MonthlyReportStatusListDao;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
@@ -33,7 +33,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 * 月報状況一覧DAO
 	 */
 	@Autowired
-	MonthlyReportStatusListDao mRSDao;
+	MonthlyReportStatusListDao monthlyReportStatusListDao;
 	
 	/**
 	 * 共通DAO
@@ -55,11 +55,11 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		List<MonthlyReportStatusListInfo> mRSList = new ArrayList<MonthlyReportStatusListInfo>();
 		
 		// ＤＢから、月報状況一覧リストを取得
-		List<ApprovalList> mRSEList = mRSDao.getMonthlyReportStatusList(form);
+		List<ApprovalListEntity> mRSEList = monthlyReportStatusListDao.getMonthlyReportStatusList(form);
 		
 		if (mRSEList != null && mRSEList.size() > 0) {
 			for (int i = 0; i < mRSEList.size(); i++) {
-				ApprovalList mRSInfo = mRSEList.get(i);
+				ApprovalListEntity mRSInfo = mRSEList.get(i);
 				MonthlyReportStatusListInfo appInfo = new MonthlyReportStatusListInfo();
 				// ID
 				appInfo.setId(mRSInfo.getId());
@@ -173,13 +173,12 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	public List<ListItemVO> getAffiliationList() {
 		
 		// ＤＢから、所属プルダウンリスト取得
-		 List<ListItemVO> affiliationList = mRSDao.getAffiliationList();
+		 List<ListItemVO> affiliationList = monthlyReportStatusListDao.getAffiliationList();
 		
 		return affiliationList;
 	}
 
 	/**
-	 * 
 	 * CSVファイルを作成
 	 * 
 	 * @param form
@@ -194,7 +193,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	public void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
 		
 		// 給与奉行向けCSVファイル情報を取得
-		List<PayMagistrateCsvInfo> csvDetailList = mRSDao.getPayMagistrateCsvList(form);
+		List<PayMagistrateCsvInfo> csvDetailList = monthlyReportStatusListDao.getPayMagistrateCsvList(form);
 		try {
 			String path = "D:\\";
 			
@@ -235,7 +234,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 * @param csvDetailList
 	 * 	     	   ＣＳＶファイル詳細データリスト
 	 * @param response
-	 * 
+	 *           レスポンス
 	 * @throws Exception
 	 */
 	 private void exportCsvfiles(String path, String fileName, List<String> titleList, List<PayMagistrateCsvInfo> csvDetailList, HttpServletResponse response) throws Exception {

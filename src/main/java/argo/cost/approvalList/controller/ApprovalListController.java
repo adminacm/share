@@ -33,7 +33,7 @@ public class ApprovalListController extends AbstractController  {
 	 * このアクションが利用するサービスです。
 	 */
 	@Autowired
-	protected ApprovalListService service;
+	protected ApprovalListService approvalListService;
 
 	/**
 	 * 承認一覧画面URL
@@ -48,7 +48,7 @@ public class ApprovalListController extends AbstractController  {
 	 * @return
 	 */
     @RequestMapping(INIT)
-    public String init(Model model) {
+    public String initApprovalList(Model model) {
     	
     	// 画面情報を作成
     	ApprovalListForm form = new ApprovalListForm();
@@ -64,7 +64,7 @@ public class ApprovalListController extends AbstractController  {
     	form.setStatus("");
     	
     	// 承認リストを取得
-    	List<ApprovalListVo> approvalList = service.getApprovalList(form.getStatus());
+    	List<ApprovalListVo> approvalList = approvalListService.getApprovalList(form.getStatus());
     	
     	form.setApprovalList(approvalList);
     	
@@ -79,10 +79,10 @@ public class ApprovalListController extends AbstractController  {
      * @return
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String search(ApprovalListForm form) {
+    public String searchApprovalList(ApprovalListForm form) {
     	
     	// 承認リストを取得
-    	List<ApprovalListVo> approvalList = service.getApprovalList(form.getStatus());
+    	List<ApprovalListVo> approvalList = approvalListService.getApprovalList(form.getStatus());
     	
     	form.setApprovalList(approvalList);
 
@@ -96,7 +96,7 @@ public class ApprovalListController extends AbstractController  {
      *         画面情報
      * @return
      */
-    @RequestMapping(value = APPLYNO_CLICK)
+    @RequestMapping(value = "/applyNoClick")
     public String approvalNoClick(ApprovalListForm form, @RequestParam("applyNo") String applyNo, @RequestParam("applyKbnCd") String applyKbnCd) {
     	
     	String str = "";

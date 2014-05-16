@@ -3,13 +3,13 @@ package argo.cost.monthlyReportStatusList.dao;
 import java.util.List;
 
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 
 /**
  * <p>
- * 承認一覧のアクセスクラスを提供します。
+ * 月報状況一覧のアクセスクラスを提供します。
  * </p>
  *
  * @author COST argo Corporation.
@@ -17,13 +17,13 @@ import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 public interface MonthlyReportStatusListDao {
 
 	/**
-	 * 承認一覧リストを取得
+	 * 月報状況一覧リストを取得
 	 * 
 	 * @param status
 	 *           状況
-	 * @return 承認リスト
+	 * @return 月報状況一覧リスト
 	 */
-	List<ApprovalList> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
+	List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
 
 	/**
 	 * 所属プルダウンリスト取得

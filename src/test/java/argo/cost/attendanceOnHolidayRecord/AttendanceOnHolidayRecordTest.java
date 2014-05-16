@@ -32,7 +32,7 @@ public class AttendanceOnHolidayRecordTest extends AbstractTransactionalJUnit4Sp
 		form.setYearPeriod("2014");
 		form.setUserName("li");
 		
-		serviceImpl.searchAttendanceOnHolidayRecord(form);
+		serviceImpl.setAttendanceOnHolidayRecordInfo(form);
 		
 		assertEquals(form.getHolidayExchangeWorkList().size(), 1);
 		assertEquals(form.getHolidayExchangeWorkList().get(0).getHolidayTurnedWorkingDate(), "2014/5/5");

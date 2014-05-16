@@ -14,17 +14,16 @@ import argo.cost.attendanceOnHolidayRecord.model.HolidayOverWorkVO;
 public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHolidayRecordService {
 	
 	@Autowired
-	private AttendanceOnHolidayRecordDao recordDao;
+	private AttendanceOnHolidayRecordDao attendanceOnHolidayRecordDao;
 
 	/**
-	 * 休暇休日出勤管理情報取得
+	 * 休暇休日出勤管理情報セット
 	 * 
 	 * @param form
 	 *            休日出勤管理画面情報
 	 */
 	@Override
-	public void searchAttendanceOnHolidayRecord(
-			AttendanceOnHolidayRecordForm form) {
+	public void setAttendanceOnHolidayRecordInfo(AttendanceOnHolidayRecordForm form) {
 
 		// 年度を取得
 		String strYearPeriod = form.getYearPeriod();
@@ -33,14 +32,13 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		String strUserName = form.getUserName();
 		
 		// 休日振替勤務情報を取得
-		List<HolidayExchangeWorkVO> holidayExchangeWorkList = recordDao.searchholidayExchangeWorkList(strYearPeriod, strUserName);
-		
+		List<HolidayExchangeWorkVO> holidayExchangeWorkList = attendanceOnHolidayRecordDao.getHolidayExchangeWorkList(strYearPeriod, strUserName);
 		// 休日勤務情報を取得
-		List<HolidayOverWorkVO> holidayOverWorkList = recordDao.searchholidayOverWorkList(strYearPeriod, strUserName);
-		
-		form.setHolidayExchangeWorkList(holidayExchangeWorkList);
-		form.setHolidayOverWorkList(holidayOverWorkList);
-		
-	}
+		List<HolidayOverWorkVO> holidayOverWorkList = attendanceOnHolidayRecordDao.getHolidayOverWorkList(strYearPeriod, strUserName);
 
+		// 休日振替勤務情報
+		form.setHolidayExchangeWorkList(holidayExchangeWorkList);
+		// 休日勤務情報をセット
+		form.setHolidayOverWorkList(holidayOverWorkList);
+	}
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import argo.cost.approvalList.dao.ApprovalListDao;
 import argo.cost.approvalList.model.ApprovalListVo;
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 
 @Service
 public class ApprovalListServiceImpl implements ApprovalListService {
@@ -18,7 +18,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 * 承認一覧DAO
 	 */	
 	@Autowired
-	private ApprovalListDao appDao;
+	private ApprovalListDao approvalListDao;
 	
 	/**
 	 * 共通DAO
@@ -40,19 +40,19 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 		List<ApprovalListVo> appList = new ArrayList<ApprovalListVo>();
 		
 		// ＤＢから、承認一覧リストを取得
-		List<ApprovalList> appEList = appDao.getApprovalList(status);
+		List<ApprovalListEntity> appEList = approvalListDao.getApprovalList(status);
 		
 		// TODO
 		if (appEList != null && appEList.size() > 0) {
 			for (int i = 0; i < appEList.size(); i++) {
-				ApprovalList approval = appEList.get(i);
+				ApprovalListEntity approval = appEList.get(i);
 				ApprovalListVo appInfo = new ApprovalListVo();
 				// No.
 				appInfo.setApplyNo(approval.getApplyNo());
 				// 申請区分コード
 				appInfo.setApplyKbnCd(approval.getApplyKbn());
 				// 申請区分名
-				appInfo.setApplyKbnName(appDao.findApplyKbnName(approval.getApplyKbn()));
+				appInfo.setApplyKbnName(approvalListDao.findApplyKbnName(approval.getApplyKbn()));
 				// 申請内容
 				appInfo.setApplyDetail(approval.getApplyDetail());
 				// 状況

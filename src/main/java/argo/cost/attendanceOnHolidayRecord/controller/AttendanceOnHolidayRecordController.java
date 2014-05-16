@@ -31,7 +31,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	 * 休日出勤管理サービス
 	 */
 	@Autowired
-	protected AttendanceOnHolidayRecordService recordService;
+	protected AttendanceOnHolidayRecordService attendanceOnHolidayRecordService;
 
 	/**
 	 * 休日出勤管理画面URL
@@ -64,7 +64,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		form.setUserName(form.getUserId());
 		
 		// 画面情報を設定する。
-		recordService.searchAttendanceOnHolidayRecord(form);
+		attendanceOnHolidayRecordService.setAttendanceOnHolidayRecordInfo(form);
 		
 		model.addAttribute(form);
 
@@ -83,12 +83,8 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	public String searchAttendanceOnHolidayRecord(AttendanceOnHolidayRecordForm form) {
 		
 		// 画面情報を設定する。
-		recordService.searchAttendanceOnHolidayRecord(form);
+		attendanceOnHolidayRecordService.setAttendanceOnHolidayRecordInfo(form);
 		
-		System.out.println("休日出勤管理の情報検索メッソドを実行されました");
-
 		return ATTENDANCE_ONHOLIDAY_RECORD;
-
 	}
-
 }

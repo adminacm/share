@@ -33,11 +33,6 @@ public class HolidayRecordController extends AbstractController {
 	protected HolidayRecordService holidayRecordService;
 
 	/**
-	 * 休暇管理情報
-	 */
-	private static final String HOLIDAY_RECOR_INFO = "holidayRecordInfo";
-
-	/**
 	 * 休暇管理画面URL
 	 */
 	private static final String HOLIDAY_RECORD = "holidayRecord";
@@ -62,8 +57,8 @@ public class HolidayRecordController extends AbstractController {
 		holidayRecordForm.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
 		
 		// 画面情報を設定する。
-		holidayRecordService.searchHolidayRecord(holidayRecordForm);
-		model.addAttribute(HOLIDAY_RECOR_INFO, holidayRecordForm);
+		holidayRecordService.setHolidayRecordInfo(holidayRecordForm);
+		model.addAttribute(holidayRecordForm);
 
 		return HOLIDAY_RECORD;
 
@@ -80,13 +75,8 @@ public class HolidayRecordController extends AbstractController {
 	public String searchHolidayRecord(HolidayRecordForm holidayRecordForm) {
 		
 		// 画面情報を設定する。
-		holidayRecordService.searchHolidayRecord(holidayRecordForm);
-		
-		
-		System.out.println("休暇管理の情報検索メッソドを実行されました");
+		holidayRecordService.setHolidayRecordInfo(holidayRecordForm);
 
 		return HOLIDAY_RECORD;
-
 	}
-
 }

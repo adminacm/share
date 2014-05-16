@@ -17,7 +17,7 @@ public interface AttendanceOnHolidayRecordDao {
 	 * @return
 	 *        休日振替勤務リスト
 	 */
-	List<HolidayExchangeWorkVO> searchholidayExchangeWorkList(String yearPeriod, String userName);
+	List<HolidayExchangeWorkVO> getHolidayExchangeWorkList(String yearPeriod, String userName);
 	
 	/**
 	 * 休日勤務情報取得
@@ -29,6 +29,6 @@ public interface AttendanceOnHolidayRecordDao {
 	 * @return
 	 *        休日勤務リスト
 	 */
-	List<HolidayOverWorkVO> searchholidayOverWorkList(String yearPeriod, String userName);
+	List<HolidayOverWorkVO> getHolidayOverWorkList(String yearPeriod, String userName);
 
 }

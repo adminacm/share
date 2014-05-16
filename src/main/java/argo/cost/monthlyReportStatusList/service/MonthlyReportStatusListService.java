@@ -55,13 +55,15 @@ public interface MonthlyReportStatusListService {
 	List<ListItemVO> getAffiliationList();
 
 	/**
-	 * 
 	 * CSVファイルを作成
 	 * 
 	 * @param form
 	 *           月報状況一覧情報
      * @param response
      *         レスポンス
+	 * @return
+	 *        CSVファイル情報
+	 * @throws Exception 
 	 */
 	void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception;
 }

@@ -2,7 +2,7 @@ package argo.cost.approvalList.dao;
 
 import java.util.List;
 
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ public interface ApprovalListDao {
 	 *              状況
 	 * @return 承認リスト
 	 */
-	List<ApprovalList> getApprovalList(String status);
+	List<ApprovalListEntity> getApprovalList(String status);
 
 	/**
 	 * 申請区分名を取得

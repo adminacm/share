@@ -6,13 +6,13 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 
 /**
  * <p>
- * 承認一覧のアクセスクラスを提供します。
+ * 月報状況一覧のアクセスクラスを提供します。
  * </p>
  *
  * @author COST argo Corporation.
@@ -21,37 +21,37 @@ import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDao {
 
 	/**
-	 * 承認一覧リストを取得
+	 * 月報状況一覧リストを取得
 	 * 
 	 * @param status
 	 *           状況
-	 * @return 承認リスト
+	 * @return 月報状況一覧リスト
 	 */
 	@Override
-	public List<ApprovalList> getMonthlyReportStatusList(MonthlyReportStatusListForm form) {
+	public List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm form) {
 
 		// TODO:仮の値を与える
-		List<ApprovalList> appList = new ArrayList<ApprovalList>();
+		List<ApprovalListEntity> resultList = new ArrayList<ApprovalListEntity>();
 		
-		ApprovalList appInfo = new ApprovalList();
-		appInfo.setApplyKbn("月報");
-		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("01");
-		appInfo.setAffiliation("ＢＳ２");
-		appInfo.setId("aaa");
-		appInfo.setName("あｘｘｘｘｘ");
-		appList.add(appInfo);
+		ApprovalListEntity itemInfo = new ApprovalListEntity();
+		itemInfo.setApplyKbn("月報");
+		itemInfo.setApplyDetail("2014年5月分");
+		itemInfo.setStatus("01");
+		itemInfo.setAffiliation("ＢＳ２");
+		itemInfo.setId("aaa");
+		itemInfo.setName("あｘｘｘｘｘ");
+		resultList.add(itemInfo);
 		
-		appInfo = new ApprovalList();
-		appInfo.setApplyKbn("月報");
-		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("02");
-		appInfo.setAffiliation("ＢＳ２");
-		appInfo.setId("uuu");
-		appInfo.setName("うｘｘｘｘｘ");
-		appList.add(appInfo);
+		itemInfo = new ApprovalListEntity();
+		itemInfo.setApplyKbn("月報");
+		itemInfo.setApplyDetail("2014年5月分");
+		itemInfo.setStatus("02");
+		itemInfo.setAffiliation("ＢＳ２");
+		itemInfo.setId("uuu");
+		itemInfo.setName("うｘｘｘｘｘ");
+		resultList.add(itemInfo);
 		
-		return appList;
+		return resultList;
 	}
 
 	/**
