@@ -8,46 +8,36 @@ import org.springframework.stereotype.Repository;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.model.ListItemVO;
 
+/**
+ * 休日勤務入力画面DAOの実現
+ *
+ * @author COST argo Corporation.
+ */
 @Repository
 public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 
 	/**
-	 * 当日休日勤務情報有無チャック
-	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @param date
-	 *            当前の日付
-	 * @return 当日休日勤務情報有無
-	 */
-	@Override
-	public boolean atendanceOnHolidayDataChk(String userId, String date) {
-		// TODO データベースで当日休日勤務情報を検索する
-		return false;
-	}
-
-	/**
 	 * 当日休日勤務情報取得
 	 * 
-	 * @param userId
+	 * @param userID
 	 *            ユーザID
-	 * @param date
+	 * @param currentDate
 	 *            当前の日付
 	 * @return 当日休日勤務情報
 	 */
 	@Override
-	public AtendanceOnHolidayForm atendanceOnHolidayDataGet(String userId, String date) {
+	public AtendanceOnHolidayForm atendanceOnHolidayDataGet(String userID, String currentDate) {
 		
 		// TODO ユーザーIDと当前の日付によって、DBから休日勤務情報取得、専用のEntityクラスが必要です
 		AtendanceOnHolidayForm atendanceOnHoliday = null;
 		
 		// 仮：データが存在する場合
-		if (StringUtils.equals("20140405", date)) {
+		if (StringUtils.equals("20140405", currentDate)) {
 			
 			atendanceOnHoliday = new AtendanceOnHolidayForm();
 			
 			// 勤務日付
-			atendanceOnHoliday.setStrAtendanceDate(date);
+			atendanceOnHoliday.setStrAtendanceDate(currentDate);
 			// 勤務区分
 			atendanceOnHoliday.setSelectedAtendanceDayKbn("03");
 			// 勤務開始時間

@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.model.ListItemVO;
 
+/**
+ * 休日勤務入力画面サービスのインタフェース
+ *
+ * @author COST argo Corporation.
+ */
 public interface AtendanceOnHolidayService {
 
 	/**
@@ -13,11 +18,11 @@ public interface AtendanceOnHolidayService {
 	 * 
 	 * @param form
 	 *            休日勤務画面情報
-	 * @param date
+	 * @param currentDate
 	 *            勤怠入力画面から渡した休日の日付
 	 * 
 	 */
-	void setAtendanceOnHolidayInfo(AtendanceOnHolidayForm form, String date) throws ParseException;
+	void setAtendanceOnHolidayInfo(AtendanceOnHolidayForm atendanceOnHolidayForm, String currentDate) throws ParseException;
 
 	/**
 	 * 勤務日区分リストを取得
@@ -37,7 +42,7 @@ public interface AtendanceOnHolidayService {
 	 * 
 	 * @return 休日勤務データ保存結果
 	 */
-	String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday,String UserID);
+	String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHolidayForm,String UserID);
 	
 	/**
 	 * 休日勤務データ削除
