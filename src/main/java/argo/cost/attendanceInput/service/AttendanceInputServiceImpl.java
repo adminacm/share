@@ -2,7 +2,6 @@ package argo.cost.attendanceInput.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -151,16 +150,12 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public List<AttendanceProject> getProjectList(String userId, String yyyymmdd)
 			throws ParseException {
-		// TODO 自動生成されたメソッド・スタブ　Daoを利用する予定
-		List<AttendanceProject> result = new ArrayList<AttendanceProject>();
+		// TODO 自動生成されたメソッド・スタブ　
+		List<AttendanceProject> result = attDao.getProjectList(userId, yyyymmdd);
 
-		AttendanceProject pro = null;
-		for (int i = 0; i < 1; i++) {
-			pro = new AttendanceProject();
-			pro.setHours(3.5);
+		for (int i = 0; i < result.size(); i++) {
+			AttendanceProject pro = result.get(i);
 			pro.setProjectItemList(comService.getProjectNameList(userId));
-			pro.setProjectId("01");
-			pro.setWorkId("01");
 			pro.setWorkItemList(getWorkItemList());
 			result.add(pro);
 		}
@@ -180,25 +175,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public WorkTimeDetail getWorkTimeDetail(String userId, String yyyymmdd) {
 		// TODO 自動生成されたメソッド・スタブ Daoへ移動予定
-		WorkTimeDetail info = new WorkTimeDetail();
-		info.setUserId(userId);
-		info.setWorkDate(yyyymmdd);
-		info.setKinmuKbn("01");
-		info.setShiftCode("0900");
-		info.setKinmuSTime("09:00");
-		info.setKinmuEtime("23:30");
-		info.setSykaKetukinKbn("");
-		info.setBikou("桜美林大学留学生管理システム保守：お客様問合せの対応");
-		info.setFurikaeDate("");
-		info.setSykaKetukinhours(0.0);
-		info.setKinmuHours(0.0);
-		info.setTyokinStime("18:00");
-		info.setTyokinEtime("23:00");
-		info.setTyokinHeijiHours(4.0);
-		info.setTyokinHeijiTujyoHours(0.0);
-		info.setTyokinKyujiHours(0.0);
-		info.setSynyaKinmuHours(1.5);
-		info.setStatus("01");
+		WorkTimeDetail info = attDao.getWorkTimeDetail(userId, yyyymmdd);
 		return info;
 	}
 

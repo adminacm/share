@@ -29,7 +29,7 @@ public class MonthlyReportTest {
 		Date date = new Date();
 		
 		// 年月設定
-		String yearMonth = MonRS.ｇetDateFormat(date);
+		String yearMonth = MonRS.getDateFormat(date);
 		
 		// 年月
 		assertEquals(yearMonth, "2014年03月");

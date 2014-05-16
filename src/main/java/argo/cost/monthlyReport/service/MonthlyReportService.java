@@ -16,7 +16,7 @@ public interface MonthlyReportService {
 	 * 
 	 * @return フォーマット日付
 	 */
-	String ｇetDateFormat(Date date);
+	String getDateFormat(Date date);
 	
 	/**
 	 * 月報一覧を取得

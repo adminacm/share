@@ -22,6 +22,16 @@ import argo.cost.menu.model.MenueForm;
 @SessionAttributes(types = { MenueForm.class })
 public class MenuController extends AbstractController {
     
+	/**
+	 * メニュー画面初期化
+	 * 
+	 * @param model
+	 *            画面情報
+	 * @param request
+	 *            リクエスト情報
+	 *            
+	 * @return　メニュー画面Url
+	 */
     @RequestMapping(value = INIT)
     public String doLogin(Model model, HttpServletRequest request) {
     	
@@ -62,15 +72,11 @@ public class MenuController extends AbstractController {
     }
     
     /**
-	 * 初期化
+	 * 勤怠入力画面へ
 	 *
-	 * @param map
-	 *            マップ
-	 * @param loginId
-	 *            ユーザID
-	 * @return
-	 * @throws Exception
-	 *             Exception
+	 * @param model
+	 *            画面情報
+	 * @return　勤怠入力画面
 	 */
     @RequestMapping("/att")
     public String goAttdanceInput(Model model) {
@@ -78,7 +84,7 @@ public class MenuController extends AbstractController {
 		// セッション情報設定
     	getSession().setForm("Menu");
 
-		return "redirect:/attendanceInput/init?attDate=";
+		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK+ "attDate=";
     }
 
 }

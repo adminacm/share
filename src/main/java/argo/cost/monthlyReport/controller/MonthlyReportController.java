@@ -31,7 +31,7 @@ public class MonthlyReportController extends AbstractController {
 	 * このアクションが利用するサービスです。
 	 */
 	@Autowired
-	protected MonthlyReportService service;
+	protected MonthlyReportService monthlyReportService;
 	/**
 	 * 月報画面URL
 	 */
@@ -58,7 +58,7 @@ public class MonthlyReportController extends AbstractController {
 	 *             Exception
 	 */
     @RequestMapping(value = INIT)
-    public String init(Model model, @RequestParam("newMonth") String newMonth) throws Exception {
+    public String initMonthlyReport(Model model, @RequestParam("newMonth") String newMonth) throws Exception {
     	
     	String loginId = getSession().getUserInfo().getId();
     	// フォーム初期化
@@ -76,26 +76,26 @@ public class MonthlyReportController extends AbstractController {
     	// 氏名の初期値設定
     	form.setUserCode(loginId);
     	// 最後の提出年月取得
-    	String date = service.getUserMonth(loginId);
+    	String date = monthlyReportService.getUserMonth(loginId);
     	// 初期以外の場合
     	if (StringUtils.isNotEmpty(newMonth)) {
     		date = newMonth.substring(0,6).concat("01");
     	}
     	form.setYearMonth(date);
     	Date formatDate = CostDateUtils.toDate(date);
-    	form.setYearMonthHyoji(service.ｇetDateFormat(formatDate));
+    	form.setYearMonthHyoji(monthlyReportService.getDateFormat(formatDate));
     	// 提出状態取得
     	String status = comService.getMonthStatus(loginId, date);
     	form.setProStatus(status);
     	
-    	List<MonthlyReportInfo> resultList = service.getMonReList(formatDate);
+    	List<MonthlyReportInfo> resultList = monthlyReportService.getMonReList(formatDate);
     	
     	form.setmRList(resultList);
     	// 月報情報の設定
-    	service.setUserMonthReport(loginId, date, resultList);
+    	monthlyReportService.setUserMonthReport(loginId, date, resultList);
     	
 		// 【PJ別作業時間集計】を取得
-		List<ProjectVo> projectList = service.getProjectList(loginId, date);
+		List<ProjectVo> projectList = monthlyReportService.getProjectList(loginId, date);
 		
 		// プロジェクト情報設定
 		form.setProjectList(projectList);
@@ -113,33 +113,51 @@ public class MonthlyReportController extends AbstractController {
 	 *             Exception
 	 */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String search(MonthlyReportForm form) throws Exception {
+    public String searchMonthlyReportList(MonthlyReportForm form) throws Exception {
     	
     	String userId = form.getUserCode();
-    	List<MonthlyReportInfo> resultList = service.getMonReList(CostDateUtils.toDate(form.getYearMonth()));
+    	List<MonthlyReportInfo> resultList = monthlyReportService.getMonReList(CostDateUtils.toDate(form.getYearMonth()));
     	
     	form.setmRList(resultList);
     	
     	// 月報情報の設定
-    	service.setUserMonthReport(userId, form.getYearMonth(), resultList);
+    	monthlyReportService.setUserMonthReport(userId, form.getYearMonth(), resultList);
     	
         return MONTHLYREPORT;
     }
     
+    /**
+	 * 先月を取得
+	 *
+	 * @param form
+	 *            画面フォーム情報
+	 * @return 月報画面
+	 * @throws Exception
+	 *             Exception
+	 */
     @RequestMapping(value = LASTMONTH, method = RequestMethod.POST)
     public String getLastMonth(MonthlyReportForm form) throws Exception {
     	
     	// 先月を取得
-    	String lastMonth = service.changeYearMonth("last", form.getYearMonth());
+    	String lastMonth = monthlyReportService.changeYearMonth("last", form.getYearMonth());
     	
         return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + lastMonth;
     }
     
+    /**
+	 * 来月を取得
+	 *
+	 * @param form
+	 *            画面フォーム情報
+	 * @return 月報画面
+	 * @throws Exception
+	 *             Exception
+	 */
     @RequestMapping(value = nextMONTH, method = RequestMethod.POST)
     public String getNextMonth(MonthlyReportForm form) throws Exception {
     	
     	// 来月を取得
-    	String nextMonth = service.changeYearMonth("next", form.getYearMonth());
+    	String nextMonth = monthlyReportService.changeYearMonth("next", form.getYearMonth());
 
         return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + nextMonth;
     }

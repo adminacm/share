@@ -33,7 +33,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	/**
 	 * 月報処理Dao
 	 */
-	MonthlyReportDao dao = new MonthlyReportDaoImpl();
+	MonthlyReportDao monthlyReportDao = new MonthlyReportDaoImpl();
 
 	/**
 	 * 年月取得処理
@@ -43,7 +43,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	 * @return フォーマット日付
 	 */
 	@Override
-	public String ｇetDateFormat(Date date) {
+	public String getDateFormat(Date date) {
 
 		String formatDate = "";
 		// 日付が空白以外の場合
@@ -182,7 +182,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	@Override
 	public String getUserMonth(String userId) {
 		
-		return dao.getUserMonth(userId);
+		return monthlyReportDao.getUserMonth(userId);
 	}
 	
 	/**
@@ -211,7 +211,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 合計情報
 		MonthlyReportInfo totleInfo = new MonthlyReportInfo();
 		
-		List<MonthlyReportEntity> reportList = dao.getUserMonthReport(userId, date);
+		List<MonthlyReportEntity> reportList = monthlyReportDao.getUserMonthReport(userId, date);
 
 		for (int i = 0; i < monthList.size(); i++) {
 			
@@ -321,7 +321,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	@Override
 	public List<ProjectVo> getProjectList(String userId, String date) {
 		// TODO 自動生成されたメソッド・スタブ
-		return dao.getProjectList(userId, date);
+		return monthlyReportDao.getProjectList(userId, date);
 	}
 
 }

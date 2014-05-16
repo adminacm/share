@@ -52,7 +52,7 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = INIT)
-	public String init(Model model, @RequestParam("applyNo") String applyNo) throws Exception {
+	public String initHolidayForOvertimeApproval(Model model, @RequestParam("applyNo") String applyNo) throws Exception {
 
 		// 超勤振替申請承認情報を取得
 		HolidayForOvertimeApprovalForm holidayForOvertimeApprovalInfo = holidayForOvertimeApprovalService.getHolidayForOvertimeApproval(applyNo);
