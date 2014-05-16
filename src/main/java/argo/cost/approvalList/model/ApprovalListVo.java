@@ -2,7 +2,7 @@ package argo.cost.approvalList.model;
 
 /**
  * <p>
- * 承認リストを記載します。
+ * 承認リスト詳細情報クラス
  * </p>
  *
  */
@@ -12,7 +12,7 @@ public class ApprovalListVo {
 	// ** フィールド **
 	// ********************
 	/**
-	 * 申請No.
+	 * 申請番号
 	 */
 	private String applyNo;
 	
@@ -104,5 +104,4 @@ public class ApprovalListVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 }

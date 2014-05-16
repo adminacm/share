@@ -16,9 +16,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
-import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
+import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,21 +39,21 @@ public class MonthlyReportStatusListTest {
 		// 月報状況一覧画面入力情報
 		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
 
-		List<ApprovalList> appList = new ArrayList<ApprovalList>();
+		List<ApprovalListEntity> appList = new ArrayList<ApprovalListEntity>();
 		
-		ApprovalList appInfo = new ApprovalList();
+		ApprovalListEntity appInfo = new ApprovalListEntity();
 		appInfo.setApplyKbn("月報");
 		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("提出");
+		appInfo.setStatus("作成中");
 		appInfo.setAffiliation("ＢＳ２");
 		appInfo.setId("aaa");
 		appInfo.setName("あｘｘｘｘｘ");
 		appList.add(appInfo);
 		
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyKbn("月報");
 		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("作成中");
+		appInfo.setStatus("提出");
 		appInfo.setAffiliation("ＢＳ２");
 		appInfo.setId("uuu");
 		appInfo.setName("うｘｘｘｘｘ");
@@ -63,11 +63,13 @@ public class MonthlyReportStatusListTest {
 		form.setAffiliation("01");
 		// 状況
 		form.setStatus("01");
-		// 年月
-		form.setYearMonth("201403");
+		// 年
+		form.setYear("2014");
+		// 月
+		form.setMonth("3");
 		
 		// 月報状況一覧リスト取得
-		List<MonthlyReportStatusListInfo> monList = monS.getMonthlyReportStatusList(form);
+		List<MonthlyReportStatusListVo> monList = monS.getMonthlyReportStatusList(form);
 		
 		// 月報状況一覧リストのサイズ
 		assertEquals(monList.size(), 2);
@@ -88,10 +90,10 @@ public class MonthlyReportStatusListTest {
 	}
 
 	/**
-	 * 年月プルダウンリスト取得をテスト
+	 * 年プルダウンリスト取得をテスト
 	 */
 	@Test
-	public void testGetYearMonthList(){
+	public void testGetYearList(){
 
 		Date date = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -101,19 +103,37 @@ public class MonthlyReportStatusListTest {
 			e.printStackTrace();
 		}
 		
-		// 年月プルダウンリスト取得
-		List<ListItemVO> yearMonthList = monS.getYearMonthList(date);
+		// 年プルダウンリスト取得
+		List<ListItemVO> yearMonthList = monS.getYearList(date);
 		
-		// 年月プルダウンリストのサイズ
-		assertEquals(yearMonthList.size(), 4);
-		assertEquals(yearMonthList.get(0).getValue(), "20143");
-		assertEquals(yearMonthList.get(0).getName(), "2014年3月");
-		assertEquals(yearMonthList.get(1).getValue(), "20133");
-		assertEquals(yearMonthList.get(1).getName(), "2013年3月");
-		assertEquals(yearMonthList.get(2).getValue(), "20123");
-		assertEquals(yearMonthList.get(2).getName(), "2012年3月");
-		assertEquals(yearMonthList.get(3).getValue(), "20113");
-		assertEquals(yearMonthList.get(3).getName(), "2011年3月");
+		// 年プルダウンリストのサイズ
+		assertEquals(yearMonthList.size(), 3);
+		assertEquals(yearMonthList.get(0).getValue(), "2014");
+		assertEquals(yearMonthList.get(0).getName(), "2014年");
+		assertEquals(yearMonthList.get(1).getValue(), "2013");
+		assertEquals(yearMonthList.get(1).getName(), "2013年");
+		assertEquals(yearMonthList.get(2).getValue(), "2012");
+		assertEquals(yearMonthList.get(2).getName(), "2012年");
+		
+	}
+
+	/**
+	 * 月プルダウンリスト取得をテスト
+	 */
+	@Test
+	public void testGetMonthList(){
+
+		// 年プルダウンリスト取得
+		List<ListItemVO> yearMonthList = monS.getMonthList();
+		
+		// 年プルダウンリストのサイズ
+		assertEquals(yearMonthList.size(), 12);
+		assertEquals(yearMonthList.get(0).getValue(), "1");
+		assertEquals(yearMonthList.get(0).getName(), "1月");
+		assertEquals(yearMonthList.get(1).getValue(), "2");
+		assertEquals(yearMonthList.get(1).getName(), "2月");
+		assertEquals(yearMonthList.get(2).getValue(), "3");
+		assertEquals(yearMonthList.get(2).getName(), "3月");
 		
 	}
 
@@ -136,14 +156,14 @@ public class MonthlyReportStatusListTest {
 		resultList.add(item);
 		
 		// 所属プルダウンリスト取得
-		List<ListItemVO> yearMonthList = monS.getAffiliationList();
+		List<ListItemVO> affiliationList = monS.getAffiliationList();
 		
 		// 所属プルダウンリストのサイズ
-		assertEquals(yearMonthList.size(), 2);
-		assertEquals(yearMonthList.get(0).getValue(), resultList.get(0).getValue());
-		assertEquals(yearMonthList.get(0).getName(), resultList.get(0).getName());
-		assertEquals(yearMonthList.get(1).getValue(), resultList.get(1).getValue());
-		assertEquals(yearMonthList.get(1).getName(), resultList.get(1).getName());
+		assertEquals(affiliationList.size(), 3);
+		assertEquals(affiliationList.get(1).getValue(), resultList.get(0).getValue());
+		assertEquals(affiliationList.get(1).getName(), resultList.get(0).getName());
+		assertEquals(affiliationList.get(2).getValue(), resultList.get(1).getValue());
+		assertEquals(affiliationList.get(2).getName(), resultList.get(1).getName());
 		
 	}
 }

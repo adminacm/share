@@ -10,7 +10,7 @@ package argo.cost.attendanceOnHolidayRecord.model;
 public class HolidayExchangeWorkVO {
 
 	/**
-	 * 日付
+	 * 休日振替勤務日付
 	 */
 	private String holidayTurnedWorkingDate;
 
@@ -34,7 +34,4 @@ public class HolidayExchangeWorkVO {
 	public void setWorkingDayTurnedHolidayDate(String workingDayTurnedHolidayDate) {
 		this.workingDayTurnedHolidayDate = workingDayTurnedHolidayDate;
 	}
-
-	
-	
 }

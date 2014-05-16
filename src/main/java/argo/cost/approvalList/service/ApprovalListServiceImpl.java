@@ -9,8 +9,15 @@ import org.springframework.stereotype.Service;
 import argo.cost.approvalList.dao.ApprovalListDao;
 import argo.cost.approvalList.model.ApprovalListVo;
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 
+/**
+ * <p>
+ * 承認一覧サービス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class ApprovalListServiceImpl implements ApprovalListService {
 
@@ -18,7 +25,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 * 承認一覧DAO
 	 */	
 	@Autowired
-	private ApprovalListDao appDao;
+	private ApprovalListDao approvalListDao;
 	
 	/**
 	 * 共通DAO
@@ -30,45 +37,51 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 * 承認一覧リストを取得
 	 * 
 	 * @param status
-	 *           状況
+	 *              状況
 	 * @return 承認リスト
 	 */
 	@Override
 	public List<ApprovalListVo> getApprovalList(String status) {
 		
 		// 承認一覧リスト
-		List<ApprovalListVo> appList = new ArrayList<ApprovalListVo>();
+		List<ApprovalListVo> approvalList = new ArrayList<ApprovalListVo>();
 		
-		// ＤＢから、承認一覧リストを取得
-		List<ApprovalList> appEList = appDao.getApprovalList(status);
+		// ＤＢから、承認データを取得
+		List<ApprovalListEntity> approvalDate = approvalListDao.getApprovalList(status);
 		
-		// TODO
-		if (appEList != null && appEList.size() > 0) {
-			for (int i = 0; i < appEList.size(); i++) {
-				ApprovalList approval = appEList.get(i);
-				ApprovalListVo appInfo = new ApprovalListVo();
-				// No.
-				appInfo.setApplyNo(approval.getApplyNo());
-				// 申請区分コード
-				appInfo.setApplyKbnCd(approval.getApplyKbn());
-				// 申請区分名
-				appInfo.setApplyKbnName(appDao.findApplyKbnName(approval.getApplyKbn()));
-				// 申請内容
-				appInfo.setApplyDetail(approval.getApplyDetail());
-				// 状況
-				String statusName = comDao.findStatusName(approval.getStatus());
-				appInfo.setStatus(statusName);
-				// 所属
-				appInfo.setAffiliation(approval.getAffiliation());
-				// 氏名
-				appInfo.setName(approval.getName());
+		// 承認データが一件以上の場合
+		if (approvalDate != null && approvalDate.size() > 0) {
+			
+			for (int i = 0; i < approvalDate.size(); i++) {
 				
-				appList.add(appInfo);
+				// ＤＢ取得の承認データ
+				ApprovalListEntity approvalListEntity = approvalDate.get(i);
+				
+				// 画面表示の承認一覧情報
+				ApprovalListVo approvalListVo = new ApprovalListVo();
+				
+				// 申請No.
+				approvalListVo.setApplyNo(approvalListEntity.getApplyNo());
+				// 申請区分コード
+				approvalListVo.setApplyKbnCd(approvalListEntity.getApplyKbn());
+				// 申請区分名
+				approvalListVo.setApplyKbnName(approvalListDao.findApplyKbnName(approvalListEntity.getApplyKbn()));
+				// 申請内容
+				approvalListVo.setApplyDetail(approvalListEntity.getApplyDetail());
+				// 状況
+				String statusName = comDao.findStatusName(approvalListEntity.getStatus());
+				approvalListVo.setStatus(statusName);
+				// 所属
+				approvalListVo.setAffiliation(approvalListEntity.getAffiliation());
+				// 氏名
+				approvalListVo.setName(approvalListEntity.getName());
+				
+				approvalList.add(approvalListVo);
 			}
 		}
 		
-		// 承認一覧リスト
-		return appList;
+		// 承認一覧リストを戻る
+		return approvalList;
 	}
 
 }

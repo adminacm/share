@@ -29,7 +29,7 @@ public class MonthlyReportTest {
 		Date date = new Date();
 		
 		// 年月設定
-		String yearMonth = MonRS.ｇetDateFormat(date);
+		String yearMonth = MonRS.getDateFormat(date);
 		
 		// 年月
 		assertEquals(yearMonth, "2014年03月");
@@ -141,7 +141,7 @@ public class MonthlyReportTest {
 		enty1.setOverHoursNight(0.0);
 		enty1.setOverHoursOrdinary(1.5);
 		enty1.setRepDate("20140401");
-		enty1.setRestHours(0.0);
+		enty1.setRestHours(1.5);
 		enty1.setRestKbn("01");
 		enty1.setRestKbnName("時間休(有給休暇)");
 		enty1.setShiftCode("0900");
@@ -166,7 +166,7 @@ public class MonthlyReportTest {
 		enty2.setOverHoursNight(0.0);
 		enty2.setOverHoursOrdinary(1.5);
 		enty2.setRepDate("20140401");
-		enty2.setRestHours(0.0);
+		enty2.setRestHours(1.5);
 		enty2.setRestKbn("04");
 		enty2.setRestKbnName("特別休暇");
 		enty2.setShiftCode("0900");
@@ -211,10 +211,8 @@ public class MonthlyReportTest {
 		assertEquals(monthList.get(0).getWorkSTime(), CostDateUtils.formatIntegerToTime(resultList.get(0).getWorkSTime()));
 		// 退勤
 		assertEquals(monthList.get(0).getWorkETime(), CostDateUtils.formatIntegerToTime(resultList.get(0).getWorkETime()));
-		// 休暇欠勤区分
-		assertEquals(monthList.get(0).getRestKbn(), resultList.get(0).getRestKbn());
-		// 休暇欠勤区分名
-		assertEquals(monthList.get(0).getRestKbnName(), resultList.get(0).getRestKbnName());
+		// 休暇時間数
+		assertEquals(monthList.get(0).getRestHours(), resultList.get(0).getRestHours());
 		// 勤務時間数
 		assertEquals(monthList.get(0).getWorkHours(), resultList.get(0).getWorkHours());
 		// 超勤開始
@@ -246,10 +244,8 @@ public class MonthlyReportTest {
 		assertEquals(monthList.get(1).getWorkSTime(), CostDateUtils.formatIntegerToTime(resultList.get(1).getWorkSTime()));
 		// 退勤
 		assertEquals(monthList.get(1).getWorkETime(), CostDateUtils.formatIntegerToTime(resultList.get(1).getWorkETime()));
-		// 休暇欠勤区分
-		assertEquals(monthList.get(1).getRestKbn(), resultList.get(1).getRestKbn());
-		// 休暇欠勤区分名
-		assertEquals(monthList.get(1).getRestKbnName(), resultList.get(1).getRestKbnName());
+		// 休暇時間数
+		assertEquals(monthList.get(1).getRestHours(), resultList.get(1).getRestHours());
 		// 勤務時間数
 		assertEquals(monthList.get(1).getWorkHours(), resultList.get(1).getWorkHours());
 		// 超勤開始

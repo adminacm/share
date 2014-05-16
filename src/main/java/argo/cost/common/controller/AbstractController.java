@@ -75,14 +75,6 @@ public abstract class AbstractController {
 	 */
 	public static final String SEARCH = "/search";
 	/**
-	 * 超勤に振替える
-	 */
-	public static final String OVERWORK_EXCHANGE = "/overWorkExchange";
-	/**
-	 * 申請Ｎｏリンク
-	 */
-	public static final String APPLYNO_CLICK = "/applyNoClick";
-	/**
 	 * 承認
 	 */
 	public static final String APPROVAL = "/approval";
@@ -90,11 +82,6 @@ public abstract class AbstractController {
 	 * 差戻
 	 */
 	public static final String REMAND = "/remand";
-	/**
-	 * ＣＳＶ出力
-	 */
-	public static final String CSVOUTPUT = "/csvOutput";
-	
 	
 	/**
 	 * セッション情報取得

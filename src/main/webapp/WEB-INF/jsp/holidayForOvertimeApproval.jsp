@@ -26,6 +26,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="holidayForOvertimeApprovalInfo">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:700px;">
 			<div style="padding:2px;">
 				<font size="5"><b>超勤振替申請承認</b></font>

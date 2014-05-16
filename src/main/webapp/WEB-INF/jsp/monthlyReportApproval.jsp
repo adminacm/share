@@ -31,7 +31,6 @@ function submitAction(action) {
 	margin-left:40px;
 	margin-bottom: 30px;
 	white-space: nowrap;
-	border: 1px solid #ccc;
 	border-collapse:collapse;
 }
 
@@ -53,6 +52,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="monthlyReportApprovalInfo">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:900px;">
 			<div style="padding:2px;">
 				<b>月報承認</b>
@@ -100,28 +100,33 @@ function submitAction(action) {
 					<tbody>
 						<c:forEach var="approvalInfo" items="${monthlyReportApprovalInfo.monthlyReportApprovalList}">
 							<tr>
-								<td align="center" width="20PX;">
-									${approvalInfo.day}
+								<c:if test="${not approvalInfo.totleFlg}">
+									<td align="center" width="25PX;">
+										${approvalInfo.day}
+									</td>
+									<td align="center" width="25PX;">
+										${approvalInfo.week}
+									</td>
+									<td align="center" width="110PX;">
+										${approvalInfo.workKbnName}
+									</td>
+									<td align="center" width="50PX;">
+										${approvalInfo.shift}
+									</td>
+									<td align="center" width="50PX;">
+										${approvalInfo.workSTime}
+									</td>
+									<td align="center" width="50PX;">
+										${approvalInfo.workETime}
+									</td>
+								</c:if>
+								<c:if test="${approvalInfo.totleFlg}">
+									<td colspan="6" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
+								</c:if>
+								<td align="center" width="45PX;">
+									${approvalInfo.restHours}
 								</td>
-								<td align="center" width="20PX;">
-									${approvalInfo.week}
-								</td>
-								<td align="center" width="110PX;">
-									${approvalInfo.workKbnName}
-								</td>
-								<td align="center" width="35PX;">
-									${approvalInfo.shift}
-								</td>
-								<td align="center" width="50PX;">
-									${approvalInfo.workSTime}
-								</td>
-								<td align="center" width="50PX;">
-									${approvalInfo.workETime}
-								</td>
-								<td align="center" width="140PX;">
-									${approvalInfo.restKbnName}
-								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${approvalInfo.workHours}
 								</td>
 								<td align="center" width="50PX;">
@@ -130,21 +135,23 @@ function submitAction(action) {
 								<td align="center" width="50PX;">
 									${approvalInfo.choETime}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${approvalInfo.choWeekday}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${approvalInfo.choWeekdayNomal}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${approvalInfo.choHoliday}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${approvalInfo.mNHours}
 								</td>
-								<td align="center" width="50PX;">
-									${approvalInfo.locationName}
-								</td>
+								<c:if test="${not approvalInfo.totleFlg}">
+									<td align="center">
+										${approvalInfo.locationName}
+									</td>
+								</c:if>
 							</tr>
 						</c:forEach>
 					</tbody>

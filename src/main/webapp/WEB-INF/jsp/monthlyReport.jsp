@@ -31,7 +31,6 @@ function submitAction(action) {
 	margin-left:40px;
 	margin-bottom: 30px;
 	white-space: nowrap;
-	border: 1px solid #ccc;
 	border-collapse:collapse;
 }
 
@@ -53,6 +52,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="monthlyReportForm">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:900px;">
 			<div style="padding:2px;">
 				<b>月報</b>
@@ -66,10 +66,10 @@ function submitAction(action) {
 						<td style="padding-left:40px;">氏名</td>
 						<td>
 							<form:select path="userCode" style="width:100%;border:2px solid #333333;" id="usCode">
-										<form:options items="${monthlyReportForm.userList}" itemValue="value" itemLabel="name"/>
+								<form:options items="${monthlyReportForm.userList}" itemValue="value" itemLabel="name"/>
 							</form:select>
 						</td>
-						<td style="padding-left:220px;"><input type="button" value="表示切替" onclick="submitAction('/monthlyReport/search');"/></td>
+						<td style="padding-left:520px;"><input type="button" value="表示切替" onclick="submitAction('/monthlyReport/search');"/></td>
 					</tr>
 				</table>
 			</div>
@@ -114,28 +114,33 @@ function submitAction(action) {
 					<tbody>
 						<c:forEach var="monthlyReport" items="${monthlyReportForm.mRList}">
 							<tr>
-								<td align="center" width="20PX;">
-									<a href="/attendanceInput/init?attDate=${monthlyReport.date}">${monthlyReport.day}</a>
+								<c:if test="${not monthlyReport.totleFlg}">
+									<td align="center" width="25PX;">
+										<a href="/attendanceInput/init?attDate=${monthlyReport.date}">${monthlyReport.day}</a>
+									</td>
+									<td align="center" width="25PX;">
+										${monthlyReport.week}
+									</td>
+									<td align="center" width="110PX;">
+										${monthlyReport.workKbnName}
+									</td>
+									<td align="center" width="50PX;">
+										${monthlyReport.shift}
+									</td>
+									<td align="center" width="50PX;">
+										${monthlyReport.workSTime}
+									</td>
+									<td align="center" width="50PX;">
+										${monthlyReport.workETime}
+									</td>
+								</c:if>
+								<c:if test="${monthlyReport.totleFlg}">
+									<td colspan="6" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
+								</c:if>
+								<td align="center" width="45PX;">
+									${monthlyReport.restHours}
 								</td>
-								<td align="center" width="20PX;">
-									${monthlyReport.week}
-								</td>
-								<td align="center" width="110PX;">
-									${monthlyReport.workKbnName}
-								</td>
-								<td align="center" width="35PX;">
-									${monthlyReport.shift}
-								</td>
-								<td align="center" width="50PX;">
-									${monthlyReport.workSTime}
-								</td>
-								<td align="center" width="50PX;">
-									${monthlyReport.workETime}
-								</td>
-								<td align="center" width="140PX;">
-									${monthlyReport.restKbnName}
-								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${monthlyReport.workHours}
 								</td>
 								<td align="center" width="50PX;">
@@ -144,25 +149,70 @@ function submitAction(action) {
 								<td align="center" width="50PX;">
 									${monthlyReport.choETime}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${monthlyReport.choWeekday}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${monthlyReport.choWeekdayNomal}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${monthlyReport.choHoliday}
 								</td>
-								<td align="center" width="35PX;">
+								<td align="center" width="45PX;">
 									${monthlyReport.mNHours}
 								</td>
-								<td align="center" width="50PX;">
-									${monthlyReport.locationName}
-								</td>
+								<c:if test="${not monthlyReport.totleFlg}">
+									<td align="center">
+										${monthlyReport.locationName}
+									</td>
+								</c:if>
 							</tr>
 						</c:forEach>
 					</tbody>
-					
+				</table>
+			</div>
+			<div style="margin-left:40px;">
+				【PJ別作業時間集計】
+			</div>
+			<div style="margin-left:80px;">
+				<table style="width:400px">
+					<c:forEach var="projectInfo" items="${monthlyReportForm.projectList}">
+						<tr>
+							<td style="width:200px" colspan="2">
+								${projectInfo.projName}
+							</td>
+							<td>
+								${projectInfo.projHours}
+							</td>
+						</tr>
+						<c:if test="${not empty projectInfo.projManageHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>プロジェクト管理</td>
+								<td>
+									${projectInfo.projManageHours}
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty projectInfo.basicDesignHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>基本設計</td>
+								<td>
+									${projectInfo.basicDesignHours}
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty projectInfo.meetingHours}">
+							<tr>
+								<td style="width:40px">&nbsp;</td>
+								<td>会議</td>
+								<td>
+									${projectInfo.meetingHours}
+								</td>
+							</tr>
+						</c:if>
+					</c:forEach>
 				</table>
 			</div>
 		</div>

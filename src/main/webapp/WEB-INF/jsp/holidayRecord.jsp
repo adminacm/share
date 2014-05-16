@@ -67,7 +67,8 @@ function submitAction(action) {
 </script>
 </head>
 <body>
-	<form:form modelAttribute="holidayRecordInfo">
+	<form:form modelAttribute="holidayRecordForm">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
 				<font size="5"><b>休暇管理</b></font>
@@ -84,7 +85,7 @@ function submitAction(action) {
 								<td style="padding-left:25px;width:30px">年度</td>
 								<td style="width:130px">
 									<form:select path="yearPeriod" style="width:100%;border:2px solid #333333;" id="yearPeriod">
-										<form:options items="${holidayRecordInfo.yearPeriodList}" itemValue="value" itemLabel="name"/>
+										<form:options items="${holidayRecordForm.yearPeriodList}" itemValue="value" itemLabel="name"/>
 									</form:select>
 								</td>
 								<td style="width:100px">
@@ -115,7 +116,7 @@ function submitAction(action) {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="payHoliday" items="${holidayRecordInfo.payHolidayList}">
+								<c:forEach var="payHoliday" items="${holidayRecordForm.payHolidayList}">
 									<tr align="center">
 										<td style="width:100px">
 											${payHoliday.payHolidayDate}
@@ -151,7 +152,7 @@ function submitAction(action) {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="absenceInfo" items="${holidayRecordInfo.absenceList}">
+								<c:forEach var="absenceInfo" items="${holidayRecordForm.absenceList}">
 									<tr align="center">
 										<td style="width:100px">
 											${absenceInfo.absentDate}
@@ -183,7 +184,7 @@ function submitAction(action) {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="specialHoliday" items="${holidayRecordInfo.specialHolidayList}">
+								<c:forEach var="specialHoliday" items="${holidayRecordForm.specialHolidayList}">
 									<tr align="center">
 										<td style="width:100px">
 											${specialHoliday.specialHolidayDate}

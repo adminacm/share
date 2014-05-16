@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.util.AntPathMatcher;
 
 import argo.cost.common.dao.ResourcesDao;
 import argo.cost.common.model.entity.Resources;
@@ -36,6 +34,7 @@ public class MySecurityMetadataSource implements
 	}
 
 	private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
+	private AntPathMatcher urlMatcher = new AntPathMatcher();
 
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
 		// TODO Auto-generated method stub
@@ -61,10 +60,6 @@ public class MySecurityMetadataSource implements
 			}
 		}
 
-		Set<Entry<String, Collection<ConfigAttribute>>> resourceSet = resourceMap
-				.entrySet();
-		Iterator<Entry<String, Collection<ConfigAttribute>>> iterator = resourceSet
-				.iterator();
 
 	}
 
@@ -74,10 +69,16 @@ public class MySecurityMetadataSource implements
 
 		String requestUrl = ((FilterInvocation) object).getRequestUrl();
 		System.out.println("requestUrl is " + requestUrl);
-		if (resourceMap == null) {
-			loadResourceDefine();
+		Iterator<String> it = resourceMap.keySet().iterator();
+		while (it.hasNext()) {
+			String _url = it.next();
+			if (_url.indexOf("?")!=-1) {
+				_url = _url.substring(0, _url.indexOf("?"));
+			}
+			if(urlMatcher.match(requestUrl, _url))
+				return resourceMap.get(_url);
 		}
-		return resourceMap.get(requestUrl);
+		return null;
 	}
 
 }

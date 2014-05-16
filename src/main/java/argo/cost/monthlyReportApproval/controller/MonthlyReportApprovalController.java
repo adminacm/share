@@ -32,7 +32,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 	 * 月報承認サービス
 	 */
 	@Autowired
-	protected MonthlyReportApprovalService service;
+	protected MonthlyReportApprovalService monthlyReportApprovalService;
 
 	/**
 	 * 月報承認情報
@@ -57,7 +57,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = INIT)
-	public String init(Model model, @RequestParam("applyNo") String applyNo) throws Exception {
+	public String initMonthlyReportApproval(Model model, @RequestParam("applyNo") String applyNo) throws Exception {
 		
 		// 月報承認画面情報初期化
 		MonthlyReportApprovalForm form = initForm(MonthlyReportApprovalForm.class);
@@ -66,19 +66,19 @@ public class MonthlyReportApprovalController extends AbstractController {
 		form.setApplyNo(applyNo);
 		
 		// 処理状況を取得
-		String status = service.getStatus(applyNo);
+		String status = monthlyReportApprovalService.getStatus(applyNo);
 		
 		// 処理状況設定
 		form.setProStatus(status);
 
 		// 月報承認データを取得
-		List<MonthlyReportApprovalVo> monthlyReportApprovalList = service.getMonReApprovalList(applyNo);
+		List<MonthlyReportApprovalVo> monthlyReportApprovalList = monthlyReportApprovalService.getMonReApprovalList(applyNo);
 		
 		// 月報承認リスト設定
 		form.setMonthlyReportApprovalList(monthlyReportApprovalList);
 
 		// 【PJ別作業時間集計】を取得
-		List<ProjectVo> projectList = service.getProjectList(applyNo);
+		List<ProjectVo> projectList = monthlyReportApprovalService.getProjectList(applyNo);
 		
 		// プロジェクト情報設定
 		form.setProjectList(projectList);
@@ -101,7 +101,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		String proStatus = "03";
 		
 		// 申請状況が承認に更新
-		String updateFlg = service.updateProStatus(form.getApplyNo(), proStatus);
+		String updateFlg = monthlyReportApprovalService.updateProStatus(form.getApplyNo(), proStatus);
 		
 		if ("1".equals(updateFlg)) {
 			System.out.print("月報承認画面申請状況が承認に更新しました");
@@ -124,7 +124,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		String proStatus = "04";
 		
 		// 申請状況が差戻しに更新
-		String updateFlg = service.updateProStatus(form.getApplyNo(), proStatus);
+		String updateFlg = monthlyReportApprovalService.updateProStatus(form.getApplyNo(), proStatus);
 		
 		if ("1".equals(updateFlg)) {
 			System.out.print("月報承認画面申請状況が差戻に更新しました");

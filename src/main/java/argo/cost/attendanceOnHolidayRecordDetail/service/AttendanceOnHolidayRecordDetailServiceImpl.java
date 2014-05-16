@@ -6,14 +6,21 @@ import org.springframework.stereotype.Service;
 import argo.cost.attendanceOnHolidayRecordDetail.dao.AttendanceOnHolidayRecordDetailDao;
 import argo.cost.attendanceOnHolidayRecordDetail.model.AttendanceOnHolidayRecordDetailForm;
 
+/**
+ * <p>
+ * 休日出勤管理詳細画面サービス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnHolidayRecordDetailService {
 	
 	@Autowired
-	private AttendanceOnHolidayRecordDetailDao recordDao;
+	private AttendanceOnHolidayRecordDetailDao attendanceOnHolidayRecordDetailDao;
 
 	/**
-	 * 休日出勤管理詳細画面情報取得
+	 * 休日出勤管理詳細画面情報を取得
 	 * 
 	 * @param userId
 	 * 	                           ユーザＩＤ
@@ -21,28 +28,29 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 	 *            日付
 	 * @param workKbn
 	 *               勤務区分
+	 * @return 休日出勤管理詳細画面情報
 	 */
 	@Override
 	public AttendanceOnHolidayRecordDetailForm getAttendanceOnHolidayRecordDetail(String userId, String date, String workKbn) {
 
 		// 休日出勤管理詳細画面
-		AttendanceOnHolidayRecordDetailForm detailForm = recordDao.getAttendanceOnHolidayRecordDetail(userId, date, workKbn);
+		AttendanceOnHolidayRecordDetailForm attendanceOnHolidayRecordDetailForm = attendanceOnHolidayRecordDetailDao.getAttendanceOnHolidayRecordDetail(userId, date, workKbn);
 		
-		return detailForm;
+		return attendanceOnHolidayRecordDetailForm;
 	}
 
 	/**
-	 * 休日出勤管理詳細の超勤振替申請日がシステム日付になる
+	 * 超勤振替申請を提出
 	 * 
-	 * @param form
-	 *            休日出勤管理詳細画面情報
-	 * 
+	 * @param attendanceOnHolidayRecordDetailForm
+	 *                                           休日出勤管理詳細画面情報
+	 * @return 更新結果フラグ
 	 */
 	@Override
-	public Integer overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form) {
+	public Integer overWorkPayRequest(AttendanceOnHolidayRecordDetailForm attendanceOnHolidayRecordDetailForm) {
 
 		// 休日出勤管理詳細の超勤振替申請日がシステム日付になる
-		Integer resultFlg = recordDao.updateAttendanceOnHolidayRecordDetail(form);
+		Integer resultFlg = attendanceOnHolidayRecordDetailDao.updateAttendanceOnHolidayRecordDetail(attendanceOnHolidayRecordDetailForm);
 		
 		return resultFlg;
 	}

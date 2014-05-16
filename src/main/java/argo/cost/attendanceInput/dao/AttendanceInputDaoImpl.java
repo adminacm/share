@@ -1,12 +1,16 @@
 package argo.cost.attendanceInput.dao;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
+import argo.cost.attendanceInput.model.AttendanceInputForm;
+import argo.cost.attendanceInput.model.AttendanceProject;
 import argo.cost.attendanceInput.model.HolidayRecord;
+import argo.cost.attendanceInput.model.WorkTimeDetail;
 import argo.cost.common.model.ListItemVO;
 
 @Repository
@@ -131,4 +135,83 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		return null;
 	}
 
+	/**
+	 * 就業データを取得
+	 * 
+	 * @param userId
+	 *            ユーザID
+	 * @param yyyymmdd
+	 *            日付
+	 * @return 就業データ
+	 */
+	@Override
+	public WorkTimeDetail getWorkTimeDetail(String userId, String yyyymmdd) {
+		// TODO 自動生成されたメソッド・スタブ
+		WorkTimeDetail info = new WorkTimeDetail();
+		info.setUserId(userId);
+		info.setWorkDate(yyyymmdd);
+		info.setKinmuKbn("01");
+		info.setShiftCode("0900");
+		info.setKinmuSTime("09:00");
+		info.setKinmuEtime("23:30");
+		info.setSykaKetukinKbn("");
+		info.setBikou("桜美林大学留学生管理システム保守：お客様問合せの対応");
+		info.setFurikaeDate("");
+		info.setSykaKetukinhours(0.0);
+		info.setKinmuHours(0.0);
+		info.setTyokinStime("18:00");
+		info.setTyokinEtime("23:00");
+		info.setTyokinHeijiHours(4.0);
+		info.setTyokinHeijiTujyoHours(0.0);
+		info.setTyokinKyujiHours(0.0);
+		info.setSynyaKinmuHours(1.5);
+		info.setStatus("01");
+		return info;
+	}
+	/**
+	 * ユーザ作業情報を取得
+	 * 
+	 * @param userId
+	 *            ユーザID
+	 * @param yyyymmdd
+	 *            日付
+	 * @return ユーザ作業情報
+	 * @throws ParseException
+	 */
+	@Override
+	public List<AttendanceProject> getProjectList(String userId, String yyyymmdd)
+			throws ParseException {
+		// TODO 自動生成されたメソッド・スタブ　Daoを利用する予定
+		List<AttendanceProject> result = new ArrayList<AttendanceProject>();
+
+		AttendanceProject pro = null;
+		for (int i = 0; i < 1; i++) {
+			pro = new AttendanceProject();
+			pro.setHours(3.5);
+			pro.setProjectId("01");
+			pro.setWorkId("01");
+			result.add(pro);
+		}
+
+		return result;
+	}
+	
+	/**
+	 * 就業データを取得
+	 * 
+	 * @param form 
+	 * 				画面情報
+	 * 
+	 * @return 更新結果　０：更新失敗　１：更新成功
+	 */
+	@Override
+	public Integer updateAttdendanceInfo(AttendanceInputForm form) {
+		// TODO 自動生成されたメソッド・スタブ
+
+		// 更新成功の場合
+		if ("user01".equals(form.getUserId())) {
+			return 1;
+		}
+		return 0;
+	}
 }

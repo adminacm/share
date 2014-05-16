@@ -26,6 +26,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="setupForm">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-top:50px;border-style:solid;width:400px;">
 			<div style="padding:2px;">
 				<b>個人設定</b>

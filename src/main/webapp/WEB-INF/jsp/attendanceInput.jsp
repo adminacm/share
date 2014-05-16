@@ -66,6 +66,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="attendanceInputForm">
+	<%@ include file="includes/header.jsp"%>
 	<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:600px;">
 		<div style="padding:2px;">
 			<b>勤怠入力</b>
@@ -178,7 +179,7 @@ function submitAction(action) {
 						<td width="90">終了時刻</td>
 						<td>
 							<c:if test="${! empty attendanceInputForm.choETime}">
-								${attendanceInputForm.choETime}.subString(0,2)
+								${attendanceInputForm.choETime}
 							</c:if>
 						</td>
 					</tr>
@@ -245,7 +246,7 @@ function submitAction(action) {
 						</c:if>
 					</tbody>
 				</table>
-				<input type="button" value="行追加" onclick="submitAction('/attendanceInput/add');" style="margin-left:150px;"/>
+				<input type="button" value="行追加" onclick="submitAction('/attendanceInput/add');" style="margin-left:100px;"/>
 				<table style="margin:auto; width:200px;margin-top:10px;">
 					<tr>
 						<td align="left" width="100px">ロケーション</td>

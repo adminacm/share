@@ -60,6 +60,71 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 		// 月報承認データを取得
 		List<MonthlyReportApprovalVo> monthlyReportApprovalList = monApprovalDao.searchMonthReportApprovalList(applyNo);
 		
+		// 合計休暇時間数
+		Double totleRestHours = 0.0;
+		
+		// 合計勤務時間数
+		Double totleWorkHours = 0.0;
+
+		// 合計超勤平増
+		Double totleChoWeekday = 0.0;
+
+		// 合計超勤平常
+		Double totleChoWeekdayNomal = 0.0;
+
+		// 合計超勤休日
+		Double totleChoHoliday = 0.0;
+
+		// 合計超勤深夜
+		Double totleMNHours = 0.0;
+		
+		// 月報承認明細情報合計行作成
+		for (MonthlyReportApprovalVo itemInfo : monthlyReportApprovalList) {
+			
+			if (itemInfo.getRestHours() != null) {
+
+				totleRestHours += itemInfo.getRestHours();
+				
+			}
+			if (itemInfo.getWorkHours() != null) {
+
+				totleWorkHours += itemInfo.getWorkHours();
+				
+			}
+			if (itemInfo.getChoWeekday() != null) {
+
+				totleChoWeekday += itemInfo.getChoWeekday();
+				
+			}
+			if (itemInfo.getChoWeekdayNomal() != null) {
+
+				totleChoWeekdayNomal += itemInfo.getChoWeekdayNomal();
+				
+			}
+			if (itemInfo.getChoHoliday() != null) {
+
+				totleChoHoliday += itemInfo.getChoHoliday();
+				
+			}
+			if (itemInfo.getmNHours() != null) {
+
+				totleMNHours += itemInfo.getmNHours();
+				
+			}
+		}
+		
+		MonthlyReportApprovalVo totleInfo = new MonthlyReportApprovalVo();
+		// 合計フラグ
+		totleInfo.setTotleFlg(true);
+		totleInfo.setRestHours(totleRestHours);
+		totleInfo.setWorkHours(totleWorkHours);
+		totleInfo.setChoWeekday(totleChoWeekday);
+		totleInfo.setChoWeekdayNomal(totleChoWeekdayNomal);
+		totleInfo.setChoHoliday(totleChoHoliday);
+		totleInfo.setmNHours(totleMNHours);
+		
+		monthlyReportApprovalList.add(totleInfo);
+		
 		return monthlyReportApprovalList;
 	}
 

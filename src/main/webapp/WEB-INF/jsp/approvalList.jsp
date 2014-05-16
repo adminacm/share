@@ -64,6 +64,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="approvalListForm">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
 				<font size="5"><b>承認一覧</b></font>
@@ -131,7 +132,6 @@ function submitAction(action) {
 								</c:forEach>
 							</tbody>
 						</table>
-						
 					</td>
 				</tr>
 			</table>

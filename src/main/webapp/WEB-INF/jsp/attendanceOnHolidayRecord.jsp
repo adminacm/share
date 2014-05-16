@@ -64,6 +64,7 @@ function submitAction(action) {
 </head>
 <body>
 	<form:form modelAttribute="attendanceOnHolidayRecordForm">
+	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
 				<font size="5"><b>休日出勤管理</b></font>

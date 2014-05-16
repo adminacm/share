@@ -8,21 +8,28 @@ import org.springframework.stereotype.Repository;
 import argo.cost.attendanceOnHolidayRecord.model.HolidayExchangeWorkVO;
 import argo.cost.attendanceOnHolidayRecord.model.HolidayOverWorkVO;
 
+/**
+ * <p>
+ * 休日出勤管理ＤＡＯ
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Repository
 public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayRecordDao {
 	
 	/**
-	 * 休日振替勤務情報取得
+	 * 休日振替勤務情報を取得
 	 * 
 	 * @param yearPeriod
-	 *            年度
+	 *                  年度
 	 * @param userName
-	 *            氏名
+	 *                氏名
 	 * @return
-	 *        休日振替勤務リスト
+	 *        休日振替勤務情報
 	 */
 	@Override
-	public List<HolidayExchangeWorkVO> searchholidayExchangeWorkList(
+	public List<HolidayExchangeWorkVO> getHolidayExchangeWorkList(
 			String yearPeriod, String userName) {
 
 		// TODO ＤＢから休日振替勤務情報を取得
@@ -36,17 +43,17 @@ public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayReco
 	}
 
 	/**
-	 * 休日勤務情報取得
+	 * 休日勤務情報を取得
 	 * 
 	 * @param yearPeriod
-	 *            年度
+	 *                  年度
 	 * @param userName
-	 *            氏名
+	 *                氏名
 	 * @return
-	 *        休日勤務リスト
+	 *        休日勤務情報
 	 */
 	@Override
-	public List<HolidayOverWorkVO> searchholidayOverWorkList(String yearPeriod,
+	public List<HolidayOverWorkVO> getHolidayOverWorkList(String yearPeriod,
 			String userName) {
 
 		// TODO ＤＢから休日勤務情報を取得
@@ -74,5 +81,4 @@ public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayReco
 		
 		return resultList;
 	}
-
 }

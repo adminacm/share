@@ -9,22 +9,11 @@
     <meta charset="utf-8">
     <title>Menu</title>
 
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!--
-      IMPORTANT:
-      This is Heroku specific styling. Remove to customize.
-    -->
-    <link href="http://heroku.github.com/template-app-bootstrap/heroku.css" rel="stylesheet">
-    <!-- /// -->
-
 </head>
 
 <body>
 <form:form modelAttribute="menueForm">
+<%@ include file="includes/header.jsp"%>
 	<div class="container">
 	    <div class="row">
 	        <div class="span8 offset2">

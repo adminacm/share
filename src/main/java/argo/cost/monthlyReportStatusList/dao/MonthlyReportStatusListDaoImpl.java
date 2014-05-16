@@ -6,13 +6,13 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 
 /**
  * <p>
- * 承認一覧のアクセスクラスを提供します。
+ * 月報状況一覧のアクセスクラスを提供します。
  * </p>
  *
  * @author COST argo Corporation.
@@ -21,52 +21,57 @@ import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDao {
 
 	/**
-	 * 承認一覧リストを取得
+	 * 月報状況一覧データを取得
 	 * 
-	 * @param status
-	 *           状況
-	 * @return 承認リスト
+	 * @param monthlyReportStatusListForm
+	 *                                   月報状況一覧画面情報
+	 * @return 月報状況一覧データ
 	 */
 	@Override
-	public List<ApprovalList> getMonthlyReportStatusList(MonthlyReportStatusListForm form) {
+	public List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
 
 		// TODO:仮の値を与える
-		List<ApprovalList> appList = new ArrayList<ApprovalList>();
+		List<ApprovalListEntity> resultList = new ArrayList<ApprovalListEntity>();
 		
-		ApprovalList appInfo = new ApprovalList();
-		appInfo.setApplyKbn("月報");
-		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("01");
-		appInfo.setAffiliation("ＢＳ２");
-		appInfo.setId("aaa");
-		appInfo.setName("あｘｘｘｘｘ");
-		appList.add(appInfo);
+		ApprovalListEntity itemInfo = new ApprovalListEntity();
+		itemInfo.setApplyKbn("月報");
+		itemInfo.setApplyDetail("2014年5月分");
+		itemInfo.setStatus("01");
+		itemInfo.setAffiliation("ＢＳ２");
+		itemInfo.setId("aaa");
+		itemInfo.setName("あｘｘｘｘｘ");
+		resultList.add(itemInfo);
 		
-		appInfo = new ApprovalList();
-		appInfo.setApplyKbn("月報");
-		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("02");
-		appInfo.setAffiliation("ＢＳ２");
-		appInfo.setId("uuu");
-		appInfo.setName("うｘｘｘｘｘ");
-		appList.add(appInfo);
+		itemInfo = new ApprovalListEntity();
+		itemInfo.setApplyKbn("月報");
+		itemInfo.setApplyDetail("2014年5月分");
+		itemInfo.setStatus("02");
+		itemInfo.setAffiliation("ＢＳ２");
+		itemInfo.setId("uuu");
+		itemInfo.setName("うｘｘｘｘｘ");
+		resultList.add(itemInfo);
 		
-		return appList;
+		return resultList;
 	}
 
 	/**
-	 * 所属プルダウンリスト取得
+	 * 所属データ取得
 	 * 
 	 * @return
-	 *        所属プルダウンリスト
+	 *        所属データ
 	 */
 	@Override
 	public List<ListItemVO> getAffiliationList() {
 		
-		//TODO ドロップダウンリスト
+		//TODO ドロップダウンリスト仮の値を作成
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
 		ListItemVO item = new ListItemVO();
+		item.setValue("00");
+		item.setName("");
+		resultList.add(item);
+		
+		item = new ListItemVO();
 		item.setValue("01");
 		item.setName("ＢＳ１");
 		resultList.add(item);
@@ -82,13 +87,12 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 	/**
 	 * 給与奉行向けCSVファイル情報を取得
 	 * 
-	 * @param form 
-	 *            画面情報
-	 * @return
-	 *        給与奉行向けCSVファイル情報
+	 * @param monthlyReportStatusListForm 
+	 *                                   画面情報
+	 * @return 給与奉行向けCSVファイル情報
 	 */
 	@Override
-	public List<PayMagistrateCsvInfo> getPayMagistrateCsvList(MonthlyReportStatusListForm form) {
+	public List<PayMagistrateCsvInfo> getPayMagistrateCsvList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
 		
 		// TODO 月報状況一覧画面の検索条件「年月」、「所属」、「状況」によって、ＤＢから、給与奉行向データを取得する。
 		List<PayMagistrateCsvInfo> csvDataList = new ArrayList<PayMagistrateCsvInfo>();

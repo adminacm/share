@@ -18,9 +18,7 @@ import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
 
 /**
- * <p>
  * 承認一覧画面業務クラス
- * </p>
  *
  * @author COST argo Corporation.
  */
@@ -30,25 +28,30 @@ import argo.cost.common.model.ListItemVO;
 public class ApprovalListController extends AbstractController  {
 	
 	/**
-	 * このアクションが利用するサービスです。
+	 * 承認一覧画面サービス
 	 */
 	@Autowired
-	protected ApprovalListService service;
+	protected ApprovalListService approvalListService;
 
 	/**
-	 * 承認一覧画面URL
+	 * 承認一覧画面ＩＤ
 	 */
 	private static final String APPROVALLIST = "approvalList";
+	
+	/**
+	 * 申請番号をクリックするアクション
+	 */
+	private static final String APPLYNOCLICK = "/applyNoClick";
 
 	/**
-	 * 初期化
+	 * 初期化処理
 	 *
-	 * @param map
-	 *            マップ
-	 * @return
+	 * @param model
+	 *             モデル
+	 * @return 承認一覧画面
 	 */
     @RequestMapping(INIT)
-    public String init(Model model) {
+    public String initApprovalList(Model model) {
     	
     	// 画面情報を作成
     	ApprovalListForm form = new ApprovalListForm();
@@ -64,7 +67,7 @@ public class ApprovalListController extends AbstractController  {
     	form.setStatus("");
     	
     	// 承認リストを取得
-    	List<ApprovalListVo> approvalList = service.getApprovalList(form.getStatus());
+    	List<ApprovalListVo> approvalList = approvalListService.getApprovalList(form.getStatus());
     	
     	form.setApprovalList(approvalList);
     	
@@ -74,44 +77,52 @@ public class ApprovalListController extends AbstractController  {
     /**
      * 表示切替ボタンを押して、表示対象を切り替える
      * 
-     * @param form
-     *         画面情報
-     * @return
+     * @param approvalListForm
+     *                        承認一覧画面情報
+     * @return 承認一覧画面
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String search(ApprovalListForm form) {
+    public String searchApprovalList(ApprovalListForm approvalListForm) {
     	
     	// 承認リストを取得
-    	List<ApprovalListVo> approvalList = service.getApprovalList(form.getStatus());
+    	List<ApprovalListVo> approvalList = approvalListService.getApprovalList(approvalListForm.getStatus());
     	
-    	form.setApprovalList(approvalList);
+    	approvalListForm.setApprovalList(approvalList);
 
         return APPROVALLIST;
     }
 
     /**
-     * リンクをクリック
+     * 申請番号リンクをクリックし、承認詳細画面へ遷移する
      * 
-     * @param form
-     *         画面情報
-     * @return
+     * @param applyNo
+     *               申請番号
+     * @param applyKbnCd
+     *                  申請区分
+     * @return　承認詳細画面(月報承認詳細画面、超勤振替申請承認詳細画面)
      */
-    @RequestMapping(value = APPLYNO_CLICK)
-    public String approvalNoClick(ApprovalListForm form, @RequestParam("applyNo") String applyNo, @RequestParam("applyKbnCd") String applyKbnCd) {
+    @RequestMapping(value = APPLYNOCLICK)
+    public String approvalNoClick(@RequestParam("applyNo") String applyNo, @RequestParam("applyKbnCd") String applyKbnCd) {
     	
-    	String str = "";
-    	// TODO 申請区分が月報の場合（区分コードが未定です）
+    	// 承認詳細画面
+    	String strApprovalDisplay = "";
+    	
+    	// 承認詳細画面を設定する
+    	String strApplyNo = "applyNo=";
+    	
+    	// 申請区分が月報の場合
     	if ("1".equals(applyKbnCd)) {
 
         	// 月報承認詳細画面
-    		str = REDIRECT + UrlConstant.URL_MONTHLYREPORT_APPROVAL + INIT + QUESTION_MARK + "applyNo=" + applyNo;
+    		strApprovalDisplay = REDIRECT + UrlConstant.URL_MONTHLYREPORT_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo;
+        	// 申請区分が超勤振替の場合
     	} else if ("2".equals(applyKbnCd)) {
 
         	// 超勤振替申請承認詳細画面
-    		str = REDIRECT + UrlConstant.URL_HOLIDAYFOROVERTIME_APPROVAL + INIT + QUESTION_MARK + "applyNo=" + applyNo;
+    		strApprovalDisplay = REDIRECT + UrlConstant.URL_HOLIDAYFOROVERTIME_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo;
     	}
     	
-    	// 画面へ遷移
-    	return str;
+    	// 承認詳細画面へ遷移する
+    	return strApprovalDisplay;
     }
 }

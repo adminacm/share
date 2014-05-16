@@ -10,37 +10,45 @@ import argo.cost.attendanceOnHolidayRecord.model.AttendanceOnHolidayRecordForm;
 import argo.cost.attendanceOnHolidayRecord.model.HolidayExchangeWorkVO;
 import argo.cost.attendanceOnHolidayRecord.model.HolidayOverWorkVO;
 
+/**
+ * <p>
+ * 休日出勤管理サービス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHolidayRecordService {
 	
+	/**
+	 * 休日出勤管理DAO
+	 */
 	@Autowired
-	private AttendanceOnHolidayRecordDao recordDao;
+	private AttendanceOnHolidayRecordDao attendanceOnHolidayRecordDao;
 
 	/**
-	 * 休暇休日出勤管理情報取得
+	 * 休日出勤管理情報をセット
 	 * 
-	 * @param form
-	 *            休日出勤管理画面情報
+	 * @param attendanceOnHolidayRecordForm
+	 *                                     休日出勤管理画面情報
 	 */
 	@Override
-	public void searchAttendanceOnHolidayRecord(
-			AttendanceOnHolidayRecordForm form) {
+	public void setAttendanceOnHolidayRecordInfo(AttendanceOnHolidayRecordForm attendanceOnHolidayRecordForm) {
 
 		// 年度を取得
-		String strYearPeriod = form.getYearPeriod();
+		String strYearPeriod = attendanceOnHolidayRecordForm.getYearPeriod();
 		
 		// 氏名を取得
-		String strUserName = form.getUserName();
+		String strUserName = attendanceOnHolidayRecordForm.getUserName();
 		
 		// 休日振替勤務情報を取得
-		List<HolidayExchangeWorkVO> holidayExchangeWorkList = recordDao.searchholidayExchangeWorkList(strYearPeriod, strUserName);
-		
+		List<HolidayExchangeWorkVO> holidayExchangeWorkList = attendanceOnHolidayRecordDao.getHolidayExchangeWorkList(strYearPeriod, strUserName);
 		// 休日勤務情報を取得
-		List<HolidayOverWorkVO> holidayOverWorkList = recordDao.searchholidayOverWorkList(strYearPeriod, strUserName);
-		
-		form.setHolidayExchangeWorkList(holidayExchangeWorkList);
-		form.setHolidayOverWorkList(holidayOverWorkList);
-		
-	}
+		List<HolidayOverWorkVO> holidayOverWorkList = attendanceOnHolidayRecordDao.getHolidayOverWorkList(strYearPeriod, strUserName);
 
+		// 休日振替勤務情報をセット
+		attendanceOnHolidayRecordForm.setHolidayExchangeWorkList(holidayExchangeWorkList);
+		// 休日勤務情報をセット
+		attendanceOnHolidayRecordForm.setHolidayOverWorkList(holidayOverWorkList);
+	}
 }

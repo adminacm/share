@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.monthlyReport.model.MonthlyReportEntity;
+import argo.cost.monthlyReport.model.ProjectVo;
 
 /**
  * <p>
@@ -63,7 +64,7 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		enty1.setOverHoursNight(0.0);
 		enty1.setOverHoursOrdinary(1.5);
 		enty1.setRepDate("20140401");
-		enty1.setRestHours(0.0);
+		enty1.setRestHours(1.5);
 		enty1.setRestKbn("01");
 		enty1.setRestKbnName("時間休(有給休暇)");
 		enty1.setShiftCode("0900");
@@ -88,7 +89,7 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		enty2.setOverHoursNight(0.0);
 		enty2.setOverHoursOrdinary(1.5);
 		enty2.setRepDate("20140401");
-		enty2.setRestHours(0.0);
+		enty2.setRestHours(1.5);
 		enty2.setRestKbn("04");
 		enty2.setRestKbnName("特別休暇");
 		enty2.setShiftCode("0900");
@@ -104,4 +105,40 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		return resultList;
 	}
 	
+	/**
+	 * 【PJ別作業時間集計】情報を取得
+	 * 
+	 * @param userId
+	 * 			ユーザID
+	 * @param date 
+	 * 			日付
+	 * @return
+	 *        プロジェクト情報
+	 */
+	@Override
+	public List<ProjectVo> getProjectList(String userId, String date) {
+		// TODO 自動生成されたメソッド・スタブ
+		List<ProjectVo> projectList = new ArrayList<ProjectVo>();
+		ProjectVo projectInfo = new ProjectVo();
+		projectInfo.setProjName("SPA収益計画システム");
+		projectInfo.setProjHours(162.0);
+		projectInfo.setProjManageHours(53.0);
+		projectInfo.setBasicDesignHours(25.0);
+		projectInfo.setMeetingHours(10.0);
+		projectList.add(projectInfo);
+		
+		projectInfo = new ProjectVo();
+		projectInfo.setProjName("桜美林大学留学生管理システム保守");
+		projectInfo.setProjHours(100.0);
+		projectInfo.setProjManageHours(50.0);
+		projectInfo.setBasicDesignHours(20.0);
+		projectInfo.setMeetingHours(15.0);
+		projectList.add(projectInfo);
+		
+		projectInfo = new ProjectVo();
+		projectInfo.setProjName("事務処理・社内会議");
+		projectList.add(projectInfo);
+		
+		return projectList;
+	}
 }

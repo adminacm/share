@@ -33,60 +33,52 @@ public class HolidayRecordController extends AbstractController {
 	protected HolidayRecordService holidayRecordService;
 
 	/**
-	 * 休暇管理情報
-	 */
-	private static final String HOLIDAY_RECOR_INFO = "holidayRecordInfo";
-
-	/**
-	 * 休暇管理画面URL
+	 * 休暇管理画面ID
 	 */
 	private static final String HOLIDAY_RECORD = "holidayRecord";
 
 	/**
-	 *休暇管理画面の初期化処理
+	 * 休暇管理画面の初期化処理
 	 * 
 	 * @param model
-	 *            画面情報モデル
-	 * @return 休暇管理画面の初期化の情報
+	 *             画面情報モデル
+	 * @return 休暇管理画面
 	 * 
-	 * @throws Exception 
+	 * @throws Exception
+	 *                  異常
 	 */
 	@RequestMapping(value = INIT)
 	public String initHolidayRecord(Model model) throws Exception {
 		
 		// 休日勤務入力画面情報初期化
 		HolidayRecordForm holidayRecordForm = initForm(HolidayRecordForm.class);
-		// 年度リストの取得
+		// 年度リストをセット
 		holidayRecordForm.setYearPeriodList(comService.getYearList(new Date()));
-		// 当年度の取得
+		// 初期値に当年度をセット
 		holidayRecordForm.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
 		
-		// 画面情報を設定する。
-		holidayRecordService.searchHolidayRecord(holidayRecordForm);
-		model.addAttribute(HOLIDAY_RECOR_INFO, holidayRecordForm);
+		// 画面情報を設定
+		holidayRecordService.setHolidayRecordInfo(holidayRecordForm);
+		model.addAttribute(holidayRecordForm);
 
+		// 休暇管理画面を戻り
 		return HOLIDAY_RECORD;
-
 	}
 
 	/**
-	 *休暇管理画面の検索処理
+	 * 休暇管理画面の検索処理
 	 * 
 	 * @param holidayRecordForm
-	 *            休暇管理画面情報
+	 *                          休暇管理画面情報
 	 * @return 休暇管理画面
 	 */
 	@RequestMapping(value = SEARCH)
 	public String searchHolidayRecord(HolidayRecordForm holidayRecordForm) {
 		
 		// 画面情報を設定する。
-		holidayRecordService.searchHolidayRecord(holidayRecordForm);
-		
-		
-		System.out.println("休暇管理の情報検索メッソドを実行されました");
+		holidayRecordService.setHolidayRecordInfo(holidayRecordForm);
 
+		// 休暇管理画面を戻り
 		return HOLIDAY_RECORD;
-
 	}
-
 }

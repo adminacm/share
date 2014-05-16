@@ -6,6 +6,13 @@ import org.springframework.stereotype.Repository;
 import argo.cost.attendanceOnHolidayRecordDetail.model.AttendanceOnHolidayRecordDetailForm;
 import argo.cost.common.dao.ComDao;
 
+/**
+ * <p>
+ * 休日出勤管理詳細画面ＤＡＯ
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Repository
 public class AttendanceOnHolidayRecordDetailDaoImpl implements AttendanceOnHolidayRecordDetailDao {
 
@@ -14,18 +21,17 @@ public class AttendanceOnHolidayRecordDetailDaoImpl implements AttendanceOnHolid
 	 */
 	@Autowired
 	private ComDao comDao;
-	
+
 	/**
-	 * 休日出勤管理詳細画面情報取得
+	 * 休日出勤管理詳細データを取得
 	 * 
 	 * @param userId
 	 * 	                           ユーザＩＤ
 	 * @param date
 	 *            日付
 	 * @param workKbn
-	 *            日付
-	 * @return
-	 *        休日出勤管理詳細画面情報
+	 *               勤務区分
+	 * @return 休日出勤管理詳細データ
 	 */
 	@Override
 	public AttendanceOnHolidayRecordDetailForm getAttendanceOnHolidayRecordDetail(
@@ -130,19 +136,16 @@ public class AttendanceOnHolidayRecordDetailDaoImpl implements AttendanceOnHolid
 	}
 
 	/**
-	 * 超勤振替申請を提出
+	 * 休日出勤管理詳細の超勤振替申請情報を更新
 	 * 
 	 * @param form
 	 *            休日出勤管理詳細画面情報
-	 * 
+	 * @return 更新結果フラグ
 	 */
 	@Override
-	public Integer updateAttendanceOnHolidayRecordDetail(AttendanceOnHolidayRecordDetailForm form) {
+	public Integer updateAttendanceOnHolidayRecordDetail(AttendanceOnHolidayRecordDetailForm attendanceOnHolidayRecordDetailForm) {
 		
 		// TODO 休日出勤管理詳細の超勤振替申請日がシステム日付になる
 		return 1;
-		
 	}
-	
-
 }

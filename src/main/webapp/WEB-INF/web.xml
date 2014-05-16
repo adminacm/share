@@ -9,10 +9,14 @@
     <listener>
     	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <listener>  
+        <listener-class>  
+            org.springframework.security.web.session.HttpSessionEventPublisher   
+        </listener-class>  
+    </listener> 
     <context-param>
     	<param-name>contextConfigLocation</param-name>
-    	<param-value>classpath:spring-security.xml
-    	</param-value>
+    	<param-value>classpath:spring-security.xml,classpath:applicationContext.xml</param-value>
     </context-param>
     	
     <filter>
@@ -25,7 +29,7 @@
     </filter-mapping>
     
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>/login</welcome-file>
     </welcome-file-list>
 
     <servlet>
@@ -37,7 +41,6 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:applicationContext.xml</param-value>
         </init-param>
-        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>spring</servlet-name>

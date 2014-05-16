@@ -2,11 +2,11 @@ package argo.cost.approvalList.dao;
 
 import java.util.List;
 
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 
 /**
  * <p>
- * 承認一覧のアクセスクラスを提供します。
+ * 承認一覧ＤＡＯのインターフェース
  * </p>
  *
  * @author COST argo Corporation.
@@ -14,19 +14,19 @@ import argo.cost.common.model.entity.ApprovalList;
 public interface ApprovalListDao {
 
 	/**
-	 * 承認一覧リストを取得
+	 * ＤＢから、承認データを取得
 	 * 
 	 * @param status
 	 *              状況
-	 * @return 承認リスト
+	 * @return 承認データ
 	 */
-	List<ApprovalList> getApprovalList(String status);
+	List<ApprovalListEntity> getApprovalList(String status);
 
 	/**
 	 * 申請区分名を取得
 	 * 
 	 * @param applyKbnCd
-	 *                申請区分コード
+	 *                  申請区分コード
 	 * @return
 	 *        申請区分名
 	 */

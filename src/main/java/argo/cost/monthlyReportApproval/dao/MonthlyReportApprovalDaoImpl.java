@@ -44,7 +44,7 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		monthlyReportVo.setShift("0900");
 		monthlyReportVo.setWorkSTime("10:00");
 		monthlyReportVo.setWorkETime("20:30");
-		monthlyReportVo.setRestKbnName("時間休(有給休暇)	");
+		monthlyReportVo.setRestHours(1.0);;
 		monthlyReportVo.setWorkHours(9.0);
 		monthlyReportVo.setChoSTime("18:00");
 		monthlyReportVo.setChoETime("20:30");

@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 
 /**
  * <p>
- * 承認一覧のアクセスクラスを提供します。
+ * 承認一覧ＤＡＯ
  * </p>
  *
  * @author COST argo Corporation.
@@ -18,21 +18,21 @@ import argo.cost.common.model.entity.ApprovalList;
 public class ApprovalListDaoImpl implements ApprovalListDao {
 
 	/**
-	 * 承認一覧リストを取得
+	 * ＤＢから、承認データを取得
 	 * 
 	 * @param status
-	 *           状況
-	 * @return 承認リスト
+	 *              状況
+	 * @return 承認データ
 	 */
 	@Override
-	public List<ApprovalList> getApprovalList(String status) {
+	public List<ApprovalListEntity> getApprovalList(String status) {
 		
 		System.out.print("承認一覧の検索を実行しました");
 
 		// TODO:仮の値を与える
-		List<ApprovalList> appList = new ArrayList<ApprovalList>();
+		List<ApprovalListEntity> appList = new ArrayList<ApprovalListEntity>();
 		
-		ApprovalList appInfo = new ApprovalList();
+		ApprovalListEntity appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01120140300");
 		appInfo.setApplyKbn("1");
 		appInfo.setApplyDetail("2014年4月分");
@@ -41,7 +41,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appInfo.setName("あｘｘｘｘｘ");
 		appList.add(appInfo);
 		
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01120140400");
 		appInfo.setApplyKbn("1");
 		appInfo.setApplyDetail("2014年5月分");
@@ -50,7 +50,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appInfo.setName("うｘｘｘｘｘ");
 		appList.add(appInfo);
 		
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01220140505");
 		appInfo.setApplyKbn("2");
 		appInfo.setApplyDetail("休日勤務日：2014/5/5");
@@ -59,7 +59,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appInfo.setName("えｘｘｘｘｘ");
 		appList.add(appInfo);
 
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01220140405");
 		appInfo.setApplyKbn("2");
 		appInfo.setApplyDetail("休日勤務日：2014/4/5");
@@ -81,7 +81,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 	 */
 	@Override
 	public String findApplyKbnName(String applyKbnCd) {
-		// TODO 自動生成されたメソッド・スタブ
+		// TODO 仮の値を与える
 		String name = "";
 		
 		if ("1".equals(applyKbnCd)) {
@@ -93,5 +93,4 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		}
 		return name;
 	}
-
 }

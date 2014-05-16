@@ -6,7 +6,7 @@ package argo.cost.common.model.entity;
  * </p>
  *
  */
-public class ApprovalList {
+public class ApprovalListEntity {
 	
 	// ********************
 	// ** フィールド **
