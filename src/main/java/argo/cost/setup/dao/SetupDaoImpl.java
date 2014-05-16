@@ -12,9 +12,7 @@ import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
 
 /**
- * <p>
- * 個人設定のアクセスクラスを提供します。
- * </p>
+ * 個人設定画面DAOの実現
  *
  * @author COST argo Corporation.
  */

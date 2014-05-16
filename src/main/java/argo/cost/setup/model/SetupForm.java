@@ -2,10 +2,15 @@ package argo.cost.setup.model;
 
 import java.util.List;
 
+
 import argo.cost.common.model.UserInfo;
 import argo.cost.common.model.entity.Shift;
 
-
+/**
+ * 個人設定画面情報FORM
+ *
+ * @author COST argo Corporation.
+ */
 public class SetupForm {
 	
 	/**

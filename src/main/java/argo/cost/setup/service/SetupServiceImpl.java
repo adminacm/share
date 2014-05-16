@@ -15,19 +15,21 @@ import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
 
 /**
- * {@inheritDoc}
+ * 個人設定画面サービスインタフェースの実現
+ *
+ * @author COST argo Corporation.
  */
 @Service
 public class SetupServiceImpl implements SetupService {
 
 	/**
-	 * 個人設定DAO
+	 * 個人設定画面のDAO
 	 */
 	@Autowired
 	SetupDao setupDao;
 
 	/**
-	 * 共通DAO
+	 * 共通処理のDAO
 	 */
 	@Autowired
 	ComDao comDao;
@@ -37,7 +39,7 @@ public class SetupServiceImpl implements SetupService {
 	 * @param UserId
 	 *           ユーザＩＤ
 	 * @return
-	 *        個人設定情報
+	 *        SetupForm 個人設定情報
 	 */
 	@Override
 	public SetupForm getSetupInfo(String userId) {
@@ -46,37 +48,37 @@ public class SetupServiceImpl implements SetupService {
 		SetupForm setupInfo = new SetupForm();
 
 		// DBから、個人設定情報を取得
-		SetupEntity setup = setupDao.getSetupInfo(userId);
+		SetupEntity setupEntity = setupDao.getSetupInfo(userId);
 		
 		// 画面の個人設定情報を設定
 		
 		// 代理入力者コード
-		setupInfo.setAgentCd(setup.getAgent());
+		setupInfo.setAgentCd(setupEntity.getAgent());
 		
 		// 代理入力者名
-		UserInfo agentInfo = comDao.findUserById(setup.getAgent());
+		UserInfo agentInfo = comDao.findUserById(setupEntity.getAgent());
 		setupInfo.setAgentName(agentInfo.getUserName());
 		
 		// 標準ｼﾌﾄ
-		setupInfo.setStandardShift(setup.getStandardShift());
+		setupInfo.setStandardShift(setupEntity.getStandardShift());
 		
 		// 勤務開始時刻
-		setupInfo.setWorkStart(CostDateUtils.formatIntegerToTime(setup.getWorkStart()));
+		setupInfo.setWorkStart(CostDateUtils.formatIntegerToTime(setupEntity.getWorkStart()));
 		
 		// 勤務終了時刻
-		setupInfo.setWorkEnd(CostDateUtils.formatIntegerToTime(setup.getWorkEnd()));
+		setupInfo.setWorkEnd(CostDateUtils.formatIntegerToTime(setupEntity.getWorkEnd()));
 		
 		// 入社日
-		setupInfo.setJoinDate(setup.getJoinDate());
+		setupInfo.setJoinDate(setupEntity.getJoinDate());
 		
 		// 休業開始日
-		setupInfo.setHolidayStart(setup.getHolidayStart());
+		setupInfo.setHolidayStart(setupEntity.getHolidayStart());
 		
 		// 休業終了日
-		setupInfo.setHolidayEnd(setup.getHolidayEnd());
+		setupInfo.setHolidayEnd(setupEntity.getHolidayEnd());
 		
 		// 退職日
-		setupInfo.setOutDate(setup.getOutDate());
+		setupInfo.setOutDate(setupEntity.getOutDate());
 		
 		// 個人設定情報を戻る
 		return setupInfo;
@@ -119,7 +121,7 @@ public class SetupServiceImpl implements SetupService {
 	}
 
 	/**
-	 * 標準ｼﾌﾄ変更
+	 * 標準ｼﾌﾄ変更処理
 	 *
 	 * @param setupInfo
 	 *            個人設定情報
@@ -151,13 +153,23 @@ public class SetupServiceImpl implements SetupService {
 	}
 
 	/**
-	 * 保存と入力チェック処理
-	 */
+	 * 入力した個人設定情報をチェックする
+	 *
+	 * @param setupInfo
+	 *            個人設定情報
+	 * @return
+	 *        Booleanチェック結果(true:エラーがない； false:エラーがある)
+	 *            
+	 */  
 	@Override
 	public Boolean doSaveCheck(SetupForm setupInfo) {
+		
+		String strWholeHours = "00";
+		
+		String strHalfHours = "30";
 
 		// 勤務開始時刻は30分単位で入力
-		if ("00".equals(setupInfo.getWorkStartM()) || "30".equals(setupInfo.getWorkStartM())) {
+		if (strWholeHours.equals(setupInfo.getWorkStartM()) || strHalfHours.equals(setupInfo.getWorkStartM())) {
 			
 			// エラー(勤務開始時刻は30分単位で入力してください)
 			return false;
@@ -165,7 +177,7 @@ public class SetupServiceImpl implements SetupService {
 		}
 		
 		// 勤務終了時刻は30分単位で入力
-		if ("00".equals(setupInfo.getWorkEndM()) || "30".equals(setupInfo.getWorkEndM())) {
+		if (strWholeHours.equals(setupInfo.getWorkEndM()) || strHalfHours.equals(setupInfo.getWorkEndM())) {
 			
 			// エラー(勤務終了時刻は30分単位で入力してください)
 			return false;

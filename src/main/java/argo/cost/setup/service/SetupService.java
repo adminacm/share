@@ -3,9 +3,7 @@ package argo.cost.setup.service;
 import argo.cost.setup.model.SetupForm;
 
 /**
- * <p>
- * 個人設定に関するサービスを提供します。
- * </p>
+ * 個人設定画面サービスのインタフェース
  *
  * @author COST argo Corporation.
  */
@@ -41,7 +39,7 @@ public interface SetupService {
 	 * @param setupInfo
 	 *        個人設定情報
 	 * @return
-	 *        チェック結果
+	 *        Booleanチェック結果(true:エラーがない； false:エラーがある)
 	 */
 	Boolean doSaveCheck(SetupForm setupInfo);
 
