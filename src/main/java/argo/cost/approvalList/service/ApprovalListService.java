@@ -6,7 +6,7 @@ import argo.cost.approvalList.model.ApprovalListVo;
 
 /**
  * <p>
- * 承認一覧に関するサービスを提供します。
+ * 承認一覧サービスのインターフェース
  * </p>
  *
  * @author COST argo Corporation.
@@ -17,9 +17,8 @@ public interface ApprovalListService {
 	 * 承認一覧リストを取得
 	 * 
 	 * @param status
-	 *           状況
+	 *              状況
 	 * @return 承認リスト
 	 */
 	List<ApprovalListVo> getApprovalList(String status);
-
 }

@@ -9,7 +9,7 @@ import argo.cost.common.model.entity.ApprovalListEntity;
 
 /**
  * <p>
- * 承認一覧のアクセスクラスを提供します。
+ * 承認一覧ＤＡＯ
  * </p>
  *
  * @author COST argo Corporation.
@@ -18,11 +18,11 @@ import argo.cost.common.model.entity.ApprovalListEntity;
 public class ApprovalListDaoImpl implements ApprovalListDao {
 
 	/**
-	 * 承認一覧リストを取得
+	 * ＤＢから、承認データを取得
 	 * 
 	 * @param status
-	 *           状況
-	 * @return 承認リスト
+	 *              状況
+	 * @return 承認データ
 	 */
 	@Override
 	public List<ApprovalListEntity> getApprovalList(String status) {
@@ -81,7 +81,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 	 */
 	@Override
 	public String findApplyKbnName(String applyKbnCd) {
-		// TODO 自動生成されたメソッド・スタブ
+		// TODO 仮の値を与える
 		String name = "";
 		
 		if ("1".equals(applyKbnCd)) {
@@ -93,5 +93,4 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		}
 		return name;
 	}
-
 }
