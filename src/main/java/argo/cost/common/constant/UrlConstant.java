@@ -64,4 +64,9 @@ public class UrlConstant {
 	 */
 	public static final String URL_MONTHLYREPORT_STATUS_LIST = "/monthlyReportStatusList";
 	
+	/**
+	  * 個人設定画面
+	  */
+	 public static final String URL_PERSONAL_SETUP = "/setup";
+	
 }
