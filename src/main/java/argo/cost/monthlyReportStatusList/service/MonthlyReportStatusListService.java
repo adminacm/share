@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
-import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
+import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 
 /**
  * <p>
- * 月報状況一覧に関するサービスを提供します。
+ * 月報状況一覧サービスのインターフェイス
  * </p>
  *
  * @author COST argo Corporation.
@@ -21,15 +21,15 @@ public interface MonthlyReportStatusListService {
 	/**
 	 * 月報状況一覧リストを取得
 	 * 
-	 * @param form
-	 *           月報状況一覧情報
+	 * @param monthlyReportStatusListForm
+	 *                                   月報状況一覧情報
 	 * @return 
 	 *        月報状況一覧リスト
 	 */
-	List<MonthlyReportStatusListInfo> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
+	List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm);
 
 	/**
-	 * 年プルダウンリスト取得
+	 * 年プルダウンリストを取得
 	 * 
 	 * @param date
 	 * 	      　　　　　　日付
@@ -39,7 +39,7 @@ public interface MonthlyReportStatusListService {
 	List<ListItemVO> getYearList(Date date);
 	
 	/**
-	 * 月プルダウンリスト取得
+	 * 月プルダウンリストを取得
 	 * 
 	 * @return
 	 * 	             月プルダウンリスト
@@ -47,7 +47,7 @@ public interface MonthlyReportStatusListService {
 	List<ListItemVO> getMonthList();
 
 	/**
-	 * 所属プルダウンリスト取得
+	 * 所属プルダウンリストを取得
 	 * 
 	 * @return 
 	 *        所属プルダウンリスト
@@ -57,13 +57,12 @@ public interface MonthlyReportStatusListService {
 	/**
 	 * CSVファイルを作成
 	 * 
-	 * @param form
-	 *           月報状況一覧情報
+	 * @param monthlyReportStatusListForm
+	 *                                   月報状況一覧情報
      * @param response
-     *         レスポンス
-	 * @return
-	 *        CSVファイル情報
+     *                レスポンス
 	 * @throws Exception 
+	 *                  異常
 	 */
-	void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception;
+	void createCSVFile(MonthlyReportStatusListForm monthlyReportStatusListForm, HttpServletResponse response) throws Exception;
 }

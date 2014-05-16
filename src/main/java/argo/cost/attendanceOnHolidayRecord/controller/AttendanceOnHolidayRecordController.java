@@ -17,7 +17,7 @@ import argo.cost.common.utils.CostDateUtils;
 
 /**
  * <p>
- * 休日出勤管理画面業務クラス
+ * 休日出勤管理業務クラス
  * </p>
  *
  * @author COST argo Corporation.
@@ -34,7 +34,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	protected AttendanceOnHolidayRecordService attendanceOnHolidayRecordService;
 
 	/**
-	 * 休日出勤管理画面URL
+	 * 休日出勤管理画面ID
 	 */
 	private static final String ATTENDANCE_ONHOLIDAY_RECORD = "attendanceOnHolidayRecord";
 
@@ -42,10 +42,11 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	 * 休日出勤管理画面の初期化処理
 	 * 
 	 * @param model
-	 *            画面情報モデル
-	 * @return 休日出勤管理画面の初期化の情報
+	 *             画面情報モデル
+	 * @return 休日出勤管理画面
 	 * 
 	 * @throws Exception 
+	 *                  異常
 	 */
 	@RequestMapping(value = INIT)
 	public String initAttendanceOnHolidayRecord(Model model) throws Exception {
@@ -53,14 +54,14 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		// 休日勤務入力画面情報初期化
 		AttendanceOnHolidayRecordForm form = initForm(AttendanceOnHolidayRecordForm.class);
 		
-		// 年度リストの取得
+		// 年度リストをセット
 		form.setYearPeriodList(comService.getYearList(new Date()));
-		// 当年度の取得
+		// 初期選択は当年度
 		form.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
 
-		// 氏名の取得
+		// 氏名をセット
 		form.setUserNameList(comService.getUserNameList(form.getUserId()));
-		// 氏名の取得
+		// 初期選択値に自分をセット
 		form.setUserName(form.getUserId());
 		
 		// 画面情報を設定する。
@@ -68,6 +69,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		
 		model.addAttribute(form);
 
+		// 休日出勤管理画面を戻り
 		return ATTENDANCE_ONHOLIDAY_RECORD;
 
 	}
@@ -75,16 +77,17 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	/**
 	 * 休日出勤管理画面の検索処理
 	 * 
-	 * @param form
-	 *            休日出勤管理画面情報
+	 * @param attendanceOnHolidayRecordForm
+	 *                                     休日出勤管理画面情報
 	 * @return 休日出勤管理画面
 	 */
 	@RequestMapping(value = SEARCH, method = RequestMethod.POST)
-	public String searchAttendanceOnHolidayRecord(AttendanceOnHolidayRecordForm form) {
+	public String searchAttendanceOnHolidayRecord(AttendanceOnHolidayRecordForm attendanceOnHolidayRecordForm) {
 		
 		// 画面情報を設定する。
-		attendanceOnHolidayRecordService.setAttendanceOnHolidayRecordInfo(form);
-		
+		attendanceOnHolidayRecordService.setAttendanceOnHolidayRecordInfo(attendanceOnHolidayRecordForm);
+
+		// 休日出勤管理画面を戻り
 		return ATTENDANCE_ONHOLIDAY_RECORD;
 	}
 }

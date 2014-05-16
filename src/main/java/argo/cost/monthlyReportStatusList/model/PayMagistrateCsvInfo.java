@@ -93,5 +93,4 @@ public class PayMagistrateCsvInfo {
 	public void setOverWeekdayNomalHours(String overWeekdayNomalHours) {
 		this.overWeekdayNomalHours = overWeekdayNomalHours;
 	}
-	
 }

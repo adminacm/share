@@ -6,7 +6,7 @@ package argo.cost.monthlyReportStatusList.model;
  * </p>
  *
  */
-public class MonthlyReportStatusListInfo {
+public class MonthlyReportStatusListVo {
 	
 	// ********************
 	// ** フィールド **

@@ -77,8 +77,8 @@ public class ApprovalListController extends AbstractController  {
     /**
      * 表示切替ボタンを押して、表示対象を切り替える
      * 
-     * @param form
-     *            承認一覧画面情報
+     * @param approvalListForm
+     *                        承認一覧画面情報
      * @return 承認一覧画面
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)

@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
-import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
+import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -69,7 +69,7 @@ public class MonthlyReportStatusListTest {
 		form.setMonth("3");
 		
 		// 月報状況一覧リスト取得
-		List<MonthlyReportStatusListInfo> monList = monS.getMonthlyReportStatusList(form);
+		List<MonthlyReportStatusListVo> monList = monS.getMonthlyReportStatusList(form);
 		
 		// 月報状況一覧リストのサイズ
 		assertEquals(monList.size(), 2);

@@ -20,7 +20,7 @@ import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.dao.MonthlyReportStatusListDao;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
-import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
+import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 
 /**
@@ -44,50 +44,52 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	/**
 	 * 月報状況一覧リストを取得
 	 * 
-	 * @param form
-	 *           月報状況一覧情報
-	 * @return 月報状況一覧リスト
+	 * @param monthlyReportStatusListForm
+	 *                                   月報状況一覧情報
+	 * @return 
+	 *        月報状況一覧リスト
 	 */
 	@Override
-	public List<MonthlyReportStatusListInfo> getMonthlyReportStatusList(MonthlyReportStatusListForm form) {
+	public List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
 		
 		// 月報状況一覧リスト
-		List<MonthlyReportStatusListInfo> mRSList = new ArrayList<MonthlyReportStatusListInfo>();
+		List<MonthlyReportStatusListVo> monthlyReportStatusList = new ArrayList<MonthlyReportStatusListVo>();
 		
-		// ＤＢから、月報状況一覧リストを取得
-		List<ApprovalListEntity> mRSEList = monthlyReportStatusListDao.getMonthlyReportStatusList(form);
+		// ＤＢから、月報状況一覧データを取得
+		List<ApprovalListEntity> monthlyReportStatusDataList = monthlyReportStatusListDao.getMonthlyReportStatusList(monthlyReportStatusListForm);
 		
-		if (mRSEList != null && mRSEList.size() > 0) {
-			for (int i = 0; i < mRSEList.size(); i++) {
-				ApprovalListEntity mRSInfo = mRSEList.get(i);
-				MonthlyReportStatusListInfo appInfo = new MonthlyReportStatusListInfo();
+		// 月報状況一覧データがnull以外の場合
+		if (monthlyReportStatusDataList != null && monthlyReportStatusDataList.size() > 0) {
+			for (int i = 0; i < monthlyReportStatusDataList.size(); i++) {
+				ApprovalListEntity monthlyReportStatusInfo = monthlyReportStatusDataList.get(i);
+				MonthlyReportStatusListVo monthlyReportStatusListVo = new MonthlyReportStatusListVo();
 				// ID
-				appInfo.setId(mRSInfo.getId());
+				monthlyReportStatusListVo.setId(monthlyReportStatusInfo.getId());
 				// 申請区分
-				appInfo.setApplyKbn(mRSInfo.getApplyKbn());
+				monthlyReportStatusListVo.setApplyKbn(monthlyReportStatusInfo.getApplyKbn());
 				// 申請内容
-				appInfo.setApplyDetail(mRSInfo.getApplyDetail());
+				monthlyReportStatusListVo.setApplyDetail(monthlyReportStatusInfo.getApplyDetail());
 				// 状況
-				String statusName = comDao.findStatusName(mRSInfo.getStatus());
-				appInfo.setStatus(statusName);
+				String statusName = comDao.findStatusName(monthlyReportStatusInfo.getStatus());
+				monthlyReportStatusListVo.setStatus(statusName);
 				// 所属
-				appInfo.setAffiliation(mRSInfo.getAffiliation());
+				monthlyReportStatusListVo.setAffiliation(monthlyReportStatusInfo.getAffiliation());
 				// 氏名
-				appInfo.setName(mRSInfo.getName());
+				monthlyReportStatusListVo.setName(monthlyReportStatusInfo.getName());
 				
-				mRSList.add(appInfo);
+				monthlyReportStatusList.add(monthlyReportStatusListVo);
 			}
 		}
 		
-		// 月報状況一覧リスト
-		return mRSList;
+		// 月報状況一覧リストを戻り
+		return monthlyReportStatusList;
 	}
 
 	/**
-	 * 年プルダウンリスト取得
+	 * 年プルダウンリストを取得
 	 * 
 	 * @param date
-	 * 	      　　　　　　日付
+	 * 	      　　　　　　 日付
 	 * @return
 	 * 	             年プルダウンリスト
 	 */
@@ -130,7 +132,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	}
 
 	/**
-	 * 月プルダウンリスト取得
+	 * 月プルダウンリストを取得
 	 * 
 	 * @return
 	 * 	             月プルダウンリスト
@@ -164,7 +166,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	}
 
 	/**
-	 * 所属プルダウンリスト取得
+	 * 所属プルダウンリストを取得
 	 * 
 	 * @return 
 	 *        所属プルダウンリスト
@@ -173,27 +175,29 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	public List<ListItemVO> getAffiliationList() {
 		
 		// ＤＢから、所属プルダウンリスト取得
-		 List<ListItemVO> affiliationList = monthlyReportStatusListDao.getAffiliationList();
-		
+		List<ListItemVO> affiliationList = monthlyReportStatusListDao.getAffiliationList();
+
+		// 所属プルダウンリストを返却する。
 		return affiliationList;
 	}
 
 	/**
 	 * CSVファイルを作成
 	 * 
-	 * @param form
-	 *           月報状況一覧情報
+	 * @param monthlyReportStatusListForm
+	 *                                   月報状況一覧情報
      * @param response
-     *         レスポンス
+     *                レスポンス
 	 * @return
 	 *        CSVファイル情報
 	 * @throws Exception 
+	 *                  異常
 	 */
 	@Override
-	public void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
+	public void createCSVFile(MonthlyReportStatusListForm monthlyReportStatusListForm, HttpServletResponse response) throws Exception {
 		
 		// 給与奉行向けCSVファイル情報を取得
-		List<PayMagistrateCsvInfo> csvDetailList = monthlyReportStatusListDao.getPayMagistrateCsvList(form);
+		List<PayMagistrateCsvInfo> csvDetailList = monthlyReportStatusListDao.getPayMagistrateCsvList(monthlyReportStatusListForm);
 		try {
 			String path = "D:\\";
 			
@@ -208,7 +212,11 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	}
 
 	/**
+	 */
+	/**
 	 * ヘッダ部データ設定
+	 * 
+	 * @return ヘッダ部データ
 	 */
 	private List<String> getTitleList(){
         List<String> list = new ArrayList<String>();
@@ -228,14 +236,15 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 * @param path
 	 *            ＣＳＶファイルが保存されたパス
 	 * @param fileName
-	 *            ＣＳＶファイルの名前    
+	 *                ＣＳＶファイルの名前    
 	 * @param titleList
-	 * 			    ヘッダ部表示するタイトルリスト
+	 * 			               ヘッダ部表示するタイトルリスト
 	 * @param csvDetailList
-	 * 	     	   ＣＳＶファイル詳細データリスト
+	 * 	     	                          ＣＳＶファイル詳細データリスト
 	 * @param response
-	 *           レスポンス
+	 *                レスポンス
 	 * @throws Exception
+	 *                  異常
 	 */
 	 private void exportCsvfiles(String path, String fileName, List<String> titleList, List<PayMagistrateCsvInfo> csvDetailList, HttpServletResponse response) throws Exception {
 		 

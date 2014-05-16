@@ -10,7 +10,7 @@ package argo.cost.attendanceOnHolidayRecord.model;
 public class HolidayOverWorkVO {
 
 	/**
-	 * 日付
+	 * 休日勤務日付
 	 */
 	private String holidayOverWorkDate;
 

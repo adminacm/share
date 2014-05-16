@@ -9,6 +9,13 @@ import argo.cost.holidayRecord.model.AbsenceVO;
 import argo.cost.holidayRecord.model.PayHolidayVO;
 import argo.cost.holidayRecord.model.SpecialHolidayVO;
 
+/**
+ * <p>
+ * 休暇管理画面ＤＡＯ
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Repository
 public class HolidayRecordDaoImpl implements HolidayRecordDao {
 
@@ -16,7 +23,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 * 有給休暇情報取得
 	 * 
 	 * @param yearPeriod
-	 *            年度
+	 *                  年度
 	 */
 	@Override
 	public List<PayHolidayVO> getPayHolidayList(String yearPeriod) {
@@ -60,7 +67,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 * 欠勤情報取得
 	 * 
 	 * @param yearPeriod
-	 *            年度
+	 *                  年度
 	 */
 	@Override
 	public List<AbsenceVO> getAbsenceList(String yearPeriod) {
@@ -83,7 +90,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 * 特別休暇情報取得
 	 * 
 	 * @param yearPeriod
-	 *            年度
+	 *                  年度
 	 */
 	@Override
 	public List<SpecialHolidayVO> getSpecialHolidayList(String yearPeriod) {
@@ -103,5 +110,4 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 		specialHolidayList.add(specialHolidayVO);
 		return specialHolidayList;
 	}
-
 }

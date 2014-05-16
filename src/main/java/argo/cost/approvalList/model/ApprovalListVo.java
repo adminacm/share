@@ -2,7 +2,7 @@ package argo.cost.approvalList.model;
 
 /**
  * <p>
- * 承認リスト詳細情報
+ * 承認リスト詳細情報クラス
  * </p>
  *
  */
