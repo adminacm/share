@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 
 /**
  * <p>
@@ -25,14 +25,14 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 	 * @return 承認リスト
 	 */
 	@Override
-	public List<ApprovalList> getApprovalList(String status) {
+	public List<ApprovalListEntity> getApprovalList(String status) {
 		
 		System.out.print("承認一覧の検索を実行しました");
 
 		// TODO:仮の値を与える
-		List<ApprovalList> appList = new ArrayList<ApprovalList>();
+		List<ApprovalListEntity> appList = new ArrayList<ApprovalListEntity>();
 		
-		ApprovalList appInfo = new ApprovalList();
+		ApprovalListEntity appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01120140300");
 		appInfo.setApplyKbn("1");
 		appInfo.setApplyDetail("2014年4月分");
@@ -41,7 +41,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appInfo.setName("あｘｘｘｘｘ");
 		appList.add(appInfo);
 		
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01120140400");
 		appInfo.setApplyKbn("1");
 		appInfo.setApplyDetail("2014年5月分");
@@ -50,7 +50,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appInfo.setName("うｘｘｘｘｘ");
 		appList.add(appInfo);
 		
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01220140505");
 		appInfo.setApplyKbn("2");
 		appInfo.setApplyDetail("休日勤務日：2014/5/5");
@@ -59,7 +59,7 @@ public class ApprovalListDaoImpl implements ApprovalListDao {
 		appInfo.setName("えｘｘｘｘｘ");
 		appList.add(appInfo);
 
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyNo("user01220140405");
 		appInfo.setApplyKbn("2");
 		appInfo.setApplyDetail("休日勤務日：2014/4/5");

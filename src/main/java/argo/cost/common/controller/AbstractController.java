@@ -82,11 +82,6 @@ public abstract class AbstractController {
 	 * 差戻
 	 */
 	public static final String REMAND = "/remand";
-	/**
-	 * ＣＳＶ出力
-	 */
-	public static final String CSVOUTPUT = "/csvOutput";
-	
 	
 	/**
 	 * セッション情報取得

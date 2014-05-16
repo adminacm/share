@@ -51,7 +51,7 @@ public class MonthlyReportStatusListController extends AbstractController  {
 	 * @return
 	 */
     @RequestMapping(INIT)
-    public String init(Model model) {
+    public String initMonthlyReportStatusList(Model model) {
     	
     	// 画面情報を作成
     	MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
@@ -112,7 +112,7 @@ public class MonthlyReportStatusListController extends AbstractController  {
      * @return
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String search(MonthlyReportStatusListForm form) {
+    public String searchMonthlyReportStatusList(MonthlyReportStatusListForm form) {
     	
     	// 月報状況一覧リストを取得
     	List<MonthlyReportStatusListInfo> mRSList = monthlyReportStatusListService.getMonthlyReportStatusList(form);
@@ -132,7 +132,7 @@ public class MonthlyReportStatusListController extends AbstractController  {
      * @return
      * @throws Exception 
      */
-    @RequestMapping(value = CSVOUTPUT, method = RequestMethod.POST)
+    @RequestMapping(value = "/csvOutput", method = RequestMethod.POST)
     public String doCSV(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
     	
 		// CSVファイルデータ作成

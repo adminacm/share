@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalList;
+import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListServiceImpl;
@@ -39,9 +39,9 @@ public class MonthlyReportStatusListTest {
 		// 月報状況一覧画面入力情報
 		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
 
-		List<ApprovalList> appList = new ArrayList<ApprovalList>();
+		List<ApprovalListEntity> appList = new ArrayList<ApprovalListEntity>();
 		
-		ApprovalList appInfo = new ApprovalList();
+		ApprovalListEntity appInfo = new ApprovalListEntity();
 		appInfo.setApplyKbn("月報");
 		appInfo.setApplyDetail("2014年5月分");
 		appInfo.setStatus("作成中");
@@ -50,7 +50,7 @@ public class MonthlyReportStatusListTest {
 		appInfo.setName("あｘｘｘｘｘ");
 		appList.add(appInfo);
 		
-		appInfo = new ApprovalList();
+		appInfo = new ApprovalListEntity();
 		appInfo.setApplyKbn("月報");
 		appInfo.setApplyDetail("2014年5月分");
 		appInfo.setStatus("提出");
