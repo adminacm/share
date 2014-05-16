@@ -82,6 +82,14 @@ public abstract class AbstractController {
 	 * 差戻
 	 */
 	public static final String REMAND = "/remand";
+	/**
+	 * 取り消す
+	 */
+	 public static final String CANCEL = "/cancel";
+	 /**
+	  * 編集
+	  */
+	 public static final String EDIT = "/edit";
 	
 	/**
 	 * セッション情報取得
