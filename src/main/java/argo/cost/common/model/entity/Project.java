@@ -1,9 +1,14 @@
-package argo.cost.monthlyReport.model;
+package argo.cost.common.model.entity;
 
 /**
  * プロジェクト情報
  */
-public class ProjectVo {
+public class Project {
+	
+	/**
+	 * プロジェクトコード
+	 */
+	private String projCode;
 	
 	/**
 	 * プロジェクト名
@@ -38,6 +43,14 @@ public class ProjectVo {
 	//#################################
 	//#################################
 	
+	public String getProjCode() {
+		return projCode;
+	}
+
+	public void setProjCode(String projCode) {
+		this.projCode = projCode;
+	}
+
 	public String getProjName() {
 		return projName;
 	}
@@ -85,5 +98,4 @@ public class ProjectVo {
 	public void setProjUnrelatedWorkHours(Double projUnrelatedWorkHours) {
 		this.projUnrelatedWorkHours = projUnrelatedWorkHours;
 	}
-	
 }

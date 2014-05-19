@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import argo.cost.common.model.entity.Project;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
-import argo.cost.monthlyReportApproval.model.ProjectVo;
 
 @Repository
 public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
@@ -211,11 +211,11 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 *        プロジェクト情報リスト
 	 */
 	@Override
-	public List<ProjectVo> searchProjectList(String applyNo) {
+	public List<Project> searchProjectList(String applyNo) {
 		
 		// TODO 自動生成されたメソッド・スタブ
-		List<ProjectVo> projectList = new ArrayList<ProjectVo>();
-		ProjectVo projectInfo = new ProjectVo();
+		List<Project> projectList = new ArrayList<Project>();
+		Project projectInfo = new Project();
 		projectInfo.setProjName("SPA収益計画システム");
 		projectInfo.setProjHours(162.0);
 		projectInfo.setProjManageHours(53.0);
@@ -223,7 +223,7 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		projectInfo.setMeetingHours(10.0);
 		projectList.add(projectInfo);
 		
-		projectInfo = new ProjectVo();
+		projectInfo = new Project();
 		projectInfo.setProjName("桜美林大学留学生管理システム保守");
 		projectInfo.setProjHours(100.0);
 		projectInfo.setProjManageHours(50.0);
@@ -231,7 +231,7 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		projectInfo.setMeetingHours(15.0);
 		projectList.add(projectInfo);
 		
-		projectInfo = new ProjectVo();
+		projectInfo = new Project();
 		projectInfo.setProjName("事務処理・社内会議");
 		projectList.add(projectInfo);
 		

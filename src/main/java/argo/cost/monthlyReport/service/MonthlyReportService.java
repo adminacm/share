@@ -4,8 +4,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import argo.cost.common.model.entity.Project;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
-import argo.cost.monthlyReport.model.ProjectVo;
 
 /**
  * 月報画面サービス
@@ -73,6 +73,6 @@ public interface MonthlyReportService {
 	 * @return
 	 *        プロジェクト情報
 	 */
-	List<ProjectVo> getProjectList(String userId, String date);
+	List<Project> getProjectList(String userId, String date);
 
 }

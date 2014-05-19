@@ -2,6 +2,7 @@ package argo.cost.common.dao;
 
 import java.util.List;
 
+import argo.cost.common.model.entity.Project;
 import argo.cost.common.model.entity.Status;
 import argo.cost.common.model.entity.Users;
 
@@ -19,7 +20,7 @@ public interface DropdownListDao {
 	 * 
 	 * @return 状況情報リスト
 	 */
-	public List<Status> getStatusList();
+	List<Status> getStatusList();
 
 	/**
 	 * ユーザ情報取得
@@ -28,6 +29,15 @@ public interface DropdownListDao {
 	 *            ユーザＩＤ
 	 * @return ユーザ情報リスト
 	 */
-	public List<Users> getUserList(String userId);
+	List<Users> getUserList(String userId);
+
+	/**
+	 *プロジェクト情報取得
+	 * 
+	 * @param userId
+	 *            ユーザＩＤ
+	 * @return プロジェクト名情報
+	 */
+	List<Project> getProjectList(String userId);
 
 }

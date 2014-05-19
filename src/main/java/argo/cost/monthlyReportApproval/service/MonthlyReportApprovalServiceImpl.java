@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.model.entity.Project;
 import argo.cost.monthlyReportApproval.dao.MonthlyReportApprovalDao;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
-import argo.cost.monthlyReportApproval.model.ProjectVo;
 
 @Service
 public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalService {
@@ -137,10 +137,10 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 *        プロジェクト情報
 	 */
 	@Override
-	public List<ProjectVo> getProjectList(String applyNo) {
+	public List<Project> getProjectList(String applyNo) {
 
 		// プロジェクト情報を取得
-		List<ProjectVo> projectList = monApprovalDao.searchProjectList(applyNo);
+		List<Project> projectList = monApprovalDao.searchProjectList(applyNo);
 		
 		return projectList;
 		

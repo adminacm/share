@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import argo.cost.common.model.entity.Project;
 import argo.cost.monthlyReport.model.MonthlyReportEntity;
-import argo.cost.monthlyReport.model.ProjectVo;
 
 /**
  * 月報画面DaoImpl
@@ -115,10 +115,10 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 	 *        プロジェクト情報
 	 */
 	@Override
-	public List<ProjectVo> getProjectList(String userId, String date) {
+	public List<Project> getProjectList(String userId, String date) {
 		// TODO 自動生成されたメソッド・スタブ
-		List<ProjectVo> projectList = new ArrayList<ProjectVo>();
-		ProjectVo projectInfo = new ProjectVo();
+		List<Project> projectList = new ArrayList<Project>();
+		Project projectInfo = new Project();
 		projectInfo.setProjName("SPA収益計画システム");
 		projectInfo.setProjHours(162.0);
 		projectInfo.setProjManageHours(53.0);
@@ -126,7 +126,7 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		projectInfo.setMeetingHours(10.0);
 		projectList.add(projectInfo);
 		
-		projectInfo = new ProjectVo();
+		projectInfo = new Project();
 		projectInfo.setProjName("桜美林大学留学生管理システム保守");
 		projectInfo.setProjHours(100.0);
 		projectInfo.setProjManageHours(50.0);
@@ -134,7 +134,7 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		projectInfo.setMeetingHours(15.0);
 		projectList.add(projectInfo);
 		
-		projectInfo = new ProjectVo();
+		projectInfo = new Project();
 		projectInfo.setProjName("事務処理・社内会議");
 		projectList.add(projectInfo);
 		

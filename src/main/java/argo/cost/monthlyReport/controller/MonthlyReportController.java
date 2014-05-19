@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
+import argo.cost.common.model.entity.Project;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
 import argo.cost.monthlyReport.service.MonthlyReportService;
-import argo.cost.monthlyReport.model.ProjectVo;
 
 /**
  * 月報画面業務スクラス
@@ -91,7 +91,7 @@ public class MonthlyReportController extends AbstractController {
     	Date formatDate = CostDateUtils.toDate(date);
     	form.setYearMonthHyoji(monthlyReportService.getDateFormat(formatDate));
     	// 提出状態取得
-    	String status = comService.getMonthStatus(loginId, date);
+    	String status = comService.getMonthReportStatus(loginId, date);
     	form.setProStatus(status);
     	
     	List<MonthlyReportInfo> resultList = monthlyReportService.getMonReList(formatDate);
@@ -101,7 +101,7 @@ public class MonthlyReportController extends AbstractController {
     	monthlyReportService.setUserMonthReport(loginId, date, resultList);
     	
 		// 【PJ別作業時間集計】を取得
-		List<ProjectVo> projectList = monthlyReportService.getProjectList(loginId, date);
+		List<Project> projectList = monthlyReportService.getProjectList(loginId, date);
 		
 		// プロジェクト情報設定
 		form.setProjectList(projectList);

@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import argo.cost.common.model.entity.Project;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
-import argo.cost.monthlyReportApproval.model.ProjectVo;
 import argo.cost.monthlyReportApproval.service.MonthlyReportApprovalServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -146,7 +146,7 @@ public class MonthlyReportApprovalTest {
 
 		// 申請番号(主なキー)
 	    String applyNo = "user01120140300";
-		List<ProjectVo> projectList = serviceImpl.getProjectList(applyNo);
+		List<Project> projectList = serviceImpl.getProjectList(applyNo);
 		
 		assertEquals(projectList.size(), 3);
 

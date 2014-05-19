@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import argo.cost.common.model.entity.Project;
 import argo.cost.common.model.entity.Status;
 import argo.cost.common.model.entity.Users;
 
@@ -121,4 +122,40 @@ public class DropdownListDaoImpl implements DropdownListDao {
 		return userInfoList;
 	}
 
+	/**
+	 *プロジェクト情報取得
+	 * 
+	 * @param userId
+	 *            ユーザＩＤ
+	 * @return プロジェクト名情報
+	 */
+	@Override
+	public List<Project> getProjectList(String userId) {
+
+		// TODO 仮の値を与える
+		// ユーザ情報リスト
+		List<Project> ｐrojectList = new ArrayList<Project>();
+		// ユーザ情報
+		Project ｐroject = new Project();
+		ｐroject.setProjCode("01");
+		ｐroject.setProjName("原価管理");
+		ｐrojectList.add(ｐroject);
+		
+		ｐroject = new Project();
+		ｐroject.setProjCode("02");
+		ｐroject.setProjName("SPA収益計画システム");
+		ｐrojectList.add(ｐroject);
+		
+		ｐroject = new Project();
+		ｐroject.setProjCode("03");
+		ｐroject.setProjName("桜美林大学留学生管理システム保守");
+		ｐrojectList.add(ｐroject);
+
+		ｐroject = new Project();
+		ｐroject.setProjCode("04");
+		ｐroject.setProjName("事務処理・社内会議");
+		ｐrojectList.add(ｐroject);
+		
+		return ｐrojectList;
+	}
 }

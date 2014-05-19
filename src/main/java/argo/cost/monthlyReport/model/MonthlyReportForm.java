@@ -5,6 +5,7 @@ import java.util.List;
 
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
+import argo.cost.common.model.entity.Project;
 
 /**
  * <p>
@@ -79,8 +80,7 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	/**
 	 * プロジェクト情報
 	 */
-	private List<ProjectVo> projectList;
-	
+	private List<Project> projectList;
 
 	//#################################
 	//#################################
@@ -178,11 +178,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 		this.yearMonthHyoji = yearMonthHyoji;
 	}
 
-	public List<ProjectVo> getProjectList() {
+	public List<Project> getProjectList() {
 		return projectList;
 	}
 
-	public void setProjectList(List<ProjectVo> projectList) {
+	public void setProjectList(List<Project> projectList) {
 		this.projectList = projectList;
 	}
 }

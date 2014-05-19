@@ -23,13 +23,12 @@ public interface ComDao {
 	 * @return ユーザ情報
 	 */
 	Users findByName(String name);
-	
 
 	/**
 	 * ユーザ情報を取得します。
 	 *
 	 * @param userId
-	 *            ユーザID
+	 *              ユーザID
 	 * @return ユーザ情報
 	 */
 	UserInfo findUserById(String userId);
@@ -38,7 +37,7 @@ public interface ComDao {
 	 * システム設定値を取得します。
 	 *
 	 * @param setKey
-	 *            設定キー
+	 *              設定キー
 	 * @return 設定値
 	 */
 	String findSysSetVal(String setKey);
@@ -47,7 +46,7 @@ public interface ComDao {
 	 * ユーザ権限情報を取得します。
 	 *
 	 * @param userId
-	 *            ユーザID
+	 *              ユーザID
 	 * @return ユーザ権限情報
 	 */
 	UserKengen findUserKengenById(String userId);
@@ -57,8 +56,7 @@ public interface ComDao {
 	 * 
 	 * @param workKbn
 	 *               勤務区分ＩＤ
-	 * @return
-	 *        勤務区分名
+	 * @return 勤務区分名
 	 */
 	String findWorkKbnName(String workKbn);
 
@@ -66,8 +64,19 @@ public interface ComDao {
 	 * 状況表示名を取得
 	 * 
 	 * @param status
-	 *           状況
+	 *              状況
 	 * @return 状況表示名
 	 */
 	String findStatusName(String status);
+
+	/**
+	 * 月報の提出状態を取得
+	 * 
+	 * @param userId
+	 *              ユーザID
+	 * @param userId
+	 *              日付
+	 * @return 月報の提出状態
+	 */
+	String getMonthReportStatus(String userId, String date);
 }

@@ -16,11 +16,17 @@ import argo.cost.common.dao.ComDao;
 import argo.cost.common.dao.DropdownListDao;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
+import argo.cost.common.model.entity.Project;
 import argo.cost.common.model.entity.Status;
 import argo.cost.common.model.entity.Users;
 
 /**
- * {@inheritDoc}
+ * <p>
+ *  共通サービス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ *
  */
 @Service
 public class ComServiceImpl implements ComService {
@@ -32,13 +38,18 @@ public class ComServiceImpl implements ComService {
 	private ComDao comDao;
 
 	/**
-	 * 共通DAO
+	 * 共通ドロップダウンリストDAO
 	 */
 	@Autowired
-	private DropdownListDao listDao;
-	
+	private DropdownListDao dropdownListDao;
+
 	/**
-	 * {@inheritDoc}
+	 * セッション情報初期化
+	 *
+	 * @param userName
+	 *                ユーザ名
+	 *
+	 * @return セッション情報
 	 */
 	@Override
 	public AppSession initSession(String userName) {
@@ -51,7 +62,10 @@ public class ComServiceImpl implements ComService {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * セッション情報リフレッシュ
+	 *
+	 * @param session
+	 *               セッション情報
 	 */
 	@Override
 	public void flushSession(AppSession session) {
@@ -68,7 +82,7 @@ public class ComServiceImpl implements ComService {
 	public List<ListItemVO> getStatusList() {
 
 		// 状況プルダウンリスト
-		List<Status> statusList = listDao.getStatusList();
+		List<Status> statusList = dropdownListDao.getStatusList();
 
 		// ドロップダウンリスト
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
@@ -97,14 +111,14 @@ public class ComServiceImpl implements ComService {
 	 * 氏名プルダウンリスト取得
 	 * 
 	 * @param userId
-	 *            ユーザＩＤ
+	 *              ユーザＩＤ
 	 * @return 氏名プルダウンリスト
 	 */
 	@Override
 	public List<ListItemVO> getUserNameList(String userId) {
 
 		// 氏名プルダウンリスト
-		List<Users> userList = listDao.getUserList(userId);
+		List<Users> userList = dropdownListDao.getUserList(userId);
 
 		// ドロップダウンリスト
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
@@ -133,9 +147,9 @@ public class ComServiceImpl implements ComService {
 	 * 年度プルダウンリスト取得
 	 * 
 	 * @param year
-	 *           当年度
-	 * @return
-	 *           プルダウンリスト
+	 *            当年度
+	 * @return プルダウンリスト
+	 * 
 	 * @throws ParseException 
 	 */
 	@Override
@@ -147,7 +161,7 @@ public class ComServiceImpl implements ComService {
 		ListItemVO item = null;
 
 		// ドロップダウンリスト設定
-		for (int i = 0; i <= 3; i++) {
+		for (int i = 0; i < 3; i++) {
 			item = new ListItemVO();
 
 			// データを設定する
@@ -168,15 +182,14 @@ public class ComServiceImpl implements ComService {
 	 * プロジェクト名プルダウンリスト取得
 	 * 
 	 * @param userId
-	 *            ユーザＩＤ
-	 * @return
-	 *            プロジェクト名プルダウンリスト
+	 *              ユーザＩＤ
+	 * @return プロジェクト名プルダウンリスト
 	 */
 	@Override
 	public List<ListItemVO> getProjectNameList(String userId) {
 
-		//TODOプルダウンリスト
-		//listDao.getProjectList(userId, date);
+		// プロジェクトプルダウンリスト
+		List<Project> projectList = dropdownListDao.getProjectList(userId);
 
 		// ドロップダウンリスト
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
@@ -184,37 +197,41 @@ public class ComServiceImpl implements ComService {
 		ListItemVO item = null;
 
 		// ドロップダウンリスト設定
-		//for (Users status : userList) {
+		for (Project project : projectList) {
 			item = new ListItemVO();
 
 			// データを設定する
-			// 区分値 
-			item.setValue("01");
+			// 区分コード
+			item.setValue(project.getProjCode());
 			// 区分名称
-			item.setName("原価管理");
+			item.setName(project.getProjName());
 
 			// リストに追加
 			resultList.add(item);
-		//}
+		}
 
 		// プロジェクト名ドロップダウンリストを返却する。
 		return resultList;
 	}
 
 	/**
-	 * 
 	 * 月報の提出状態を取得
 	 * 
-	 * @param userId ユーザID
-	 * @param date 日付
+	 * @param userId
+	 *              ユーザID
+	 * @param date 
+	 *            日付
 	 * @return 月報の提出状態
 	 */
 	@Override
-	public String getMonthStatus(String userId, String date) {
+	public String getMonthReportStatus(String userId, String date) {
 		
-		// DBより、ロッジク未定です。
+		String status = "";
+		// 月報の提出状態を取得
+		status = comDao.getMonthReportStatus(userId, date);
 		
-		return "作成中";
+		// 月報の提出状態を戻り
+		return status;
 	}
 
 	///////////////////////////////////
@@ -224,11 +241,10 @@ public class ComServiceImpl implements ComService {
 	 * 西暦年を取得
 	 * 
 	 * @param date
-	 * 		　日付
+	 * 		　          日付
 	 * @param cnt
-	 * 		　年度差
-	 * @return
-	 *		  西暦年
+	 * 		　       年度差
+	 * @return  西暦年
 	 */
 	private int getYear(Date date, int cnt) {
 
@@ -251,9 +267,9 @@ public class ComServiceImpl implements ComService {
 	 * 和暦年取得
 	 * 
 	 * @param year
-	 * 　　　　　　　　	西暦年
-	 * @return　
-	 *          和暦年
+	 * 　　　　　　　　	   西暦年
+	 * @return　 和暦年
+	 * 
 	 * @throws ParseException 
 	 */
 	private String formatJapanYear(Integer year) throws ParseException {
@@ -274,7 +290,7 @@ public class ComServiceImpl implements ComService {
 	 * セッション情報セットアップ
 	 *
 	 * @param userName
-	 *            ユーザ名
+	 *                ユーザ名
 	 * @return セッション情報
 	 */
 	private void setupSession(AppSession session, String userName) {
@@ -286,9 +302,7 @@ public class ComServiceImpl implements ComService {
 		if (session.getUserInfo() == null) {
 
 			// 権限なしの異常を表示します。
-//			throw new InvalidAuthException();
+			// throw new InvalidAuthException();
 		}
-
 	}
-
 }

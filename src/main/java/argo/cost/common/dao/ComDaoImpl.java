@@ -48,9 +48,13 @@ public class ComDaoImpl implements ComDao {
 		
 		return user;
 	}
-	
+
 	/**
-	 * {@inheritDoc}
+	 * ユーザ情報を取得します。
+	 *
+	 * @param userId
+	 *              ユーザID
+	 * @return ユーザ情報
 	 */
 	@Override
 	public UserInfo findUserById(String userId) {
@@ -84,7 +88,11 @@ public class ComDaoImpl implements ComDao {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * システム設定値を取得します。
+	 *
+	 * @param setKey
+	 *              設定キー
+	 * @return 設定値
 	 */
 	@Override
 	public String findSysSetVal(String setKey) {
@@ -92,9 +100,13 @@ public class ComDaoImpl implements ComDao {
 		// TODO
 		return "key";
 	}
-	
+
 	/**
-	 * {@inheritDoc}
+	 * ユーザ権限情報を取得します。
+	 *
+	 * @param userId
+	 *              ユーザID
+	 * @return ユーザ権限情報
 	 */
 	@Override
 	public UserKengen findUserKengenById(String userId) {
@@ -121,8 +133,7 @@ public class ComDaoImpl implements ComDao {
 	 * 
 	 * @param workKbn
 	 *               勤務区分ＩＤ
-	 * @return
-	 *        勤務区分名
+	 * @return 勤務区分名
 	 */
 	@Override
 	public String findWorkKbnName(String workKbn) {
@@ -148,7 +159,7 @@ public class ComDaoImpl implements ComDao {
 	 * 状況表示名を取得
 	 * 
 	 * @param status
-	 *           状況
+	 *              状況
 	 * @return 状況表示名
 	 */
 	@Override
@@ -175,5 +186,21 @@ public class ComDaoImpl implements ComDao {
 		
 		return statusName;
 
+	}
+
+	/**
+	 * 月報の提出状態を取得
+	 * 
+	 * @param userId
+	 *              ユーザID
+	 * @param userId
+	 *              日付
+	 * @return 月報の提出状態
+	 */
+	@Override
+	public String getMonthReportStatus(String userId, String date) {
+		
+		// TODO  DBより、ロッジク未定です。仮の値を与える
+		return "作成中";
 	}
 }
