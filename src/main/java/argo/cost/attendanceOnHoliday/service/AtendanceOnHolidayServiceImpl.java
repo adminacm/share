@@ -13,6 +13,11 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.utils.CostDateUtils;
 
+/**
+ * 休日勤務入力画面サービスのインタフェースの実現
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService {
 
@@ -30,44 +35,45 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	/**
 	 * ユーザーがこの日休日勤務データ設定
 	 * 
-	 * @param form
+	 * @param atendanceOnHolidayForm
 	 *            休日勤務画面情報
-	 * @param date
+	 * @param currentDate
 	 *            勤怠入力画面から渡した休日の日付
 	 *            
 	 * @throws ParseException 
 	 * 
 	 */
 	@Override
-	public void setAtendanceOnHolidayInfo(AtendanceOnHolidayForm form, String date) throws ParseException {
+	public void setAtendanceOnHolidayInfo(AtendanceOnHolidayForm atendanceOnHolidayForm, String currentDate) 
+			throws ParseException {
 
 		// 休日勤務データを取得する
-		AtendanceOnHolidayForm entity = atendanceOnHolidayDao
-				.atendanceOnHolidayDataGet(form.getUserId(), date);
+		AtendanceOnHolidayForm atendanceOnHolidayEntityRes = atendanceOnHolidayDao
+				.atendanceOnHolidayDataGet(atendanceOnHolidayForm.getUserId(), currentDate);
 
 		// 勤務日付
-		String attDate = CostDateUtils.formatDate(date, CommonConstant.YYYYMMDD_KANJI);
-		String weekday = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
-		form.setStrAtendanceDate(CostDateUtils.formatDate(date, CommonConstant.YYYY_MM_DD));
-		form.setStrAtendanceDateShow(attDate.concat("(").concat(weekday).concat(")"));
+		String attDate = CostDateUtils.formatDate(currentDate, CommonConstant.YYYYMMDD_KANJI);
+		String weekday = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(currentDate));
+		atendanceOnHolidayForm.setStrAtendanceDate(CostDateUtils.formatDate(currentDate, CommonConstant.YYYY_MM_DD));
+		atendanceOnHolidayForm.setStrAtendanceDateShow(attDate.concat("(").concat(weekday).concat(")"));
 		// 当然日付のデータが存在する場合
-		if (entity != null) {
+		if (atendanceOnHolidayEntityRes != null) {
 
 			// 休日勤務画面情報を更新する
 			// 勤務区分
-			form.setSelectedAtendanceDayKbn(entity.getSelectedAtendanceDayKbn());
+			atendanceOnHolidayForm.setSelectedAtendanceDayKbn(atendanceOnHolidayEntityRes.getSelectedAtendanceDayKbn());
 			// 勤務区分リスト
-			form.setAtendanceDayKbnList(getAtendanceDayKbnList());
+			atendanceOnHolidayForm.setAtendanceDayKbnList(getAtendanceDayKbnList());
 			// 勤務開始時間
-			form.setStrAtendanceTimeStat(entity.getStrAtendanceTimeStat());
+			atendanceOnHolidayForm.setStrAtendanceTimeStat(atendanceOnHolidayEntityRes.getStrAtendanceTimeStat());
 			// 勤務終了時間
-			form.setStrAtendanceTimeEnd(entity.getStrAtendanceTimeEnd());
+			atendanceOnHolidayForm.setStrAtendanceTimeEnd(atendanceOnHolidayEntityRes.getStrAtendanceTimeEnd());
 			// 振替日
-			form.setStrHurikaeDate(entity.getStrHurikaeDate());
+			atendanceOnHolidayForm.setStrHurikaeDate(atendanceOnHolidayEntityRes.getStrHurikaeDate());
 			// プロジェクト名
-			form.setSelectedProjCd(entity.getSelectedProjCd());
+			atendanceOnHolidayForm.setSelectedProjCd(atendanceOnHolidayEntityRes.getSelectedProjCd());
 			// 業務内容
-			form.setStrCommont(entity.getStrCommont());
+			atendanceOnHolidayForm.setStrCommont(atendanceOnHolidayEntityRes.getStrCommont());
 
 		}
 	}
@@ -84,8 +90,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 *            勤務情報データの保存結果フラグ
 	 */
 	@Override 
-	public String saveAtendanceOnHoliday(
-			AtendanceOnHolidayForm atendanceOnHoliday, String UserID) {
+	public String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday, String UserID) {
 
 		// TODO 勤務情報データDBに保存する
 		return atendanceOnHolidayDao.saveAtendanceOnHoliday(atendanceOnHoliday, UserID);
@@ -103,8 +108,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 *            勤務情報データの保存結果フラグ
 	 */
 	@Override
-	public Integer deleteAtendanceOnHoliday(String strAtendanceDate,
-			String userID) {
+	public Integer deleteAtendanceOnHoliday(String strAtendanceDate, String userID) {
 
 		// TODO DBで当前の勤務データの日付対応したデータを削除する
 		// 仮:削除成功

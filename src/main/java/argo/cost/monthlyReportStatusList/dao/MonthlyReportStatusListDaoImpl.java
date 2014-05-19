@@ -21,14 +21,14 @@ import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDao {
 
 	/**
-	 * 月報状況一覧リストを取得
+	 * 月報状況一覧データを取得
 	 * 
-	 * @param status
-	 *           状況
-	 * @return 月報状況一覧リスト
+	 * @param monthlyReportStatusListForm
+	 *                                   月報状況一覧画面情報
+	 * @return 月報状況一覧データ
 	 */
 	@Override
-	public List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm form) {
+	public List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
 
 		// TODO:仮の値を与える
 		List<ApprovalListEntity> resultList = new ArrayList<ApprovalListEntity>();
@@ -55,15 +55,15 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 	}
 
 	/**
-	 * 所属プルダウンリスト取得
+	 * 所属データ取得
 	 * 
 	 * @return
-	 *        所属プルダウンリスト
+	 *        所属データ
 	 */
 	@Override
 	public List<ListItemVO> getAffiliationList() {
 		
-		//TODO ドロップダウンリスト
+		//TODO ドロップダウンリスト仮の値を作成
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		// ドロップダウン項目
 		ListItemVO item = new ListItemVO();
@@ -87,13 +87,12 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 	/**
 	 * 給与奉行向けCSVファイル情報を取得
 	 * 
-	 * @param form 
-	 *            画面情報
-	 * @return
-	 *        給与奉行向けCSVファイル情報
+	 * @param monthlyReportStatusListForm 
+	 *                                   画面情報
+	 * @return 給与奉行向けCSVファイル情報
 	 */
 	@Override
-	public List<PayMagistrateCsvInfo> getPayMagistrateCsvList(MonthlyReportStatusListForm form) {
+	public List<PayMagistrateCsvInfo> getPayMagistrateCsvList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
 		
 		// TODO 月報状況一覧画面の検索条件「年月」、「所属」、「状況」によって、ＤＢから、給与奉行向データを取得する。
 		List<PayMagistrateCsvInfo> csvDataList = new ArrayList<PayMagistrateCsvInfo>();

@@ -32,18 +32,28 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 	protected AttendanceOnHolidayRecordDetailService attendanceOnHolidayRecordDetailService;
 
 	/**
-	 * 休日出勤管理画面URL
+	 * 休日出勤管理画面ID
 	 */
 	private static final String ATTENDANCE_ONHOLIDAY_RECORD_DETAIL = "attendanceOnHolidayRecordDetail";
+
+	/**
+	 * 超勤に振替えるボタンを押下アクション
+	 */
+	private static final String  OVERWORKEXCHANGE = "/overWorkExchange";
 
 	/**
 	 * 休日出勤管理詳細画面の初期化処理
 	 * 
 	 * @param model
-	 *            画面情報モデル
-	 * @return 
-	 *        休日出勤管理詳細画面の初期化の情報
-	 * @throws Exception 
+	 *             画面情報モデル
+	 * @param date
+	 *            日付
+	 * @param workKbn
+	 *               勤務区分
+	 * @return
+	 *        休日出勤管理詳細画面
+	 * @throws Exception
+	 *                  異常
 	 */
 	@RequestMapping(value = INIT)
 	public String initAttendanceOnHolidayRecordDetail(Model model, @RequestParam("date") String date, @RequestParam("workKbn") String workKbn) throws Exception {
@@ -63,25 +73,30 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 		// 休日出勤管理詳細画面情報設定
 		model.addAttribute(detailForm);
 
-		// 休日出勤管理詳細画面の初期化
+		// 休日出勤管理詳細画面を戻り
 		return ATTENDANCE_ONHOLIDAY_RECORD_DETAIL;
 	}
 
 	/**
 	 * 超勤に振替えるボタンを押下
+	 * 
+	 * @param attendanceOnHolidayRecordDetailForm
+	 *                                           休日出勤管理詳細画面情報
+	 * @return
+	 *        休日出勤管理詳細画面
 	 */
-	@RequestMapping(value = "/overWorkExchange", method = RequestMethod.POST)
-	public String overworkExchange(AttendanceOnHolidayRecordDetailForm form) {
+	@RequestMapping(value = OVERWORKEXCHANGE, method = RequestMethod.POST)
+	public String overworkExchange(AttendanceOnHolidayRecordDetailForm attendanceOnHolidayRecordDetailForm) {
 		
 		// 超勤振替申請を提出
-		Integer resultFlg = attendanceOnHolidayRecordDetailService.overWorkPayRequest(form);
+		Integer resultFlg = attendanceOnHolidayRecordDetailService.overWorkPayRequest(attendanceOnHolidayRecordDetailForm);
 
 		if (resultFlg == 1) {
 			System.out.print("超勤振替申請日を成功に更新された");
 		}
+		
 		// 超勤振替申請が提出、休日出勤管理画面へ戻る
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_ONHOLIDAY_RECORD + INIT;
-
 	}
 
 	/**

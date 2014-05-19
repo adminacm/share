@@ -9,7 +9,7 @@ import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 
 /**
  * <p>
- * 月報状況一覧のアクセスクラスを提供します。
+ * 月報状況一覧ＤＡＯのインターフェイス
  * </p>
  *
  * @author COST argo Corporation.
@@ -17,30 +17,29 @@ import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 public interface MonthlyReportStatusListDao {
 
 	/**
-	 * 月報状況一覧リストを取得
+	 * 月報状況一覧データを取得
 	 * 
-	 * @param status
-	 *           状況
-	 * @return 月報状況一覧リスト
+	 * @param monthlyReportStatusListForm
+	 *                                   月報状況一覧画面情報
+	 * @return 月報状況一覧データ
 	 */
-	List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
+	List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm);
 
 	/**
-	 * 所属プルダウンリスト取得
+	 * 所属データ取得
 	 * 
 	 * @return
-	 *        所属プルダウンリスト
+	 *        所属データ
 	 */
 	List<ListItemVO> getAffiliationList();
 
 	/**
 	 * 給与奉行向けCSVファイル情報を取得
 	 * 
-	 * @param form 
-	 *            画面情報
-	 * @return
-	 *        給与奉行向けCSVファイル情報
+	 * @param monthlyReportStatusListForm 
+	 *                                   画面情報
+	 * @return 給与奉行向けCSVファイル情報
 	 */
-	List<PayMagistrateCsvInfo> getPayMagistrateCsvList(MonthlyReportStatusListForm form);
+	List<PayMagistrateCsvInfo> getPayMagistrateCsvList(MonthlyReportStatusListForm monthlyReportStatusListForm);
 
 }

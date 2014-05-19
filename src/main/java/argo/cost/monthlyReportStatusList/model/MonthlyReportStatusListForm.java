@@ -8,7 +8,7 @@ import argo.cost.common.model.ListItemVO;
 
 /**
  * <p>
- * 月報状況一覧画面情報を記載します。
+ * 月報状況一覧画面フォーム情報クラス
  * </p>
  *
  */
@@ -60,12 +60,11 @@ public class MonthlyReportStatusListForm  extends AbstractForm implements Serial
 	/**
 	 * 月報状況一覧リスト
 	 */
-	private List<MonthlyReportStatusListInfo> mRSList;
+	private List<MonthlyReportStatusListVo> monthlyReportStatusList;
 
 	// ************************
 	// ** アクセサメソッド　** 
 	// ************************
-	
 	public String getYear() {
 		return year;
 	}
@@ -130,12 +129,12 @@ public class MonthlyReportStatusListForm  extends AbstractForm implements Serial
 		this.statusList = statusList;
 	}
 
-	public List<MonthlyReportStatusListInfo> getmRSList() {
-		return mRSList;
+	public List<MonthlyReportStatusListVo> getMonthlyReportStatusList() {
+		return monthlyReportStatusList;
 	}
 
-	public void setmRSList(List<MonthlyReportStatusListInfo> mRSList) {
-		this.mRSList = mRSList;
+	public void setMonthlyReportStatusList(
+			List<MonthlyReportStatusListVo> monthlyReportStatusList) {
+		this.monthlyReportStatusList = monthlyReportStatusList;
 	}
-
 }

@@ -17,7 +17,7 @@ import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
-import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListInfo;
+import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListService;
 
 /**
@@ -33,13 +33,13 @@ import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListService;
 public class MonthlyReportStatusListController extends AbstractController  {
 	
 	/**
-	 * このアクションが利用するサービスです。
+	 * 月報状況一覧サービス
 	 */
 	@Autowired
 	protected MonthlyReportStatusListService monthlyReportStatusListService;
 
 	/**
-	 * 月報状況一覧画面URL
+	 * 月報状況一覧画面ID
 	 */
 	private static final String MONTHLYREPORT_STATUS_LIST = "monthlyReportStatusList";
 
@@ -47,8 +47,8 @@ public class MonthlyReportStatusListController extends AbstractController  {
 	 * 月報状況一覧画面初期化
 	 *
 	 * @param model
-	 *            画面情報モデル
-	 * @return
+	 *             画面情報モデル
+	 * @return 月報状況一覧画面
 	 */
     @RequestMapping(INIT)
     public String initMonthlyReportStatusList(Model model) {
@@ -82,9 +82,9 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	form.setAffiliationList(affiliationList);
     	
     	// 月報状況一覧リストを取得
-    	List<MonthlyReportStatusListInfo> mRSList = monthlyReportStatusListService.getMonthlyReportStatusList(form);
+    	List<MonthlyReportStatusListVo> monthlyReportStatusList = monthlyReportStatusListService.getMonthlyReportStatusList(form);
     	
-    	form.setmRSList(mRSList);;
+    	form.setMonthlyReportStatusList(monthlyReportStatusList);
 
     	// 初期値設定
     	// 状況
@@ -101,44 +101,48 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	// 所属
     	form.setAffiliation("00");
     	
+    	// 月報状況一覧画面を戻り
         return MONTHLYREPORT_STATUS_LIST;
     }
 
     /**
      * 表示切替ボタンを押して、表示対象を切り替える
      * 
-     * @param form
-     *         月報状況一覧画面情報
-     * @return
+     * @param monthlyReportStatusListForm
+     *                                   月報状況一覧画面情報
+     * @return 月報状況一覧画面
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String searchMonthlyReportStatusList(MonthlyReportStatusListForm form) {
+    public String searchMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
     	
     	// 月報状況一覧リストを取得
-    	List<MonthlyReportStatusListInfo> mRSList = monthlyReportStatusListService.getMonthlyReportStatusList(form);
+    	List<MonthlyReportStatusListVo> monthlyReportStatusList = monthlyReportStatusListService.getMonthlyReportStatusList(monthlyReportStatusListForm);
     	
-    	form.setmRSList(mRSList);
+    	// 月報状況一覧リストを設定
+    	monthlyReportStatusListForm.setMonthlyReportStatusList(monthlyReportStatusList);
 
+    	// 月報状況一覧画面を戻り
         return MONTHLYREPORT_STATUS_LIST;
     }
 
     /**
      * 給与奉行向けCSV出力ボタンを押下
      * 
-     * @param form
-     *         月報状況一覧画面情報
+     * @param monthlyReportStatusListForm
+     *                                   月報状況一覧画面情報
      * @param response
-     *         レスポンス
-     * @return
+     *                レスポンス
+     * @return 月報状況一覧画面
      * @throws Exception 
+     *                  異常
      */
     @RequestMapping(value = "/csvOutput", method = RequestMethod.POST)
-    public String doCSV(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
+    public String doCSV(MonthlyReportStatusListForm monthlyReportStatusListForm, HttpServletResponse response) throws Exception {
     	
 		// CSVファイルデータ作成
-    	monthlyReportStatusListService.createCSVFile(form, response);
+    	monthlyReportStatusListService.createCSVFile(monthlyReportStatusListForm, response);
 
+    	// 月報状況一覧画面を戻り
         return MONTHLYREPORT_STATUS_LIST;
-
     }
 }

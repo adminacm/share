@@ -88,5 +88,4 @@ public class AttendanceOnHolidayRecordForm extends AbstractForm implements Seria
 	public void setHolidayOverWorkList(List<HolidayOverWorkVO> holidayOverWorkList) {
 		this.holidayOverWorkList = holidayOverWorkList;
 	}
-	
 }

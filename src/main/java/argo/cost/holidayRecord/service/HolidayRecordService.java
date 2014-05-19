@@ -2,6 +2,13 @@ package argo.cost.holidayRecord.service;
 
 import argo.cost.holidayRecord.model.HolidayRecordForm;
 
+/**
+ * <p>
+ * 休暇管理画面サービスのインターフェイス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 public interface HolidayRecordService {
 
 	/**
@@ -10,5 +17,5 @@ public interface HolidayRecordService {
 	 * @param form
 	 *            休暇管理画面情報
 	 */
-	void setHolidayRecordInfo(HolidayRecordForm form);
+	void setHolidayRecordInfo(HolidayRecordForm holidayRecordForm);
 }

@@ -11,21 +11,34 @@ import argo.cost.holidayRecord.model.HolidayRecordForm;
 import argo.cost.holidayRecord.model.PayHolidayVO;
 import argo.cost.holidayRecord.model.SpecialHolidayVO;
 
+/**
+ * <p>
+ * 休暇管理画面サービス
+ * </p>
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class HolidayRecordServiceImpl implements HolidayRecordService {
 	
+	/**
+	 * 休暇管理画面DAO
+	 */
 	@Autowired
 	private HolidayRecordDao holidayRecordDao;
 	
 	/**
 	 * 休暇管理情報をセット
 	 * 
-	 * @param form
-	 *            休暇管理画面情報
+	 * @param holidayRecordForm
+	 *                         休暇管理画面情報
 	 */
 	@Override
 	public void setHolidayRecordInfo(HolidayRecordForm holidayRecordForm) {
+		
+		// 年度を取得
 		String strYearPeriod =  holidayRecordForm.getYearPeriod();
+		
 		// 有給休暇情報を取得
 		List<PayHolidayVO> payHolidayList = holidayRecordDao.getPayHolidayList(strYearPeriod);
 		// 欠勤情報を取得

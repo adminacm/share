@@ -17,10 +17,8 @@ import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 
 /**
- * <p>
- * 休日勤務画面業務クラス
- * </p>
- *
+ * 休日勤務画面のコントローラ
+ * 
  * @author COST argo Corporation.
  */
 @Controller
@@ -32,7 +30,7 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * 休日勤務入力サービス
 	 */
 	@Autowired
-	protected AtendanceOnHolidayService service;
+	protected AtendanceOnHolidayService atendanceOnHolidayService;
 
 	/**
 	 * 休日勤務入力情報
@@ -47,10 +45,8 @@ public class AtendanceOnHolidayController extends AbstractController {
 	/**
 	 * 休日勤務入力画面の初期化処理
 	 * 
-	 * @param map
-	 *            画面情報マープ
-	 * @param userId
-	 *            ユーザID
+	 * @param model
+	 *            画面情報設定用のインタフェース
 	 * @param date
 	 *            勤怠入力画面から渡した休日の日付
 	 * @return 休日勤務入力画面の初期化の情報
@@ -58,17 +54,17 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = INIT)
-	public String initAtendanceOnHoliday(Model model, @RequestParam(ATTDENDANCE_DATE) String date) throws Exception {
+	public String initAtendanceOnHoliday(Model model, @RequestParam(ATTDENDANCE_DATE) String currentDate) throws Exception {
 		
 		// 休日勤務入力画面情報初期化
-		AtendanceOnHolidayForm form = initForm(AtendanceOnHolidayForm.class);
+		AtendanceOnHolidayForm atendanceOnHolidayForm = initForm(AtendanceOnHolidayForm.class);
 		
 		// 画面情報を設定する。
-		service.setAtendanceOnHolidayInfo(form, date);
+		atendanceOnHolidayService.setAtendanceOnHolidayInfo(atendanceOnHolidayForm, currentDate);
 		// プロジェクト名プルダウンリストの取得
-		form.setProjCdList(comService.getProjectNameList(form.getUserId()));
+		atendanceOnHolidayForm.setProjCdList(comService.getProjectNameList(atendanceOnHolidayForm.getUserId()));
 		
-		model.addAttribute(ATTENDANCE_INFO, form);
+		model.addAttribute(ATTENDANCE_INFO, atendanceOnHolidayForm);
 
 		return ATTENDANCE_HOLIDAY;
 
@@ -118,7 +114,7 @@ public class AtendanceOnHolidayController extends AbstractController {
 					.getStrCommont());
 
 			// TODO 保存成功の場合、勤怠入力画面に遷移する
-			if ("1".equals(service.saveAtendanceOnHoliday(atendanceOnHoliday,
+			if ("1".equals(atendanceOnHolidayService.saveAtendanceOnHoliday(atendanceOnHoliday,
 					getSession().getUserInfo().getId()))) {
 
 				// TODO 保存失敗の場合、エラーメッセージを出力する、
@@ -145,13 +141,13 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * @return 休日勤務入力画面の初期化の情報
 	 */
 	@RequestMapping(value = DELETE)
-	public String delete(@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm form) {
+	public String delete(@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm atendanceOnHolidayForm) {
 
 		// 勤務日付
-		String strAtendanceDate = form.getStrAtendanceDate();
+		String strAtendanceDate = atendanceOnHolidayForm.getStrAtendanceDate();
 
 		// TODO 削除失敗する場合
-		if (service.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getUserId()) == 0) {
+		if (atendanceOnHolidayService.deleteAtendanceOnHoliday(atendanceOnHolidayForm.getStrAtendanceDate(), atendanceOnHolidayForm.getUserId()) == 0) {
 			
 			System.out.println("勤務情報を削除失敗");
 			// TODO エラーメッセジーを設定し、表示する
@@ -170,10 +166,10 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * @return 勤怠入力画面の初期化の情報
 	 */
 	@RequestMapping(value = BACK)
-	public String returnToKintaiInput(@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm form) {
+	public String returnToKintaiInput(@ModelAttribute(ATTENDANCE_INFO) AtendanceOnHolidayForm atendanceOnHolidayForm) {
 
 		// TODO 戻るボタンを押すと入力内容が破棄され、勤怠入力画面へ戻る
-		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + "attDate=" + form.getStrAtendanceDate().replace("/", "");
+		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + "attDate=" + atendanceOnHolidayForm.getStrAtendanceDate().replace("/", "");
 
 	}
 
