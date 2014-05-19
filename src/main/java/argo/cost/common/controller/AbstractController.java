@@ -1,10 +1,5 @@
 package argo.cost.common.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -120,72 +115,5 @@ public abstract class AbstractController {
 
 		return form;
 	}
-
-	/**
-	 * 直ぐに文字列出力
-	 *
-	 * @param response
-	 *            レスポンス
-	 * @param data
-	 *            データ
-	 * @throws IOException
-	 *             異常
-	 */
-	protected void writeSimpleData(HttpServletResponse response, String data) throws IOException {
-
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-
-		out.write(data);
-		out.flush();
-		out.close();
-	}
-//
-//	/**
-//	 * 単一データJSONで出力
-//	 *
-//	 * @param response
-//	 *            レスポンス
-//	 * @param obj
-//	 *            データ
-//	 * @throws IOException
-//	 *             異常
-//	 */
-//	protected <T> void writeJsonObject(HttpServletResponse response, T obj) throws IOException {
-//
-//		response.setContentType("text/html;charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//
-//		JSONObject jsonObject = new JSONObject(obj);
-//
-//		out.write(jsonObject.toString());
-//		out.flush();
-//		out.close();
-//	}
-//
-//	/**
-//	 * 一覧データJSONで出力
-//	 *
-//	 * @param response
-//	 *            レスポンス
-//	 * @param list
-//	 *            一覧データ
-//	 * @throws IOException
-//	 *             異常
-//	 */
-//	protected <T> void writeJsonArray(HttpServletResponse response, List<T> list) throws IOException {
-//
-//		response.setContentType("text/html;charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//
-//		JSONArray jsonArray = new JSONArray();
-//		for (T item : list) {
-//
-//			jsonArray.put(new JSONObject(item));
-//		}
-//		out.write(jsonArray.toString());
-//		out.flush();
-//		out.close();
-//	}
 
 }
