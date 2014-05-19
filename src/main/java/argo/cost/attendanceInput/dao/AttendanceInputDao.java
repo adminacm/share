@@ -9,6 +9,12 @@ import argo.cost.attendanceInput.model.HolidayRecord;
 import argo.cost.attendanceInput.model.WorkTimeDetail;
 import argo.cost.common.model.ListItemVO;
 
+/**
+ * 勤怠入力DAO
+ * 勤怠入力に関する処理を行う。
+ *
+ * @author COST argo Corporation.
+ */
 public interface AttendanceInputDao {
 
 	/**

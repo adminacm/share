@@ -18,6 +18,11 @@ import argo.cost.attendanceInput.service.AttendanceInputService;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 
+/**
+ * 勤怠入力画面業務クラス
+ *
+ * @author COST argo Corporation.
+ */
 @Controller
 @RequestMapping(UrlConstant.URL_ATTENDANCE_INPUT)
 @SessionAttributes(types = { AttendanceInputForm.class })
@@ -52,7 +57,7 @@ public class AttendanceInputController extends AbstractController {
 	 */
 	@RequestMapping(value = INIT)
 	@Secured({"ROLE_USER"})
-	public String initAttendanceInput(Model model, @RequestParam("attDate") String newDate)
+	public String initAttendanceInput(Model model, @RequestParam(ATTDENDANCE_DATE) String newDate)
 			throws Exception {
 
 		// ユーザID
@@ -83,7 +88,7 @@ public class AttendanceInputController extends AbstractController {
 		String nextMonth = attendanceInputService.changeDate("next", form.getAttDate());
 
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK +
-				"attDate=" + nextMonth;
+				ATTDENDANCE_DATE + EQUAL_SIGN + nextMonth;
 	}
 
 	/**
@@ -100,7 +105,7 @@ public class AttendanceInputController extends AbstractController {
 		String nextMonth = attendanceInputService.changeDate("last", form.getAttDate());
 
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + 
-				"attDate=" + nextMonth;
+				ATTDENDANCE_DATE + EQUAL_SIGN + nextMonth;
 	}
 
 	/**
@@ -143,7 +148,7 @@ public class AttendanceInputController extends AbstractController {
 
 			return REDIRECT + UrlConstant.URL_MENU + INIT;
 		} else {
-			return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=";
+			return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + EQUAL_SIGN;
 		}
 	}
 
@@ -198,6 +203,6 @@ public class AttendanceInputController extends AbstractController {
 		String attendanceDate = form.getAttDate();
 		
 		return REDIRECT + UrlConstant.URL_ATT_HOLIDAY + INIT 
-				+ QUESTION_MARK + ATTDENDANCE_DATE + "=" + attendanceDate;
+				+ QUESTION_MARK + ATTDENDANCE_DATE + EQUAL_SIGN + attendanceDate;
 	}
 }

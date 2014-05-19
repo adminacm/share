@@ -18,6 +18,12 @@ import argo.cost.monthlyReport.model.MonthlyReportEntity;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
 import argo.cost.monthlyReport.model.ProjectVo;
 
+/**
+ * 月報画面サービス実現するクラス
+ * 報画面に関する処理を行う。
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class MonthlyReportServiceImpl implements MonthlyReportService {
 	

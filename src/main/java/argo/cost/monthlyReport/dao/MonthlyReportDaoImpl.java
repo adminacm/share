@@ -9,11 +9,10 @@ import argo.cost.monthlyReport.model.MonthlyReportEntity;
 import argo.cost.monthlyReport.model.ProjectVo;
 
 /**
- * <p>
- * 月報の氏名リストを取得。
- * </p>
+ * 月報画面DaoImpl
+ * 報画面に関する処理を行う。
  *
- * @author 
+ * @author COST argo Corporation.
  */
 @Repository
 public class MonthlyReportDaoImpl implements MonthlyReportDao{

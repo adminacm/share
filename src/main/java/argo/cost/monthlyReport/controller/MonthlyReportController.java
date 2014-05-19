@@ -22,6 +22,12 @@ import argo.cost.monthlyReport.model.MonthlyReportInfo;
 import argo.cost.monthlyReport.service.MonthlyReportService;
 import argo.cost.monthlyReport.model.ProjectVo;
 
+/**
+ * 月報画面業務スクラス
+ * 報画面に関する処理を行う。
+ *
+ * @author COST argo Corporation.
+ */
 @Controller
 @RequestMapping(UrlConstant.URL_MONTHLYREPORT)
 @SessionAttributes(types = { MonthlyReportForm.class })

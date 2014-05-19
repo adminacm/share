@@ -32,6 +32,10 @@ public abstract class AbstractController {
 	 *　且つ符
 	 */
 	public static final String AND_MARK = "&";
+	/**
+	 *　イコール符
+	 */
+	public static final String EQUAL_SIGN = "=";
 
 	/**
 	 *　勤怠日付

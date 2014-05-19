@@ -22,6 +22,12 @@ import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
 
+/**
+ * 勤怠入力サービス実現するクラス
+ * 勤怠入力に関する処理を行う。
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class AttendanceInputServiceImpl implements AttendanceInputService {
 

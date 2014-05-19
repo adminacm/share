@@ -7,6 +7,12 @@ import java.util.List;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
 import argo.cost.monthlyReport.model.ProjectVo;
 
+/**
+ * 月報画面サービス
+ * 報画面に関する処理を行う。
+ *
+ * @author COST argo Corporation.
+ */
 public interface MonthlyReportService {
 
 	/**
