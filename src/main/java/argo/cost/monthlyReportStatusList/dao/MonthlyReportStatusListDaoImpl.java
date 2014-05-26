@@ -34,21 +34,43 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 		List<ApprovalListEntity> resultList = new ArrayList<ApprovalListEntity>();
 		
 		ApprovalListEntity itemInfo = new ApprovalListEntity();
-		itemInfo.setApplyKbn("月報");
-		itemInfo.setApplyDetail("2014年5月分");
-		itemInfo.setStatus("01");
+		itemInfo.setApplyNo("user01120140500");
 		itemInfo.setAffiliation("ＢＳ２");
 		itemInfo.setId("aaa");
 		itemInfo.setName("あｘｘｘｘｘ");
+		itemInfo.setApplyKbn("1");
+		itemInfo.setApplyDetail("2014年5月分");
+		itemInfo.setStatus("01");
 		resultList.add(itemInfo);
 		
 		itemInfo = new ApprovalListEntity();
-		itemInfo.setApplyKbn("月報");
-		itemInfo.setApplyDetail("2014年5月分");
-		itemInfo.setStatus("02");
+		itemInfo.setApplyNo("user02120140500");
 		itemInfo.setAffiliation("ＢＳ２");
 		itemInfo.setId("uuu");
 		itemInfo.setName("うｘｘｘｘｘ");
+		itemInfo.setApplyKbn("1");
+		itemInfo.setApplyDetail("2014年5月分");
+		itemInfo.setStatus("01");
+		resultList.add(itemInfo);
+		
+		itemInfo = new ApprovalListEntity();
+		itemInfo.setApplyNo("user03220140500");
+		itemInfo.setAffiliation("ＢＳ２");
+		itemInfo.setId("iii");
+		itemInfo.setName("えｘｘｘｘｘ");
+		itemInfo.setApplyKbn("2");
+		itemInfo.setApplyDetail("休日勤務日：2014/5/5");
+		itemInfo.setStatus("06");
+		resultList.add(itemInfo);
+		
+		itemInfo = new ApprovalListEntity();
+		itemInfo.setApplyNo("user04220140500");
+		itemInfo.setAffiliation("ＢＳ２");
+		itemInfo.setId("uuu");
+		itemInfo.setName("うｘｘｘｘｘ");
+		itemInfo.setApplyKbn("2");
+		itemInfo.setApplyDetail("休日勤務日：2014/5/5");
+		itemInfo.setStatus("06");
 		resultList.add(itemInfo);
 		
 		return resultList;

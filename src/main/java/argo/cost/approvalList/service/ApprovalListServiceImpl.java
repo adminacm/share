@@ -65,7 +65,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 				// 申請区分コード
 				approvalListVo.setApplyKbnCd(approvalListEntity.getApplyKbn());
 				// 申請区分名
-				approvalListVo.setApplyKbnName(approvalListDao.findApplyKbnName(approvalListEntity.getApplyKbn()));
+				approvalListVo.setApplyKbnName(comDao.findApplyKbnName(approvalListEntity.getApplyKbn()));
 				// 申請内容
 				approvalListVo.setApplyDetail(approvalListEntity.getApplyDetail());
 				// 状況

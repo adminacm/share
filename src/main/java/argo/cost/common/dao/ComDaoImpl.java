@@ -182,10 +182,36 @@ public class ComDaoImpl implements ComDao {
 		} else if ("05".equals(status)) {
 
 			statusName = "処理済";
+		} else if ("06".equals(status)) {
+
+			statusName = "申請";
 		}
 		
 		return statusName;
 
+	}
+
+	/**
+	 * 申請区分名を取得
+	 * 
+	 * @param applyKbnCd
+	 *                申請区分コード
+	 * @return
+	 *        申請区分名
+	 */
+	@Override
+	public String findApplyKbnName(String applyKbnCd) {
+		// TODO 仮の値を与える
+		String name = "";
+		
+		if ("1".equals(applyKbnCd)) {
+			
+			name = "月報";
+		} else if ("2".equals(applyKbnCd)) {
+			
+			name = "超勤振替申請";
+		}
+		return name;
 	}
 
 	/**

@@ -25,7 +25,7 @@ function submitAction(action) {
 </script>
 </head>
 <body>
-	<form:form modelAttribute="holidayForOvertimeApprovalInfo">
+	<form:form modelAttribute="holidayForOvertimeApprovalForm">
 	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:700px;">
 			<div style="padding:2px;">
@@ -34,7 +34,7 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
 				<table style="width:800px;margin-left:40px;margin-right:40px;">
 					<tr>
-						<td style="border:1px solid #333333;width:60px" align="center">${holidayForOvertimeApprovalInfo.proStatus}</td>
+						<td style="border:1px solid #333333;width:60px" align="center">${holidayForOvertimeApprovalForm.proStatus}</td>
 						<td style="width:240px" align="center">
 							<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/holidayForOvertimeApproval/approval');" />
 						</td>
@@ -51,31 +51,32 @@ function submitAction(action) {
 				<table style="margin-left:70px;padding-bottom:20px">
 					<tr>
 						<td style="width:100px">日付</td>
-						<td>${holidayForOvertimeApprovalInfo.date}</td>
+						<td>${holidayForOvertimeApprovalForm.date}</td>
 					</tr>
 					<tr>
 						<td>勤務区分</td>
-						<td>${holidayForOvertimeApprovalInfo.workKbnName}</td>
+						<td>${holidayForOvertimeApprovalForm.workKbnName}</td>
 					</tr>
 					<tr>
 						<td>勤務時間</td>
-						<td>${holidayForOvertimeApprovalInfo.workStartTime} ～　${holidayForOvertimeApprovalInfo.workEndTime}</td>
+						<td>${holidayForOvertimeApprovalForm.workStartTime} ～　${holidayForOvertimeApprovalForm.workEndTime}</td>
 					</tr>
 					<tr>
 						<td>代休期限</td>
-						<td>${holidayForOvertimeApprovalInfo.turnedHolidayEndDate}</td>
+						<td>${holidayForOvertimeApprovalForm.turnedHolidayEndDate}</td>
 					</tr>
 					<tr>
 						<td>PJ</td>
-						<td>${holidayForOvertimeApprovalInfo.projectName}</td>
+						<td>${holidayForOvertimeApprovalForm.projectName}</td>
 					</tr>
 					<tr>
 						<td>業務内容</td>
-						<td>${holidayForOvertimeApprovalInfo.workDetail}</td>
+						<td>${holidayForOvertimeApprovalForm.workDetail}</td>
 					</tr>
 				</table>
 			</div>
 		</div>	
+		<input type="hidden" value="${monthlyReportApprovalForm.backUrl}"/>
 	</form:form>
 </body>
 </html>

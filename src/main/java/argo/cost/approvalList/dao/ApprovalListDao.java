@@ -21,14 +21,4 @@ public interface ApprovalListDao {
 	 * @return 承認データ
 	 */
 	List<ApprovalListEntity> getApprovalList(String status);
-
-	/**
-	 * 申請区分名を取得
-	 * 
-	 * @param applyKbnCd
-	 *                  申請区分コード
-	 * @return
-	 *        申請区分名
-	 */
-	String findApplyKbnName(String applyKbnCd);
 }

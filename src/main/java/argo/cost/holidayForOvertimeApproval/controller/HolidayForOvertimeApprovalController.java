@@ -31,11 +31,6 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	protected HolidayForOvertimeApprovalService holidayForOvertimeApprovalService;
 
 	/**
-	 * 超勤振替申請承認情報
-	 */
-	private static final String HOLIDAYFOROVERTIME_APPROVAL_INFO = "holidayForOvertimeApprovalInfo";
-
-	/**
 	 * 超勤振替申請承認画面URL
 	 */
 	private static final String HOLIDAYFOROVERTIME_APPROVAL = "holidayForOvertimeApproval";
@@ -52,7 +47,7 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = INIT)
-	public String initHolidayForOvertimeApproval(Model model, @RequestParam("applyNo") String applyNo) throws Exception {
+	public String initHolidayForOvertimeApproval(Model model, @RequestParam("applyNo") String applyNo, @RequestParam("backUrl") String backUrl) throws Exception {
 
 		// 超勤振替申請承認情報を取得
 		HolidayForOvertimeApprovalForm holidayForOvertimeApprovalInfo = holidayForOvertimeApprovalService.getHolidayForOvertimeApproval(applyNo);
@@ -60,13 +55,16 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 		//　申請番号を設定
 		holidayForOvertimeApprovalInfo.setApplyNo(applyNo);
 		
+		//　戻り用画面URL
+		holidayForOvertimeApprovalInfo.setBackUrl(backUrl);
+		
 		// 処理状況を取得
 		String status = holidayForOvertimeApprovalService.getStatus(applyNo);
 		
 		// 処理状況設定
 		holidayForOvertimeApprovalInfo.setProStatus(status);
 		
-		model.addAttribute(HOLIDAYFOROVERTIME_APPROVAL_INFO, holidayForOvertimeApprovalInfo);
+		model.addAttribute(holidayForOvertimeApprovalInfo);
 
 		return HOLIDAYFOROVERTIME_APPROVAL;
 
@@ -91,7 +89,7 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 		}
 
 		// 承認一覧画面へ遷移する
-		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+		return REDIRECT + form.getBackUrl() + INIT;
 
 	}
 
@@ -114,7 +112,7 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 		}
 		
 		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する
-		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+		return REDIRECT + form.getBackUrl() + INIT;
 
 	}
 
@@ -127,7 +125,7 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	public String doBack(HolidayForOvertimeApprovalForm form) {
 
 		// 戻るボタンを押すと、承認一覧画面へ戻る
-		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+		return REDIRECT + form.getBackUrl() + INIT;
 
 	}
 }

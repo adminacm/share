@@ -112,6 +112,7 @@ function submitAction(action) {
 						<table class="resultStyle" id="payHolidayList" style="margin-left:2px;">
 							<thead>
 								<tr class="headStyle">
+									<th>No.</th>
 									<th>所属</th>
 									<th>ID</th>
 									<th>氏名</th>
@@ -121,8 +122,11 @@ function submitAction(action) {
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="mRS" items="${monthlyReportStatusListForm.mRSList}">
+								<c:forEach var="mRS" items="${monthlyReportStatusListForm.monthlyReportStatusList}">
 									<tr>
+										<td align="center">
+											<a href="/monthlyReportStatusList/applyNoClick?applyNo=${mRS.applyNo}&applyKbnCd=${mRS.applyKbnCd}">${mRS.applyNo}</a>
+										</td>
 										<td>
 											${mRS.affiliation}
 										</td>
@@ -133,7 +137,7 @@ function submitAction(action) {
 											${mRS.name}
 										</td>
 										<td>
-											${mRS.applyKbn}
+											${mRS.applyKbnName}
 										</td>
 										<td>
 											${mRS.applyDetail}

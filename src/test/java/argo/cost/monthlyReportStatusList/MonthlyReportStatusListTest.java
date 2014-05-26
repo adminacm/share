@@ -16,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListServiceImpl;
@@ -39,26 +38,6 @@ public class MonthlyReportStatusListTest {
 		// 月報状況一覧画面入力情報
 		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
 
-		List<ApprovalListEntity> appList = new ArrayList<ApprovalListEntity>();
-		
-		ApprovalListEntity appInfo = new ApprovalListEntity();
-		appInfo.setApplyKbn("月報");
-		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("作成中");
-		appInfo.setAffiliation("ＢＳ２");
-		appInfo.setId("aaa");
-		appInfo.setName("あｘｘｘｘｘ");
-		appList.add(appInfo);
-		
-		appInfo = new ApprovalListEntity();
-		appInfo.setApplyKbn("月報");
-		appInfo.setApplyDetail("2014年5月分");
-		appInfo.setStatus("提出");
-		appInfo.setAffiliation("ＢＳ２");
-		appInfo.setId("uuu");
-		appInfo.setName("うｘｘｘｘｘ");
-		appList.add(appInfo);
-		
 		// 所属
 		form.setAffiliation("01");
 		// 状況
@@ -72,20 +51,38 @@ public class MonthlyReportStatusListTest {
 		List<MonthlyReportStatusListVo> monList = monS.getMonthlyReportStatusList(form);
 		
 		// 月報状況一覧リストのサイズ
-		assertEquals(monList.size(), 2);
-		assertEquals(monList.get(0).getAffiliation(), appList.get(0).getAffiliation());
-		assertEquals(monList.get(0).getId(), appList.get(0).getId());
-		assertEquals(monList.get(0).getName(), appList.get(0).getName());
-		assertEquals(monList.get(0).getApplyKbn(), appList.get(0).getApplyKbn());
-		assertEquals(monList.get(0).getApplyDetail(), appList.get(0).getApplyDetail());
-		assertEquals(monList.get(0).getStatus(), appList.get(0).getStatus());
-		
-		assertEquals(monList.get(1).getAffiliation(), appList.get(1).getAffiliation());
-		assertEquals(monList.get(1).getId(), appList.get(1).getId());
-		assertEquals(monList.get(1).getName(), appList.get(1).getName());
-		assertEquals(monList.get(1).getApplyKbn(), appList.get(1).getApplyKbn());
-		assertEquals(monList.get(1).getApplyDetail(), appList.get(1).getApplyDetail());
-		assertEquals(monList.get(1).getStatus(), appList.get(1).getStatus());
+		assertEquals(monList.size(), 4);
+		assertEquals(monList.get(0).getApplyNo(), "user01120140500");
+		assertEquals(monList.get(0).getAffiliation(), "ＢＳ２");
+		assertEquals(monList.get(0).getId(), "aaa");
+		assertEquals(monList.get(0).getName(), "あｘｘｘｘｘ");
+		assertEquals(monList.get(0).getApplyKbnName(), "月報");
+		assertEquals(monList.get(0).getApplyDetail(), "2014年5月分");
+		assertEquals(monList.get(0).getStatus(), "提出");
+
+		assertEquals(monList.get(1).getApplyNo(), "user02120140500");
+		assertEquals(monList.get(1).getAffiliation(), "ＢＳ２");
+		assertEquals(monList.get(1).getId(), "uuu");
+		assertEquals(monList.get(1).getName(), "うｘｘｘｘｘ");
+		assertEquals(monList.get(1).getApplyKbnName(), "月報");
+		assertEquals(monList.get(1).getApplyDetail(), "2014年5月分");
+		assertEquals(monList.get(1).getStatus(), "提出");
+
+		assertEquals(monList.get(2).getApplyNo(), "user03220140500");
+		assertEquals(monList.get(2).getAffiliation(), "ＢＳ２");
+		assertEquals(monList.get(2).getId(), "iii");
+		assertEquals(monList.get(2).getName(), "えｘｘｘｘｘ");
+		assertEquals(monList.get(2).getApplyKbnName(), "超勤振替申請");
+		assertEquals(monList.get(2).getApplyDetail(), "休日勤務日：2014/5/5");
+		assertEquals(monList.get(2).getStatus(), "申請");
+
+		assertEquals(monList.get(3).getApplyNo(), "user04220140500");
+		assertEquals(monList.get(3).getAffiliation(), "ＢＳ２");
+		assertEquals(monList.get(3).getId(), "uuu");
+		assertEquals(monList.get(3).getName(), "うｘｘｘｘｘ");
+		assertEquals(monList.get(3).getApplyKbnName(), "超勤振替申請");
+		assertEquals(monList.get(3).getApplyDetail(), "休日勤務日：2014/5/5");
+		assertEquals(monList.get(3).getStatus(), "申請");
 		
 	}
 

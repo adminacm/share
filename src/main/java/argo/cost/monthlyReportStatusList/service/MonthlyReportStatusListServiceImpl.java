@@ -63,19 +63,23 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 			for (int i = 0; i < monthlyReportStatusDataList.size(); i++) {
 				ApprovalListEntity monthlyReportStatusInfo = monthlyReportStatusDataList.get(i);
 				MonthlyReportStatusListVo monthlyReportStatusListVo = new MonthlyReportStatusListVo();
+				// 申請番号
+				monthlyReportStatusListVo.setApplyNo(monthlyReportStatusInfo.getApplyNo());
+				// 所属
+				monthlyReportStatusListVo.setAffiliation(monthlyReportStatusInfo.getAffiliation());
 				// ID
 				monthlyReportStatusListVo.setId(monthlyReportStatusInfo.getId());
-				// 申請区分
-				monthlyReportStatusListVo.setApplyKbn(monthlyReportStatusInfo.getApplyKbn());
+				// 氏名
+				monthlyReportStatusListVo.setName(monthlyReportStatusInfo.getName());
+				// 申請区分コード
+				monthlyReportStatusListVo.setApplyKbnCd(monthlyReportStatusInfo.getApplyKbn());
+				// 申請区分名
+				monthlyReportStatusListVo.setApplyKbnName(comDao.findApplyKbnName(monthlyReportStatusInfo.getApplyKbn()));
 				// 申請内容
 				monthlyReportStatusListVo.setApplyDetail(monthlyReportStatusInfo.getApplyDetail());
 				// 状況
 				String statusName = comDao.findStatusName(monthlyReportStatusInfo.getStatus());
 				monthlyReportStatusListVo.setStatus(statusName);
-				// 所属
-				monthlyReportStatusListVo.setAffiliation(monthlyReportStatusInfo.getAffiliation());
-				// 氏名
-				monthlyReportStatusListVo.setName(monthlyReportStatusInfo.getName());
 				
 				monthlyReportStatusList.add(monthlyReportStatusListVo);
 			}

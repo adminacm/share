@@ -35,11 +35,6 @@ public class MonthlyReportApprovalController extends AbstractController {
 	protected MonthlyReportApprovalService monthlyReportApprovalService;
 
 	/**
-	 * 月報承認情報
-	 */
-	private static final String MONTHLYREPORT_APPROVAL_INFO = "monthlyReportApprovalInfo";
-
-	/**
 	 * 月報承認画面URL
 	 */
 	private static final String MONTHLYREPORT_APPROVAL = "monthlyReportApproval";
@@ -57,13 +52,16 @@ public class MonthlyReportApprovalController extends AbstractController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = INIT)
-	public String initMonthlyReportApproval(Model model, @RequestParam("applyNo") String applyNo) throws Exception {
+	public String initMonthlyReportApproval(Model model, @RequestParam("applyNo") String applyNo, @RequestParam("backUrl") String backUrl) throws Exception {
 		
 		// 月報承認画面情報初期化
 		MonthlyReportApprovalForm form = initForm(MonthlyReportApprovalForm.class);
 		
 		//　申請番号を設定
 		form.setApplyNo(applyNo);
+		
+		//　戻り用画面URL
+		form.setBackUrl(backUrl);
 		
 		// 処理状況を取得
 		String status = monthlyReportApprovalService.getStatus(applyNo);
@@ -83,7 +81,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		// プロジェクト情報設定
 		form.setProjectList(projectList);
 		
-		model.addAttribute(MONTHLYREPORT_APPROVAL_INFO, form);
+		model.addAttribute(form);
 
 		return MONTHLYREPORT_APPROVAL;
 
@@ -108,7 +106,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		}
 
 		// 承認一覧画面へ遷移する
-		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+		return REDIRECT + form.getBackUrl() + INIT;
 
 	}
 
@@ -131,7 +129,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		}
 		
 		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する
-		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+		return REDIRECT + form.getBackUrl() + INIT;
 
 	}
 
@@ -144,7 +142,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 	public String doBack(MonthlyReportApprovalForm form) {
 
 		// 戻るボタンを押すと、承認一覧画面へ戻る
-		return REDIRECT + UrlConstant.URL_APPROVALLIST + INIT;
+		return REDIRECT + form.getBackUrl() + INIT;
 
 	}
 }

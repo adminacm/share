@@ -110,16 +110,21 @@ public class ApprovalListController extends AbstractController  {
     	// 承認詳細画面を設定する
     	String strApplyNo = "applyNo=";
     	
+    	// 戻り用画面のURL
+    	String backUrl = "backUrl=";
+    	
     	// 申請区分が月報の場合
     	if ("1".equals(applyKbnCd)) {
 
         	// 月報承認詳細画面
-    		strApprovalDisplay = REDIRECT + UrlConstant.URL_MONTHLYREPORT_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo;
+    		strApprovalDisplay = REDIRECT + UrlConstant.URL_MONTHLYREPORT_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo 
+    				+ AND_MARK + backUrl + UrlConstant.URL_APPROVALLIST;
         	// 申請区分が超勤振替の場合
     	} else if ("2".equals(applyKbnCd)) {
 
         	// 超勤振替申請承認詳細画面
-    		strApprovalDisplay = REDIRECT + UrlConstant.URL_HOLIDAYFOROVERTIME_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo;
+    		strApprovalDisplay = REDIRECT + UrlConstant.URL_HOLIDAYFOROVERTIME_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo
+    				+ AND_MARK +  backUrl + UrlConstant.URL_APPROVALLIST;
     	}
     	
     	// 承認詳細画面へ遷移する

@@ -30,6 +30,11 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	private String proStatus;
 	
 	/**
+	 *  戻り用画面のURL
+	 */
+	private String backUrl;
+	
+	/**
 	 * 月報承認明細一覧
 	 */
 	private List<MonthlyReportApprovalVo> monthlyReportApprovalList;
@@ -58,6 +63,14 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 		this.proStatus = proStatus;
 	}
 
+	public String getBackUrl() {
+		return backUrl;
+	}
+
+	public void setBackUrl(String backUrl) {
+		this.backUrl = backUrl;
+	}
+
 	public List<MonthlyReportApprovalVo> getMonthlyReportApprovalList() {
 		return monthlyReportApprovalList;
 	}
@@ -74,5 +87,4 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	public void setProjectList(List<Project> projectList) {
 		this.projectList = projectList;
 	}
-	
 }

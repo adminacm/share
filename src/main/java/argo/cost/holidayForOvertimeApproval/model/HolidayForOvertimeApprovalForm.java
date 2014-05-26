@@ -24,6 +24,11 @@ public class HolidayForOvertimeApprovalForm extends AbstractForm implements Seri
 	private String applyNo;
 	
 	/**
+	 *  戻り用画面のURL
+	 */
+	private String backUrl;
+	
+	/**
 	 * 処理状況
 	 */
 	private String proStatus;
@@ -69,6 +74,14 @@ public class HolidayForOvertimeApprovalForm extends AbstractForm implements Seri
 
 	public void setApplyNo(String applyNo) {
 		this.applyNo = applyNo;
+	}
+
+	public String getBackUrl() {
+		return backUrl;
+	}
+
+	public void setBackUrl(String backUrl) {
+		this.backUrl = backUrl;
 	}
 
 	public String getProStatus() {

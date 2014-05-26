@@ -70,6 +70,16 @@ public interface ComDao {
 	String findStatusName(String status);
 
 	/**
+	 * 申請区分名を取得
+	 * 
+	 * @param applyKbnCd
+	 *                  申請区分コード
+	 * @return
+	 *        申請区分名
+	 */
+	String findApplyKbnName(String applyKbnCd);
+
+	/**
 	 * 月報の提出状態を取得
 	 * 
 	 * @param userId

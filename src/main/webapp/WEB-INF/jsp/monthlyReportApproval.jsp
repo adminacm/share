@@ -51,7 +51,7 @@ function submitAction(action) {
 </style>
 </head>
 <body>
-	<form:form modelAttribute="monthlyReportApprovalInfo">
+	<form:form modelAttribute="monthlyReportApprovalForm">
 	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:900px;">
 			<div style="padding:2px;">
@@ -60,7 +60,7 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
 				<table style="width:800px;margin-left:40px;margin-right:40px;">
 					<tr>
-						<td style="border:1px solid #333333;width:60px" align="center">${monthlyReportApprovalInfo.proStatus}</td>
+						<td style="border:1px solid #333333;width:60px" align="center">${monthlyReportApprovalForm.proStatus}</td>
 						<td style="width:240px" align="center">
 							<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/monthlyReportApproval/approval');" />
 						</td>
@@ -98,7 +98,7 @@ function submitAction(action) {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="approvalInfo" items="${monthlyReportApprovalInfo.monthlyReportApprovalList}">
+						<c:forEach var="approvalInfo" items="${monthlyReportApprovalForm.monthlyReportApprovalList}">
 							<tr>
 								<c:if test="${not approvalInfo.totleFlg}">
 									<td align="center" width="25PX;">
@@ -162,7 +162,7 @@ function submitAction(action) {
 			</div>
 			<div style="margin-left:80px;">
 				<table style="width:400px">
-					<c:forEach var="projectInfo" items="${monthlyReportApprovalInfo.projectList}">
+					<c:forEach var="projectInfo" items="${monthlyReportApprovalForm.projectList}">
 						<tr>
 							<td style="width:200px" colspan="2">
 								${projectInfo.projName}
@@ -202,6 +202,7 @@ function submitAction(action) {
 				</table>
 			</div>
 		</div>
+		<input type="hidden" value="${monthlyReportApprovalForm.backUrl}"/>
 	</form:form>
 </body>
 </html>
