@@ -58,7 +58,7 @@ public class MonthlyReportStatusListTest {
 		assertEquals(monList.get(0).getName(), "あｘｘｘｘｘ");
 		assertEquals(monList.get(0).getApplyKbnName(), "月報");
 		assertEquals(monList.get(0).getApplyDetail(), "2014年5月分");
-		assertEquals(monList.get(0).getStatus(), "提出");
+		assertEquals(monList.get(0).getStatus(), "作成中");
 
 		assertEquals(monList.get(1).getApplyNo(), "user02120140500");
 		assertEquals(monList.get(1).getAffiliation(), "ＢＳ２");
@@ -66,7 +66,7 @@ public class MonthlyReportStatusListTest {
 		assertEquals(monList.get(1).getName(), "うｘｘｘｘｘ");
 		assertEquals(monList.get(1).getApplyKbnName(), "月報");
 		assertEquals(monList.get(1).getApplyDetail(), "2014年5月分");
-		assertEquals(monList.get(1).getStatus(), "提出");
+		assertEquals(monList.get(1).getStatus(), "作成中");
 
 		assertEquals(monList.get(2).getApplyNo(), "user03220140500");
 		assertEquals(monList.get(2).getAffiliation(), "ＢＳ２");
