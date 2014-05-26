@@ -25,7 +25,7 @@ function submitAction(action) {
 </script>
 </head>
 <body>
-	<form:form modelAttribute="attendanceOnHolidayRecordDetailInfo">
+	<form:form modelAttribute="attendanceOnHolidayRecordDetailForm">
 	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:550px;">
 			<div style="padding:2px;">
@@ -34,53 +34,53 @@ function submitAction(action) {
 			<table style="margin-left:100px;margin-top:30px;">
 				<tr>
 					<td style="width:150px">日付</td>
-					<td>${attendanceOnHolidayRecordDetailInfo.date}</td>
+					<td>${attendanceOnHolidayRecordDetailForm.date}</td>
 				</tr>
 				<tr>
 					<td>勤務区分</td>
-					<td>${attendanceOnHolidayRecordDetailInfo.workKbnName}</td>
+					<td>${attendanceOnHolidayRecordDetailForm.workKbnName}</td>
 				</tr>
 				<tr>
 					<td>勤務時間</td>
-					<td>${attendanceOnHolidayRecordDetailInfo.workStartTime} ～　${attendanceOnHolidayRecordDetailInfo.workEndTime}</td>
+					<td>${attendanceOnHolidayRecordDetailForm.workStartTime} ～　${attendanceOnHolidayRecordDetailForm.workEndTime}</td>
 				</tr>
-				<c:if test="${not empty attendanceOnHolidayRecordDetailInfo.exchangeDate}">
+				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.exchangeDate}">
 					<tr>
 						<td>振替日</td>
-						<td>${attendanceOnHolidayRecordDetailInfo.exchangeDate}</td>
+						<td>${attendanceOnHolidayRecordDetailForm.exchangeDate}</td>
 					</tr>
 				</c:if>
-				<c:if test="${not empty attendanceOnHolidayRecordDetailInfo.turnedHolidayEndDate}">
+				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.turnedHolidayEndDate}">
 					<tr>
 						<td>代休期限</td>
-						<td>${attendanceOnHolidayRecordDetailInfo.turnedHolidayEndDate}</td>
+						<td>${attendanceOnHolidayRecordDetailForm.turnedHolidayEndDate}</td>
 					</tr>
 				</c:if>
-				<c:if test="${not empty attendanceOnHolidayRecordDetailInfo.turnedHolidayDate}">
+				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.turnedHolidayDate}">
 					<tr>
 						<td>代休日</td>
-						<td>${attendanceOnHolidayRecordDetailInfo.turnedHolidayDate}</td>
+						<td>${attendanceOnHolidayRecordDetailForm.turnedHolidayDate}</td>
 					</tr>
 				</c:if>
-				<c:if test="${not empty attendanceOnHolidayRecordDetailInfo.overWorkTurnedReqDate}">
+				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.overWorkTurnedReqDate}">
 					<tr>
 						<td>超勤振替申請日</td>
-						<td>${attendanceOnHolidayRecordDetailInfo.overWorkTurnedReqDate}</td>
+						<td>${attendanceOnHolidayRecordDetailForm.overWorkTurnedReqDate}</td>
 					</tr>
 				</c:if>
 				<tr>
 					<td>プロジェクト名</td>
-					<td>${attendanceOnHolidayRecordDetailInfo.projectName}</td>
+					<td>${attendanceOnHolidayRecordDetailForm.projectName}</td>
 				</tr>
 				<tr>
 					<td>業務内容</td>
-					<td>${attendanceOnHolidayRecordDetailInfo.workDetail}</td>
+					<td>${attendanceOnHolidayRecordDetailForm.workDetail}</td>
 				</tr>
 			</table>
 			<table style="margin-left:100px;height:80px">
 				<tr>
 					<td style="width:240px">
-						<c:if test="${attendanceOnHolidayRecordDetailInfo.overWorkFlg}">
+						<c:if test="${attendanceOnHolidayRecordDetailForm.overWorkFlg}">
 							<input type="button" style="width:150px" value="超勤に振替える" onclick="submitAction('/attendanceOnHolidayRecordDetail/overWorkExchange');" />
 						</c:if>
 					</td>
