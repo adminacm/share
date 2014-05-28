@@ -13,8 +13,10 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.util.AntPathMatcher;
 
+import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ResourcesDao;
-import argo.cost.common.model.entity.Resources;
+import argo.cost.common.entity.Resources;
+import argo.cost.common.entity.Roles;
 
 /**
  * <p>
@@ -26,10 +28,15 @@ import argo.cost.common.model.entity.Resources;
 public class MySecurityMetadataSource implements
 		FilterInvocationSecurityMetadataSource {
 
+	/**
+	 * 単一テーブル操作DAO
+	 */
+	private BaseDao baseDao;
 	private ResourcesDao resourcesDao;
 
-	public MySecurityMetadataSource(ResourcesDao resourcesDao) {
+	public MySecurityMetadataSource(ResourcesDao resourcesDao, BaseDao baseDao) {
 		this.resourcesDao = resourcesDao;
+		this.baseDao = baseDao;
 		loadResourceDefine();
 	}
 
@@ -43,27 +50,44 @@ public class MySecurityMetadataSource implements
 
 	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub
+		System.out.println("MySecurityMetadataSource.supports()---------------------");
 		return true;
 	}
 
-	// 全ての権限を注入する
+	/**
+	 * 全ての権限を注入する
+	 * 
+	 */
 	private void loadResourceDefine() {
-		if (resourceMap == null) {
-			resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-			List<Resources> resources = this.resourcesDao.findAll();
+		resourceMap = new HashMap<String,Collection<ConfigAttribute>>();
+		System.out.println("MySecurityMetadataSource.loadResourcesDefine()--------------リソースデータロード開始--------");
+		List<Roles> roles = baseDao.findAll(Roles.class);
+		for (Roles role : roles) {
+			// 権限名よりリソース情報を取得
+			List<Resources> resources = resourcesDao.findByName(role.getName());
 			for (Resources resource : resources) {
-				Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
-				ConfigAttribute configAttribute = new SecurityConfig(
-						resource.getName());
-				configAttributes.add(configAttribute);
-				resourceMap.put(resource.getUrl(), configAttributes);
+				Collection<ConfigAttribute> configAttributes = null;
+				ConfigAttribute configAttribute = new SecurityConfig(role.getName());
+				if(resourceMap.containsKey(resource.getUrl())){
+					configAttributes = resourceMap.get(resource.getUrl());
+					configAttributes.add(configAttribute);
+				}else{
+					configAttributes = new ArrayList<ConfigAttribute>() ;
+					configAttributes.add(configAttribute);
+					resourceMap.put(resource.getUrl(), configAttributes);
+				}
 			}
 		}
-
-
 	}
 
-	// 求めるの資源は必要の権限を
+	/**
+	 * 求めるの資源は必要の権限
+	 * 
+	 * @param object
+	 * 			オブジェクト情報
+	 * 
+	 * @throw IllegalArgumentException
+	 */
 	public Collection<ConfigAttribute> getAttributes(Object object)
 			throws IllegalArgumentException {
 

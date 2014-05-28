@@ -2,9 +2,9 @@ package argo.cost.common.dao;
 
 import org.springframework.stereotype.Repository;
 
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.UserInfo;
 import argo.cost.common.model.UserKengen;
-import argo.cost.common.model.entity.Users;
 
 /**
  * <p>

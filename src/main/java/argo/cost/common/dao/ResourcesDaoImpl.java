@@ -1,150 +1,87 @@
 package argo.cost.common.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.model.entity.Resources;
+import argo.cost.common.entity.Resources;
 
 @Repository
 public class ResourcesDaoImpl implements ResourcesDao {
 	
 	/**
-	 * 全て資源データ情報を取得します。
-	 *
-	 * @return 全て資源データ情報
+	 * エンティティ管理クラス
 	 */
-	@Override
-	public List<Resources> findAll() {
-
-		List<Resources> result = new ArrayList<Resources>();
-
-		Resources re1 = new Resources();
-		re1.setId("RS001");
-		re1.setName("ROLE_USER");
-		re1.setMemo("共通業務");
-		re1.setUrl("/menu/init");
-
-		Resources re2 = new Resources();
-		re2.setId("RS002");
-		re2.setName("ROLE_ADMIN");
-		re2.setMemo("案件情報");
-		re2.setUrl("/opportunity/init");
-		
-
-		Resources re3 = new Resources();
-		re3.setId("RS000");
-		re3.setName("ROLE_USER");
-		re3.setMemo("拒否画面");
-		re3.setUrl("accessDenied.jsp");
-		
-		Resources re4 = new Resources();
-		re4.setId("RS001");
-		re4.setName("ROLE_USER");
-		re4.setMemo("月報初期化");
-		re4.setUrl("/monthlyReport/init");
-		
-		Resources re5 = new Resources();
-		re5.setId("RS002");
-		re5.setName("ROLE_USER");
-		re5.setMemo("個人設定初期化");
-		re5.setUrl("/setup/init");
-		
-		Resources re6 = new Resources();
-		re6.setId("RS003");
-		re6.setName("ROLE_USER");
-		re6.setMemo("承認一覧初期化");
-		re6.setUrl("/approvalList/init");
-		
-		Resources re7 = new Resources();
-		re7.setId("RS004");
-		re7.setName("ROLE_USER");
-		re7.setMemo("月報状況一覧初期化");
-		re7.setUrl("/monthlyReportStatusList/init");
-		
-		result.add(re1);
-		result.add(re2);
-		result.add(re3);
-		result.add(re4);
-		result.add(re5);
-		result.add(re6);
-		result.add(re7);
-
-		return result;
-	}
+	@PersistenceContext
+	protected EntityManager em;	
 	
 	/**
-	 * 権限IDより、資源データ情報を取得します。
+	 * 権限名より、資源データ情報を取得します。
 	 *
-	 * @param roId
-	 *            権限ID
+	 * @param name
+	 *            権限名
 	 * 
 	 * @return 資源データ情報
 	 */
 	@Override
-	public Set<Resources> findById(String roId) {
-		
-		Set<Resources> result = new HashSet<Resources>();
-		
-		Resources re1 = new Resources();
-		re1.setId("RS001");
-		re1.setName("ROLE_USER");
-		re1.setMemo("共通業務");
-		re1.setUrl("/menu/init");
-		
-		Resources re2 = new Resources();
-		re2.setId("RS002");
-		re2.setName("ROLE_ADMIN");
-		re2.setMemo("案件情報");
-		re2.setUrl("/opportunity/init");
+	public List<Resources> findByName(String name) {
 
-		Resources re3 = new Resources();
-		re3.setId("RS000");
-		re3.setName("ROLE_USER");
-		re3.setMemo("拒否画面");
-		re3.setUrl("accessDenied.jsp");
+		// JPQLを作成する
+		StringBuilder q = new StringBuilder();
+
+		q.append("SELECT ");
+		q.append("		rs.id");
+		q.append(",		rs.name");
+		q.append(",		rs.url");
+		q.append("	FROM");
+		q.append("		resources rs");
+		q.append(",		roles r");
+		q.append(",		role_resource rr");
+		q.append("	WHERE");
+		q.append("	rs.id = rr.resource_id");
+		q.append("	AND");
+		q.append("	r.id = rr.role_id");
+		q.append("	AND");
+		q.append("	r.name = ?");
+		q.append("	AND");
+		q.append("	r.status = 0");
 		
-		Resources re4 = new Resources();
-		re4.setId("RS001");
-		re4.setName("ROLE_USER");
-		re4.setMemo("月報初期化");
-		re4.setUrl("/monthlyReport/init");
+		// クエリー取得
+		Query query = this.em.createNativeQuery(q.toString());
 		
-		Resources re5 = new Resources();
-		re5.setId("RS002");
-		re5.setName("ROLE_USER");
-		re5.setMemo("個人設定初期化");
-		re5.setUrl("/setup/init");
+		int index = 1;
+
+		query.setParameter(index++, name);
 		
-		Resources re6 = new Resources();
-		re6.setId("RS003");
-		re6.setName("ROLE_USER");
-		re6.setMemo("承認一覧初期化");
-		re6.setUrl("/approvalList/init");
+		// 出力対象一覧情報取得
+		@SuppressWarnings("unchecked")
+		List<Object> resultList = query.getResultList();
+
+		List<Resources> result = new ArrayList<Resources>();
+		Resources resource = null;
 		
-		Resources re7 = new Resources();
-		re7.setId("RS004");
-		re7.setName("ROLE_USER");
-		re7.setMemo("月報状況一覧初期化");
-		re7.setUrl("/monthlyReportStatusList/init");
-		
-		if ("R0001".equals(roId)) {
-			result.add(re1);
-			result.add(re4);
+		// 出力対象一覧情報あり
+		if (resultList.size() > 0) {
+			result = new ArrayList<Resources>();
+			for (int i = 0; i < resultList.size(); i++) {
+				resource = new Resources();
+				Object[] items = (Object[]) resultList.get(i);
+				index = 0;
+				// 検索結果に設定
+				resource.setId((BigDecimal) items[index++]);
+				resource.setName((String) items[index++]);
+				resource.setUrl((String) items[index++]);
+				
+				result.add(resource);
+			}
 		}
-		if ("R0002".equals(roId)) {
-			result.add(re2);
-			result.add(re4);
-		}
-		result.add(re3);
-		result.add(re5);
-		result.add(re6);
-		result.add(re7);
 		
 		return result;
 	}
-
 }

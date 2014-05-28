@@ -12,7 +12,8 @@
 		<access-denied-handler error-page="/denied"/>
 		<!-- 实现免登陆验证 -->
 		<remember-me />
-		<session-management invalid-session-url="/login">
+		<session-management invalid-session-url="/login"
+			session-fixation-protection="none">
 			<concurrency-control max-sessions="1"
 				error-if-maximum-exceeded="true"/>
 		</session-management>
@@ -39,10 +40,11 @@
 	<beans:bean id="mySecurityMetadataSource"
 		class="argo.cost.common.security.MySecurityMetadataSource">
 		<beans:constructor-arg name="resourcesDao" ref="resourcesDao"></beans:constructor-arg>
+		<beans:constructor-arg name="baseDao" ref="baseDao"></beans:constructor-arg>
 	</beans:bean>
 	<beans:bean id="myUserDetailServiceImpl"
 		class="argo.cost.common.security.MyUserDetailServiceImpl">
 	</beans:bean>
 	<beans:bean id="resourcesDao" class="argo.cost.common.dao.ResourcesDaoImpl"></beans:bean>
-	<beans:bean id="usersDao" class="argo.cost.common.dao.UsersDaoImpl"></beans:bean>
+	<beans:bean id="baseDao" class="argo.cost.common.dao.BaseDaoImpl"></beans:bean>
 </beans:beans>  

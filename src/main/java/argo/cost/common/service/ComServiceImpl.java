@@ -12,13 +12,15 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
 import argo.cost.common.dao.DropdownListDao;
+import argo.cost.common.entity.Project;
+import argo.cost.common.entity.Status;
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.Project;
-import argo.cost.common.model.entity.Status;
-import argo.cost.common.model.entity.Users;
 
 /**
  * <p>
@@ -31,11 +33,25 @@ import argo.cost.common.model.entity.Users;
 @Service
 public class ComServiceImpl implements ComService {
 
+	// ############
+	// ### 定数 ###
+	// ############
+	/**
+	 * 検索条件：名
+	 */
+	private static final String LOGIN_MAIL = "loginMailAddress";
+	
 	/**
 	 * 共通DAO
 	 */
 	@Autowired
 	private ComDao comDao;
+	
+	/**
+	 * 単一テーブル操作DAO
+	 */
+	@Autowired
+	private BaseDao baseDao;
 
 	/**
 	 * 共通ドロップダウンリストDAO
@@ -46,17 +62,17 @@ public class ComServiceImpl implements ComService {
 	/**
 	 * セッション情報初期化
 	 *
-	 * @param userName
-	 *                ユーザ名
+	 * @param loginMail
+	 *                ユーザログインメールアドレス
 	 *
 	 * @return セッション情報
 	 */
 	@Override
-	public AppSession initSession(String userName) {
+	public AppSession initSession(String loginMail) {
 
 		AppSession session = new AppSession();
 
-		this.setupSession(session, userName);
+		this.setupSession(session, loginMail);
 
 		return session;
 	}
@@ -70,7 +86,7 @@ public class ComServiceImpl implements ComService {
 	@Override
 	public void flushSession(AppSession session) {
 
-		this.setupSession(session, session.getUserInfo().getName());
+		this.setupSession(session, session.getUserInfo().getLoginName());
 	}
 
 	/**
@@ -133,7 +149,7 @@ public class ComServiceImpl implements ComService {
 			// 区分値 
 			item.setValue(status.getId());
 			// 区分名称
-			item.setName(status.getName());
+			item.setName(status.getLoginName());
 
 			// リストに追加
 			resultList.add(item);
@@ -289,14 +305,19 @@ public class ComServiceImpl implements ComService {
 	/**
 	 * セッション情報セットアップ
 	 *
-	 * @param userName
-	 *                ユーザ名
+	 * @param loginMail
+	 *                ユーザログインメールアドレス
 	 * @return セッション情報
 	 */
-	private void setupSession(AppSession session, String userName) {
+	private void setupSession(AppSession session, String loginMail) {
 
+        // 共通の検索条件クラス
+        BaseCondition condition = new BaseCondition();
+        condition.addConditionEqual(LOGIN_MAIL, loginMail);
+        // ユーザ名より、ユーザ情報を取得する。
+        Users users = baseDao.findSingleResult(condition, Users.class);
 		// ユーザ情報を取得します。
-		Users user = comDao.findByName(userName);
+		Users user = comDao.findByName(loginMail);
 		session.setUserInfo(user);
 
 		if (session.getUserInfo() == null) {

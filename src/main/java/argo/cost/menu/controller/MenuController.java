@@ -38,17 +38,17 @@ public class MenuController extends AbstractController {
     	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	
     	// Spring security 情報を取得
-    	String userName;
+    	String loginMale;
     	if (principal instanceof UserDetails) {
-    		userName = ((UserDetails)principal).getUsername(); 
+    		loginMale = ((UserDetails)principal).getUsername(); 
     		} else {
-    			userName = principal.toString(); 
+    			loginMale = principal.toString(); 
     		}
     	
-    	request.getSession().setAttribute("userName", userName);
+    	request.getSession().setAttribute("loginMail", loginMale);
 
 		// セッション情報初期化
-		AppSession session = comService.initSession(userName);
+		AppSession session = comService.initSession(loginMale);
 		
 		// セッション情報設定
 		RequestContextHolder.getRequestAttributes().setAttribute(SESSION, session, RequestAttributes.SCOPE_SESSION);

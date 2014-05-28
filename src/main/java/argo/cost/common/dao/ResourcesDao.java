@@ -1,9 +1,8 @@
 package argo.cost.common.dao;
 
 import java.util.List;
-import java.util.Set;
 
-import argo.cost.common.model.entity.Resources;
+import argo.cost.common.entity.Resources;
 
 /**
  * <p>
@@ -13,22 +12,15 @@ import argo.cost.common.model.entity.Resources;
  * @author COST argo Corporation.
  */
 public interface ResourcesDao {
-	
-	/**
-	 * 全て資源データ情報を取得します。
-	 *
-	 * @return 全て資源データ情報
-	 */
-	List<Resources> findAll();
 
 	/**
-	 * 権限IDより、資源データ情報を取得します。
+	 * 権限名より、資源データ情報を取得します。
 	 *
-	 * @param roId
-	 *            権限ID
+	 * @param name
+	 *            権限名
 	 * 
 	 * @return 資源データ情報
 	 */
-	Set<Resources> findById(String roId);
+	List<Resources> findByName(String name);
 
 }

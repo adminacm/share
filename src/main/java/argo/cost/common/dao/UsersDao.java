@@ -1,9 +1,8 @@
 package argo.cost.common.dao;
 
-import java.util.Set;
+import java.util.List;
 
-import argo.cost.common.model.entity.Roles;
-import argo.cost.common.model.entity.Users;
+import argo.cost.common.entity.Roles;
 
 /**
  * <p>
@@ -14,16 +13,6 @@ import argo.cost.common.model.entity.Users;
 public interface UsersDao {
 	
 	/**
-	 * ユーザ名より、ユーザ情報を取得します。
-	 *
-	 * @param name
-	 *            ユーザ名
-	 * 
-	 * @return ユーザ情報
-	 */
-	Users findByName(String name);
-	
-	/**
 	 * ユーザIDより、権限情報を取得します。
 	 *
 	 * @param userId
@@ -31,6 +20,6 @@ public interface UsersDao {
 	 * 
 	 * @return 権限情報
 	 */
-	Set<Roles> findRoles(String userId);
+	List<Roles> findRoles(String userName);
 
 }
