@@ -3,9 +3,9 @@ package argo.cost.monthlyReport.model;
 import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.entity.Project;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.Project;
 
 /**
  * <p>

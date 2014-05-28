@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import argo.cost.common.model.entity.Project;
+import argo.cost.common.entity.Project;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
 
 /**

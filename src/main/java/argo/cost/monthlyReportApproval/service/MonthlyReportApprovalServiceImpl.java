@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.model.entity.Project;
+import argo.cost.common.entity.Project;
 import argo.cost.monthlyReportApproval.dao.MonthlyReportApprovalDao;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 

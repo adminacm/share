@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.model.entity.Project;
+import argo.cost.common.entity.Project;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 import argo.cost.monthlyReportApproval.service.MonthlyReportApprovalService;

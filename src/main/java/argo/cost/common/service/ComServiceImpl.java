@@ -21,6 +21,7 @@ import argo.cost.common.entity.Status;
 import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
+import argo.cost.common.model.UserVO;
 
 /**
  * <p>
@@ -315,15 +316,35 @@ public class ComServiceImpl implements ComService {
         BaseCondition condition = new BaseCondition();
         condition.addConditionEqual(LOGIN_MAIL, loginMail);
         // ユーザ名より、ユーザ情報を取得する。
-        Users users = baseDao.findSingleResult(condition, Users.class);
-		// ユーザ情報を取得します。
-		Users user = comDao.findByName(loginMail);
-		session.setUserInfo(user);
+        Users user = baseDao.findSingleResult(condition, Users.class);
+        // ユーザー情報を設定する
+        UserVO userinfo = new UserVO();
+        // 社員番号
+        userinfo.setUserId(user.getId());
+        // ユーザ名称(表示用)
+        userinfo.setUserName(user.getUserName());
+        // パスワード
+        userinfo.setPassword(user.getPassword());
+        // 登録名
+        userinfo.setLoginMailAdress(user.getAffiliationMaster().getCode());
+        // 代理入力者ID
+        userinfo.setDairishaId(user.getDairishaId());
+        // 標準ｼﾌﾄ
+        userinfo.setStandardShiftCd(user.getStandardShiftCd());
+        // 勤務開始時刻
+        userinfo.setKinmuStartTime(user.getKinmuStartTime());
+        // 勤務終了時刻
+        userinfo.setKinmuEndTime(user.getKinmuEndTime());
+        // 休業開始日
+        userinfo.setKyugyoStartDate(user.getKyugyoStartDate());
+        // 休業終了日
+        userinfo.setKyugyoEndDate(user.getKyugyoEndDate());
+        // 入社日
+        userinfo.setNyushaDate(user.getNyushaDate());
+        // 退職日
+        userinfo.setTaisyokuDate(user.getTaisyokuDate());
+        
+		session.setUserInfo(userinfo);
 
-		if (session.getUserInfo() == null) {
-
-			// 権限なしの異常を表示します。
-			// throw new InvalidAuthException();
-		}
 	}
 }

@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.model.UserInfo;
-import argo.cost.common.model.entity.Shift;
-import argo.cost.common.model.entity.ShiftTime;
+import argo.cost.common.entity.Shift;
+import argo.cost.common.entity.ShiftTime;
+import argo.cost.common.model.UserVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.dao.SetupDao;
 import argo.cost.setup.model.SetupEntity;
@@ -56,7 +56,7 @@ public class SetupServiceImpl implements SetupService {
 		setupInfo.setAgentCd(setupEntity.getAgent());
 		
 		// 代理入力者名
-		UserInfo agentInfo = comDao.findUserById(setupEntity.getAgent());
+		UserVO agentInfo = comDao.findUserById(setupEntity.getAgent());
 		setupInfo.setAgentName(agentInfo.getUserName());
 		
 		// 標準ｼﾌﾄ
@@ -200,10 +200,10 @@ public class SetupServiceImpl implements SetupService {
 	 * @return
 	 *        代理入力者リスト
 	 */
-	private List<UserInfo> getAgentList() {
+	private List<UserVO> getAgentList() {
 
 		// 代理入力者リストを取得
-		List<UserInfo> agentList = setupDao.getAgentList();
+		List<UserVO> agentList = setupDao.getAgentList();
 		
 		return agentList;
 	}

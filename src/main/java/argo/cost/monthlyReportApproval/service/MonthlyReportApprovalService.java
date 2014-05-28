@@ -2,7 +2,7 @@ package argo.cost.monthlyReportApproval.service;
 
 import java.util.List;
 
-import argo.cost.common.model.entity.Project;
+import argo.cost.common.entity.Project;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 
 

@@ -123,7 +123,7 @@ public abstract class AbstractController {
 		}
 
 		// ユーザIDを設定する
-		form.setUserId(session.getUserInfo().getId());
+		form.setUserId(session.getUserInfo().getUserId());
 
 		return form;
 	}

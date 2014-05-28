@@ -2,7 +2,7 @@ package argo.cost.monthlyReport.dao;
 
 import java.util.List;
 
-import argo.cost.common.model.entity.Project;
+import argo.cost.common.entity.Project;
 import argo.cost.monthlyReport.model.MonthlyReportEntity;
 
 /**

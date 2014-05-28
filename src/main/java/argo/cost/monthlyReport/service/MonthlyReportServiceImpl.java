@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import argo.cost.common.model.entity.Project;
+import argo.cost.common.entity.Project;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
 import argo.cost.monthlyReport.dao.MonthlyReportDao;

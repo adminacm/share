@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.model.entity.Project;
-import argo.cost.common.model.entity.Status;
-import argo.cost.common.model.entity.Users;
+import argo.cost.common.entity.Project;
+import argo.cost.common.entity.Status;
+import argo.cost.common.entity.Users;
 
 /**
  * <p>

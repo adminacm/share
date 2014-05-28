@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import argo.cost.approvalList.dao.ApprovalListDao;
 import argo.cost.approvalList.model.ApprovalListVo;
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.model.entity.ApprovalListEntity;
+import argo.cost.common.entity.ApprovalListEntity;
 
 /**
  * <p>

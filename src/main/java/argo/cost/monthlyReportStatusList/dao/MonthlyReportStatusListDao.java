@@ -2,8 +2,8 @@ package argo.cost.monthlyReportStatusList.dao;
 
 import java.util.List;
 
+import argo.cost.common.entity.ApprovalListEntity;
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.model.entity.ApprovalListEntity;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 

@@ -2,9 +2,9 @@ package argo.cost.setup.dao;
 
 import java.util.List;
 
-import argo.cost.common.model.UserInfo;
-import argo.cost.common.model.entity.Shift;
-import argo.cost.common.model.entity.ShiftTime;
+import argo.cost.common.entity.Shift;
+import argo.cost.common.entity.ShiftTime;
+import argo.cost.common.model.UserVO;
 import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
 
@@ -30,7 +30,7 @@ public interface SetupDao {
 	 * @return
 	 *        代理入力者リスト
 	 */
-	public List<UserInfo> getAgentList();
+	public List<UserVO> getAgentList();
 
 	/**
 	 *ｼﾌﾄリストを取得

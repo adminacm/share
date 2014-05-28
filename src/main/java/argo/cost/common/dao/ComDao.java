@@ -1,8 +1,6 @@
 package argo.cost.common.dao;
 
-import argo.cost.common.model.UserInfo;
-import argo.cost.common.model.UserKengen;
-import argo.cost.common.model.entity.Users;
+import argo.cost.common.model.UserVO;
 
 /**
  * <p>
@@ -12,17 +10,6 @@ import argo.cost.common.model.entity.Users;
  * @author COST argo Corporation.
  */
 public interface ComDao {
-	
-	
-	/**
-	 * ユーザ名より、ユーザ情報を取得します。
-	 *
-	 * @param name
-	 *            ユーザ名
-	 * 
-	 * @return ユーザ情報
-	 */
-	Users findByName(String name);
 
 	/**
 	 * ユーザ情報を取得します。
@@ -31,7 +18,7 @@ public interface ComDao {
 	 *              ユーザID
 	 * @return ユーザ情報
 	 */
-	UserInfo findUserById(String userId);
+	UserVO findUserById(String userId);
 
 	/**
 	 * システム設定値を取得します。
@@ -42,15 +29,6 @@ public interface ComDao {
 	 */
 	String findSysSetVal(String setKey);
 	
-	/**
-	 * ユーザ権限情報を取得します。
-	 *
-	 * @param userId
-	 *              ユーザID
-	 * @return ユーザ権限情報
-	 */
-	UserKengen findUserKengenById(String userId);
-
 	/**
 	 * 勤務区分名を取得
 	 * 

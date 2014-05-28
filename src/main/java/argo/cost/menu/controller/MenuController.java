@@ -14,7 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.AppSession;
-import argo.cost.common.model.entity.Users;
+import argo.cost.common.model.UserVO;
 import argo.cost.menu.model.MenueForm;
 
 @Controller
@@ -65,7 +65,7 @@ public class MenuController extends AbstractController {
 		model.addAttribute(form);
 
     	// ユーザ情報を取得
-    	Users userInfo = getSession().getUserInfo();
+    	UserVO userInfo = getSession().getUserInfo();
     	
     	form.setUserInfo(userInfo);
 		return "menu";

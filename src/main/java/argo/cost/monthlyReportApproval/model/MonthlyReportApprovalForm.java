@@ -3,8 +3,8 @@ package argo.cost.monthlyReportApproval.model;
 import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.entity.Project;
 import argo.cost.common.model.AbstractForm;
-import argo.cost.common.model.entity.Project;
 
 /**
  * <p>

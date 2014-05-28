@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.model.entity.ApprovalListEntity;
+import argo.cost.common.entity.ApprovalListEntity;
 
 /**
  * <p>

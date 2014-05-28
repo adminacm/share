@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.model.UserInfo;
-import argo.cost.common.model.entity.Shift;
-import argo.cost.common.model.entity.ShiftTime;
+import argo.cost.common.entity.Shift;
+import argo.cost.common.entity.ShiftTime;
+import argo.cost.common.model.UserVO;
 import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
 
@@ -66,21 +66,21 @@ public class SetupDaoImpl implements SetupDao {
 	 *        代理入力者リスト
 	 */
 	@Override
-	public List<UserInfo> getAgentList() {
+	public List<UserVO> getAgentList() {
 		
-		List<UserInfo> userList = new ArrayList<UserInfo>();
-		UserInfo user = new UserInfo();
+		List<UserVO> userList = new ArrayList<UserVO>();
+		UserVO user = new UserVO();
 		
 		user.setUserName("曹文艶");
 		user.setUserId("caowy");
 		userList.add(user);
 		
-		user = new UserInfo();
+		user = new UserVO();
 		user.setUserName("劉亜傑");
 		user.setPassword("liuyj");
 		userList.add(user);
 		
-		user = new UserInfo();
+		user = new UserVO();
 		user.setUserName("熊燕玲");
 		user.setPassword("xiongyl");
 		userList.add(user);

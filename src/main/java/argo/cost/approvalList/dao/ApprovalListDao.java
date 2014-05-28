@@ -2,7 +2,7 @@ package argo.cost.approvalList.dao;
 
 import java.util.List;
 
-import argo.cost.common.model.entity.ApprovalListEntity;
+import argo.cost.common.entity.ApprovalListEntity;
 
 /**
  * <p>

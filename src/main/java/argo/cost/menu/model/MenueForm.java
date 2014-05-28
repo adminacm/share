@@ -3,7 +3,7 @@ package argo.cost.menu.model;
 import java.io.Serializable;
 
 import argo.cost.common.model.AbstractForm;
-import argo.cost.common.model.entity.Users;
+import argo.cost.common.model.UserVO;
 
 /**
  * <p>
@@ -19,13 +19,13 @@ public class MenueForm extends AbstractForm implements Serializable {
 	// ********************
 	// *****フィールド*****
 	// ********************
-	private Users userInfo;
+	private UserVO userInfo;
 
-	public Users getUserInfo() {
+	public UserVO getUserInfo() {
 		return userInfo;
 	}
 
-	public void setUserInfo(Users userInfo) {
+	public void setUserInfo(UserVO userInfo) {
 		this.userInfo = userInfo;
 	}
 	

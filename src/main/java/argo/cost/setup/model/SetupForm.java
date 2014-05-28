@@ -2,9 +2,8 @@ package argo.cost.setup.model;
 
 import java.util.List;
 
-
-import argo.cost.common.model.UserInfo;
-import argo.cost.common.model.entity.Shift;
+import argo.cost.common.entity.Shift;
+import argo.cost.common.model.UserVO;
 
 /**
  * 個人設定画面情報FORM
@@ -26,7 +25,7 @@ public class SetupForm {
 	/**
 	 * 代理入力者リスト
 	 */
-	private List<UserInfo> agentList;
+	private List<UserVO> agentList;
 	
 	/**
 	 * 標準ｼﾌﾄリスト
@@ -104,11 +103,11 @@ public class SetupForm {
 		this.agentName = agentName;
 	}
 
-	public List<UserInfo> getAgentList() {
+	public List<UserVO> getAgentList() {
 		return agentList;
 	}
 
-	public void setAgentList(List<UserInfo> agentList) {
+	public void setAgentList(List<UserVO> agentList) {
 		this.agentList = agentList;
 	}
 
