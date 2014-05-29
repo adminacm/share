@@ -1,7 +1,6 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class Resources implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
-	private BigDecimal id;
+	private long id;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
@@ -52,11 +51,11 @@ public class Resources implements Serializable {
 	public Resources() {
 	}
 
-	public BigDecimal getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(BigDecimal id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

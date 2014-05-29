@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -176,7 +175,7 @@ public class BaseDaoImpl implements BaseDao {
 	 * @return テーブル情報（識別IDがnullの場合、NULLを返却する）
 	 */
 	@Override
-	public <T> T findById(Long id, Class<T> cls) {
+	public <T> T findById(String id, Class<T> cls) {
 
 		// 識別IDがnullの場合
 		if (id == null) {
@@ -313,7 +312,7 @@ public class BaseDaoImpl implements BaseDao {
 	 *            エンティティクラス
 	 */
 	@Override
-	public <T> void deleteById(Long id, Class<T> cls) {
+	public <T> void deleteById(String id, Class<T> cls) {
 
 		// 削除データ取得
 		T entity = this.findById(id, cls);

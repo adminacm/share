@@ -1,6 +1,5 @@
 package argo.cost.common.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class ResourcesDaoImpl implements ResourcesDao {
 				Object[] items = (Object[]) resultList.get(i);
 				index = 0;
 				// 検索結果に設定
-				resource.setId((BigDecimal) items[index++]);
+				resource.setId((Long) items[index++]);
 				resource.setName((String) items[index++]);
 				resource.setUrl((String) items[index++]);
 				

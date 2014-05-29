@@ -35,13 +35,6 @@ public interface ComService {
 	void flushSession(AppSession session);
 	
 	/**
-	 * 状況プルダウンリスト取得
-	 * 
-	 * @return 状況プルダウンリスト
-	 */
-	List<ListItemVO> getStatusList();
-	
-	/**
 	 * 氏名プルダウンリスト取得
 	 * 
 	 * @param userId
@@ -59,15 +52,6 @@ public interface ComService {
 	 * @throws ParseException 
 	 */
 	List<ListItemVO> getYearList(Date date) throws ParseException;
-	
-	/**
-	 * プロジェクト名プルダウンリスト取得
-	 * 
-	 * @param userId
-	 *              ユーザＩＤ
-	 * @return プロジェクト名プルダウンリスト
-	 */
-	List<ListItemVO> getProjectNameList(String userId);
 	
 	/**
 	 * 

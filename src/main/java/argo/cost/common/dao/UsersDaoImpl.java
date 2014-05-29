@@ -1,6 +1,5 @@
 package argo.cost.common.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class UsersDaoImpl implements UsersDao {
 				Object[] items = (Object[]) resultList.get(i);
 				index = 0;
 				// 検索結果に設定
-				role.setId((BigDecimal) items[index++]);
+				role.setId((Long) items[index++]);
 				role.setName((String) items[index++]);
 				
 				roles.add(role);

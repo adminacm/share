@@ -16,8 +16,6 @@ import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
 import argo.cost.common.dao.DropdownListDao;
-import argo.cost.common.entity.Project;
-import argo.cost.common.entity.Status;
 import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
@@ -87,41 +85,7 @@ public class ComServiceImpl implements ComService {
 	@Override
 	public void flushSession(AppSession session) {
 
-		this.setupSession(session, session.getUserInfo().getLoginName());
-	}
-
-	/**
-	 * 状況プルダウンリスト取得
-	 * 
-	 * @return 状況プルダウンリスト
-	 */
-	@Override
-	public List<ListItemVO> getStatusList() {
-
-		// 状況プルダウンリスト
-		List<Status> statusList = dropdownListDao.getStatusList();
-
-		// ドロップダウンリスト
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		// ドロップダウン項目
-		ListItemVO item = null;
-
-		// ドロップダウンリスト設定
-		for (Status status : statusList) {
-			item = new ListItemVO();
-
-			// データを設定する
-			// 区分値 
-			item.setValue(status.getStatusCode());
-			// 区分名称
-			item.setName(status.getStatusName());
-
-			// リストに追加
-			resultList.add(item);
-		}
-
-		// 状況ドロップダウンリストを返却する。
-		return resultList;
+		this.setupSession(session, session.getUserInfo().getLoginMailAdress());
 	}
 
 	/**
@@ -150,7 +114,7 @@ public class ComServiceImpl implements ComService {
 			// 区分値 
 			item.setValue(status.getId());
 			// 区分名称
-			item.setName(status.getLoginName());
+			item.setName(status.getUserName());
 
 			// リストに追加
 			resultList.add(item);
@@ -192,42 +156,6 @@ public class ComServiceImpl implements ComService {
 		}
 
 		// 年度ドロップダウンリストを返却する。
-		return resultList;
-	}
-
-	/**
-	 * プロジェクト名プルダウンリスト取得
-	 * 
-	 * @param userId
-	 *              ユーザＩＤ
-	 * @return プロジェクト名プルダウンリスト
-	 */
-	@Override
-	public List<ListItemVO> getProjectNameList(String userId) {
-
-		// プロジェクトプルダウンリスト
-		List<Project> projectList = dropdownListDao.getProjectList(userId);
-
-		// ドロップダウンリスト
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		// ドロップダウン項目
-		ListItemVO item = null;
-
-		// ドロップダウンリスト設定
-		for (Project project : projectList) {
-			item = new ListItemVO();
-
-			// データを設定する
-			// 区分コード
-			item.setValue(project.getProjCode());
-			// 区分名称
-			item.setName(project.getProjName());
-
-			// リストに追加
-			resultList.add(item);
-		}
-
-		// プロジェクト名ドロップダウンリストを返却する。
 		return resultList;
 	}
 

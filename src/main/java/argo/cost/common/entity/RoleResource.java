@@ -17,7 +17,7 @@ public class RoleResource implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
-	private Integer id;
+	private long id;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
@@ -44,11 +44,11 @@ public class RoleResource implements Serializable {
 	public RoleResource() {
 	}
 
-	public Integer getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

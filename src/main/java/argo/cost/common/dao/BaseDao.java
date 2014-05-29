@@ -54,7 +54,7 @@ public interface BaseDao {
 	 *            エンティティクラス
 	 * @return テーブル情報（識別IDがnullの場合、NULLを返却する）
 	 */
-	<T> T findById(Long id, Class<T> cls);
+	<T> T findById(String id, Class<T> cls);
 	
 	/**
 	 * 検索条件より、単一テーブル情報取得を行う。
@@ -110,5 +110,5 @@ public interface BaseDao {
 	 * @param cls
 	 *            エンティティクラス
 	 */
-	<T> void deleteById(Long id, Class<T> cls);
+	<T> void deleteById(String id, Class<T> cls);
 }
