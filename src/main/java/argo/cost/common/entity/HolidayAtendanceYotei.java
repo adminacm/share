@@ -50,6 +50,10 @@ public class HolidayAtendanceYotei implements Serializable {
 	@JoinColumn(name="project_code")
 	private ProjWorkMaster projWorkMaster;
 
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	private Users users;
+
 	//bi-directional many-to-one association to WorkDayKbnMaster
 	@ManyToOne
 	@JoinColumn(name="atendance_date_kbn_cd")
@@ -144,6 +148,14 @@ public class HolidayAtendanceYotei implements Serializable {
 
 	public void setProjWorkMaster(ProjWorkMaster projWorkMaster) {
 		this.projWorkMaster = projWorkMaster;
+	}
+
+	public Users getUser() {
+		return this.users;
+	}
+
+	public void setUser(Users users) {
+		this.users = users;
 	}
 
 	public WorkDayKbnMaster getWorkDayKbnMaster() {

@@ -84,6 +84,10 @@ public class Users implements Serializable {
 //	@OneToMany(mappedBy="users")
 //	private List<HolidayAtendance> holidayAtendances;
 //
+	//bi-directional many-to-one association to HolidayAtendanceYotei
+	@OneToMany(mappedBy="users")
+	private List<HolidayAtendanceYotei> holidayAtendanceYoteis;
+	
 	//bi-directional many-to-one association to KintaiInfo
 	@OneToMany(mappedBy="users")
 	private List<KintaiInfo> kintaiInfos;
@@ -243,28 +247,28 @@ public class Users implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
-	public List<ApprovalManage> getApprovalManages() {
-		return this.approvalManages;
-	}
-
-	public void setApprovalManages(List<ApprovalManage> approvalManages) {
-		this.approvalManages = approvalManages;
-	}
-
-	public ApprovalManage addApprovalManage(ApprovalManage approvalManage) {
-		getApprovalManages().add(approvalManage);
-		approvalManage.setUser(this);
-
-		return approvalManage;
-	}
-
-	public ApprovalManage removeApprovalManage(ApprovalManage approvalManage) {
-		getApprovalManages().remove(approvalManage);
-		approvalManage.setUser(null);
-
-		return approvalManage;
-	}
+//
+//	public List<ApprovalManage> getApprovalManages() {
+//		return this.approvalManages;
+//	}
+//
+//	public void setApprovalManages(List<ApprovalManage> approvalManages) {
+//		this.approvalManages = approvalManages;
+//	}
+//
+//	public ApprovalManage addApprovalManage(ApprovalManage approvalManage) {
+//		getApprovalManages().add(approvalManage);
+//		approvalManage.setUser(this);
+//
+//		return approvalManage;
+//	}
+//
+//	public ApprovalManage removeApprovalManage(ApprovalManage approvalManage) {
+//		getApprovalManages().remove(approvalManage);
+//		approvalManage.setUser(null);
+//
+//		return approvalManage;
+//	}
 	
 //	public List<ChokinKanri> getChokinKanris() {
 //		return this.chokinKanris;
@@ -310,6 +314,27 @@ public class Users implements Serializable {
 //		return holidayAtendance;
 //	}
 
+	public List<HolidayAtendanceYotei> getHolidayAtendanceYoteis() {
+		return this.holidayAtendanceYoteis;
+	}
+
+	public void setHolidayAtendanceYoteis(List<HolidayAtendanceYotei> holidayAtendanceYoteis) {
+		this.holidayAtendanceYoteis = holidayAtendanceYoteis;
+	}
+
+	public HolidayAtendanceYotei addHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
+		getHolidayAtendanceYoteis().add(holidayAtendanceYotei);
+		holidayAtendanceYotei.setUser(this);
+
+		return holidayAtendanceYotei;
+	}
+
+	public HolidayAtendanceYotei removeHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
+		getHolidayAtendanceYoteis().remove(holidayAtendanceYotei);
+		holidayAtendanceYotei.setUser(null);
+
+		return holidayAtendanceYotei;
+	}
 	public List<KintaiInfo> getKintaiInfos() {
 		return this.kintaiInfos;
 	}

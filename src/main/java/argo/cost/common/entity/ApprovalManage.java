@@ -1,15 +1,9 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import java.util.List;
 
 
 /**
@@ -23,6 +17,7 @@ public class ApprovalManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Integer id;
 
 	@Column(name="apply_detail")
@@ -55,11 +50,11 @@ public class ApprovalManage implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	private Users user;
+	private Users users;
 
 	//bi-directional many-to-one association to KintaiInfo
-//	@OneToMany(mappedBy="approvalManage")
-//	private List<KintaiInfo> kintaiInfos;
+	@OneToMany(mappedBy="approvalManage")
+	private List<KintaiInfo> kintaiInfos;
 
 	public ApprovalManage() {
 	}
@@ -137,33 +132,33 @@ public class ApprovalManage implements Serializable {
 	}
 
 	public Users getUser() {
-		return this.user;
+		return this.users;
 	}
 
-	public void setUser(Users user) {
-		this.user = user;
+	public void setUser(Users users) {
+		this.users = users;
 	}
 
-//	public List<KintaiInfo> getKintaiInfos() {
-//		return this.kintaiInfos;
-//	}
-//
-//	public void setKintaiInfos(List<KintaiInfo> kintaiInfos) {
-//		this.kintaiInfos = kintaiInfos;
-//	}
-//
-//	public KintaiInfo addKintaiInfo(KintaiInfo kintaiInfo) {
-//		getKintaiInfos().add(kintaiInfo);
-//		kintaiInfo.setApprovalManage(this);
-//
-//		return kintaiInfo;
-//	}
-//
-//	public KintaiInfo removeKintaiInfo(KintaiInfo kintaiInfo) {
-//		getKintaiInfos().remove(kintaiInfo);
-//		kintaiInfo.setApprovalManage(null);
-//
-//		return kintaiInfo;
-//	}
+	public List<KintaiInfo> getKintaiInfos() {
+		return this.kintaiInfos;
+	}
+
+	public void setKintaiInfos(List<KintaiInfo> kintaiInfos) {
+		this.kintaiInfos = kintaiInfos;
+	}
+
+	public KintaiInfo addKintaiInfo(KintaiInfo kintaiInfo) {
+		getKintaiInfos().add(kintaiInfo);
+		kintaiInfo.setApprovalManage(this);
+
+		return kintaiInfo;
+	}
+
+	public KintaiInfo removeKintaiInfo(KintaiInfo kintaiInfo) {
+		getKintaiInfos().remove(kintaiInfo);
+		kintaiInfo.setApprovalManage(null);
+
+		return kintaiInfo;
+	}
 
 }

@@ -21,6 +21,7 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.ConditionConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
@@ -199,6 +200,12 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		
 		// 勤怠日付
 		condition.addConditionEqual("atendance_book_date", yyyymmdd);
+		
+		List<KintaiInfo> kintaiEntityList = baseDao.findResultList(condition, KintaiInfo.class);
+		
+		if (kintaiEntityList != null && !kintaiEntityList.isEmpty()) {
+			
+		}
 		
 		WorkTimeDetail info = attendanceInputDao.getWorkTimeDetail(userId, yyyymmdd);
 		return info;
