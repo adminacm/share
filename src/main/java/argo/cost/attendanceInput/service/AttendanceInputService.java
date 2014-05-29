@@ -87,10 +87,8 @@ public interface AttendanceInputService {
 	 * 				画面情報
 	 * @param newDate 
 	 * 				日付
-	 * @param userId
-	 * 			ユーザID
 	 */
-	void setAttForm(AttendanceInputForm form, String newDate, String userId) throws ParseException;
+	void setAttForm(AttendanceInputForm form, String newDate) throws ParseException;
 	
 	/**
 	 * 就業データを取得

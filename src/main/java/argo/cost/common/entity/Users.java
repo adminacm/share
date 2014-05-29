@@ -71,7 +71,11 @@ public class Users implements Serializable {
 
 	@Column(name="user_name")
 	private String userName;
-
+	
+	//bi-directional many-to-one association to ApprovalManage
+	@OneToMany(mappedBy="users")
+	private List<ApprovalManage> approvalManages;
+	
 //	//bi-directional many-to-one association to ChokinKanri
 //	@OneToMany(mappedBy="users")
 //	private List<ChokinKanri> chokinKanris;
@@ -80,13 +84,13 @@ public class Users implements Serializable {
 //	@OneToMany(mappedBy="users")
 //	private List<HolidayAtendance> holidayAtendances;
 //
-//	//bi-directional many-to-one association to KintaiInfo
-//	@OneToMany(mappedBy="users")
-//	private List<KintaiInfo> kintaiInfos;
-//
-//	//bi-directional many-to-one association to KyukaKekin
-//	@OneToMany(mappedBy="users")
-//	private List<KyukaKekin> kyukaKekins;
+	//bi-directional many-to-one association to KintaiInfo
+	@OneToMany(mappedBy="users")
+	private List<KintaiInfo> kintaiInfos;
+
+	//bi-directional many-to-one association to KyukaKekin
+	@OneToMany(mappedBy="users")
+	private List<KyukaKekin> kyukaKekins;
 
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="users")
@@ -240,6 +244,28 @@ public class Users implements Serializable {
 		this.userName = userName;
 	}
 
+	public List<ApprovalManage> getApprovalManages() {
+		return this.approvalManages;
+	}
+
+	public void setApprovalManages(List<ApprovalManage> approvalManages) {
+		this.approvalManages = approvalManages;
+	}
+
+	public ApprovalManage addApprovalManage(ApprovalManage approvalManage) {
+		getApprovalManages().add(approvalManage);
+		approvalManage.setUser(this);
+
+		return approvalManage;
+	}
+
+	public ApprovalManage removeApprovalManage(ApprovalManage approvalManage) {
+		getApprovalManages().remove(approvalManage);
+		approvalManage.setUser(null);
+
+		return approvalManage;
+	}
+	
 //	public List<ChokinKanri> getChokinKanris() {
 //		return this.chokinKanris;
 //	}
@@ -283,50 +309,50 @@ public class Users implements Serializable {
 //
 //		return holidayAtendance;
 //	}
-//
-//	public List<KintaiInfo> getKintaiInfos() {
-//		return this.kintaiInfos;
-//	}
-//
-//	public void setKintaiInfos(List<KintaiInfo> kintaiInfos) {
-//		this.kintaiInfos = kintaiInfos;
-//	}
-//
-//	public KintaiInfo addKintaiInfo(KintaiInfo kintaiInfo) {
-//		getKintaiInfos().add(kintaiInfo);
-//		kintaiInfo.setUsers(this);
-//
-//		return kintaiInfo;
-//	}
-//
-//	public KintaiInfo removeKintaiInfo(KintaiInfo kintaiInfo) {
-//		getKintaiInfos().remove(kintaiInfo);
-//		kintaiInfo.setUsers(null);
-//
-//		return kintaiInfo;
-//	}
-//
-//	public List<KyukaKekin> getKyukaKekins() {
-//		return this.kyukaKekins;
-//	}
-//
-//	public void setKyukaKekins(List<KyukaKekin> kyukaKekins) {
-//		this.kyukaKekins = kyukaKekins;
-//	}
-//
-//	public KyukaKekin addKyukaKekin(KyukaKekin kyukaKekin) {
-//		getKyukaKekins().add(kyukaKekin);
-//		kyukaKekin.setUsers(this);
-//
-//		return kyukaKekin;
-//	}
-//
-//	public KyukaKekin removeKyukaKekin(KyukaKekin kyukaKekin) {
-//		getKyukaKekins().remove(kyukaKekin);
-//		kyukaKekin.setUsers(null);
-//
-//		return kyukaKekin;
-//	}
+
+	public List<KintaiInfo> getKintaiInfos() {
+		return this.kintaiInfos;
+	}
+
+	public void setKintaiInfos(List<KintaiInfo> kintaiInfos) {
+		this.kintaiInfos = kintaiInfos;
+	}
+
+	public KintaiInfo addKintaiInfo(KintaiInfo kintaiInfo) {
+		getKintaiInfos().add(kintaiInfo);
+		kintaiInfo.setUsers(this);
+
+		return kintaiInfo;
+	}
+
+	public KintaiInfo removeKintaiInfo(KintaiInfo kintaiInfo) {
+		getKintaiInfos().remove(kintaiInfo);
+		kintaiInfo.setUsers(null);
+
+		return kintaiInfo;
+	}
+
+	public List<KyukaKekin> getKyukaKekins() {
+		return this.kyukaKekins;
+	}
+
+	public void setKyukaKekins(List<KyukaKekin> kyukaKekins) {
+		this.kyukaKekins = kyukaKekins;
+	}
+
+	public KyukaKekin addKyukaKekin(KyukaKekin kyukaKekin) {
+		getKyukaKekins().add(kyukaKekin);
+		kyukaKekin.setUsers(this);
+
+		return kyukaKekin;
+	}
+
+	public KyukaKekin removeKyukaKekin(KyukaKekin kyukaKekin) {
+		getKyukaKekins().remove(kyukaKekin);
+		kyukaKekin.setUsers(null);
+
+		return kyukaKekin;
+	}
 
 	public List<UserRole> getUserRoles() {
 		return this.userRoles;

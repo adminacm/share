@@ -18,6 +18,9 @@ import argo.cost.attendanceInput.model.HolidayRecord;
 import argo.cost.attendanceInput.model.ShiftInfo;
 import argo.cost.attendanceInput.model.WorkTimeDetail;
 import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.constant.ConditionConstant;
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
@@ -42,9 +45,16 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	@Autowired
 	protected ComService comService;
-
+	/**
+	 * 勤怠入力DAO
+	 */
 	@Autowired
 	AttendanceInputDao attendanceInputDao;
+	/**
+	 * 共通DAO
+	 */
+	@Autowired
+	BaseDao baseDao;
 
 	/**
 	 * 休暇欠勤区分プルダウンリスト取得
@@ -181,6 +191,15 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public WorkTimeDetail getWorkTimeDetail(String userId, String yyyymmdd) {
 		// TODO 自動生成されたメソッド・スタブ Daoへ移動予定
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		
+		// ユーザーID
+		condition.addConditionEqual(ConditionConstant.ID, userId);
+		
+		// 勤怠日付
+		condition.addConditionEqual("atendance_book_date", yyyymmdd);
+		
 		WorkTimeDetail info = attendanceInputDao.getWorkTimeDetail(userId, yyyymmdd);
 		return info;
 	}
@@ -192,13 +211,12 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 *            画面情報
 	 * @param newDate
 	 *            日付
-	 * @param userId
-	 *            ユーザID
 	 */
 	@Override
-	public void setAttForm(AttendanceInputForm form, String newDate,
-			String userId) throws ParseException {
+	public void setAttForm(AttendanceInputForm form, String newDate) throws ParseException {
 
+		// 社員番号
+		String userId = form.getUserId();
 		// システム日付を取得
 		String date = CostDateUtils.getNowDate();
 		// 勤怠操作日は存在する場合
