@@ -2,8 +2,6 @@ package argo.cost.menu.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +15,26 @@ import argo.cost.common.model.AppSession;
 import argo.cost.common.model.UserVO;
 import argo.cost.menu.model.MenueForm;
 
+/**
+ * メニュー画面業務スクラス
+ * メニュー画面に関する処理を行う。
+ *
+ * @author COST argo Corporation.
+ */
 @Controller
 @RequestMapping(UrlConstant.URL_MENU)
 @SessionAttributes(types = { MenueForm.class })
 public class MenuController extends AbstractController {
     
+	/**
+	 * メニュー画面URL
+	 */
+	private static final String MENU = "menu";
+    
+	/**
+	 * 勤怠入力画面へURL
+	 */
+	private static final String ATT_URL = "/att";
 	/**
 	 * メニュー画面初期化
 	 * 
@@ -35,20 +48,14 @@ public class MenuController extends AbstractController {
     @RequestMapping(value = INIT)
     public String doLogin(Model model, HttpServletRequest request) {
     	
-    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	
     	// Spring security 情報を取得
-    	String loginMale;
-    	if (principal instanceof UserDetails) {
-    		loginMale = ((UserDetails)principal).getUsername(); 
-    		} else {
-    			loginMale = principal.toString(); 
-    		}
-    	
-    	request.getSession().setAttribute("loginMail", loginMale);
+    	String loginMale = (String) request.getSession().getAttribute("loginName");
 
 		// セッション情報初期化
 		AppSession session = comService.initSession(loginMale);
+		
+		// 表示用ユーザー名を設定する
+		request.getSession().setAttribute("userName", session.getUserInfo().getUserName());
 		
 		// セッション情報設定
 		RequestContextHolder.getRequestAttributes().setAttribute(SESSION, session, RequestAttributes.SCOPE_SESSION);
@@ -68,7 +75,7 @@ public class MenuController extends AbstractController {
     	UserVO userInfo = getSession().getUserInfo();
     	
     	form.setUserInfo(userInfo);
-		return "menu";
+		return MENU;
     }
     
     /**
@@ -78,13 +85,13 @@ public class MenuController extends AbstractController {
 	 *            画面情報
 	 * @return　勤怠入力画面
 	 */
-    @RequestMapping("/att")
+    @RequestMapping(ATT_URL)
     public String goAttdanceInput(Model model) {
     	
 		// セッション情報設定
-    	getSession().setForm("Menu");
+    	getSession().setForm(MENU);
 
-		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK+ "attDate=";
+		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK+ ATTDENDANCE_DATE + EQUAL_SIGN;
     }
 
 }

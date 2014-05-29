@@ -60,8 +60,6 @@ public class AttendanceInputController extends AbstractController {
 	public String initAttendanceInput(Model model, @RequestParam(ATTDENDANCE_DATE) String newDate)
 			throws Exception {
 
-		// ユーザID
-		String userId = getSession().getUserInfo().getLoginMailAdress();
 
 		// フォーム初期化
 		AttendanceInputForm form = initForm(AttendanceInputForm.class);
@@ -69,7 +67,7 @@ public class AttendanceInputController extends AbstractController {
 		model.addAttribute(form);
 		
 		// 画面情報を設定
-		attendanceInputService.setAttForm(form, newDate, userId);
+		attendanceInputService.setAttForm(form, newDate);
 
 		return ATTDENDANCE_INPUT;
 	}
