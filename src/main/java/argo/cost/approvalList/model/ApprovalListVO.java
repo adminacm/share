@@ -34,21 +34,22 @@ public class ApprovalListVO {
 	/**
 	 * 状況
 	 */
-	private String status;
+	private String statusName;
 	
 	/**
 	 * 所属
 	 */
-	private String affiliation;
+	private String affiliationName;
 	
 	/**
 	 * 氏名
 	 */
-	private String name;
+	private String userName;
 
 	// ************************
 	// ** アクセサメソッド　** 
 	// ************************
+	
 	public String getApplyNo() {
 		return applyNo;
 	}
@@ -81,27 +82,27 @@ public class ApprovalListVO {
 		this.applyDetail = applyDetail;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getStatusName() {
+		return statusName;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 
-	public String getAffiliation() {
-		return affiliation;
+	public String getAffiliationName() {
+		return affiliationName;
 	}
 
-	public void setAffiliation(String affiliation) {
-		this.affiliation = affiliation;
+	public void setAffiliationName(String affiliationName) {
+		this.affiliationName = affiliationName;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

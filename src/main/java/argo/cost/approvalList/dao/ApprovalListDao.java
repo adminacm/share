@@ -14,11 +14,11 @@ import argo.cost.approvalList.model.ApprovalListVO;
 public interface ApprovalListDao {
 
 	/**
-	 * ＤＢから、承認データを取得
+	 * 承認一覧リストを取得
 	 * 
 	 * @param status
 	 *              状況
-	 * @return 承認データ
+	 * @return 承認一覧リスト
 	 */
 	List<ApprovalListVO> getApprovalList(String status);
 }

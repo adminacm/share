@@ -58,7 +58,7 @@ public class ApprovalListController extends AbstractController  {
     	model.addAttribute(form);
     	
     	// 状況リストを取得
-    	List<ListItemVO> statusList = null;
+    	List<ListItemVO> statusList = approvalListService.getStatusList();
     	
     	// 状況リストを設定
     	form.setStatusList(statusList);
@@ -77,17 +77,17 @@ public class ApprovalListController extends AbstractController  {
     /**
      * 表示切替ボタンを押して、表示対象を切り替える
      * 
-     * @param approvalListForm
-     *                        承認一覧画面情報
+     * @param form
+     *            承認一覧画面情報
      * @return 承認一覧画面
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String searchApprovalList(ApprovalListForm approvalListForm) {
+    public String searchApprovalList(ApprovalListForm form) {
     	
     	// 承認リストを取得
-    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(approvalListForm.getStatus());
+    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(form.getStatus());
     	
-    	approvalListForm.setApprovalList(approvalList);
+    	form.setApprovalList(approvalList);
 
         return APPROVALLIST;
     }
