@@ -35,15 +35,6 @@ public interface ComService {
 	void flushSession(AppSession session);
 	
 	/**
-	 * 氏名プルダウンリスト取得
-	 * 
-	 * @param userId
-	 *              ユーザＩＤ
-	 * @return 氏名プルダウンリスト
-	 */
-	List<ListItemVO> getUserNameList(String userId);
-	
-	/**
 	 * 年度プルダウンリスト取得
 	 * 
 	 * @param year

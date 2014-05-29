@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.dao.DropdownListDao;
 import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
@@ -53,12 +52,6 @@ public class ComServiceImpl implements ComService {
 	private BaseDao baseDao;
 
 	/**
-	 * 共通ドロップダウンリストDAO
-	 */
-	@Autowired
-	private DropdownListDao dropdownListDao;
-
-	/**
 	 * セッション情報初期化
 	 *
 	 * @param loginMail
@@ -86,42 +79,6 @@ public class ComServiceImpl implements ComService {
 	public void flushSession(AppSession session) {
 
 		this.setupSession(session, session.getUserInfo().getLoginMailAdress());
-	}
-
-	/**
-	 * 氏名プルダウンリスト取得
-	 * 
-	 * @param userId
-	 *              ユーザＩＤ
-	 * @return 氏名プルダウンリスト
-	 */
-	@Override
-	public List<ListItemVO> getUserNameList(String userId) {
-
-		// 氏名プルダウンリスト
-		List<Users> userList = dropdownListDao.getUserList(userId);
-
-		// ドロップダウンリスト
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		// ドロップダウン項目
-		ListItemVO item = null;
-
-		// ドロップダウンリスト設定
-		for (Users status : userList) {
-			item = new ListItemVO();
-
-			// データを設定する
-			// 区分値 
-			item.setValue(status.getId());
-			// 区分名称
-			item.setName(status.getUserName());
-
-			// リストに追加
-			resultList.add(item);
-		}
-
-		// 氏名ドロップダウンリストを返却する。
-		return resultList;
 	}
 
 	/**
