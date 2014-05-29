@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.entity.Project;
 import argo.cost.monthlyReportApproval.dao.MonthlyReportApprovalDao;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 
@@ -136,15 +135,15 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 * @return
 	 *        プロジェクト情報
 	 */
-	@Override
-	public List<Project> getProjectList(String applyNo) {
-
-		// プロジェクト情報を取得
-		List<Project> projectList = monApprovalDao.searchProjectList(applyNo);
-		
-		return projectList;
-		
-	}
+//	@Override
+//	public List<Project> getProjectList(String applyNo) {
+//
+//		// プロジェクト情報を取得
+//		List<Project> projectList = monApprovalDao.searchProjectList(applyNo);
+//		
+//		return projectList;
+//		
+//	}
 
 	/**
 	 * 申請状況更新

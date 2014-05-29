@@ -64,10 +64,10 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	model.addAttribute(form);
     	
     	// 状況リストを取得
-    	List<ListItemVO> statusList = comService.getStatusList();
-    	
-    	// 状況リストを設定
-    	form.setStatusList(statusList);
+//    	List<ListItemVO> statusList = comService.getStatusList();
+//    	
+//    	// 状況リストを設定
+//    	form.setStatusList(statusList);
     	
     	// 年リストを取得
     	List<ListItemVO> yearList = monthlyReportStatusListService.getYearList(new Date());

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.entity.Project;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 import argo.cost.monthlyReportApproval.service.MonthlyReportApprovalService;
@@ -76,10 +75,10 @@ public class MonthlyReportApprovalController extends AbstractController {
 		form.setMonthlyReportApprovalList(monthlyReportApprovalList);
 
 		// 【PJ別作業時間集計】を取得
-		List<Project> projectList = monthlyReportApprovalService.getProjectList(applyNo);
+//		List<Project> projectList = monthlyReportApprovalService.getProjectList(applyNo);
 		
 		// プロジェクト情報設定
-		form.setProjectList(projectList);
+//		form.setProjectList(projectList);
 		
 		model.addAttribute(form);
 

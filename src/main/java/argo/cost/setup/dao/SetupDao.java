@@ -2,8 +2,6 @@ package argo.cost.setup.dao;
 
 import java.util.List;
 
-import argo.cost.common.entity.Shift;
-import argo.cost.common.entity.ShiftTime;
 import argo.cost.common.model.UserVO;
 import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
@@ -38,7 +36,7 @@ public interface SetupDao {
 	 * @return
 	 *        ｼﾌﾄリスト
 	 */
-	public List<Shift> getShiftList();
+//	public List<Shift> getShiftList();
 
 	/**
 	 * ｼﾌﾄ時刻情報を取得
@@ -47,7 +45,7 @@ public interface SetupDao {
 	 * 					標準ｼﾌﾄ
 	 * @return
 	 */
-	public ShiftTime getshiftTime(String standardShift);
+//	public ShiftTime getshiftTime(String standardShift);
 
 	/**
 	 * 保存処理を実行

@@ -35,7 +35,7 @@ public class ApprovalListForm extends AbstractForm implements Serializable {
 	/**
 	 * 承認リスト
 	 */
-	private List<ApprovalListVo> approvalList;
+	private List<ApprovalListVO> approvalList;
 	
 	// ************************
 	// ** アクセサメソッド　** 
@@ -71,14 +71,14 @@ public class ApprovalListForm extends AbstractForm implements Serializable {
 	/**
 	 * 承認リストを取得する
 	 */
-	public List<ApprovalListVo> getApprovalList() {
+	public List<ApprovalListVO> getApprovalList() {
 		return approvalList;
 	}
 
 	/**
 	 * 承認リストを設定する
 	 */
-	public void setApprovalList(List<ApprovalListVo> approvalList) {
+	public void setApprovalList(List<ApprovalListVO> approvalList) {
 		this.approvalList = approvalList;
 	}
 	

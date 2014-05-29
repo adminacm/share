@@ -2,7 +2,7 @@ package argo.cost.approvalList.dao;
 
 import java.util.List;
 
-import argo.cost.common.entity.ApprovalListEntity;
+import argo.cost.approvalList.model.ApprovalListVO;
 
 /**
  * <p>
@@ -20,5 +20,5 @@ public interface ApprovalListDao {
 	 *              状況
 	 * @return 承認データ
 	 */
-	List<ApprovalListEntity> getApprovalList(String status);
+	List<ApprovalListVO> getApprovalList(String status);
 }

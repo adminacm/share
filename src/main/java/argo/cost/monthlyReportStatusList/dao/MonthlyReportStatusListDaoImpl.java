@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.entity.ApprovalListEntity;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
+import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 
 /**
@@ -28,51 +28,51 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 	 * @return 月報状況一覧データ
 	 */
 	@Override
-	public List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
+	public List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
 
 		// TODO:仮の値を与える
-		List<ApprovalListEntity> resultList = new ArrayList<ApprovalListEntity>();
+		List<MonthlyReportStatusListVo> resultList = new ArrayList<MonthlyReportStatusListVo>();
 		
-		ApprovalListEntity itemInfo = new ApprovalListEntity();
-		itemInfo.setApplyNo("user01120140500");
-		itemInfo.setAffiliation("ＢＳ２");
-		itemInfo.setId("aaa");
-		itemInfo.setName("あｘｘｘｘｘ");
-		itemInfo.setApplyKbn("1");
-		itemInfo.setApplyDetail("2014年5月分");
-		itemInfo.setStatus("01");
-		resultList.add(itemInfo);
-		
-		itemInfo = new ApprovalListEntity();
-		itemInfo.setApplyNo("user02120140500");
-		itemInfo.setAffiliation("ＢＳ２");
-		itemInfo.setId("uuu");
-		itemInfo.setName("うｘｘｘｘｘ");
-		itemInfo.setApplyKbn("1");
-		itemInfo.setApplyDetail("2014年5月分");
-		itemInfo.setStatus("01");
-		resultList.add(itemInfo);
-		
-		itemInfo = new ApprovalListEntity();
-		itemInfo.setApplyNo("user03220140500");
-		itemInfo.setAffiliation("ＢＳ２");
-		itemInfo.setId("iii");
-		itemInfo.setName("えｘｘｘｘｘ");
-		itemInfo.setApplyKbn("2");
-		itemInfo.setApplyDetail("休日勤務日：2014/5/5");
-		itemInfo.setStatus("06");
-		resultList.add(itemInfo);
-		
-		itemInfo = new ApprovalListEntity();
-		itemInfo.setApplyNo("user04220140500");
-		itemInfo.setAffiliation("ＢＳ２");
-		itemInfo.setId("uuu");
-		itemInfo.setName("うｘｘｘｘｘ");
-		itemInfo.setApplyKbn("2");
-		itemInfo.setApplyDetail("休日勤務日：2014/5/5");
-		itemInfo.setStatus("06");
-		resultList.add(itemInfo);
-		
+//		ApprovalListEntity itemInfo = new ApprovalListEntity();
+//		itemInfo.setApplyNo("user01120140500");
+//		itemInfo.setAffiliation("ＢＳ２");
+//		itemInfo.setId("aaa");
+//		itemInfo.setName("あｘｘｘｘｘ");
+//		itemInfo.setApplyKbn("1");
+//		itemInfo.setApplyDetail("2014年5月分");
+//		itemInfo.setStatus("01");
+//		resultList.add(itemInfo);
+//		
+//		itemInfo = new ApprovalListEntity();
+//		itemInfo.setApplyNo("user02120140500");
+//		itemInfo.setAffiliation("ＢＳ２");
+//		itemInfo.setId("uuu");
+//		itemInfo.setName("うｘｘｘｘｘ");
+//		itemInfo.setApplyKbn("1");
+//		itemInfo.setApplyDetail("2014年5月分");
+//		itemInfo.setStatus("01");
+//		resultList.add(itemInfo);
+//		
+//		itemInfo = new ApprovalListEntity();
+//		itemInfo.setApplyNo("user03220140500");
+//		itemInfo.setAffiliation("ＢＳ２");
+//		itemInfo.setId("iii");
+//		itemInfo.setName("えｘｘｘｘｘ");
+//		itemInfo.setApplyKbn("2");
+//		itemInfo.setApplyDetail("休日勤務日：2014/5/5");
+//		itemInfo.setStatus("06");
+//		resultList.add(itemInfo);
+//		
+//		itemInfo = new ApprovalListEntity();
+//		itemInfo.setApplyNo("user04220140500");
+//		itemInfo.setAffiliation("ＢＳ２");
+//		itemInfo.setId("uuu");
+//		itemInfo.setName("うｘｘｘｘｘ");
+//		itemInfo.setApplyKbn("2");
+//		itemInfo.setApplyDetail("休日勤務日：2014/5/5");
+//		itemInfo.setStatus("06");
+//		resultList.add(itemInfo);
+//		
 		return resultList;
 	}
 

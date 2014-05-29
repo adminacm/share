@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.entity.Project;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 
 @Repository
@@ -210,33 +209,33 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 * @return
 	 *        プロジェクト情報リスト
 	 */
-	@Override
-	public List<Project> searchProjectList(String applyNo) {
-		
-		// TODO 自動生成されたメソッド・スタブ
-		List<Project> projectList = new ArrayList<Project>();
-		Project projectInfo = new Project();
-		projectInfo.setProjName("SPA収益計画システム");
-		projectInfo.setProjHours(162.0);
-		projectInfo.setProjManageHours(53.0);
-		projectInfo.setBasicDesignHours(25.0);
-		projectInfo.setMeetingHours(10.0);
-		projectList.add(projectInfo);
-		
-		projectInfo = new Project();
-		projectInfo.setProjName("桜美林大学留学生管理システム保守");
-		projectInfo.setProjHours(100.0);
-		projectInfo.setProjManageHours(50.0);
-		projectInfo.setBasicDesignHours(20.0);
-		projectInfo.setMeetingHours(15.0);
-		projectList.add(projectInfo);
-		
-		projectInfo = new Project();
-		projectInfo.setProjName("事務処理・社内会議");
-		projectList.add(projectInfo);
-		
-		return projectList;
-	}
+//	@Override
+//	public List<Project> searchProjectList(String applyNo) {
+//		
+//		// TODO 自動生成されたメソッド・スタブ
+//		List<Project> projectList = new ArrayList<Project>();
+//		Project projectInfo = new Project();
+//		projectInfo.setProjName("SPA収益計画システム");
+//		projectInfo.setProjHours(162.0);
+//		projectInfo.setProjManageHours(53.0);
+//		projectInfo.setBasicDesignHours(25.0);
+//		projectInfo.setMeetingHours(10.0);
+//		projectList.add(projectInfo);
+//		
+//		projectInfo = new Project();
+//		projectInfo.setProjName("桜美林大学留学生管理システム保守");
+//		projectInfo.setProjHours(100.0);
+//		projectInfo.setProjManageHours(50.0);
+//		projectInfo.setBasicDesignHours(20.0);
+//		projectInfo.setMeetingHours(15.0);
+//		projectList.add(projectInfo);
+//		
+//		projectInfo = new Project();
+//		projectInfo.setProjName("事務処理・社内会議");
+//		projectList.add(projectInfo);
+//		
+//		return projectList;
+//	}
 
 	/**
 	 * 申請状況更新

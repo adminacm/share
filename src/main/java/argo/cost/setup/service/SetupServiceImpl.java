@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.entity.Shift;
-import argo.cost.common.entity.ShiftTime;
 import argo.cost.common.model.UserVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.dao.SetupDao;
@@ -96,7 +94,7 @@ public class SetupServiceImpl implements SetupService {
 		setupInfo.setAgentList(getAgentList());
     	
 		// 標準ｼﾌﾄリスト
-		setupInfo.setStandardShiftList(getShiftList());
+//		setupInfo.setStandardShiftList(getShiftList());
     	
     	// 勤務開始時刻
     	if (!setupInfo.getWorkStart().isEmpty()){
@@ -130,25 +128,25 @@ public class SetupServiceImpl implements SetupService {
 	public void changeShift(SetupForm setupInfo) {
 		
 		// 標準ｼﾌﾄより、ｼﾌﾄ時刻情報を取得
-		ShiftTime shiftTime = setupDao.getshiftTime(setupInfo.getStandardShift());
+//		ShiftTime shiftTime = setupDao.getshiftTime(setupInfo.getStandardShift());
 		
     	// 勤務開始時刻
-    	if (shiftTime != null && !shiftTime.getStandSTime().isEmpty()){
-
-        	// 勤務開始時刻（時）
-    		setupInfo.setWorkStartH(shiftTime.getStandSTime().substring(0, 2));
-        	// 勤務開始時刻（分）
-    		setupInfo.setWorkStartM(shiftTime.getStandSTime().substring(2, 4));
-    		
-    	}
-    	// 勤務終了時刻
-    	if (shiftTime != null && !shiftTime.getStandEtime().isEmpty()){
-    		
-        	// 勤務終了時刻（時）
-    		setupInfo.setWorkEndH(shiftTime.getStandEtime().substring(0, 2));
-        	// 勤務終了時刻（分）
-    		setupInfo.setWorkEndM(shiftTime.getStandEtime().substring(2, 4));
-    	}
+//    	if (shiftTime != null && !shiftTime.getStandSTime().isEmpty()){
+//
+//        	// 勤務開始時刻（時）
+//    		setupInfo.setWorkStartH(shiftTime.getStandSTime().substring(0, 2));
+//        	// 勤務開始時刻（分）
+//    		setupInfo.setWorkStartM(shiftTime.getStandSTime().substring(2, 4));
+//    		
+//    	}
+//    	// 勤務終了時刻
+//    	if (shiftTime != null && !shiftTime.getStandEtime().isEmpty()){
+//    		
+//        	// 勤務終了時刻（時）
+//    		setupInfo.setWorkEndH(shiftTime.getStandEtime().substring(0, 2));
+//        	// 勤務終了時刻（分）
+//    		setupInfo.setWorkEndM(shiftTime.getStandEtime().substring(2, 4));
+//    	}
 		
 	}
 
@@ -214,13 +212,13 @@ public class SetupServiceImpl implements SetupService {
 	 * @return
 	 *        ｼﾌﾄリスト
 	 */
-	private List<Shift> getShiftList() {
-
-		// ｼﾌﾄリストを取得
-		List<Shift> shiftList = setupDao.getShiftList();
-		
-		return shiftList;
-	}
+//	private List<Shift> getShiftList() {
+//
+//		// ｼﾌﾄリストを取得
+//		List<Shift> shiftList = setupDao.getShiftList();
+//		
+//		return shiftList;
+//	}
 	
 	/**
 	 * 保存処理を実行

@@ -60,7 +60,7 @@ public class SetupController extends AbstractController {
 	@RequestMapping(INIT)
 	public String initSetup(Model model) {
 
-		String loginId = getSession().getUserInfo().getId();
+		String loginId = getSession().getUserInfo().getUserId();
 
 		// 画面情報を作成
 		SetupForm form = setupService.getSetupInfo(loginId);

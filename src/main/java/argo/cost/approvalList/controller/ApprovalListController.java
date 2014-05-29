@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.approvalList.model.ApprovalListForm;
-import argo.cost.approvalList.model.ApprovalListVo;
+import argo.cost.approvalList.model.ApprovalListVO;
 import argo.cost.approvalList.service.ApprovalListService;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
@@ -58,7 +58,7 @@ public class ApprovalListController extends AbstractController  {
     	model.addAttribute(form);
     	
     	// 状況リストを取得
-    	List<ListItemVO> statusList = comService.getStatusList();
+    	List<ListItemVO> statusList = null;
     	
     	// 状況リストを設定
     	form.setStatusList(statusList);
@@ -67,7 +67,7 @@ public class ApprovalListController extends AbstractController  {
     	form.setStatus("");
     	
     	// 承認リストを取得
-    	List<ApprovalListVo> approvalList = approvalListService.getApprovalList(form.getStatus());
+    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(form.getStatus());
     	
     	form.setApprovalList(approvalList);
     	
@@ -85,7 +85,7 @@ public class ApprovalListController extends AbstractController  {
     public String searchApprovalList(ApprovalListForm approvalListForm) {
     	
     	// 承認リストを取得
-    	List<ApprovalListVo> approvalList = approvalListService.getApprovalList(approvalListForm.getStatus());
+    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(approvalListForm.getStatus());
     	
     	approvalListForm.setApprovalList(approvalList);
 

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import argo.cost.common.entity.Shift;
-import argo.cost.common.entity.ShiftTime;
 import argo.cost.common.model.UserVO;
 import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
@@ -94,41 +92,41 @@ public class SetupDaoImpl implements SetupDao {
 	 * @return
 	 *        ｼﾌﾄリスト
 	 */
-	@Override
-	public List<Shift> getShiftList() {
-		
-		List<Shift> shiftList = new ArrayList<Shift>();
-		Shift shift = new Shift();
-		
-		shift.setShiftCd("0900");
-		shiftList.add(shift);
-		
-		shift = new Shift();
-		shift.setShiftCd("0930");
-		shiftList.add(shift);
-		
-		shift = new Shift();
-		shift.setShiftCd("0800");
-		shiftList.add(shift);
-		
-		shift = new Shift();
-		shift.setShiftCd("0830");
-		shiftList.add(shift);
-		
-		shift = new Shift();
-		shift.setShiftCd("1000");
-		shiftList.add(shift);
-		
-		shift = new Shift();
-		shift.setShiftCd("1030");
-		shiftList.add(shift);
-		
-		shift = new Shift();
-		shift.setShiftCd("1100");
-		shiftList.add(shift);
-		
-		return shiftList;
-	}
+//	@Override
+//	public List<Shift> getShiftList() {
+//		
+//		List<Shift> shiftList = new ArrayList<Shift>();
+//		Shift shift = new Shift();
+//		
+//		shift.setShiftCd("0900");
+//		shiftList.add(shift);
+//		
+//		shift = new Shift();
+//		shift.setShiftCd("0930");
+//		shiftList.add(shift);
+//		
+//		shift = new Shift();
+//		shift.setShiftCd("0800");
+//		shiftList.add(shift);
+//		
+//		shift = new Shift();
+//		shift.setShiftCd("0830");
+//		shiftList.add(shift);
+//		
+//		shift = new Shift();
+//		shift.setShiftCd("1000");
+//		shiftList.add(shift);
+//		
+//		shift = new Shift();
+//		shift.setShiftCd("1030");
+//		shiftList.add(shift);
+//		
+//		shift = new Shift();
+//		shift.setShiftCd("1100");
+//		shiftList.add(shift);
+//		
+//		return shiftList;
+//	}
 	
 	/**
 	 * ｼﾌﾄ時刻情報を取得
@@ -137,15 +135,15 @@ public class SetupDaoImpl implements SetupDao {
 	 * 					標準ｼﾌﾄ
 	 * @return
 	 */
-	@Override
-	public ShiftTime getshiftTime(String standardShift) {
-		
-		ShiftTime shiftTime = new ShiftTime();
-		shiftTime.setStandSTime("0930");
-		shiftTime.setStandEtime("1800");
-		
-		return shiftTime;
-	}
+//	@Override
+//	public ShiftTime getshiftTime(String standardShift) {
+//		
+//		ShiftTime shiftTime = new ShiftTime();
+//		shiftTime.setStandSTime("0930");
+//		shiftTime.setStandEtime("1800");
+//		
+//		return shiftTime;
+//	}
 
 	/**
 	 * 保存処理を実行

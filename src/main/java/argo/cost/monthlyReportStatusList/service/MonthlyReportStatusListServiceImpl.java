@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.entity.ApprovalListEntity;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.dao.MonthlyReportStatusListDao;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
@@ -55,36 +54,36 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		// 月報状況一覧リスト
 		List<MonthlyReportStatusListVo> monthlyReportStatusList = new ArrayList<MonthlyReportStatusListVo>();
 		
-		// ＤＢから、月報状況一覧データを取得
-		List<ApprovalListEntity> monthlyReportStatusDataList = monthlyReportStatusListDao.getMonthlyReportStatusList(monthlyReportStatusListForm);
-		
-		// 月報状況一覧データがnull以外の場合
-		if (monthlyReportStatusDataList != null && monthlyReportStatusDataList.size() > 0) {
-			for (int i = 0; i < monthlyReportStatusDataList.size(); i++) {
-				ApprovalListEntity monthlyReportStatusInfo = monthlyReportStatusDataList.get(i);
-				MonthlyReportStatusListVo monthlyReportStatusListVo = new MonthlyReportStatusListVo();
-				// 申請番号
-				monthlyReportStatusListVo.setApplyNo(monthlyReportStatusInfo.getApplyNo());
-				// 所属
-				monthlyReportStatusListVo.setAffiliation(monthlyReportStatusInfo.getAffiliation());
-				// ID
-				monthlyReportStatusListVo.setId(monthlyReportStatusInfo.getId());
-				// 氏名
-				monthlyReportStatusListVo.setName(monthlyReportStatusInfo.getName());
-				// 申請区分コード
-				monthlyReportStatusListVo.setApplyKbnCd(monthlyReportStatusInfo.getApplyKbn());
-				// 申請区分名
-				monthlyReportStatusListVo.setApplyKbnName(comDao.findApplyKbnName(monthlyReportStatusInfo.getApplyKbn()));
-				// 申請内容
-				monthlyReportStatusListVo.setApplyDetail(monthlyReportStatusInfo.getApplyDetail());
-				// 状況
-				String statusName = comDao.findStatusName(monthlyReportStatusInfo.getStatus());
-				monthlyReportStatusListVo.setStatus(statusName);
-				
-				monthlyReportStatusList.add(monthlyReportStatusListVo);
-			}
-		}
-		
+//		// ＤＢから、月報状況一覧データを取得
+//		List<MonthlyReportStatusListVo> monthlyReportStatusDataList = monthlyReportStatusListDao.getMonthlyReportStatusList(monthlyReportStatusListForm);
+//		
+//		// 月報状況一覧データがnull以外の場合
+//		if (monthlyReportStatusDataList != null && monthlyReportStatusDataList.size() > 0) {
+//			for (int i = 0; i < monthlyReportStatusDataList.size(); i++) {
+//				MonthlyReportStatusListVo monthlyReportStatusInfo = monthlyReportStatusDataList.get(i);
+//				MonthlyReportStatusListVo monthlyReportStatusListVo = new MonthlyReportStatusListVo();
+//				// 申請番号
+//				monthlyReportStatusListVo.setApplyNo(monthlyReportStatusInfo.getApplyNo());
+//				// 所属
+//				monthlyReportStatusListVo.setAffiliation(monthlyReportStatusInfo.getAffiliation());
+//				// ID
+//				monthlyReportStatusListVo.setId(monthlyReportStatusInfo.getId());
+//				// 氏名
+//				monthlyReportStatusListVo.setName(monthlyReportStatusInfo.getName());
+//				// 申請区分コード
+//				monthlyReportStatusListVo.setApplyKbnCd(monthlyReportStatusInfo.getApplyKbn());
+//				// 申請区分名
+//				monthlyReportStatusListVo.setApplyKbnName(comDao.findApplyKbnName(monthlyReportStatusInfo.getApplyKbn()));
+//				// 申請内容
+//				monthlyReportStatusListVo.setApplyDetail(monthlyReportStatusInfo.getApplyDetail());
+//				// 状況
+//				String statusName = comDao.findStatusName(monthlyReportStatusInfo.getStatus());
+//				monthlyReportStatusListVo.setStatus(statusName);
+//				
+//				monthlyReportStatusList.add(monthlyReportStatusListVo);
+//			}
+//		}
+//		
 		// 月報状況一覧リストを戻り
 		return monthlyReportStatusList;
 	}

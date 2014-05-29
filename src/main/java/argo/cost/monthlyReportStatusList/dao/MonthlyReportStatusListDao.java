@@ -2,9 +2,9 @@ package argo.cost.monthlyReportStatusList.dao;
 
 import java.util.List;
 
-import argo.cost.common.entity.ApprovalListEntity;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
+import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
 
 /**
@@ -23,7 +23,7 @@ public interface MonthlyReportStatusListDao {
 	 *                                   月報状況一覧画面情報
 	 * @return 月報状況一覧データ
 	 */
-	List<ApprovalListEntity> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm);
+	List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm);
 
 	/**
 	 * 所属データ取得

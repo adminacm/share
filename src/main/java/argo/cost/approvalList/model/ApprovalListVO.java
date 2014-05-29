@@ -6,7 +6,7 @@ package argo.cost.approvalList.model;
  * </p>
  *
  */
-public class ApprovalListVo {
+public class ApprovalListVO {
 	
 	// ********************
 	// ** フィールド **
