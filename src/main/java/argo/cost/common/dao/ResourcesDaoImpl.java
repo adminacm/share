@@ -73,7 +73,7 @@ public class ResourcesDaoImpl implements ResourcesDao {
 				Object[] items = (Object[]) resultList.get(i);
 				index = 0;
 				// 検索結果に設定
-				resource.setId((Long) items[index++]);
+				resource.setId((Integer) items[index++]);
 				resource.setName((String) items[index++]);
 				resource.setUrl((String) items[index++]);
 				

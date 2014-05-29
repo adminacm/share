@@ -61,7 +61,7 @@ public class AttendanceInputController extends AbstractController {
 			throws Exception {
 
 		// ユーザID
-		String userId = getSession().getUserInfo().getId();
+		String userId = getSession().getUserInfo().getLoginMailAdress();
 
 		// フォーム初期化
 		AttendanceInputForm form = initForm(AttendanceInputForm.class);
@@ -164,7 +164,7 @@ public class AttendanceInputController extends AbstractController {
 	public String addLine(AttendanceInputForm form) throws ParseException {
 
 		AttendanceProject pro = new AttendanceProject();
-		pro.setProjectItemList(comService.getProjectNameList(form.getUserId()));
+//		pro.setProjectItemList(comService.getProjectNameList(form.getUserId()));
 		pro.setWorkItemList(attendanceInputService.getWorkItemList());
 		form.getProjectList().add(pro);
 		return ATTDENDANCE_INPUT;

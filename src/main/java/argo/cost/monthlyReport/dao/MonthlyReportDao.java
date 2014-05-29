@@ -2,7 +2,6 @@ package argo.cost.monthlyReport.dao;
 
 import java.util.List;
 
-import argo.cost.common.entity.Project;
 import argo.cost.monthlyReport.model.MonthlyReportEntity;
 
 /**
@@ -37,15 +36,15 @@ public interface MonthlyReportDao {
 	 */
 	List<MonthlyReportEntity> getUserMonthReport(String userId, String date);
 	
-	/**
-	 * 【PJ別作業時間集計】情報を取得
-	 * 
-	 * @param userId
-	 * 			ユーザID
-	 * @param date 
-	 * 			日付
-	 * @return
-	 *        プロジェクト情報
-	 */
-	List<Project> getProjectList(String userId, String date);
+//	/**
+//	 * 【PJ別作業時間集計】情報を取得
+//	 * 
+//	 * @param userId
+//	 * 			ユーザID
+//	 * @param date 
+//	 * 			日付
+//	 * @return
+//	 *        プロジェクト情報
+//	 */
+//	List<Project> getProjectList(String userId, String date);
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.entity.Project;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
@@ -66,7 +65,7 @@ public class MonthlyReportController extends AbstractController {
     @RequestMapping(value = INIT)
     public String initMonthlyReport(Model model, @RequestParam("newMonth") String newMonth) throws Exception {
     	
-    	String loginId = getSession().getUserInfo().getId();
+    	String loginId = getSession().getUserInfo().getLoginMailAdress();
     	// フォーム初期化
     	MonthlyReportForm form = initForm(MonthlyReportForm.class);
     	// 画面へ設定します。
@@ -100,11 +99,11 @@ public class MonthlyReportController extends AbstractController {
     	// 月報情報の設定
     	monthlyReportService.setUserMonthReport(loginId, date, resultList);
     	
-		// 【PJ別作業時間集計】を取得
-		List<Project> projectList = monthlyReportService.getProjectList(loginId, date);
-		
-		// プロジェクト情報設定
-		form.setProjectList(projectList);
+//		// 【PJ別作業時間集計】を取得
+//		List<Project> projectList = monthlyReportService.getProjectList(loginId, date);
+//		
+//		// プロジェクト情報設定
+//		form.setProjectList(projectList);
 		
         return MONTHLYREPORT;
     }

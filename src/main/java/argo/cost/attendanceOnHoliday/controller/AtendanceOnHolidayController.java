@@ -62,7 +62,7 @@ public class AtendanceOnHolidayController extends AbstractController {
 		// 画面情報を設定する。
 		atendanceOnHolidayService.setAtendanceOnHolidayInfo(atendanceOnHolidayForm, currentDate);
 		// プロジェクト名プルダウンリストの取得
-		atendanceOnHolidayForm.setProjCdList(comService.getProjectNameList(atendanceOnHolidayForm.getUserId()));
+//		atendanceOnHolidayForm.setProjCdList(comService.getProjectNameList(atendanceOnHolidayForm.getUserId()));
 		
 		model.addAttribute(ATTENDANCE_INFO, atendanceOnHolidayForm);
 
@@ -115,7 +115,7 @@ public class AtendanceOnHolidayController extends AbstractController {
 
 			// TODO 保存成功の場合、勤怠入力画面に遷移する
 			if ("1".equals(atendanceOnHolidayService.saveAtendanceOnHoliday(atendanceOnHoliday,
-					getSession().getUserInfo().getId()))) {
+					getSession().getUserInfo().getLoginMailAdress()))) {
 
 				// TODO 保存失敗の場合、エラーメッセージを出力する、
 				// 勤怠入力画面へ遷移する

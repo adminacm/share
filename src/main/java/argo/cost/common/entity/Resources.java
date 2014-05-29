@@ -26,7 +26,7 @@ public class Resources implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
-	private long id;
+	private Integer id;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
@@ -51,11 +51,11 @@ public class Resources implements Serializable {
 	public Resources() {
 	}
 
-	public long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

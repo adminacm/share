@@ -31,10 +31,10 @@ public class SecurityController extends AbstractController {
     	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	
     	// Spring security 情報を取得
-    	String userName = (String) request.getSession().getAttribute("userName");
+    	String userName = (String) request.getSession().getAttribute("loginName");
 		if (principal instanceof UserDetails) {
 			userName = ((UserDetails) principal).getUsername();
-			request.getSession().setAttribute("userName", userName);
+			request.getSession().setAttribute("loginName", userName);
 		}
 		
 		if (StringUtils.isEmpty(userName)) {

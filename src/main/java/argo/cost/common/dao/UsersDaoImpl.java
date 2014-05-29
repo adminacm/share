@@ -73,7 +73,7 @@ public class UsersDaoImpl implements UsersDao {
 				Object[] items = (Object[]) resultList.get(i);
 				index = 0;
 				// 検索結果に設定
-				role.setId((Long) items[index++]);
+				role.setId((Integer) items[index++]);
 				role.setName((String) items[index++]);
 				
 				roles.add(role);

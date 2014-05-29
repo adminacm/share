@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import argo.cost.common.entity.Project;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
 import argo.cost.monthlyReport.dao.MonthlyReportDao;
@@ -313,21 +312,21 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		
 		monthList.add(totleInfo);
 	}
-
-	/**
-	 * 【PJ別作業時間集計】情報を取得
-	 * 
-	 * @param userId
-	 * 			ユーザID
-	 * @param date 
-	 * 			日付
-	 * @return
-	 *        プロジェクト情報
-	 */
-	@Override
-	public List<Project> getProjectList(String userId, String date) {
-		// TODO 自動生成されたメソッド・スタブ
-		return monthlyReportDao.getProjectList(userId, date);
-	}
+//
+//	/**
+//	 * 【PJ別作業時間集計】情報を取得
+//	 * 
+//	 * @param userId
+//	 * 			ユーザID
+//	 * @param date 
+//	 * 			日付
+//	 * @return
+//	 *        プロジェクト情報
+//	 */
+//	@Override
+//	public List<Project> getProjectList(String userId, String date) {
+//		// TODO 自動生成されたメソッド・スタブ
+//		return monthlyReportDao.getProjectList(userId, date);
+//	}
 
 }

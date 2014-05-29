@@ -161,7 +161,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 		for (int i = 0; i < result.size(); i++) {
 			AttendanceProject pro = result.get(i);
-			pro.setProjectItemList(comService.getProjectNameList(userId));
+//			pro.setProjectItemList(comService.getProjectNameList(userId));
 			pro.setWorkItemList(getWorkItemList());
 			result.add(pro);
 		}

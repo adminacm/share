@@ -3,7 +3,6 @@ package argo.cost.monthlyReport.model;
 import java.io.Serializable;
 import java.util.List;
 
-import argo.cost.common.entity.Project;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 
@@ -77,10 +76,10 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	 * 事務処理・社内会議
 	 */
 	private String paperwork;
-	/**
-	 * プロジェクト情報
-	 */
-	private List<Project> projectList;
+//	/**
+//	 * プロジェクト情報
+//	 */
+//	private List<Project> projectList;
 
 	//#################################
 	//#################################
@@ -178,11 +177,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 		this.yearMonthHyoji = yearMonthHyoji;
 	}
 
-	public List<Project> getProjectList() {
-		return projectList;
-	}
-
-	public void setProjectList(List<Project> projectList) {
-		this.projectList = projectList;
-	}
+//	public List<Project> getProjectList() {
+//		return projectList;
+//	}
+//
+//	public void setProjectList(List<Project> projectList) {
+//		this.projectList = projectList;
+//	}
 }
