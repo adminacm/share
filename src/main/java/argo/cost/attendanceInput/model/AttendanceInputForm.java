@@ -3,8 +3,9 @@ package argo.cost.attendanceInput.model;
 import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.entity.KyukaKekinKbnMaster;
+import argo.cost.common.entity.Locations;
 import argo.cost.common.model.AbstractForm;
-import argo.cost.common.model.ListItemVO;
 
 /**
  * 勤怠入力
@@ -74,7 +75,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * 休暇欠勤区分リスト
 	 */
-	private List<ListItemVO> kyukakbList;
+	private List<KyukaKekinKbnMaster> kyukakbList;
 
 	/**
 	 * 休暇時間
@@ -119,7 +120,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * プロジェクトリスト
 	 */
-	private List<AttendanceProject> projectList;
+	private List<AttendanceProjectVO> projectList;
 	
 	/**
 	 * ロケーション
@@ -129,12 +130,12 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * ロケーションリスト
 	 */
-	private List<ListItemVO> locationItemList;
+	private List<Locations> locationItemList;
 	
 	/**
 	 * 休日勤務情報
 	 */
-	private HolidayRecord holidayRecord;
+	private HolidayAttendanceVO holidayAttendance;
 	
 	/**
 	 * 休日勤務情報フラグ
@@ -340,11 +341,11 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.mNHours = mNHours;
 	}
 
-	public List<ListItemVO> getKyukakbList() {
+	public List<KyukaKekinKbnMaster> getKyukakbList() {
 		return kyukakbList;
 	}
 
-	public void setKyukakbList(List<ListItemVO> kyukakbList) {
+	public void setKyukakbList(List<KyukaKekinKbnMaster> kyukakbList) {
 		this.kyukakbList = kyukakbList;
 	}
 
@@ -356,11 +357,11 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.attDateShow = attDateShow;
 	}
 
-	public List<AttendanceProject> getProjectList() {
+	public List<AttendanceProjectVO> getProjectList() {
 		return projectList;
 	}
 
-	public void setProjectList(List<AttendanceProject> projectList) {
+	public void setProjectList(List<AttendanceProjectVO> projectList) {
 		this.projectList = projectList;
 	}
 
@@ -373,11 +374,11 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.locationId = locationId;
 	}
 
-	public List<ListItemVO> getLocationItemList() {
+	public List<Locations> getLocationItemList() {
 		return locationItemList;
 	}
 
-	public void setLocationItemList(List<ListItemVO> locationItemList) {
+	public void setLocationItemList(List<Locations> locationItemList) {
 		this.locationItemList = locationItemList;
 	}
 
@@ -413,12 +414,12 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.workEMinute = workEMinute;
 	}
 
-	public HolidayRecord getHolidayRecord() {
-		return holidayRecord;
+	public HolidayAttendanceVO getHolidayAttendance() {
+		return holidayAttendance;
 	}
 
-	public void setHolidayRecord(HolidayRecord holidayRecord) {
-		this.holidayRecord = holidayRecord;
+	public void setHolidayAttendance(HolidayAttendanceVO holidayAttendance) {
+		this.holidayAttendance = holidayAttendance;
 	}
 
 	public Integer getKinmuKun() {

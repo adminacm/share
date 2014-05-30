@@ -14,9 +14,9 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProject;
+import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.model.HolidayRecord;
-import argo.cost.attendanceInput.model.WorkTimeDetail;
+import argo.cost.attendanceInput.model.WorkTimeDetailVO;
 import argo.cost.attendanceInput.service.AttendanceInputServiceImpl;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComService;
@@ -32,115 +32,6 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 	// 共通
 	@Resource
 	ComService comService;
-	
-	/**
-	 * 休暇欠勤区分プルダウンリスト取得をテスト
-	 */
-	@Test
-	public void testGetHolidayLackingItem(){
-		
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		
-		ListItemVO item = new ListItemVO();
-		item.setValue("01");
-		item.setName("全休(有給休暇)");
-		resultList.add(item);
-
-		item = new ListItemVO();
-		item.setValue("02");
-		item.setName("半休(有給休暇)");
-		resultList.add(item);
-
-		item = new ListItemVO();
-		item.setValue("03");
-		item.setName("時間休(有給休暇)");
-		resultList.add(item);
-
-		// 休暇欠勤区分プルダウンリスト取得
-		List<ListItemVO> holidayLackingList = attS.getHolidayLackingItem();
-		
-		// 休暇欠勤区分プルダウンリスト
-		assertEquals(holidayLackingList.size(), 3);
-		assertEquals(holidayLackingList.get(0).getValue(), resultList.get(0).getValue());
-		assertEquals(holidayLackingList.get(0).getName(), resultList.get(0).getName());
-		assertEquals(holidayLackingList.get(1).getValue(), resultList.get(1).getValue());
-		assertEquals(holidayLackingList.get(1).getName(), resultList.get(1).getName());
-		assertEquals(holidayLackingList.get(2).getValue(), resultList.get(2).getValue());
-		assertEquals(holidayLackingList.get(2).getName(), resultList.get(2).getName());
-	}
-
-	/**
-	 * 個人勤怠プロジェクト情報取得をテスト
-	 */
-	@Test
-	public void testGetWorkItemList(){
-		
-
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		
-		ListItemVO item = new ListItemVO();
-		item.setName("MUT");
-		item.setValue("01");
-		resultList.add(item);
-		
-		item = new ListItemVO();
-		item.setName("SI");
-		item.setValue("02");
-		resultList.add(item);
-		
-		item = new ListItemVO();
-		item.setName("BD");
-		item.setValue("03");
-		resultList.add(item);
-
-		// 個人勤怠プロジェクト取得
-		List<ListItemVO> workItemList = attS.getWorkItemList();
-		
-		// 個人勤怠プロジェクト
-		assertEquals(workItemList.size(), 3);
-		assertEquals(workItemList.get(0).getValue(), resultList.get(0).getValue());
-		assertEquals(workItemList.get(0).getName(), resultList.get(0).getName());
-		assertEquals(workItemList.get(1).getValue(), resultList.get(1).getValue());
-		assertEquals(workItemList.get(1).getName(), resultList.get(1).getName());
-		assertEquals(workItemList.get(2).getValue(), resultList.get(2).getValue());
-		assertEquals(workItemList.get(2).getName(), resultList.get(2).getName());
-	}
-
-	/**
-	 * ロケーション情報取得をテスト
-	 */
-	@Test
-	public void testGetLocationItemList(){
-		
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		
-		ListItemVO itm = new ListItemVO();
-		itm.setName("中国");
-		itm.setValue("01");
-		resultList.add(itm);
-		
-		itm = new ListItemVO();
-		itm.setName("日本");
-		itm.setValue("02");
-		resultList.add(itm);
-		
-		itm = new ListItemVO();
-		itm.setName("米国");
-		itm.setValue("03");
-		resultList.add(itm);
-
-		// ロケーション情報取得
-		List<ListItemVO> locationList = attS.getLocationItemList();
-		
-		// ロケーション情報
-		assertEquals(locationList.size(), 3);
-		assertEquals(locationList.get(0).getValue(), resultList.get(0).getValue());
-		assertEquals(locationList.get(0).getName(), resultList.get(0).getName());
-		assertEquals(locationList.get(1).getValue(), resultList.get(1).getValue());
-		assertEquals(locationList.get(1).getName(), resultList.get(1).getName());
-		assertEquals(locationList.get(2).getValue(), resultList.get(2).getValue());
-		assertEquals(locationList.get(2).getName(), resultList.get(2).getName());
-	}
 
 	/**
 	 * 日付の変換処理をテスト1
@@ -236,7 +127,7 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 		String date = "20140329";
 		
 		// ロケーション情報取得
-		List<AttendanceProject> list = null;
+		List<AttendanceProjectVO> list = null;
 		try {
 			list = attS.getProjectList(userId, date);
 		} catch (ParseException e) {
@@ -251,59 +142,59 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 		assertEquals(list.get(0).getWorkId(), "01");
 		assertEquals(list.get(0).getWorkItemList().size(), 3);
 	}
-
-	/**
-	 * 就業データ取得をテスト
-	 */
-	@Test
-	public void testGetWorkTimeDetail(){
-
-		WorkTimeDetail record = new WorkTimeDetail();
-		record.setUserId("user01");
-		record.setWorkDate("20140329");
-		record.setKinmuKbn("01");
-		record.setShiftCode("0900");
-		record.setKinmuSTime("09:00");
-		record.setKinmuEtime("23:30");
-		record.setSykaKetukinKbn("");
-		record.setBikou("桜美林大学留学生管理システム保守：お客様問合せの対応");
-		record.setFurikaeDate("");
-		record.setSykaKetukinhours(0.0);
-		record.setKinmuHours(0.0);
-		record.setTyokinStime("18:00");
-		record.setTyokinEtime("23:00");
-		record.setTyokinHeijiHours(4.0);
-		record.setTyokinHeijiTujyoHours(0.0);
-		record.setTyokinKyujiHours(0.0);
-		record.setSynyaKinmuHours(1.5);
-		record.setStatus("01");
-
-		String userId = "user01";
-		String date = "20140329";
-		// 就業データ取得
-		WorkTimeDetail info = attS.getWorkTimeDetail(userId, date);
-		
-		// 就業データ
-		assertEquals(record.getUserId(), info.getUserId());
-		assertEquals(record.getWorkDate(), info.getWorkDate());
-		assertEquals(record.getKinmuKbn(), info.getKinmuKbn());
-		assertEquals(record.getShiftCode(), info.getShiftCode());
-		assertEquals(record.getKinmuSTime(), info.getKinmuSTime());
-		assertEquals(record.getKinmuEtime(), info.getKinmuEtime());
-		assertEquals(record.getSykaKetukinKbn(), info.getSykaKetukinKbn());
-		assertEquals(record.getBikou(), info.getBikou());
-		assertEquals(record.getFurikaeDate(), info.getFurikaeDate());
-		assertEquals(record.getSykaKetukinhours(), info.getSykaKetukinhours());
-		assertEquals(record.getKinmuHours(), info.getKinmuHours());
-		assertEquals(record.getTyokinStime(), info.getTyokinStime());
-		assertEquals(record.getTyokinEtime(), info.getTyokinEtime());
-		assertEquals(record.getTyokinHeijiHours(), info.getTyokinHeijiHours());
-		assertEquals(record.getTyokinHeijiTujyoHours(), info.getTyokinHeijiTujyoHours());
-		assertEquals(record.getTyokinKyujiHours(), info.getTyokinKyujiHours());
-		assertEquals(record.getSynyaKinmuHours(), info.getSynyaKinmuHours());
-		assertEquals(record.getStatus(), info.getStatus());
-	}
-	
+//
+//	/**
+//	 * 就業データ取得をテスト
+//	 */
+//	@Test
+//	public void testGetWorkTimeDetail(){
+//
+//		WorkTimeDetailVO record = new WorkTimeDetailVO();
+//		record.setUserId("user01");
+//		record.setWorkDate("20140329");
+//		record.setKinmuKbn("01");
+//		record.setShiftCode("0900");
+//		record.setKinmuSTime("09:00");
+//		record.setKinmuEtime("23:30");
+//		record.setSykaKetukinKbn("");
+//		record.setBikou("桜美林大学留学生管理システム保守：お客様問合せの対応");
+//		record.setFurikaeDate("");
+//		record.setSykaKetukinhours(0.0);
+//		record.setKinmuHours(0.0);
+//		record.setTyokinStime("18:00");
+//		record.setTyokinEtime("23:00");
+//		record.setTyokinHeijiHours(4.0);
+//		record.setTyokinHeijiTujyoHours(0.0);
+//		record.setTyokinKyujiHours(0.0);
+//		record.setSynyaKinmuHours(1.5);
+//		record.setStatus("01");
+//
+//		String userId = "user01";
+//		String date = "20140329";
+//		// 就業データ取得
+//		WorkTimeDetailVO info = attS.getWorkTimeDetail(userId, date);
+//		
+//		// 就業データ
+//		assertEquals(record.getUserId(), info.getUserId());
+//		assertEquals(record.getWorkDate(), info.getWorkDate());
+//		assertEquals(record.getKinmuKbn(), info.getKinmuKbn());
+//		assertEquals(record.getShiftCode(), info.getShiftCode());
+//		assertEquals(record.getKinmuSTime(), info.getKinmuSTime());
+//		assertEquals(record.getKinmuEtime(), info.getKinmuEtime());
+//		assertEquals(record.getSykaKetukinKbn(), info.getSykaKetukinKbn());
+//		assertEquals(record.getBikou(), info.getBikou());
+//		assertEquals(record.getFurikaeDate(), info.getFurikaeDate());
+//		assertEquals(record.getSykaKetukinhours(), info.getSykaKetukinhours());
+//		assertEquals(record.getKinmuHours(), info.getKinmuHours());
+//		assertEquals(record.getTyokinStime(), info.getTyokinStime());
+//		assertEquals(record.getTyokinEtime(), info.getTyokinEtime());
+//		assertEquals(record.getTyokinHeijiHours(), info.getTyokinHeijiHours());
+//		assertEquals(record.getTyokinHeijiTujyoHours(), info.getTyokinHeijiTujyoHours());
+//		assertEquals(record.getTyokinKyujiHours(), info.getTyokinKyujiHours());
+//		assertEquals(record.getSynyaKinmuHours(), info.getSynyaKinmuHours());
+//		assertEquals(record.getStatus(), info.getStatus());
+//	}
+//	
 	/**
 	 * 勤怠入力画面情報設定をテスト
 	 */

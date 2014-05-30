@@ -8,7 +8,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the kyuka_kekin_kbn_master database table.
+ * 休暇欠勤区分マスタテーブル.
  * 
  */
 @Entity
