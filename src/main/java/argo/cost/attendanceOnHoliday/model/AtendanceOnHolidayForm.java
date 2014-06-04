@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 
@@ -32,7 +33,7 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 	/**
 	 *　勤務日区分リスト
 	 */
-	private List<ListItemVO> atendanceDayKbnList;
+	private List<WorkDayKbnMaster> atendanceDayKbnList;
 	/**
 	 *　勤務日区分
 	 */
@@ -127,11 +128,11 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 		this.selectedProjCd = selectedProjCd;
 	}
 
-	public List<ListItemVO> getAtendanceDayKbnList() {
+	public List<WorkDayKbnMaster> getAtendanceDayKbnList() {
 		return atendanceDayKbnList;
 	}
 
-	public void setAtendanceDayKbnList(List<ListItemVO> atendanceDayKbnList) {
+	public void setAtendanceDayKbnList(List<WorkDayKbnMaster> atendanceDayKbnList) {
 		this.atendanceDayKbnList = atendanceDayKbnList;
 	}
 

@@ -3,7 +3,8 @@ package argo.cost.attendanceOnHoliday.dao;
 import java.util.ArrayList;
 
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
-import argo.cost.common.model.ListItemVO;
+import argo.cost.common.entity.ProjWorkMaster;
+import argo.cost.common.entity.WorkDayKbnMaster;
 
 /**
  * 休日勤務入力画面のDAO
@@ -28,7 +29,14 @@ public interface AtendanceOnHolidayDao {
 	 * 
 	 * @return 勤務日区分リスト
 	 */
-	ArrayList<ListItemVO> getAtendanceDayKbnList();
+	ArrayList<WorkDayKbnMaster> getAtendanceDayKbnList();
+	
+	/**
+	 * プロジェクト作業区分リストを取得
+	 * 
+	 * @return プロジェクト作業区分リスト
+	 */
+	ArrayList<ProjWorkMaster> getProjectWorkKbnList();
 	
 	/**
 	 * 休日勤務データの削除
