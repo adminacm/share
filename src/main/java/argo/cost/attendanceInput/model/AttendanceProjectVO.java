@@ -2,12 +2,13 @@ package argo.cost.attendanceInput.model;
 
 import java.util.List;
 
-import argo.cost.common.model.ListItemVO;
+import argo.cost.common.entity.ProjWorkMaster;
+import argo.cost.common.entity.ProjectMaster;
 
 /**
  * 個人倦怠プロジェクト情報
  */
-public class AttendanceProject {
+public class AttendanceProjectVO {
 	
 	/**
 	 * プロジェクトID
@@ -16,7 +17,7 @@ public class AttendanceProject {
 	/**
 	 * プロジェクトリスト
 	 */
-	private List<ListItemVO> projectItemList;
+	private List<ProjectMaster> projectItemList;
 	/**
 	 * 作業ID
 	 */
@@ -24,7 +25,7 @@ public class AttendanceProject {
 	/**
 	 * 作業リスト
 	 */
-	private List<ListItemVO> workItemList;
+	private List<ProjWorkMaster> workItemList;
 	/**
 	 * 作業時間数
 	 */
@@ -38,11 +39,11 @@ public class AttendanceProject {
 		this.projectId = projectId;
 	}
 
-	public List<ListItemVO> getProjectItemList() {
+	public List<ProjectMaster> getProjectItemList() {
 		return projectItemList;
 	}
 
-	public void setProjectItemList(List<ListItemVO> projectItemList) {
+	public void setProjectItemList(List<ProjectMaster> projectItemList) {
 		this.projectItemList = projectItemList;
 	}
 
@@ -54,11 +55,11 @@ public class AttendanceProject {
 		this.workId = workId;
 	}
 
-	public List<ListItemVO> getWorkItemList() {
+	public List<ProjWorkMaster> getWorkItemList() {
 		return workItemList;
 	}
 
-	public void setWorkItemList(List<ListItemVO> workItemList) {
+	public void setWorkItemList(List<ProjWorkMaster> workItemList) {
 		this.workItemList = workItemList;
 	}
 

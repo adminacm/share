@@ -8,9 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProject;
+import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.model.HolidayRecord;
-import argo.cost.attendanceInput.model.WorkTimeDetail;
+import argo.cost.attendanceInput.model.WorkTimeDetailVO;
 import argo.cost.common.model.ListItemVO;
 
 /**
@@ -151,9 +151,9 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 	 * @return 就業データ
 	 */
 	@Override
-	public WorkTimeDetail getWorkTimeDetail(String userId, String yyyymmdd) {
+	public WorkTimeDetailVO getWorkTimeDetail(String userId, String yyyymmdd) {
 		// TODO 自動生成されたメソッド・スタブ
-		WorkTimeDetail info = new WorkTimeDetail();
+		WorkTimeDetailVO info = new WorkTimeDetailVO();
 		info.setUserId(userId);
 		info.setWorkDate(yyyymmdd);
 		info.setKinmuKbn("01");
@@ -185,14 +185,14 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 	 * @throws ParseException
 	 */
 	@Override
-	public List<AttendanceProject> getProjectList(String userId, String yyyymmdd)
+	public List<AttendanceProjectVO> getProjectList(String userId, String yyyymmdd)
 			throws ParseException {
 		// TODO 自動生成されたメソッド・スタブ　Daoを利用する予定
-		List<AttendanceProject> result = new ArrayList<AttendanceProject>();
+		List<AttendanceProjectVO> result = new ArrayList<AttendanceProjectVO>();
 
-		AttendanceProject pro = null;
+		AttendanceProjectVO pro = null;
 		for (int i = 0; i < 1; i++) {
-			pro = new AttendanceProject();
+			pro = new AttendanceProjectVO();
 			pro.setHours(3.5);
 			pro.setProjectId("01");
 			pro.setWorkId("01");

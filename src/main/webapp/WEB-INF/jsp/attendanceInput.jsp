@@ -75,16 +75,19 @@ function submitAction(action) {
 			<table style="margin:auto; width:300px;">
 				<tr>
 					<td align="right" width="30px"><input type="button" value="←" onclick="submitAction('/attendanceInput/lastDay');" /></td>
-					<c:if test="${attendanceInputForm.kinmuKun != 0}">
+					<!-- 勤務日 -->
+					<c:if test="${attendanceInputForm.kinmuKun != 1}">
 						<td align="center" width="160px" style="background: #FF99CC">${attendanceInputForm.attDateShow}</td>
 					</c:if>
-					<c:if test="${attendanceInputForm.kinmuKun == 0}">
+					<!-- 社休日 -->
+					<c:if test="${attendanceInputForm.kinmuKun == 1}">
 						<td align="center" width="160px" style="background: #CCFFFF">${attendanceInputForm.attDateShow}</td>
 					</c:if>
 					<td align="left" width="30px"><input type="button" value="→" onclick="submitAction('/attendanceInput/nextDay');" /></td>
 				</tr>
 			</table>
-			<c:if test="${attendanceInputForm.kinmuKun != 0}">
+			<!-- 社休日 -->
+			<c:if test="${attendanceInputForm.kinmuKun != 1}">
 				<table style="margin:auto; width:300px;">
 					<tr>
 						<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attendanceOnHoliday');" /></td>
@@ -106,19 +109,19 @@ function submitAction(action) {
 					</tr>
 					<tr>
 						<td align="left" width="150px">振替日</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayRecord.exchangeDay}</td>
+						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.furikaeDate}</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">プロジェクト名</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayRecord.projectName}</td>
+						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.projectName}</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">業務内容</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayRecord.workNaiyo}</td>
+						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.workDetail}</td>
 					</tr>
 				</table>
 			</c:if>
-			<c:if test="${attendanceInputForm.kinmuKun != 1}">
+			<c:if test="${attendanceInputForm.kinmuKun != 0}">
 				<table style="margin:auto;width:300px;margin-top:10px;">
 					<tr>
 						<td align="left" width="120px">シフトコード</td>
@@ -139,7 +142,7 @@ function submitAction(action) {
 						<td align="left" width="180px" colspan="2">
 							<form:select path="kyukaKb" style="width:100%;" >
 								<form:option value=""></form:option>
-								<form:options items="${attendanceInputForm.kyukakbList}" itemValue="value" itemLabel="name"/>
+								<form:options items="${attendanceInputForm.kyukakbList}" itemValue="code" itemLabel="name"/>
 							</form:select>
 						</td>
 					</tr>
@@ -153,7 +156,7 @@ function submitAction(action) {
 					<tr>
 						<td width="120px" colspan="2">休暇時間数</td>
 						<td>
-							<c:if test="${attendanceInputForm.kyukaHours != 0.0}">
+							<c:if test="${attendanceInputForm.kyukaHours != 0.0 && attendanceInputForm.kyukaHours != null}">
 								${attendanceInputForm.kyukaHours}h
 							</c:if>
 						</td>
@@ -161,7 +164,7 @@ function submitAction(action) {
 					<tr>
 						<td width="120px" colspan="2">勤務時間数</td>
 						<td>
-							<c:if test="${attendanceInputForm.workHours != 0.0}">
+							<c:if test="${attendanceInputForm.workHours != 0.0 && attendanceInputForm.workHours != null}">
 								${attendanceInputForm.workHours}h
 							</c:if>
 						</td>
@@ -186,7 +189,7 @@ function submitAction(action) {
 					<tr>
 						<td width="90">平日割増</td>
 						<td>
-							<c:if test="${attendanceInputForm.choWeekday != 0.0}">
+							<c:if test="${attendanceInputForm.choWeekday != 0.0 && attendanceInputForm.choWeekday != null}">
 								${attendanceInputForm.choWeekday}h
 							</c:if>
 						</td>
@@ -194,7 +197,7 @@ function submitAction(action) {
 					<tr>
 						<td width="90">平日通常</td>
 						<td>
-							<c:if test="${attendanceInputForm.choWeekday_nomal != 0.0}">
+							<c:if test="${attendanceInputForm.choWeekday_nomal != 0.0 && attendanceInputForm.choWeekday_nomal != null}">
 								${attendanceInputForm.choWeekday_nomal}h
 							</c:if>
 						</td>
@@ -202,7 +205,7 @@ function submitAction(action) {
 					<tr>
 						<td width="90">休日</td>
 						<td>
-							<c:if test="${attendanceInputForm.choHoliday != 0.0}">
+							<c:if test="${attendanceInputForm.choHoliday != 0.0 && attendanceInputForm.choHoliday != null}">
 								${attendanceInputForm.choHoliday}h
 							</c:if>
 						</td>
@@ -210,7 +213,7 @@ function submitAction(action) {
 					<tr>
 						<td width="90">深夜</td>
 						<td>
-							<c:if test="${attendanceInputForm.mNHours != 0.0}">
+							<c:if test="${attendanceInputForm.mNHours != 0.0 && attendanceInputForm.mNHours != null}">
 								${attendanceInputForm.mNHours}h
 							</c:if>
 						</td>
@@ -219,9 +222,9 @@ function submitAction(action) {
 				<table class="table2">
 					<thead>
 						<tr>
-							<td align="center" width="200px">プロジェクト名</td>
-							<td align="center" width="200px">作業</td>
-							<td align="center" width="40px">時間数</td>
+							<td align="center" width="180px">プロジェクト名</td>
+							<td align="center" width="160px">作業</td>
+							<td align="center" width="50px">時間数</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -231,13 +234,13 @@ function submitAction(action) {
 									<td align="center" >
 										<form:select path="projectList[${st.index}].projectId" style="width:100%;" >
 											<form:option value=""></form:option>
-											<form:options items="${projectInfo.projectItemList}" itemValue="value" itemLabel="name"/>
+											<form:options items="${projectInfo.projectItemList}" itemValue="code" itemLabel="name"/>
 										</form:select>
 									</td>
 									<td align="center">
 										<form:select path="projectList[${st.index}].workId" style="width:100%;" >
 											<form:option value=""></form:option>
-											<form:options items="${projectInfo.workItemList}" itemValue="value" itemLabel="name"/>
+											<form:options items="${projectInfo.workItemList}" itemValue="code" itemLabel="name"/>
 										</form:select>
 									</td>
 									<td align="center" ><form:input path="projectList[${st.index}].hours" size="4"/></td>
@@ -252,7 +255,7 @@ function submitAction(action) {
 						<td align="left" width="100px">ロケーション</td>
 						<td align="left" width="100px">
 							<form:select path="locationId" style="width:100%;" >
-								<form:options items="${attendanceInputForm.locationItemList}" itemValue="value" itemLabel="name"/>
+								<form:options items="${attendanceInputForm.locationItemList}" itemValue="code" itemLabel="name"/>
 							</form:select>
 						</td>
 					</tr>

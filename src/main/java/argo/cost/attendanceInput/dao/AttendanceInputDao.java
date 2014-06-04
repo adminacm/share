@@ -4,9 +4,9 @@ import java.text.ParseException;
 import java.util.List;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProject;
+import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.model.HolidayRecord;
-import argo.cost.attendanceInput.model.WorkTimeDetail;
+import argo.cost.attendanceInput.model.WorkTimeDetailVO;
 import argo.cost.common.model.ListItemVO;
 
 /**
@@ -59,7 +59,7 @@ public interface AttendanceInputDao {
 	 *            日付
 	 * @return 就業データ
 	 */
-	WorkTimeDetail getWorkTimeDetail(String userId, String yyyymmdd);
+	WorkTimeDetailVO getWorkTimeDetail(String userId, String yyyymmdd);
 	
 	/**
 	 * ユーザ作業情報を取得
@@ -69,7 +69,7 @@ public interface AttendanceInputDao {
 	 * @param yyyymmdd 日付
 	 * @return ユーザ作業情報
 	 */
-	List<AttendanceProject> getProjectList(String userId, String yyyymmdd) throws ParseException;
+	List<AttendanceProjectVO> getProjectList(String userId, String yyyymmdd) throws ParseException;
 	
 	/**
 	 * 就業データを取得

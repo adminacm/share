@@ -179,29 +179,29 @@ public class CostDateUtils extends DateUtils {
 
 	}
 	
-	/**
-	 * 祝休日の判定を行う。 <BR>
-	 * 
-	 * @param yyyymmdd
-	 *            西暦年月日
-	 * @return boolean true:祝休日(金融機関休日含む) false :平日
-	 */
-	public static boolean isHoliday(String yyyymmdd) {
-		
-		// TODO:現存のDBより、詳細の処理はない
-		String weekday = null;
-		try {
-			weekday = getWeekOfDate(toDate(yyyymmdd));
-		} catch (ParseException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-		if (StringUtils.equals("土", weekday) || StringUtils.equals("日", weekday)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	/**
+//	 * 祝休日の判定を行う。 <BR>
+//	 * 
+//	 * @param yyyymmdd
+//	 *            西暦年月日
+//	 * @return boolean true:祝休日(金融機関休日含む) false :平日
+//	 */
+//	public static boolean isHoliday(String yyyymmdd) {
+//		
+//		// TODO:現存のDBより、詳細の処理はない
+//		String weekday = null;
+//		try {
+//			weekday = getWeekOfDate(toDate(yyyymmdd));
+//		} catch (ParseException e) {
+//			// TODO 自動生成された catch ブロック
+//			e.printStackTrace();
+//		}
+//		if (StringUtils.equals("土", weekday) || StringUtils.equals("日", weekday)) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 	
 	/**
 	 * 時と分を取得。 <BR>
@@ -215,11 +215,11 @@ public class CostDateUtils extends DateUtils {
 	public static String getHourOrMinute(String hhmm, int flag) throws ParseException {
 		
 		String str = StringUtils.EMPTY;
-		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat format = new SimpleDateFormat("HHmm");
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(format.parse(hhmm));
 		if (flag == 0) {
-			str = String.valueOf(cal.get(Calendar.HOUR));
+			str = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
 		} else {
 			str = String.valueOf(cal.get(Calendar.MINUTE));
 		}

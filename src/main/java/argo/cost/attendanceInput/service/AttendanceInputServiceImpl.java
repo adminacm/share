@@ -1,7 +1,9 @@
 package argo.cost.attendanceInput.service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -13,16 +15,20 @@ import org.springframework.stereotype.Service;
 
 import argo.cost.attendanceInput.dao.AttendanceInputDao;
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProject;
-import argo.cost.attendanceInput.model.HolidayRecord;
+import argo.cost.attendanceInput.model.AttendanceProjectVO;
+import argo.cost.attendanceInput.model.HolidayAttendanceVO;
 import argo.cost.attendanceInput.model.ShiftInfo;
-import argo.cost.attendanceInput.model.WorkTimeDetail;
 import argo.cost.common.constant.CommonConstant;
-import argo.cost.common.constant.ConditionConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.HolidayAtendanceYotei;
 import argo.cost.common.entity.KintaiInfo;
-import argo.cost.common.model.ListItemVO;
+import argo.cost.common.entity.KyukaKekinKbnMaster;
+import argo.cost.common.entity.Locations;
+import argo.cost.common.entity.MCalendar;
+import argo.cost.common.entity.ProjWorkMaster;
+import argo.cost.common.entity.ProjWorkTimeManage;
+import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
 
@@ -56,43 +62,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	@Autowired
 	BaseDao baseDao;
-
-	/**
-	 * 休暇欠勤区分プルダウンリスト取得
-	 * 
-	 * @return 休暇欠勤区分プルダウンリスト
-	 */
-	@Override
-	public List<ListItemVO> getHolidayLackingItem() {
-
-		return attendanceInputDao.getHolidayLackingItem();
-	}
-
-	/**
-	 * 個人勤怠プロジェクト情報取得
-	 * 
-	 * 
-	 * @return 個人勤怠プロジェクト情報
-	 */
-	@Override
-	public List<ListItemVO> getWorkItemList() {
-		// TODO 自動生成されたメソッド・スタブ
-		List<ListItemVO> resultList = attendanceInputDao.getWorkItemList();
-		return resultList;
-	}
-
-	/**
-	 * ロケーション情報取得
-	 * 
-	 * 
-	 * @return ロケーション情報
-	 */
-	@Override
-	public List<ListItemVO> getLocationItemList() {
-		// TODO 自動生成されたメソッド・スタブ
-		List<ListItemVO> resultList = attendanceInputDao.getLocationItemList();
-		return resultList;
-	}
 
 	/**
 	 * 
@@ -139,79 +108,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	}
 
 	/**
-	 * 休日勤務情報を取得
-	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @param yyyymmdd
-	 *            日付
-	 * @return 休日勤務情報
-	 */
-	@Override
-	public HolidayRecord getHolidayRecord(String userId, String yyyymmdd) {
-		// TODO 自動生成されたメソッド・スタブ
-		HolidayRecord record = attendanceInputDao.getHolidayRecord(userId, yyyymmdd);
-		return record;
-	}
-
-	/**
-	 * ユーザ作業情報を取得
-	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @param yyyymmdd
-	 *            日付
-	 * @return ユーザ作業情報
-	 * @throws ParseException
-	 */
-	@Override
-	public List<AttendanceProject> getProjectList(String userId, String yyyymmdd)
-			throws ParseException {
-		// TODO 自動生成されたメソッド・スタブ　
-		List<AttendanceProject> result = attendanceInputDao.getProjectList(userId, yyyymmdd);
-
-		for (int i = 0; i < result.size(); i++) {
-			AttendanceProject pro = result.get(i);
-//			pro.setProjectItemList(comService.getProjectNameList(userId));
-			pro.setWorkItemList(getWorkItemList());
-			result.add(pro);
-		}
-
-		return result;
-	}
-
-	/**
-	 * 就業データを取得
-	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @param yyyymmdd
-	 *            日付
-	 * @return 就業データ
-	 */
-	@Override
-	public WorkTimeDetail getWorkTimeDetail(String userId, String yyyymmdd) {
-		// TODO 自動生成されたメソッド・スタブ Daoへ移動予定
-		// 検索条件
-		BaseCondition condition = new BaseCondition();
-		
-		// ユーザーID
-		condition.addConditionEqual(ConditionConstant.ID, userId);
-		
-		// 勤怠日付
-		condition.addConditionEqual("atendance_book_date", yyyymmdd);
-		
-		List<KintaiInfo> kintaiEntityList = baseDao.findResultList(condition, KintaiInfo.class);
-		
-		if (kintaiEntityList != null && !kintaiEntityList.isEmpty()) {
-			
-		}
-		
-		WorkTimeDetail info = attendanceInputDao.getWorkTimeDetail(userId, yyyymmdd);
-		return info;
-	}
-
-	/**
 	 * 勤怠入力画面情報設定
 	 * 
 	 * @param form
@@ -232,71 +128,163 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		}
 
 		// 就業データを取得
-		WorkTimeDetail workDetail = getWorkTimeDetail(userId, date);
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		// ユーザーID
+		condition.addConditionEqual("users.id", userId);
+		// 勤怠日付
+		condition.addConditionEqual("atendanceBookDate", date);
+		// 勤怠情報を取得
+		KintaiInfo kintaiEntity = baseDao.findSingleResult(condition, KintaiInfo.class);
 
 		// 勤怠日付を設定
 		form.setAttDate(date);
-		String attDate = CostDateUtils.formatDate(date,
-				CommonConstant.YYYYMMDD_KANJI);
+		// 勤怠日付のフォーマット（yyyy年MM月dd日）
+		String attDate = CostDateUtils.formatDate(date, CommonConstant.YYYYMMDD_KANJI);
 		// 曜日名
 		String week = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
 		// 勤怠日付（表示）を設定
 		form.setAttDateShow(attDate.concat("（").concat(week).concat("）"));
-		// 祝日の場合
-		if (CostDateUtils.isHoliday(date)) {
-
-			// 休日勤務情報を取得
-			HolidayRecord record = getHolidayRecord(userId, date);
-			// 休日勤務情報は存在する場合
-			if (record != null) {
-				form.setHolidayRecord(record);
-				form.setKinmuKun(2);
-			} else {
+		// 社休日の判定
+		// 日付より、カレンダー情報を取得
+		MCalendar calender = baseDao.findById(date, MCalendar.class);
+		
+		// カレンダー情報が存在する場合
+		if (calender != null) {
+			// 出勤日の場合
+			if ("1".equals(calender.getOnDutyFlg())) {
 				form.setKinmuKun(1);
+			// 社休日
+			} else {
+				// 休日予定勤務情報を取得
+				HolidayAttendanceVO attendanceVO = null;
+				// 検索条件
+				condition = new BaseCondition();
+				condition.addConditionEqual("users.id", userId);  // 社員番号
+				condition.addConditionEqual("atendanceBookDate", date);  // 予定勤務日
+				HolidayAtendanceYotei attYoteEntity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
+				
+				// 休日予定勤務情報が存在する場合
+				if (attYoteEntity != null) {
+					attendanceVO = new HolidayAttendanceVO();
+					// 社員番号
+					attendanceVO.setUserId(userId);
+					// 休日勤務日
+					attendanceVO.setAttendanceDate(date);
+					// 振替日
+					attendanceVO.setFurikaeDate(attYoteEntity.getFurikaeDate());
+					// 勤務区分コード
+					attendanceVO.setKinmuKbnCode(attYoteEntity.getWorkDayKbnMaster().getCode());
+					// 勤務区分名称
+					attendanceVO.setKinmuKbnName(attYoteEntity.getWorkDayKbnMaster().getName());
+					// 勤務開始時間
+					attendanceVO.setKinmuStartTime(attYoteEntity.getKinmuStartTime());
+					// 勤務終了時間
+					attendanceVO.setKinmuEndTime(attYoteEntity.getKinmuEndTime());
+					// プロジェクトID
+					attendanceVO.setProjectId(attYoteEntity.getProjWorkMaster().getCode());
+					// プロジェクト名称
+					attendanceVO.setProjectName(attYoteEntity.getProjWorkMaster().getName());
+					//　作業内容
+					attendanceVO.setWorkDetail(attYoteEntity.getCommont());
+					form.setKinmuKun(2);
+				}
+				form.setHolidayAttendance(attendanceVO);
+				
 			}
+			
 		}
 
-		// シフトコード
-		form.setShiftCd("0900");
-		// 勤務開始時刻
-		form.setWorkSTime(workDetail.getKinmuSTime());
-		form.setWorkSHour(CostDateUtils.getHourOrMinute(
-				workDetail.getKinmuSTime(), 0));
-		form.setWorkSMinute(CostDateUtils.getHourOrMinute(
-				workDetail.getKinmuSTime(), 1));
-		// 勤務終了時刻
-		form.setWorkETime(workDetail.getKinmuEtime());
-		form.setWorkEHour(CostDateUtils.getHourOrMinute(
-				workDetail.getKinmuEtime(), 0));
-		form.setWorkEMinute(CostDateUtils.getHourOrMinute(
-				workDetail.getKinmuEtime(), 1));
-		// 休暇欠勤区分
-		form.setKyukaKb(workDetail.getSykaKetukinKbn());
-		// 休暇時間数
-		form.setKyukaHours(workDetail.getSykaKetukinhours());
-		// 勤務時間数
-		form.setWorkHours(workDetail.getKinmuHours());
-		// 超過勤務開始時刻
-		form.setChoSTime(workDetail.getTyokinStime());
-		// 超過勤務終了時刻
-		form.setChoETime(workDetail.getTyokinEtime());
-		// 平日割増
-		form.setChoWeekday(workDetail.getTyokinHeijiHours());
-		// 平日通常
-		form.setChoWeekday_nomal(workDetail.getTyokinHeijiTujyoHours());
-		// 休日
-		form.setChoHoliday(workDetail.getTyokinKyujiHours());
-		// 深夜
-		form.setmNHours(workDetail.getSynyaKinmuHours());
+		// 勤怠情報が存在する場合
+		if (kintaiEntity != null) {
+			// シフトコード
+			form.setShiftCd(kintaiEntity.getShiftJikoku().getShiftCode());
+			// 勤務開始時刻
+			String kinmuSTime = kintaiEntity.getKinmuStartTime();
+			form.setWorkSTime(kinmuSTime);
+			form.setWorkSHour(CostDateUtils.getHourOrMinute(kinmuSTime, 0));
+			form.setWorkSMinute(CostDateUtils.getHourOrMinute(kinmuSTime, 1));
+			// 勤務終了時刻
+			String kinmuETime = kintaiEntity.getKinmuEndTime();
+			form.setWorkETime(kinmuETime);
+			form.setWorkEHour(CostDateUtils.getHourOrMinute(kinmuETime, 0));
+			form.setWorkEMinute(CostDateUtils.getHourOrMinute(kinmuETime, 1));
+			// 休暇欠勤区分
+			if (kintaiEntity.getKyukaKekinKbnMaster() != null) {
+				form.setKyukaKb(kintaiEntity.getKyukaKekinKbnMaster().getCode());
+			}
+			// 休暇時間数
+			form.setKyukaHours(conBigDecimalToDouble(kintaiEntity.getKyukaJikansu()));
+			// 勤務時間数
+			form.setWorkHours(conBigDecimalToDouble(kintaiEntity.getKinmuJikansu()));
+			// 超過勤務開始時刻
+			form.setChoSTime(kintaiEntity.getChokinStartTime());
+			// 超過勤務終了時刻
+			form.setChoETime(kintaiEntity.getChokinEndTime());
+			// 平日割増
+			form.setChoWeekday(conBigDecimalToDouble(kintaiEntity.getChokinHeijituJikansu()));
+			// 平日通常
+			form.setChoWeekday_nomal(conBigDecimalToDouble(kintaiEntity.getChokinHeijituTujyoJikansu()));
+			// 休日
+			form.setChoHoliday(conBigDecimalToDouble(kintaiEntity.getChokinKyujituJikansu()));
+			// 深夜
+			form.setmNHours(conBigDecimalToDouble(kintaiEntity.getSinyaKinmuJikansu()));
+			// ロケーション情報設定
+			form.setLocationId(kintaiEntity.getLocation().getCode());
+		}
 		// 休暇欠勤区分リストを取得
-		List<ListItemVO> kyukakbList = getHolidayLackingItem();
+		List<KyukaKekinKbnMaster> kyukakbList = baseDao.findAll(KyukaKekinKbnMaster.class);
 		form.setKyukakbList(kyukakbList);
+		
 		// 個人倦怠プロジェクト情報リストを作成
-		List<AttendanceProject> prjList = getProjectList(userId, date);
-		form.setProjectList(prjList);
-		// ロケーション情報設定
-		form.setLocationId(workDetail.getLocationCode());
-		form.setLocationItemList(getLocationItemList());
+		List<AttendanceProjectVO> attendanceProjectList = new ArrayList<AttendanceProjectVO>();
+		AttendanceProjectVO attPorject = null;
+		// プロジェクトリストを取得
+		List<ProjectMaster> projectItemList = baseDao.findAll(ProjectMaster.class);
+		// プロジェクト作業リストを取得
+		List<ProjWorkMaster> workItemList = baseDao.findAll(ProjWorkMaster.class);
+		if (kintaiEntity != null) {
+			// 検索条件
+			condition = new BaseCondition();
+			condition.addConditionEqual("kintaiInfo.id", kintaiEntity.getId());
+			List<ProjWorkTimeManage> prjList = baseDao.findResultList(condition, ProjWorkTimeManage.class);
+			
+			// 個人プロジェクト勤務情報が存在する場合
+			if (prjList != null && !prjList.isEmpty()) {
+				for (int i = 0; i < prjList.size(); i++) {
+					ProjWorkTimeManage proEntity = prjList.get(i);
+					attPorject = new AttendanceProjectVO();
+					// プロジェクトID
+					attPorject.setProjectId(proEntity.getProjectMaster().getCode());
+					attPorject.setProjectItemList(projectItemList);
+					//　作業ID
+					attPorject.setWorkId(proEntity.getProjWorkMaster().getCode());
+					attPorject.setWorkItemList(workItemList);
+					// 作業時間数
+					attPorject.setHours(conBigDecimalToDouble(proEntity.getWorkTimes()));
+					
+					attendanceProjectList.add(attPorject);
+				}
+			} else {
+				// 空行を追加する
+				attPorject = new AttendanceProjectVO();
+				attPorject.setProjectItemList(projectItemList);
+				attPorject.setWorkItemList(workItemList);
+				attendanceProjectList.add(attPorject);
+			}
+		} else {
+			// 空行を追加する
+			attPorject = new AttendanceProjectVO();
+			attPorject.setProjectItemList(projectItemList);
+			attPorject.setWorkItemList(workItemList);
+			attendanceProjectList.add(attPorject);
+		}
+		form.setProjectList(attendanceProjectList);
+
+		// ロケーション情報リストを取得
+		List<Locations> locationList = baseDao.findAll(Locations.class);
+		
+		form.setLocationItemList(locationList);
 	}
 
 	/**
@@ -701,6 +689,16 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 		return info;
 
+	}
+	
+	private Double conBigDecimalToDouble(BigDecimal b) {
+		
+		if (b == null) {
+			return new Double(0.0);
+		} else {
+			return b.doubleValue();
+		}
+		
 	}
 
 }

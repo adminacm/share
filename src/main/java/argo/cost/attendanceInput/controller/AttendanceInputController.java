@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProject;
+import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.service.AttendanceInputService;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
@@ -161,9 +161,9 @@ public class AttendanceInputController extends AbstractController {
 	@RequestMapping("/add")
 	public String addLine(AttendanceInputForm form) throws ParseException {
 
-		AttendanceProject pro = new AttendanceProject();
+		AttendanceProjectVO pro = new AttendanceProjectVO();
 //		pro.setProjectItemList(comService.getProjectNameList(form.getUserId()));
-		pro.setWorkItemList(attendanceInputService.getWorkItemList());
+//		pro.setWorkItemList(attendanceInputService.getWorkItemList());
 		form.getProjectList().add(pro);
 		return ATTDENDANCE_INPUT;
 	}

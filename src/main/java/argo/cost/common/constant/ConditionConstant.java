@@ -13,5 +13,10 @@ public class ConditionConstant {
 	 * ID
 	 */
 	public static final String ID = "id";
+	
+	/**
+	 * 社員番号
+	 */
+	public static final String USER_ID = "user_id";
 
 }
