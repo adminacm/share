@@ -15,6 +15,11 @@ public class PayHolidayVO {
 	private String payHolidayDate;
 	
 	/**
+	 * 休暇区分コード
+	 */
+	private String holidayKbnCode;
+	
+	/**
 	 * 休暇区分
 	 */
 	private String holidayKbnName;
@@ -35,6 +40,14 @@ public class PayHolidayVO {
 
 	public void setPayHolidayDate(String payHolidayDate) {
 		this.payHolidayDate = payHolidayDate;
+	}
+
+	public String getHolidayKbnCode() {
+		return holidayKbnCode;
+	}
+
+	public void setHolidayKbnCode(String holidayKbnCode) {
+		this.holidayKbnCode = holidayKbnCode;
 	}
 
 	public String getHolidayKbnName() {
@@ -60,5 +73,4 @@ public class PayHolidayVO {
 	public void setHourQuantity(String hourQuantity) {
 		this.hourQuantity = hourQuantity;
 	}
-	
 }

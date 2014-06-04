@@ -30,27 +30,30 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 	/**
 	 * 休暇管理情報をセット
 	 * 
-	 * @param holidayRecordForm
-	 *                         休暇管理画面情報
+	 * @param form
+	 *            休暇管理画面情報
 	 */
 	@Override
-	public void setHolidayRecordInfo(HolidayRecordForm holidayRecordForm) {
+	public void setHolidayRecordInfo(HolidayRecordForm form) {
+		
+		// ユーザＩＤを取得
+		String strUserId = form.getUserId();
 		
 		// 年度を取得
-		String strYearPeriod =  holidayRecordForm.getYearPeriod();
+		String strYearPeriod =  form.getYearPeriod();
 		
 		// 有給休暇情報を取得
-		List<PayHolidayVO> payHolidayList = holidayRecordDao.getPayHolidayList(strYearPeriod);
+		List<PayHolidayVO> payHolidayList = holidayRecordDao.getPayHolidayList(strUserId, strYearPeriod);
 		// 欠勤情報を取得
-		List<AbsenceVO> absenceList = holidayRecordDao.getAbsenceList(strYearPeriod);
+		List<AbsenceVO> absenceList = holidayRecordDao.getAbsenceList(strUserId, strYearPeriod);
 		// 特別情報を取得
-		List<SpecialHolidayVO> specialHolidayList = holidayRecordDao.getSpecialHolidayList(strYearPeriod);
+		List<SpecialHolidayVO> specialHolidayList = holidayRecordDao.getSpecialHolidayList(strUserId, strYearPeriod);
 
 		// 有給休暇情報をセット
-		holidayRecordForm.setPayHolidayList(payHolidayList);
+		form.setPayHolidayList(payHolidayList);
 		// 欠勤情報をセット
-		holidayRecordForm.setAbsenceList(absenceList);
+		form.setAbsenceList(absenceList);
 		// 特別情報をセット
-		holidayRecordForm.setSpecialHolidayList(specialHolidayList);
+		form.setSpecialHolidayList(specialHolidayList);
 	}
 }
