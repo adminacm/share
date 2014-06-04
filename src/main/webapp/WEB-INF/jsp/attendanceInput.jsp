@@ -71,6 +71,11 @@ function submitAction(action) {
 		<div style="padding:2px;">
 			<b>勤怠入力</b>
 		</div>
+		<div style="margin-left: 10px;margin-top: 10px;">
+			<c:forEach var="message" items="${attendanceInputForm.confirmMsgList }">
+				<span style="color:red">${message }</span>
+			</c:forEach>
+		</div>
 		<div style="margin-top: 20px;margin-bottom:10px;" >
 			<table style="margin:auto; width:300px;">
 				<tr>

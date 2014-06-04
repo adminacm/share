@@ -29,6 +29,7 @@ import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
@@ -379,7 +380,35 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		
 		form.setLocationItemList(locationList);
 	}
-
+	
+	/**
+	 * 入力チェック（計算）
+	 * 
+	 * @param form
+	 *            勤怠入力画面情報
+	 */
+	@Override
+	public Boolean checkCountInput(AttendanceInputForm form) {
+		
+		List<String> msgList = new ArrayList<String>();
+		// シフトコード
+		String shiftCode = form.getShiftCd();
+		ShiftJikoku shiftEntity = baseDao.findById(shiftCode, ShiftJikoku.class);
+		
+		// シフトコード値がm_シフト表から抽出されない
+		if (shiftEntity == null) {
+			// ｼﾌﾄｺｰﾄﾞを正しく入力してください
+			msgList.add("ｼﾌﾄｺｰﾄﾞを正しく入力してください");
+			form.setConfirmMsgList(msgList);
+			
+			return false;
+			
+		}
+		// TODO 自動生成されたメソッド・スタブ
+		return true;
+		
+	}
+	
 	/**
 	 * 就業データを更新
 	 * 
@@ -793,5 +822,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		}
 		
 	}
+
 	
 }

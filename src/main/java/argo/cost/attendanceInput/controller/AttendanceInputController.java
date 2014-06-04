@@ -162,8 +162,9 @@ public class AttendanceInputController extends AbstractController {
 	public String addLine(AttendanceInputForm form) throws ParseException {
 
 		AttendanceProjectVO pro = new AttendanceProjectVO();
-		pro.setProjectItemList(comService.getProjectNameList(form.getUserId()));
-		pro.setWorkItemList(attendanceInputService.getWorkItemList());
+		// プロジェクト情報を取得
+		pro.setProjectItemList(comService.getProjectNameList());
+		pro.setWorkItemList(comService.getWorkItemList());
 		form.getProjectList().add(pro);
 		return ATTDENDANCE_INPUT;
 	}
@@ -177,11 +178,13 @@ public class AttendanceInputController extends AbstractController {
 	 * @throws ParseException 
 	 */
 	@RequestMapping("/count")
-	public String count(AttendanceInputForm form) throws ParseException {
+	public String count(AttendanceInputForm form) throws Exception {
 
 		// チェックを実行する。TODO
-		// 勤務情報を計算する。
-		attendanceInputService.calcWorkingRec(form);
+		if (attendanceInputService.checkCountInput(form)) {
+			// 勤務情報を計算する。
+			attendanceInputService.calcWorkingRec(form);
+		}
 		
 		return ATTDENDANCE_INPUT;
 	}
