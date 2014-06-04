@@ -99,11 +99,11 @@ function submitAction(action) {
 						<table class="resultStyle" id="payHolidayList" style="margin-left:2px;">
 							<thead>
 								<tr class="headStyle">
-									<th>No.</th>
-									<th>申請区分</th>
-									<th>申請内容</th>
-									<th>状況</th>
-									<th>所属</th>
+									<th style="width: 130px">No.</th>
+									<th style="width: 130px">申請区分</th>
+									<th style="width: 200px">申請内容</th>
+									<th style="width: 100px">状況</th>
+									<th style="width: 100px">所属</th>
 									<th>氏名</th>
 								</tr>
 							</thead>
@@ -120,13 +120,13 @@ function submitAction(action) {
 											${approval.applyDetail}
 										</td>
 										<td>
-											${approval.status}
+											${approval.statusName}
 										</td>
 										<td>
-											${approval.affiliation}
+											${approval.affiliationName}
 										</td>
 										<td>
-											${approval.name}
+											${approval.userName}
 										</td>
 									</tr>
 								</c:forEach>
