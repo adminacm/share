@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import argo.cost.common.entity.ProjWorkMaster;
+import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
 
@@ -55,4 +57,18 @@ public interface ComService {
 	 * @return 月報の提出状態
 	 */
 	String getMonthReportStatus(String userId, String date);
+	
+	/**
+	 * プロジェクト情報を取得
+	 * 
+	 * @return  プロジェクトリスト
+	 */
+	List<ProjectMaster> getProjectNameList();
+	
+	/**
+	 * プロジェクトの作業情報を取得
+	 * 
+	 * @return  作業内容リスト
+	 */
+	List<ProjWorkMaster> getWorkItemList();
 }

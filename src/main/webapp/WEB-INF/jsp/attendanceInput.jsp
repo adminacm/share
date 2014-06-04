@@ -86,6 +86,13 @@ function submitAction(action) {
 					<td align="left" width="30px"><input type="button" value="→" onclick="submitAction('/attendanceInput/nextDay');" /></td>
 				</tr>
 			</table>
+			<!-- 勤務日情報 -->
+			<table style="margin:auto; width:300px;margin-top:10px;">
+				<tr>
+					<td align="left" width="120px">勤務日区分</td>
+					<td align="left" width="180px">${attendanceInputForm.workDayKbnName}</td>
+				</tr>
+			</table>
 			<!-- 社休日 -->
 			<c:if test="${attendanceInputForm.kinmuKun != 1}">
 				<table style="margin:auto; width:300px;">
@@ -94,8 +101,8 @@ function submitAction(action) {
 					</tr>
 				</table>
 			</c:if>
-			<c:if test="${attendanceInputForm.kinmuKun == 2}">
-				<table style="margin:auto;width:300px;margin-top:10px;border: 1px solid #333;">
+			<c:if test="${attendanceInputForm.kinmuKun == 3}">
+				<table style="margin:auto;width:300px;border: 1px solid #333;">
 					<tr>
 						<td colspan="2" align="center"><b>［休日勤務］</b></td>
 					</tr>
@@ -121,8 +128,8 @@ function submitAction(action) {
 					</tr>
 				</table>
 			</c:if>
-			<c:if test="${attendanceInputForm.kinmuKun != 0}">
-				<table style="margin:auto;width:300px;margin-top:10px;">
+			<c:if test="${attendanceInputForm.kinmuKun == 1 || attendanceInputForm.kinmuKun == 3}">
+				<table style="margin:auto;width:300px;">
 					<tr>
 						<td align="left" width="120px">シフトコード</td>
 						<td align="left" width="180px" colspan="2">

@@ -51,10 +51,6 @@ public class ShiftJikoku implements Serializable {
 	@OneToMany(mappedBy="shiftJikoku")
 	private List<KintaiInfo> kintaiInfos;
 
-	//bi-directional many-to-one association to ShiftInfo
-	@OneToMany(mappedBy="shiftJikoku")
-	private List<ShiftInfo> shiftInfos;
-
 	public ShiftJikoku() {
 	}
 
@@ -158,28 +154,6 @@ public class ShiftJikoku implements Serializable {
 		kintaiInfo.setShiftJikoku(null);
 
 		return kintaiInfo;
-	}
-
-	public List<ShiftInfo> getShiftInfos() {
-		return this.shiftInfos;
-	}
-
-	public void setShiftInfos(List<ShiftInfo> shiftInfos) {
-		this.shiftInfos = shiftInfos;
-	}
-
-	public ShiftInfo addShiftInfo(ShiftInfo shiftInfo) {
-		getShiftInfos().add(shiftInfo);
-		shiftInfo.setShiftJikoku(this);
-
-		return shiftInfo;
-	}
-
-	public ShiftInfo removeShiftInfo(ShiftInfo shiftInfo) {
-		getShiftInfos().remove(shiftInfo);
-		shiftInfo.setShiftJikoku(null);
-
-		return shiftInfo;
 	}
 
 }

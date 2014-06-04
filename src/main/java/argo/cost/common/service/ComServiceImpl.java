@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.entity.ProjWorkMaster;
+import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
@@ -135,7 +137,34 @@ public class ComServiceImpl implements ComService {
 		// 月報の提出状態を戻り
 		return status;
 	}
-
+	
+	/**
+	 * プロジェクト情報を取得
+	 * 
+	 * @return  プロジェクトリスト
+	 */
+	@Override
+	public List<ProjectMaster> getProjectNameList() {
+		
+		// 全てのプロジェクト情報を取得
+		List<ProjectMaster> resultList = baseDao.findAll(ProjectMaster.class);
+		
+		return resultList;
+	}
+	
+	/**
+	 * プロジェクトの作業情報を取得
+	 * 
+	 * @return  作業内容リスト
+	 */
+	@Override
+	public List<ProjWorkMaster> getWorkItemList() {
+		
+		// 作業内容リストを取得
+		List<ProjWorkMaster> resultList = baseDao.findAll(ProjWorkMaster.class);
+		
+		return resultList;
+	}
 	///////////////////////////////////
 	///////////////////////////////////
 
@@ -234,6 +263,5 @@ public class ComServiceImpl implements ComService {
 		session.setUserInfo(userinfo);
 
 	}
-	
-	public 
+
 }

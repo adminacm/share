@@ -36,10 +36,6 @@ public class ShiftInfo implements Serializable {
 	@Column(name="updated_user_id")
 	private String updatedUserId;
 
-	//bi-directional many-to-one association to ShiftJikoku
-	@ManyToOne
-	@JoinColumn(name="shift_code")
-	private ShiftJikoku shiftJikoku;
 
 	public ShiftInfo() {
 	}
@@ -100,12 +96,5 @@ public class ShiftInfo implements Serializable {
 		this.updatedUserId = updatedUserId;
 	}
 
-	public ShiftJikoku getShiftJikoku() {
-		return this.shiftJikoku;
-	}
-
-	public void setShiftJikoku(ShiftJikoku shiftJikoku) {
-		this.shiftJikoku = shiftJikoku;
-	}
 
 }
