@@ -12,7 +12,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="shift_jikoku")
-@NamedQuery(name="ShiftJikoku.findAll", query="SELECT s FROM ShiftJikoku s")
 public class ShiftJikoku implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -34,10 +34,6 @@ public class ProjWorkMaster implements Serializable {
 	@Column(name="updated_user_id")
 	private String updatedUserId;
 
-	//bi-directional many-to-one association to HolidayAtendanceYotei
-	@OneToMany(mappedBy="projWorkMaster")
-	private List<HolidayAtendanceYotei> holidayAtendanceYoteis;
-
 	//bi-directional many-to-one association to ProjWorkTimeManage
 	@OneToMany(mappedBy="projWorkMaster")
 	private List<ProjWorkTimeManage> projWorkTimeManages;
@@ -91,28 +87,6 @@ public class ProjWorkMaster implements Serializable {
 
 	public void setUpdatedUserId(String updatedUserId) {
 		this.updatedUserId = updatedUserId;
-	}
-
-	public List<HolidayAtendanceYotei> getHolidayAtendanceYoteis() {
-		return this.holidayAtendanceYoteis;
-	}
-
-	public void setHolidayAtendanceYoteis(List<HolidayAtendanceYotei> holidayAtendanceYoteis) {
-		this.holidayAtendanceYoteis = holidayAtendanceYoteis;
-	}
-
-	public HolidayAtendanceYotei addHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
-		getHolidayAtendanceYoteis().add(holidayAtendanceYotei);
-		holidayAtendanceYotei.setProjWorkMaster(this);
-
-		return holidayAtendanceYotei;
-	}
-
-	public HolidayAtendanceYotei removeHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
-		getHolidayAtendanceYoteis().remove(holidayAtendanceYotei);
-		holidayAtendanceYotei.setProjWorkMaster(null);
-
-		return holidayAtendanceYotei;
 	}
 
 	public List<ProjWorkTimeManage> getProjWorkTimeManages() {

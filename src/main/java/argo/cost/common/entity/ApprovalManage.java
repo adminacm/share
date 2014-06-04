@@ -50,6 +50,7 @@ public class ApprovalManage implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
+	@JoinColumn(name="user_id")
 	private Users users;
 
 	//bi-directional many-to-one association to KintaiInfo

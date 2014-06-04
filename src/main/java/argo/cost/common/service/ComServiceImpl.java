@@ -234,4 +234,6 @@ public class ComServiceImpl implements ComService {
 		session.setUserInfo(userinfo);
 
 	}
+	
+	public 
 }

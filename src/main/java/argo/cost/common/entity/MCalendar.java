@@ -1,22 +1,25 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the shift_info database table.
+ * カレンダーテーブル.
  * 
  */
 @Entity
-@Table(name="shift_info")
-public class ShiftInfo implements Serializable {
+@Table(name="Calendar")
+public class MCalendar implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	@Column(name="on_duty_date")
+	private String onDutyDate;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
@@ -24,11 +27,11 @@ public class ShiftInfo implements Serializable {
 	@Column(name="created_user_id")
 	private String createdUserId;
 
-	@Column(name="kinmu_flg")
-	private String kinmuFlg;
+	@Column(name="kyujisu_name")
+	private String kyujisuName;
 
-	@Column(name="time_zone_code")
-	private String timeZoneCode;
+	@Column(name="on_duty_flg")
+	private String onDutyFlg;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
@@ -36,20 +39,15 @@ public class ShiftInfo implements Serializable {
 	@Column(name="updated_user_id")
 	private String updatedUserId;
 
-	//bi-directional many-to-one association to ShiftJikoku
-	@ManyToOne
-	@JoinColumn(name="shift_code")
-	private ShiftJikoku shiftJikoku;
-
-	public ShiftInfo() {
+	public MCalendar() {
 	}
 
-	public Integer getId() {
-		return this.id;
+	public String getOnDutyDate() {
+		return this.onDutyDate;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setOnDutyDate(String onDutyDate) {
+		this.onDutyDate = onDutyDate;
 	}
 
 	public Timestamp getCreatedDate() {
@@ -68,20 +66,20 @@ public class ShiftInfo implements Serializable {
 		this.createdUserId = createdUserId;
 	}
 
-	public String getKinmuFlg() {
-		return this.kinmuFlg;
+	public String getKyujisuName() {
+		return this.kyujisuName;
 	}
 
-	public void setKinmuFlg(String kinmuFlg) {
-		this.kinmuFlg = kinmuFlg;
+	public void setKyujisuName(String kyujisuName) {
+		this.kyujisuName = kyujisuName;
 	}
 
-	public String getTimeZoneCode() {
-		return this.timeZoneCode;
+	public String getOnDutyFlg() {
+		return this.onDutyFlg;
 	}
 
-	public void setTimeZoneCode(String timeZoneCode) {
-		this.timeZoneCode = timeZoneCode;
+	public void setOnDutyFlg(String onDutyFlg) {
+		this.onDutyFlg = onDutyFlg;
 	}
 
 	public Timestamp getUpdateDate() {
@@ -98,14 +96,6 @@ public class ShiftInfo implements Serializable {
 
 	public void setUpdatedUserId(String updatedUserId) {
 		this.updatedUserId = updatedUserId;
-	}
-
-	public ShiftJikoku getShiftJikoku() {
-		return this.shiftJikoku;
-	}
-
-	public void setShiftJikoku(ShiftJikoku shiftJikoku) {
-		this.shiftJikoku = shiftJikoku;
 	}
 
 }

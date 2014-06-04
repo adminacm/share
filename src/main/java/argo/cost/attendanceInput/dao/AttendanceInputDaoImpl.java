@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 import argo.cost.attendanceInput.model.AttendanceInputForm;
 import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.model.HolidayRecord;
-import argo.cost.attendanceInput.model.WorkTimeDetailVO;
-import argo.cost.common.model.ListItemVO;
 
 /**
  * 勤怠入力DAOImpl
@@ -21,93 +19,6 @@ import argo.cost.common.model.ListItemVO;
  */
 @Repository
 public class AttendanceInputDaoImpl implements AttendanceInputDao {
-
-	/**
-	 * 休暇欠勤区分プルダウンリスト取得
-	 * 
-	 * @return 休暇欠勤区分プルダウンリスト
-	 */
-	@Override
-	public List<ListItemVO> getHolidayLackingItem() {
-		// TODO 自動生成されたメソッド・スタブ
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		
-		ListItemVO item1 = new ListItemVO();
-		item1.setValue("01");
-		item1.setName("全休(有給休暇)");
-		resultList.add(item1);
-
-		item1 = new ListItemVO();
-		item1.setValue("02");
-		item1.setName("半休(有給休暇)");
-		resultList.add(item1);
-
-		item1 = new ListItemVO();
-		item1.setValue("03");
-		item1.setName("時間休(有給休暇)");
-		resultList.add(item1);
-		
-		return resultList;
-	}
-
-	/**
-	 * 個人勤怠プロジェクト情報取得
-	 * 
-	 * 
-	 * @return 個人勤怠プロジェクト情報
-	 */
-	@Override
-	public List<ListItemVO> getWorkItemList() {
-		
-		// TODO 自動生成されたメソッド・スタブ
-		List<ListItemVO> list = new ArrayList<ListItemVO>();
-		
-		ListItemVO itm = new ListItemVO();
-		itm.setName("MUT");
-		itm.setValue("01");
-		list.add(itm);
-		
-		itm = new ListItemVO();
-		itm.setName("SI");
-		itm.setValue("02");
-		list.add(itm);
-		
-		itm = new ListItemVO();
-		itm.setName("BD");
-		itm.setValue("03");
-		list.add(itm);
-		
-		return list;
-	}
-
-	/**
-	 * ロケーション情報取得
-	 * 
-	 * 
-	 * @return ロケーション情報
-	 */
-	@Override
-	public List<ListItemVO> getLocationItemList() {
-		// TODO 自動生成されたメソッド・スタブ
-		List<ListItemVO> list = new ArrayList<ListItemVO>();
-		
-		ListItemVO itm = new ListItemVO();
-		itm.setName("中国");
-		itm.setValue("01");
-		list.add(itm);
-		
-		itm = new ListItemVO();
-		itm.setName("日本");
-		itm.setValue("02");
-		list.add(itm);
-		
-		itm = new ListItemVO();
-		itm.setName("米国");
-		itm.setValue("03");
-		list.add(itm);
-		
-		return list;
-	}
 
 	/**
 	 * 休日勤務情報を取得
@@ -139,40 +50,6 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		}
 		
 		return null;
-	}
-
-	/**
-	 * 就業データを取得
-	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @param yyyymmdd
-	 *            日付
-	 * @return 就業データ
-	 */
-	@Override
-	public WorkTimeDetailVO getWorkTimeDetail(String userId, String yyyymmdd) {
-		// TODO 自動生成されたメソッド・スタブ
-		WorkTimeDetailVO info = new WorkTimeDetailVO();
-		info.setUserId(userId);
-		info.setWorkDate(yyyymmdd);
-		info.setKinmuKbn("01");
-		info.setShiftCode("0900");
-		info.setKinmuSTime("09:00");
-		info.setKinmuEtime("23:30");
-		info.setSykaKetukinKbn("");
-		info.setBikou("桜美林大学留学生管理システム保守：お客様問合せの対応");
-		info.setFurikaeDate("");
-		info.setSykaKetukinhours(0.0);
-		info.setKinmuHours(0.0);
-		info.setTyokinStime("18:00");
-		info.setTyokinEtime("23:00");
-		info.setTyokinHeijiHours(4.0);
-		info.setTyokinHeijiTujyoHours(0.0);
-		info.setTyokinKyujiHours(0.0);
-		info.setSynyaKinmuHours(1.5);
-		info.setStatus("01");
-		return info;
 	}
 	/**
 	 * ユーザ作業情報を取得

@@ -29,6 +29,7 @@ import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.Users;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
 
@@ -117,7 +118,18 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	@Override
 	public void setAttForm(AttendanceInputForm form, String newDate) throws ParseException {
-
+		
+//		// testStart
+//		MCalendar ma = new MCalendar();
+//		ma.setKyujisuName("123123");
+//		ma.setOnDutyDate("111111");
+//		ma.setOnDutyFlg("1");
+//		ma.setCreatedDate(null);
+//		ma.setCreatedUserId(null);
+//		ma.setUpdateDate(null);
+//		ma.setUpdatedUserId(null);
+//		baseDao.insert(ma);
+		
 		// 社員番号
 		String userId = form.getUserId();
 		// システム日付を取得
@@ -134,8 +146,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		condition.addConditionEqual("users.id", userId);
 		// 勤怠日付
 		condition.addConditionEqual("atendanceBookDate", date);
-		// 勤怠情報を取得
-		KintaiInfo kintaiEntity = baseDao.findSingleResult(condition, KintaiInfo.class);
 
 		// 勤怠日付を設定
 		form.setAttDate(date);
@@ -145,58 +155,67 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		String week = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
 		// 勤怠日付（表示）を設定
 		form.setAttDateShow(attDate.concat("（").concat(week).concat("）"));
-		// 社休日の判定
-		// 日付より、カレンダー情報を取得
-		MCalendar calender = baseDao.findById(date, MCalendar.class);
 		
-		// カレンダー情報が存在する場合
-		if (calender != null) {
-			// 出勤日の場合
-			if ("1".equals(calender.getOnDutyFlg())) {
-				form.setKinmuKun(1);
-			// 社休日
-			} else {
-				// 休日予定勤務情報を取得
-				HolidayAttendanceVO attendanceVO = null;
-				// 検索条件
-				condition = new BaseCondition();
-				condition.addConditionEqual("users.id", userId);  // 社員番号
-				condition.addConditionEqual("atendanceBookDate", date);  // 予定勤務日
-				HolidayAtendanceYotei attYoteEntity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
-				
-				// 休日予定勤務情報が存在する場合
-				if (attYoteEntity != null) {
-					attendanceVO = new HolidayAttendanceVO();
-					// 社員番号
-					attendanceVO.setUserId(userId);
-					// 休日勤務日
-					attendanceVO.setAttendanceDate(date);
-					// 振替日
-					attendanceVO.setFurikaeDate(attYoteEntity.getFurikaeDate());
-					// 勤務区分コード
-					attendanceVO.setKinmuKbnCode(attYoteEntity.getWorkDayKbnMaster().getCode());
-					// 勤務区分名称
-					attendanceVO.setKinmuKbnName(attYoteEntity.getWorkDayKbnMaster().getName());
-					// 勤務開始時間
-					attendanceVO.setKinmuStartTime(attYoteEntity.getKinmuStartTime());
-					// 勤務終了時間
-					attendanceVO.setKinmuEndTime(attYoteEntity.getKinmuEndTime());
-					// プロジェクトID
-					attendanceVO.setProjectId(attYoteEntity.getProjWorkMaster().getCode());
-					// プロジェクト名称
-					attendanceVO.setProjectName(attYoteEntity.getProjWorkMaster().getName());
-					//　作業内容
-					attendanceVO.setWorkDetail(attYoteEntity.getCommont());
-					form.setKinmuKun(2);
-				}
-				form.setHolidayAttendance(attendanceVO);
-				
-			}
-			
-		}
-
+		// 個人倦怠プロジェクト情報リストを作成
+		List<AttendanceProjectVO> attendanceProjectList = new ArrayList<AttendanceProjectVO>();
+		AttendanceProjectVO attPorject = null;
+		// プロジェクトリストを取得
+		List<ProjectMaster> projectItemList = baseDao.findAll(ProjectMaster.class);
+		// プロジェクト作業リストを取得
+		List<ProjWorkMaster> workItemList = baseDao.findAll(ProjWorkMaster.class);
+		
+		// 休日予定勤務情報を取得
+		HolidayAttendanceVO attendanceVO = null;
+		// 検索条件
+		condition = new BaseCondition();
+		condition.addConditionEqual("users.id", userId);  // 社員番号
+		condition.addConditionEqual("atendanceBookDate", date);  // 勤務休日
+		HolidayAtendanceYotei attYoteEntity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
+		
+		// 勤怠情報を取得
+		KintaiInfo kintaiEntity = baseDao.findSingleResult(condition, KintaiInfo.class);
+		
 		// 勤怠情報が存在する場合
 		if (kintaiEntity != null) {
+			// 勤務日区分
+			String workDayKbn = kintaiEntity.getWorkDayKbnMaster().getCode();
+			form.setWorkDayKbn(workDayKbn);
+			// 勤務日区分名
+			form.setWorkDayKbnName(kintaiEntity.getWorkDayKbnMaster().getName());
+			// 「出勤」の場合
+			if ("01".equals(workDayKbn)) {
+				form.setKinmuKun(1);
+			// 「休日」の場合
+			} else if ("02".equals(workDayKbn)) {
+				form.setKinmuKun(2);
+			} else if ("03".equals(workDayKbn)) {
+				attendanceVO = new HolidayAttendanceVO();
+				// 社員番号
+				attendanceVO.setUserId(userId);
+				// 休日勤務日
+				attendanceVO.setAttendanceDate(date);
+				// 振替日
+				attendanceVO.setFurikaeDate(attYoteEntity.getFurikaeDate());
+				// 勤務区分コード
+				attendanceVO.setKinmuKbnCode(attYoteEntity.getWorkDayKbnMaster().getCode());
+				// 勤務区分名称
+				attendanceVO.setKinmuKbnName(attYoteEntity.getWorkDayKbnMaster().getName());
+				// 勤務開始時間
+				attendanceVO.setKinmuStartTime(attYoteEntity.getKinmuStartTime());
+				// 勤務終了時間
+				attendanceVO.setKinmuEndTime(attYoteEntity.getKinmuEndTime());
+				// プロジェクトID
+				attendanceVO.setProjectId(attYoteEntity.getProjectMaster().getCode());
+				// プロジェクト名称
+				attendanceVO.setProjectName(attYoteEntity.getProjectMaster().getName());
+				//　作業内容
+				attendanceVO.setWorkDetail(attYoteEntity.getCommont());
+				// 休日振替勤務
+				form.setKinmuKun(3);
+				form.setHolidayAttendance(attendanceVO);
+			} else if ("04".equals(workDayKbn)) {
+				form.setKinmuKun(4);
+			}
 			// シフトコード
 			form.setShiftCd(kintaiEntity.getShiftJikoku().getShiftCode());
 			// 勤務開始時刻
@@ -231,19 +250,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			form.setmNHours(conBigDecimalToDouble(kintaiEntity.getSinyaKinmuJikansu()));
 			// ロケーション情報設定
 			form.setLocationId(kintaiEntity.getLocation().getCode());
-		}
-		// 休暇欠勤区分リストを取得
-		List<KyukaKekinKbnMaster> kyukakbList = baseDao.findAll(KyukaKekinKbnMaster.class);
-		form.setKyukakbList(kyukakbList);
-		
-		// 個人倦怠プロジェクト情報リストを作成
-		List<AttendanceProjectVO> attendanceProjectList = new ArrayList<AttendanceProjectVO>();
-		AttendanceProjectVO attPorject = null;
-		// プロジェクトリストを取得
-		List<ProjectMaster> projectItemList = baseDao.findAll(ProjectMaster.class);
-		// プロジェクト作業リストを取得
-		List<ProjWorkMaster> workItemList = baseDao.findAll(ProjWorkMaster.class);
-		if (kintaiEntity != null) {
+			
+
+			// 個人プロジェクト勤務情報設定
 			// 検索条件
 			condition = new BaseCondition();
 			condition.addConditionEqual("kintaiInfo.id", kintaiEntity.getId());
@@ -272,13 +281,97 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				attPorject.setWorkItemList(workItemList);
 				attendanceProjectList.add(attPorject);
 			}
+		// 当日勤怠情報が存在しない場合
 		} else {
+			// シフトコード
+			Users userEntity = baseDao.findById(userId, Users.class);
+			form.setShiftCd(userEntity.getStandardShiftCd());
+			
+			// 社休日の判定
+			// 日付より、カレンダー情報を取得
+			MCalendar calender = baseDao.findById(date, MCalendar.class);
+
+			// カレンダー情報が存在する場合
+			if (calender != null) {
+				// 出勤フラグが「1」の場合
+				if ("1".equals(calender.getOnDutyFlg())) {
+					// 検索条件
+					condition = new BaseCondition();
+					condition.addConditionEqual("users.id", userId);  // 社員番号
+					condition.addConditionEqual("furikaeDate", date);  // 振替日
+					attYoteEntity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
+					
+					// 休日予定勤務情報が存在する場合
+					if (attYoteEntity != null) {
+						// 振替休日
+						form.setKinmuKun(4);
+						// 勤務日区分
+						form.setWorkDayKbn("04");
+						// 勤務日区分名
+						form.setWorkDayKbnName("振替休日");
+					} else {
+						// 出勤
+						form.setKinmuKun(1);
+						// 勤務日区分
+						form.setWorkDayKbn("01");
+						// 勤務日区分名
+						form.setWorkDayKbnName("出勤");
+					}
+				// 出勤フラグが「0」の場合
+				} else {
+					// 休日予定勤務情報が存在する場合
+					if (attYoteEntity != null) {
+						attendanceVO = new HolidayAttendanceVO();
+						// 社員番号
+						attendanceVO.setUserId(userId);
+						// 休日勤務日
+						attendanceVO.setAttendanceDate(date);
+						// 振替日
+						attendanceVO.setFurikaeDate(attYoteEntity.getFurikaeDate());
+						// 勤務区分コード
+						attendanceVO.setKinmuKbnCode(attYoteEntity.getWorkDayKbnMaster().getCode());
+						// 勤務区分名称
+						attendanceVO.setKinmuKbnName(attYoteEntity.getWorkDayKbnMaster().getName());
+						// 勤務開始時間
+						attendanceVO.setKinmuStartTime(attYoteEntity.getKinmuStartTime());
+						// 勤務終了時間
+						attendanceVO.setKinmuEndTime(attYoteEntity.getKinmuEndTime());
+						// プロジェクトID
+						attendanceVO.setProjectId(attYoteEntity.getProjectMaster().getCode());
+						// プロジェクト名称
+						attendanceVO.setProjectName(attYoteEntity.getProjectMaster().getName());
+						//　作業内容
+						attendanceVO.setWorkDetail(attYoteEntity.getCommont());
+						// 休日振替勤務
+						form.setKinmuKun(3);
+						// 勤務日区分
+						form.setWorkDayKbn("03");
+						// 勤務日区分名
+						form.setWorkDayKbnName("休日振替勤務");
+						form.setHolidayAttendance(attendanceVO);
+					} else {
+						// 休日
+						form.setKinmuKun(2);
+						// 勤務日区分
+						form.setWorkDayKbn("02");
+						// 勤務日区分名
+						form.setWorkDayKbnName("休日");
+					}
+					
+				}
+				
+			}
+			// 個人プロジェクト作業情報
 			// 空行を追加する
 			attPorject = new AttendanceProjectVO();
 			attPorject.setProjectItemList(projectItemList);
 			attPorject.setWorkItemList(workItemList);
 			attendanceProjectList.add(attPorject);
 		}
+
+		// 休暇欠勤区分リストを取得
+		List<KyukaKekinKbnMaster> kyukakbList = baseDao.findAll(KyukaKekinKbnMaster.class);
+		form.setKyukakbList(kyukakbList);
 		form.setProjectList(attendanceProjectList);
 
 		// ロケーション情報リストを取得
@@ -700,5 +793,5 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		}
 		
 	}
-
+	
 }

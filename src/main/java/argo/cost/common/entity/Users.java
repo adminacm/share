@@ -1,14 +1,20 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
-import org.springframework.context.annotation.Lazy;
-
-import java.sql.Timestamp;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -18,7 +24,6 @@ import java.util.List;
 @Entity
 @Table(name="users")
 @NamedQuery(name="Users.findAll", query="SELECT u FROM Users u")
-@Lazy(value=false)
 public class Users implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -76,14 +81,14 @@ public class Users implements Serializable {
 	@OneToMany(mappedBy="users")
 	private List<ApprovalManage> approvalManages;
 	
-//	//bi-directional many-to-one association to ChokinKanri
-//	@OneToMany(mappedBy="users")
-//	private List<ChokinKanri> chokinKanris;
-//
-//	//bi-directional many-to-one association to HolidayAtendance
-//	@OneToMany(mappedBy="users")
-//	private List<HolidayAtendance> holidayAtendances;
-//
+	//bi-directional many-to-one association to ChokinKanri
+	@OneToMany(mappedBy="users")
+	private List<ChokinKanri> chokinKanris;
+
+	//bi-directional many-to-one association to HolidayAtendance
+	@OneToMany(mappedBy="users")
+	private List<HolidayAtendance> holidayAtendances;
+
 	//bi-directional many-to-one association to HolidayAtendanceYotei
 	@OneToMany(mappedBy="users")
 	private List<HolidayAtendanceYotei> holidayAtendanceYoteis;
@@ -104,10 +109,10 @@ public class Users implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="shozoku_id")
 	private AffiliationMaster affiliationMaster;
-//
-//	//bi-directional many-to-one association to YukyuKyukaFuyu
-//	@OneToMany(mappedBy="users")
-//	private List<YukyuKyukaFuyu> yukyuKyukaFuyus;
+
+	//bi-directional many-to-one association to YukyuKyukaFuyu
+	@OneToMany(mappedBy="users")
+	private List<YukyuKyukaFuyu> yukyuKyukaFuyus;
 
 	public Users() {
 	}
@@ -247,72 +252,72 @@ public class Users implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-//
-//	public List<ApprovalManage> getApprovalManages() {
-//		return this.approvalManages;
-//	}
-//
-//	public void setApprovalManages(List<ApprovalManage> approvalManages) {
-//		this.approvalManages = approvalManages;
-//	}
-//
-//	public ApprovalManage addApprovalManage(ApprovalManage approvalManage) {
-//		getApprovalManages().add(approvalManage);
-//		approvalManage.setUser(this);
-//
-//		return approvalManage;
-//	}
-//
-//	public ApprovalManage removeApprovalManage(ApprovalManage approvalManage) {
-//		getApprovalManages().remove(approvalManage);
-//		approvalManage.setUser(null);
-//
-//		return approvalManage;
-//	}
+
+	public List<ApprovalManage> getApprovalManages() {
+		return this.approvalManages;
+	}
+
+	public void setApprovalManages(List<ApprovalManage> approvalManages) {
+		this.approvalManages = approvalManages;
+	}
+
+	public ApprovalManage addApprovalManage(ApprovalManage approvalManage) {
+		getApprovalManages().add(approvalManage);
+		approvalManage.setUser(this);
+
+		return approvalManage;
+	}
+
+	public ApprovalManage removeApprovalManage(ApprovalManage approvalManage) {
+		getApprovalManages().remove(approvalManage);
+		approvalManage.setUser(null);
+
+		return approvalManage;
+	}
 	
-//	public List<ChokinKanri> getChokinKanris() {
-//		return this.chokinKanris;
-//	}
-//
-//	public void setChokinKanris(List<ChokinKanri> chokinKanris) {
-//		this.chokinKanris = chokinKanris;
-//	}
-//
-//	public ChokinKanri addChokinKanri(ChokinKanri chokinKanri) {
-//		getChokinKanris().add(chokinKanri);
-//		chokinKanri.setUsers(this);
-//
-//		return chokinKanri;
-//	}
-//
-//	public ChokinKanri removeChokinKanri(ChokinKanri chokinKanri) {
-//		getChokinKanris().remove(chokinKanri);
-//		chokinKanri.setUsers(null);
-//
-//		return chokinKanri;
-//	}
-//
-//	public List<HolidayAtendance> getHolidayAtendances() {
-//		return this.holidayAtendances;
-//	}
-//
-//	public void setHolidayAtendances(List<HolidayAtendance> holidayAtendances) {
-//		this.holidayAtendances = holidayAtendances;
-//	}
-//
-//	public HolidayAtendance addHolidayAtendance(HolidayAtendance holidayAtendance) {
-//		getHolidayAtendances().add(holidayAtendance);
-//		holidayAtendance.setUsers(this);
-//
-//		return holidayAtendance;
-//	}
-//
-//	public HolidayAtendance removeHolidayAtendance(HolidayAtendance holidayAtendance) {
-//		getHolidayAtendances().remove(holidayAtendance);
-//		holidayAtendance.setUsers(null);
-//
-//		return holidayAtendance;
-//	}
+	public List<ChokinKanri> getChokinKanris() {
+		return this.chokinKanris;
+	}
+
+	public void setChokinKanris(List<ChokinKanri> chokinKanris) {
+		this.chokinKanris = chokinKanris;
+	}
+
+	public ChokinKanri addChokinKanri(ChokinKanri chokinKanri) {
+		getChokinKanris().add(chokinKanri);
+		chokinKanri.setUsers(this);
+
+		return chokinKanri;
+	}
+
+	public ChokinKanri removeChokinKanri(ChokinKanri chokinKanri) {
+		getChokinKanris().remove(chokinKanri);
+		chokinKanri.setUsers(null);
+
+		return chokinKanri;
+	}
+
+	public List<HolidayAtendance> getHolidayAtendances() {
+		return this.holidayAtendances;
+	}
+
+	public void setHolidayAtendances(List<HolidayAtendance> holidayAtendances) {
+		this.holidayAtendances = holidayAtendances;
+	}
+
+	public HolidayAtendance addHolidayAtendance(HolidayAtendance holidayAtendance) {
+		getHolidayAtendances().add(holidayAtendance);
+		holidayAtendance.setUsers(this);
+
+		return holidayAtendance;
+	}
+
+	public HolidayAtendance removeHolidayAtendance(HolidayAtendance holidayAtendance) {
+		getHolidayAtendances().remove(holidayAtendance);
+		holidayAtendance.setUsers(null);
+
+		return holidayAtendance;
+	}
 
 	public List<HolidayAtendanceYotei> getHolidayAtendanceYoteis() {
 		return this.holidayAtendanceYoteis;
@@ -408,27 +413,27 @@ public class Users implements Serializable {
 	public void setAffiliationMaster(AffiliationMaster affiliationMaster) {
 		this.affiliationMaster = affiliationMaster;
 	}
-//
-//	public List<YukyuKyukaFuyu> getYukyuKyukaFuyus() {
-//		return this.yukyuKyukaFuyus;
-//	}
-//
-//	public void setYukyuKyukaFuyus(List<YukyuKyukaFuyu> yukyuKyukaFuyus) {
-//		this.yukyuKyukaFuyus = yukyuKyukaFuyus;
-//	}
-//
-//	public YukyuKyukaFuyu addYukyuKyukaFuyus(YukyuKyukaFuyu yukyuKyukaFuyus) {
-//		getYukyuKyukaFuyus().add(yukyuKyukaFuyus);
-//		yukyuKyukaFuyus.setUsers(this);
-//
-//		return yukyuKyukaFuyus;
-//	}
-//
-//	public YukyuKyukaFuyu removeYukyuKyukaFuyus(YukyuKyukaFuyu yukyuKyukaFuyus) {
-//		getYukyuKyukaFuyus().remove(yukyuKyukaFuyus);
-//		yukyuKyukaFuyus.setUsers(null);
-//
-//		return yukyuKyukaFuyus;
-//	}
+
+	public List<YukyuKyukaFuyu> getYukyuKyukaFuyus() {
+		return this.yukyuKyukaFuyus;
+	}
+
+	public void setYukyuKyukaFuyus(List<YukyuKyukaFuyu> yukyuKyukaFuyus) {
+		this.yukyuKyukaFuyus = yukyuKyukaFuyus;
+	}
+
+	public YukyuKyukaFuyu addYukyuKyukaFuyus(YukyuKyukaFuyu yukyuKyukaFuyus) {
+		getYukyuKyukaFuyus().add(yukyuKyukaFuyus);
+		yukyuKyukaFuyus.setUsers(this);
+
+		return yukyuKyukaFuyus;
+	}
+
+	public YukyuKyukaFuyu removeYukyuKyukaFuyus(YukyuKyukaFuyu yukyuKyukaFuyus) {
+		getYukyuKyukaFuyus().remove(yukyuKyukaFuyus);
+		yukyuKyukaFuyus.setUsers(null);
+
+		return yukyuKyukaFuyus;
+	}
 
 }

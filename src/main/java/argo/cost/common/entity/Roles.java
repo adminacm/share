@@ -14,8 +14,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.context.annotation.Lazy;
-
 
 /**
  * The persistent class for the roles database table.
@@ -24,7 +22,6 @@ import org.springframework.context.annotation.Lazy;
 @Entity
 @Table(name="roles")
 @NamedQuery(name="Roles.findAll", query="SELECT r FROM Roles r")
-@Lazy(value=false)
 public class Roles implements Serializable {
 	private static final long serialVersionUID = 1L;
 

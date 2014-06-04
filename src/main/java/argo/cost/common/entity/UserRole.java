@@ -1,12 +1,17 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
-import org.springframework.context.annotation.Lazy;
-
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
@@ -16,7 +21,6 @@ import java.sql.Timestamp;
 @Entity
 @Table(name="user_roles")
 @NamedQuery(name="UserRole.findAll", query="SELECT u FROM UserRole u")
-@Lazy(value=false)
 public class UserRole implements Serializable {
 	private static final long serialVersionUID = 1L;
 

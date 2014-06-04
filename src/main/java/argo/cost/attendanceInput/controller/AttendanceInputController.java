@@ -162,8 +162,8 @@ public class AttendanceInputController extends AbstractController {
 	public String addLine(AttendanceInputForm form) throws ParseException {
 
 		AttendanceProjectVO pro = new AttendanceProjectVO();
-//		pro.setProjectItemList(comService.getProjectNameList(form.getUserId()));
-//		pro.setWorkItemList(attendanceInputService.getWorkItemList());
+		pro.setProjectItemList(comService.getProjectNameList(form.getUserId()));
+		pro.setWorkItemList(attendanceInputService.getWorkItemList());
 		form.getProjectList().add(pro);
 		return ATTDENDANCE_INPUT;
 	}

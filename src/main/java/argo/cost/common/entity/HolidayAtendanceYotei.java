@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 
 /**
- * 休日勤務予定.
+ * The persistent class for the holiday_atendance_yotei database table.
  * 
  */
 @Entity
@@ -45,10 +45,10 @@ public class HolidayAtendanceYotei implements Serializable {
 	@Column(name="updated_user_id")
 	private String updatedUserId;
 
-	//bi-directional many-to-one association to ProjWorkMaster
+	//bi-directional many-to-one association to ProjectMaster
 	@ManyToOne
 	@JoinColumn(name="project_code")
-	private ProjWorkMaster projWorkMaster;
+	private ProjectMaster projectMaster;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
@@ -143,12 +143,13 @@ public class HolidayAtendanceYotei implements Serializable {
 		this.updatedUserId = updatedUserId;
 	}
 
-	public ProjWorkMaster getProjWorkMaster() {
-		return this.projWorkMaster;
+
+	public ProjectMaster getProjectMaster() {
+		return this.projectMaster;
 	}
 
-	public void setProjWorkMaster(ProjWorkMaster projWorkMaster) {
-		this.projWorkMaster = projWorkMaster;
+	public void setProjectMaster(ProjectMaster projectMaster) {
+		this.projectMaster = projectMaster;
 	}
 
 	public Users getUser() {
