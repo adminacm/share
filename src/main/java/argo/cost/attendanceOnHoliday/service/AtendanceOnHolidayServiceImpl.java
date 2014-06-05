@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import argo.cost.attendanceOnHoliday.dao.AtendanceOnHolidayDao;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.entity.HolidayAtendanceYotei;
+import argo.cost.common.entity.ProjWorkMaster;
+import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.utils.CostDateUtils;
 
@@ -26,9 +29,9 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 
 	// 勤務日区分のプルダウンリストを取得
 	@Override
-	public ArrayList<ListItemVO> getAtendanceDayKbnList() {
+	public ArrayList<WorkDayKbnMaster> getAtendanceDayKbnList() {
 		
-		// TODO 勤務日区分のプルダウンリストを取得
+		// 勤務日区分のプルダウンリストを取得
 		return atendanceOnHolidayDao.getAtendanceDayKbnList();
 	}
 
@@ -56,7 +59,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		String weekday = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(currentDate));
 		atendanceOnHolidayForm.setStrAtendanceDate(CostDateUtils.formatDate(currentDate, CommonConstant.YYYY_MM_DD));
 		atendanceOnHolidayForm.setStrAtendanceDateShow(attDate.concat("(").concat(weekday).concat(")"));
-		// 当然日付のデータが存在する場合
+		// 当前日付のデータが存在する場合
 		if (atendanceOnHolidayEntityRes != null) {
 
 			// 休日勤務画面情報を更新する
@@ -118,6 +121,22 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			return 0;
 		}
 
+	}
+
+	/**
+	 * プロジェクト作業区分リスト取得処理
+	 * 
+	 *            
+	 * @return　projectWorkKbnList
+	 *            プロジェクト作業区分リスト
+	 */
+	@Override
+	public ArrayList<ProjWorkMaster> getProjectWorkKbnList() {
+		
+		// プロジェクト作業区分プルダウンリストを取得
+		ArrayList<ProjWorkMaster> projectWorkKbnList=  atendanceOnHolidayDao.getProjectWorkKbnList();
+		
+		return projectWorkKbnList;
 	}
 
 }
