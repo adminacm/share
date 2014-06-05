@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.ComDao;
 import argo.cost.common.model.UserVO;
 import argo.cost.common.utils.CostDateUtils;
@@ -182,8 +183,8 @@ public class SetupServiceImpl implements SetupService {
 		}
 		
 		// 休業開始日、休業終了日、退職日は日付の値であること
-		if (!CostDateUtils.isValidDate(setupInfo.getHolidayStart()) && !CostDateUtils.isValidDate(setupInfo.getHolidayEnd()) 
-				&& !CostDateUtils.isValidDate(setupInfo.getOutDate())) {
+		if (!CostDateUtils.isValidDate(setupInfo.getHolidayStart(), CommonConstant.YYYY_MM_DD) && !CostDateUtils.isValidDate(setupInfo.getHolidayEnd(), CommonConstant.YYYY_MM_DD)
+				&& !CostDateUtils.isValidDate(setupInfo.getOutDate(), CommonConstant.YYYY_MM_DD)) {
 			
 			// エラー
 			return false;
