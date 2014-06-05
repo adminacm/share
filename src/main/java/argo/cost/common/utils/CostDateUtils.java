@@ -55,10 +55,10 @@ public class CostDateUtils extends DateUtils {
 	 *            日付
 	 * @return チェック結果
 	 */
-	public static boolean isValidDate(String date) {
+	public static boolean isValidDate(String date, String format) {
 
 		// 日付フォーマット
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		dateFormat.setLenient(false);
 		try {
 			// 日付変換
@@ -103,9 +103,10 @@ public class CostDateUtils extends DateUtils {
 
 		String formatDate = "";
 
-		Date date = toDate(yyyymmdd);
 		// 日付が空白以外の場合
-		if (date != null) {
+		if (yyyymmdd != null && !yyyymmdd.isEmpty()) {
+			
+			Date date = toDate(yyyymmdd);
 
 			// 日付フォーマット
 			SimpleDateFormat sdfDate = new SimpleDateFormat(format);
