@@ -48,7 +48,7 @@ public class AttendanceOnHolidayRecordForm extends AbstractForm implements Seria
 	/**
 	 * 休日勤務リスト
 	 */
-	private List<HolidayOverWorkVO> holidayOverWorkList;
+	private List<HolidayWorkVO> holidayOverWorkList;
 	
 	
 	public String getYearPeriod() {
@@ -82,10 +82,10 @@ public class AttendanceOnHolidayRecordForm extends AbstractForm implements Seria
 			List<HolidayExchangeWorkVO> holidayExchangeWorkList) {
 		this.holidayExchangeWorkList = holidayExchangeWorkList;
 	}
-	public List<HolidayOverWorkVO> getHolidayOverWorkList() {
+	public List<HolidayWorkVO> getHolidayOverWorkList() {
 		return holidayOverWorkList;
 	}
-	public void setHolidayOverWorkList(List<HolidayOverWorkVO> holidayOverWorkList) {
+	public void setHolidayOverWorkList(List<HolidayWorkVO> holidayOverWorkList) {
 		this.holidayOverWorkList = holidayOverWorkList;
 	}
 }

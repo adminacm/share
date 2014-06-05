@@ -7,7 +7,7 @@ package argo.cost.attendanceOnHolidayRecord.model;
  *
  * @author COST argo Corporation.
  */
-public class HolidayOverWorkVO {
+public class HolidayWorkVO {
 
 	/**
 	 * 休日勤務日付
