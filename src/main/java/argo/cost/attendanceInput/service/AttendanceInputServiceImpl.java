@@ -19,6 +19,7 @@ import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.model.HolidayAttendanceVO;
 import argo.cost.attendanceInput.model.ShiftInfo;
 import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.constant.MessageConstants;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.HolidayAtendanceYotei;
@@ -49,6 +50,31 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 	// 明日
 	private final String NEXT = "next";
+	/**
+	 * シフトコード。
+	 */
+	private final String SHIFT_CODE = "シフトコード";
+	/**
+	 * ｼﾌﾄｺｰﾄﾞの時刻データ
+	 */
+	private final String SHIFT_TIME_DATA = "ｼﾌﾄｺｰﾄﾞの時刻データ";
+	/**
+	 * 勤務開始時刻。
+	 */
+	private final String KINMU_START_TIME = "勤務開始時刻";
+	/**
+	 * 勤務終了時刻
+	 */
+	private final String KINMU_END_TIME = "勤務終了時刻";
+	/**
+	 * 勤務開始時刻・勤務終了時刻
+	 */
+	private final String KINMU_START_END_TIME = "勤勤務開始時刻・勤務終了時刻終了時刻";
+	/**
+	 * 休暇欠勤区分
+	 */
+	private final String KYUKA_KEKIN_KBN = "休暇欠勤区分";
+	
 	/**
 	 * 共通サービスです。
 	 */
@@ -319,7 +345,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 						form.setWorkDayKbnName("出勤");
 					}
 				// 出勤フラグが「0」の場合
-				} else {
+				} else if ("0".equals(calender.getOnDutyFlg())) {
 					// 休日予定勤務情報が存在する場合
 					if (attYoteEntity != null) {
 						attendanceVO = new HolidayAttendanceVO();
@@ -360,7 +386,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 					}
 					
 				}
-				
 			}
 			// 個人プロジェクト作業情報
 			// 空行を追加する
@@ -390,19 +415,96 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public Boolean checkCountInput(AttendanceInputForm form) {
 		
-		List<String> msgList = new ArrayList<String>();
 		// シフトコード
 		String shiftCode = form.getShiftCd();
-		ShiftJikoku shiftEntity = baseDao.findById(shiftCode, ShiftJikoku.class);
+
 		
+//		// 勤務終了時刻が未入力の場合
+//		if (StringUtils.isEmpty(kinmuETime)) {
+//			// 勤務終了時刻が未入力です！
+//			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {KINMU_END_TIME});
+//		}
+
+		// シフトコードより、シフト情報を取得
+		BaseCondition condition = new BaseCondition();
+		condition.addConditionEqual("shiftCode", shiftCode);
+		List<argo.cost.common.entity.ShiftInfo> shiftList = baseDao.findResultList(condition, argo.cost.common.entity.ShiftInfo.class);
 		// シフトコード値がm_シフト表から抽出されない
-		if (shiftEntity == null) {
+		if (shiftList == null || shiftList.size() == 0) {
 			// ｼﾌﾄｺｰﾄﾞを正しく入力してください
-			msgList.add("ｼﾌﾄｺｰﾄﾞを正しく入力してください");
-			form.setConfirmMsgList(msgList);
-			
+			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {SHIFT_CODE});
+		}
+		// 勤務開始時刻
+		String kinmuSTime = form.getWorkSHour().concat(form.getWorkSMinute());
+		// 勤務開始時刻が入力される場合
+		if (!StringUtils.isEmpty(kinmuSTime)) {
+			// 勤務開始時刻のhhnn形式値が数値以外
+			if (!CostDateUtils.isTimeHHnn(kinmuSTime)) {
+				// 勤務開始時刻を正しく入力してください
+				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
+			}
+
+		}
+		// 勤務終了時刻
+		String kinmuETime = form.getWorkEHour().concat(form.getWorkEMinute());
+		// 勤務終了時刻が入力される場合
+		if (!StringUtils.isEmpty(kinmuETime)) {
+			// 勤務開始時刻のhhnn形式値が数値以外
+			if (!CostDateUtils.isTimeHHnn(kinmuETime)) {
+				// 勤務終了時刻を正しく入力してください
+				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
+			}
+		}
+
+		// 休暇欠勤区分
+		String kyukaKbn = form.getKyukaKb();
+		// 休暇欠勤区分を選択された場合
+		if (!StringUtils.isEmpty(kyukaKbn)) {
+			// 休暇欠勤区分"01"(全休(有給休暇))or"04"(特別休暇)or"05"(代休)or"06"(欠勤)or"08"(無給公休)で
+			if (StringUtils.equals(CommonConstant.KK_KBN_ZENKYU, kyukaKbn) ||
+					StringUtils.equals(CommonConstant.KK_KBN_TOKUBETUKYU, kyukaKbn) ||
+					StringUtils.equals(CommonConstant.KK_KBN_TAIKYU, kyukaKbn) ||
+					StringUtils.equals(CommonConstant.KK_KBN_KEKIN, kyukaKbn) ||
+					StringUtils.equals(CommonConstant.KK_KBN_MUKYU, kyukaKbn)) {
+				// 勤務開始時刻または勤務終了時刻に入力あり
+				if ((!StringUtils.isEmpty(kinmuSTime)) ||
+						(!StringUtils.isEmpty(kinmuETime))) {
+					
+					// 終日休暇の日は勤務できません
+					form.putConfirmMsg(MessageConstants.COSE_E_003);
+				}
+			// 上計以外の場合(休暇欠勤区分""or"02"or"03"or"07")
+			} else {
+				// 勤務区分"01"(出勤)or"03"(休日振替勤務)で勤務開始時刻または勤務終了時刻が未入力
+				String kinmuKbn = form.getWorkDayKbn();
+				if ((StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, kinmuKbn) ||
+						StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, kinmuKbn)) &&
+						(StringUtils.isEmpty(kinmuSTime) || StringUtils.isEmpty(kinmuETime))) {
+					// 勤務開始時刻・終了時刻を入力してください
+					form.putConfirmMsg(MessageConstants.COSE_E_004,new String[] {KINMU_START_END_TIME});
+				}
+			}
+		}
+		// シフト時刻情報を取得
+		ShiftJikoku shiftJikokuEntity = baseDao.findById(shiftCode, ShiftJikoku.class);
+		// シフト時刻からレコードが取得できない
+		if (shiftJikokuEntity == null) {
+			// ｼﾌﾄｺｰﾄﾞの時刻データが設定されていません
+			form.putConfirmMsg(MessageConstants.COSE_E_005, new String[] {SHIFT_TIME_DATA});
+		}
+		// 勤務開始時刻と勤務終了時刻が片方だけ入力されている
+		if ((StringUtils.isEmpty(kinmuSTime) && !StringUtils.isEmpty(kinmuETime)) ||
+				StringUtils.isEmpty(kinmuETime) && !StringUtils.isEmpty(kinmuSTime)) {
+			// 勤務開始時刻・終了時刻は両方入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_006);
+		}
+		// 勤務開始時刻の分
+		String kinmuSMinute = form.getWorkSMinute();
+		// 勤務終了時刻の分
+		String kinmuEMinute = form.getWorkEMinute();
+		// エラーが発生する場合
+		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
 			return false;
-			
 		}
 		// TODO 自動生成されたメソッド・スタブ
 		return true;
@@ -822,6 +924,4 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		}
 		
 	}
-
-	
 }

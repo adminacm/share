@@ -3,6 +3,8 @@ package argo.cost.approvalList;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
@@ -37,6 +39,14 @@ public class ApprovalListTest {
 	 */
 	@Test
 	public void testGetStatusList(){
+		 String str="我是{0},我来自{1},今年{2}岁";
+	       String[] arr={"中国人","北京","22"};
+	       Matcher m=Pattern.compile("\\{(\\d)\\}").matcher(str);
+	       while(m.find()){
+	            str=str.replace(m.group(),arr[Integer.parseInt(m.group(1))]);
+	        }
+
+		System.out.println(str);
 		
 		// テストデータ
 		StatusMaster statusInfo1 = new StatusMaster();

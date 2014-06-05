@@ -22,7 +22,7 @@ public class CostDateUtils extends DateUtils {
 	/**
 	 *　時刻フォーマットhhnn形式を表す文字列
 	 */
-	private static final String HHNN = "HH:mm";
+	private static final String HHNN = "HHmm";
 	
 	/**
 	 * 　数字を時間に変換する。
@@ -247,26 +247,27 @@ public class CostDateUtils extends DateUtils {
 	
 
 	/**
-	 * 時と分を取得。 <BR>
+	 * 分のチェック。 <BR>
 	 * 
-	 * @param time
-	 *            時刻
+	 * @param minute
+	 *            分
 	 * @return true:00,30
 	 * 		   false:以外
 	 */
-	public static boolean isHalfHour(String time) {
+	public static boolean isHalfHour(String minute) {
 		
-		try {
-			// 分を取得
-			String nn = time.substring(3);
-			if (StringUtils.equals("00", nn) || StringUtils.equals("30", nn)) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
+		// 分を入力されない場合
+		if (StringUtils.isEmpty(minute)) {
 			return false;
 		}
+		
+		int minu = Integer.parseInt(minute);
+		// 分が30単位でない
+		if (minu % 30 != 0) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 }

@@ -3,7 +3,8 @@ package argo.cost.common.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -170,15 +171,20 @@ public class AbstractForm implements Serializable {
 	 * @param messageId
 	 *            メッセージID
 	 */
-	public void putConfirmMsg(String messageId, Map<String, ?> paramMap) {
+	public void putConfirmMsg(String messageId, String[] replacementValues) {
 
 		if (this.confirmMsgList == null) {
 
 			this.confirmMsgList = new ArrayList<String>();
 		}
 
-		// TODO
-		this.confirmMsgList.add("");
+		Matcher m = Pattern.compile("\\｛(\\d)\\｝").matcher(messageId);
+		while (m.find()) {
+			messageId = messageId.replace(m.group(),
+					replacementValues[Integer.parseInt(m.group(1))]);
+		}
+
+		this.confirmMsgList.add(messageId);
 	}
 
 	/**
@@ -195,4 +201,15 @@ public class AbstractForm implements Serializable {
 
 		return this.confirmMsgList.get(0);
 	}
+
+	/**
+	 * 確認メッセージをクリアします。
+	 *
+	 * @return 確認メッセージ`内容
+	 */
+	public void clearMessages() {
+
+		this.confirmMsgList = null;
+	}
+	
 }

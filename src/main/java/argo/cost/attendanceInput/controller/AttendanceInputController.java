@@ -180,6 +180,7 @@ public class AttendanceInputController extends AbstractController {
 	@RequestMapping("/count")
 	public String count(AttendanceInputForm form) throws Exception {
 
+		form.clearMessages();
 		// チェックを実行する。TODO
 		if (attendanceInputService.checkCountInput(form)) {
 			// 勤務情報を計算する。

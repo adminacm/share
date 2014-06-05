@@ -73,7 +73,7 @@ function submitAction(action) {
 		</div>
 		<div style="margin-left: 10px;margin-top: 10px;">
 			<c:forEach var="message" items="${attendanceInputForm.confirmMsgList }">
-				<span style="color:red">${message }</span>
+				<span style="color:red">${message }</span><br/>
 			</c:forEach>
 		</div>
 		<div style="margin-top: 20px;margin-bottom:10px;" >

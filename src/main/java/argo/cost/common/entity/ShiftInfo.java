@@ -1,7 +1,9 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 
@@ -17,7 +19,10 @@ public class ShiftInfo implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-
+	
+	@Column(name="shift_code")
+	private String shiftCode;
+	
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
@@ -48,6 +53,14 @@ public class ShiftInfo implements Serializable {
 		this.id = id;
 	}
 
+	public String getShiftCode() {
+		return this.shiftCode;
+	}
+
+	public void setShiftCode(String shiftCode) {
+		this.shiftCode = shiftCode;
+	}
+	
 	public Timestamp getCreatedDate() {
 		return this.createdDate;
 	}
