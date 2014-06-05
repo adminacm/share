@@ -26,11 +26,6 @@ import argo.cost.common.utils.CostDateUtils;
 public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayRecordDao {
 	
 	/**
-	 * 勤務日区分「休日振替勤務」
-	 */
-	private static final String ATENDANCE_DATE_KBN_CD_03 = "03";
-	
-	/**
 	 * エンティティ管理クラス
 	 */
 	@PersistenceContext
@@ -68,7 +63,7 @@ public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayReco
 		
 		int index = 1;
 		// 勤務日区分「休日振替勤務」
-		query.setParameter(index++, ATENDANCE_DATE_KBN_CD_03);
+		query.setParameter(index++, CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE);
 		// 画面選択の年度
 		query.setParameter(index++, yearPeriod);
 		// 画面選択の氏名
@@ -174,7 +169,7 @@ public class AttendanceOnHolidayRecordDaoImpl implements AttendanceOnHolidayReco
 				holidayWork.setTurnedHolidayEndDate(CostDateUtils.formatDate(turnedHolidayEndDate, CommonConstant.YYYY_MM_DD));
 				// 代休日
 				String turnedHolidayDate = (String) items[index++];
-				if (CostDateUtils.isValidDate(turnedHolidayDate, "yyyyMMdd")) {
+				if (CostDateUtils.isValidDate(turnedHolidayDate, CommonConstant.YYYYMMDD)) {
 					holidayWork.setTurnedHolidayDate(CostDateUtils.formatDate(turnedHolidayDate, CommonConstant.YYYY_MM_DD));
 				} else {
 					holidayWork.setTurnedHolidayDate(turnedHolidayDate);
