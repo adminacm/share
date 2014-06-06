@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import argo.cost.attendanceOnHolidayRecordDetail.model.AttendanceOnHolidayRecordDetailForm;
 import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.HolidayAtendance;
 import argo.cost.common.utils.CostDateUtils;
@@ -217,32 +218,16 @@ public class AttendanceOnHolidayRecordDetailDaoImpl implements AttendanceOnHolid
 	 */
 	@Override
 	public void updateAttendanceOnHolidayRecordDetail(AttendanceOnHolidayRecordDetailForm form) {
-		
-		// SQLを作成する
-		StringBuilder strSql = new StringBuilder();
 
-		strSql.append("SELECT                          ");
-		strSql.append(" 	id                         ");
-		strSql.append("FROM                            ");
-		strSql.append(" 	holiday_atendance          ");
-		strSql.append("WHERE                           ");
-		strSql.append(" 	user_id = ?                ");
-		strSql.append(" AND holiday_syukin_date = ?    ");
-		
-		// クエリー取得
-		Query query = this.em.createNativeQuery(strSql.toString());
-		
-		int index = 1;
-		// 社員番号
-		query.setParameter(index++, form.getUserId());
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		// ユーザＩＤ
+		condition.addConditionEqual("users.id", form.getUserId());
 		// 日付
-		query.setParameter(index++, form.getDate().replaceAll("/", ""));
+		condition.addConditionEqual("holidaySyukinDate", form.getDate().replaceAll("/", ""));
+		// 休日出勤管理詳細情報を取得
+		HolidayAtendance detailInfo = baseDao.findSingleResult(condition, HolidayAtendance.class);
 		
-		// 休日出勤管理詳細情報取得
-		Object result = query.getSingleResult();
-		
-		HolidayAtendance detailInfo = this.em.find(HolidayAtendance.class, result);
-				
 		// システム日付
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String systemDate = format.format(new Date());
