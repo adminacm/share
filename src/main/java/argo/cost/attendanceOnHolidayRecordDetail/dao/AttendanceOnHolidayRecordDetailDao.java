@@ -1,5 +1,7 @@
 package argo.cost.attendanceOnHolidayRecordDetail.dao;
 
+import java.text.ParseException;
+
 import argo.cost.attendanceOnHolidayRecordDetail.model.AttendanceOnHolidayRecordDetailForm;
 
 /**
@@ -12,25 +14,33 @@ import argo.cost.attendanceOnHolidayRecordDetail.model.AttendanceOnHolidayRecord
 public interface AttendanceOnHolidayRecordDetailDao {
 
 	/**
-	 * 休日出勤管理詳細データを取得
+	 * 勤務区分が「休日振替勤務」の詳細情報を取得
 	 * 
 	 * @param userId
-	 * 	                           ユーザＩＤ
+	 * 	                           社員番号
 	 * @param date
 	 *            日付
-	 * @param workKbn
-	 *               勤務区分
-	 * @return 休日出勤管理詳細データ
+	 * @return 休日出勤管理詳細情報
 	 */
-	AttendanceOnHolidayRecordDetailForm getAttendanceOnHolidayRecordDetail(
-			String userId, String date, String workKbn);
+	AttendanceOnHolidayRecordDetailForm getFurikaeDetail(String userId, String date) throws ParseException;
+	
+	/**
+	 * 勤務区分が「休日勤務」の詳細情報を取得
+	 * 
+	 * @param userId
+	 * 	                           社員番号
+	 * @param date
+	 *            日付
+	 * @return 休日出勤管理詳細情報
+	 */
+	AttendanceOnHolidayRecordDetailForm getWorkDetail(String userId, String date) throws ParseException;
 
 	/**
 	 * 休日出勤管理詳細の超勤振替申請情報を更新
 	 * 
 	 * @param form
 	 *            休日出勤管理詳細画面情報
-	 * @return 更新結果フラグ
+	 *            
 	 */
-	Integer updateAttendanceOnHolidayRecordDetail(AttendanceOnHolidayRecordDetailForm attendanceOnHolidayRecordDetailForm);
+	void updateAttendanceOnHolidayRecordDetail(AttendanceOnHolidayRecordDetailForm form);
 }

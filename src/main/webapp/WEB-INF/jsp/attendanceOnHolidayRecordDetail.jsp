@@ -42,7 +42,7 @@ function submitAction(action) {
 				</tr>
 				<tr>
 					<td>勤務時間</td>
-					<td>${attendanceOnHolidayRecordDetailForm.workStartTime} ～　${attendanceOnHolidayRecordDetailForm.workEndTime}</td>
+					<td>${attendanceOnHolidayRecordDetailForm.workStartTime}&nbsp;&nbsp;～&nbsp;${attendanceOnHolidayRecordDetailForm.workEndTime}</td>
 				</tr>
 				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.exchangeDate}">
 					<tr>
