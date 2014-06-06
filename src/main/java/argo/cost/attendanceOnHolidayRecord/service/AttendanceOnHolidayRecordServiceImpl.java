@@ -49,8 +49,6 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		
 		Users userInfo = baseDao.findById(userId, Users.class);
 		
-		Users dairiInfo = baseDao.findById(userInfo.getDairishaId(), Users.class);
-		
 		// ドロップダウンリスト
 		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
 		
@@ -60,12 +58,18 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		item.setValue(userId);
 		item.setName(userInfo.getUserName());
 		resultList.add(item);
-
-		// 代理入力データを設定する
-		item = new ListItemVO();
-		item.setValue(userInfo.getDairishaId());
-		item.setName(dairiInfo.getUserName());
-		resultList.add(item);
+		
+		// 代理人があり
+		if (!userInfo.getDairishaId().isEmpty()) {
+			
+			Users dairiInfo = baseDao.findById(userInfo.getDairishaId(), Users.class);
+			
+			// 代理入力データを設定する
+			item = new ListItemVO();
+			item.setValue(userInfo.getDairishaId());
+			item.setName(dairiInfo.getUserName());
+			resultList.add(item);
+		}
 		
 		return resultList;
 	}
