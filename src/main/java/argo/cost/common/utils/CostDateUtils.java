@@ -25,23 +25,20 @@ public class CostDateUtils extends DateUtils {
 	private static final String HHNN = "HHmm";
 	
 	/**
-	 * 　数字を時間に変換する。
+	 * 　時間フォーマット
 	 * 
 	 * @param time
-	 *            半角整数
-	 * @return 表示用時間（HH：ｍｍ）
+	 *            時間（HHmm）
+	 * @return 表示用時間（HH:mm）
 	 */
-	public static String formatIntegerToTime(Integer time) {
+	public static String formatTime(String time) {
 
 		String result = StringUtils.EMPTY;
-		String str;
-		String hour;
-		String minute;
-		if (time != null) {
+		
+		if (!time.isEmpty()) {
 			// タイムのフォーマット
-			str = CostStringUtils.addZeroForNum(String.valueOf(time), 4);
-			hour = str.substring(0, 2);
-			minute = str.substring(2);
+			String hour = time.substring(0, 2);
+			String minute = time.substring(2);
 			result = hour.concat(CommonConstant.COLON_HANKAKU).concat(minute);
 		}
 
