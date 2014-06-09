@@ -47,6 +47,10 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	 */
 	private String workSTime;
 	/**
+	 * 勤務開始時刻計算用
+	 */
+	private String workSTimeStr;
+	/**
 	 * 勤務開始時刻(hh)
 	 */
 	private String workSHour;
@@ -59,6 +63,10 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	 * 勤務終了時刻(hhnn)
 	 */
 	private String workETime;
+	/**
+	 * 勤務終了時刻計算用
+	 */
+	private String workETimeStr;
 	/**
 	 * 勤務終了時刻(hh)
 	 */
@@ -105,7 +113,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * 超勤平日（通常）
 	 */
-	private Double choWeekday_nomal;
+	private Double choWeekdayNomal;
 	
 	/**
 	 * 超勤休日
@@ -145,8 +153,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * シフト情報
 	 */
-	private ShiftInfo shiftInfo;
-
+	private ShiftVO shiftVO;
 	//#################################
 	//#################################
 	/**
@@ -292,15 +299,15 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	/**
 	 * 超勤平日（通常）を取得する
 	 */
-	public Double getChoWeekday_nomal() {
-		return choWeekday_nomal;
+	public Double getChoWeekdayNomal() {
+		return choWeekdayNomal;
 	}
 
 	/**
 	 * 超勤平日（通常）を設定する
 	 */
-	public void setChoWeekday_nomal(Double choWeekday_nomal) {
-		this.choWeekday_nomal = choWeekday_nomal;
+	public void setChoWeekdayNomal(Double choWeekdayNomal) {
+		this.choWeekdayNomal = choWeekdayNomal;
 	}
 
 	/**
@@ -430,13 +437,28 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.kinmuKun = kinmuKun;
 	}
 
-	public ShiftInfo getShiftInfo() {
-		return shiftInfo;
+	public ShiftVO getShiftInfo() {
+		return shiftVO;
 	}
 
-	public void setShiftInfo(ShiftInfo shiftInfo) {
-		this.shiftInfo = shiftInfo;
+	public void setShiftInfo(ShiftVO shiftVO) {
+		this.shiftVO = shiftVO;
 	}
 
-	
+	public String getWorkSTimeStr() {
+		return workSTimeStr;
+	}
+
+	public void setWorkSTimeStr(String workSTimeStr) {
+		this.workSTimeStr = workSTimeStr;
+	}
+
+	public String getWorkETimeStr() {
+		return workETimeStr;
+	}
+
+	public void setWorkETimeStr(String workETimeStr) {
+		this.workETimeStr = workETimeStr;
+	}
+
 }

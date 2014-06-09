@@ -2,8 +2,6 @@ package argo.cost.attendanceInput;
 import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -14,15 +12,11 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProjectVO;
-import argo.cost.attendanceInput.model.HolidayRecord;
-import argo.cost.attendanceInput.model.WorkTimeDetailVO;
 import argo.cost.attendanceInput.service.AttendanceInputServiceImpl;
-import argo.cost.common.model.ListItemVO;
 import argo.cost.common.service.ComService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
+@ContextConfiguration(locations = {"classpath:/applicationContext_test.xml"}) 
 public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
 	// 勤怠入力
@@ -82,131 +76,20 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 	}
 
 	/**
-	 * 休日勤務情報取得をテスト
-	 */
-	@Test
-	public void testGetHolidayRecord(){
-
-		HolidayRecord record = new HolidayRecord();
-		record.setDate("20140329");
-		record.setUserId("user01");
-		record.setLimitDate("20140630");
-		record.setExchangeDay("20140331");
-		record.setTransferAppDay("");
-		record.setPayOutYM("");
-		record.setProcessKbn(0);
-		record.setProcessDate("20140501");
-		record.setProjectCode("01");
-		record.setProjectName("原価管理");
-		record.setWorkNaiyo("定期メンテナンス作業");
-
-		String userId = "user01";
-		String date = "20140329";
-		// ロケーション情報取得
-		HolidayRecord info = attS.getHolidayRecord(userId, date);
-		
-		// ロケーション情報
-		assertEquals(record.getLimitDate(), info.getLimitDate());
-		assertEquals(record.getExchangeDay(), info.getExchangeDay());
-		assertEquals(record.getTransferAppDay(), info.getTransferAppDay());
-		assertEquals(record.getPayOutYM(), info.getPayOutYM());
-		assertEquals(record.getProcessKbn(), info.getProcessKbn());
-		assertEquals(record.getProcessDate(), info.getProcessDate());
-		assertEquals(record.getProjectCode(), info.getProjectCode());
-		assertEquals(record.getProjectName(), info.getProjectName());
-		assertEquals(record.getWorkNaiyo(), info.getWorkNaiyo());
-	}
-	
-	/**
-	 * ユーザ作業情報取得をテスト
-	 */
-	@Test
-	public void testGetProjectList(){
-
-		String userId = "user01";
-		String date = "20140329";
-		
-		// ロケーション情報取得
-		List<AttendanceProjectVO> list = null;
-		try {
-			list = attS.getProjectList(userId, date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		// ユーザ作業情報
-		assertEquals(list.size(), 1);
-		assertEquals(String.valueOf(list.get(0).getHours()), "3.5");
-		assertEquals(list.get(0).getProjectItemList().size(), 1);
-		assertEquals(list.get(0).getProjectId(), "01");
-		assertEquals(list.get(0).getWorkId(), "01");
-		assertEquals(list.get(0).getWorkItemList().size(), 3);
-	}
-//
-//	/**
-//	 * 就業データ取得をテスト
-//	 */
-//	@Test
-//	public void testGetWorkTimeDetail(){
-//
-//		WorkTimeDetailVO record = new WorkTimeDetailVO();
-//		record.setUserId("user01");
-//		record.setWorkDate("20140329");
-//		record.setKinmuKbn("01");
-//		record.setShiftCode("0900");
-//		record.setKinmuSTime("09:00");
-//		record.setKinmuEtime("23:30");
-//		record.setSykaKetukinKbn("");
-//		record.setBikou("桜美林大学留学生管理システム保守：お客様問合せの対応");
-//		record.setFurikaeDate("");
-//		record.setSykaKetukinhours(0.0);
-//		record.setKinmuHours(0.0);
-//		record.setTyokinStime("18:00");
-//		record.setTyokinEtime("23:00");
-//		record.setTyokinHeijiHours(4.0);
-//		record.setTyokinHeijiTujyoHours(0.0);
-//		record.setTyokinKyujiHours(0.0);
-//		record.setSynyaKinmuHours(1.5);
-//		record.setStatus("01");
-//
-//		String userId = "user01";
-//		String date = "20140329";
-//		// 就業データ取得
-//		WorkTimeDetailVO info = attS.getWorkTimeDetail(userId, date);
-//		
-//		// 就業データ
-//		assertEquals(record.getUserId(), info.getUserId());
-//		assertEquals(record.getWorkDate(), info.getWorkDate());
-//		assertEquals(record.getKinmuKbn(), info.getKinmuKbn());
-//		assertEquals(record.getShiftCode(), info.getShiftCode());
-//		assertEquals(record.getKinmuSTime(), info.getKinmuSTime());
-//		assertEquals(record.getKinmuEtime(), info.getKinmuEtime());
-//		assertEquals(record.getSykaKetukinKbn(), info.getSykaKetukinKbn());
-//		assertEquals(record.getBikou(), info.getBikou());
-//		assertEquals(record.getFurikaeDate(), info.getFurikaeDate());
-//		assertEquals(record.getSykaKetukinhours(), info.getSykaKetukinhours());
-//		assertEquals(record.getKinmuHours(), info.getKinmuHours());
-//		assertEquals(record.getTyokinStime(), info.getTyokinStime());
-//		assertEquals(record.getTyokinEtime(), info.getTyokinEtime());
-//		assertEquals(record.getTyokinHeijiHours(), info.getTyokinHeijiHours());
-//		assertEquals(record.getTyokinHeijiTujyoHours(), info.getTyokinHeijiTujyoHours());
-//		assertEquals(record.getTyokinKyujiHours(), info.getTyokinKyujiHours());
-//		assertEquals(record.getSynyaKinmuHours(), info.getSynyaKinmuHours());
-//		assertEquals(record.getStatus(), info.getStatus());
-//	}
-//	
-	/**
 	 * 勤怠入力画面情報設定をテスト
+	 * 
+	 * 勤怠情報が存在しない場合、画面を初期化する
 	 */
 	@Test
-	public void testSetAttForm(){
+	public void testSetAttForm001() {
 		
 		AttendanceInputForm form = new AttendanceInputForm();
-		String userId = "user01";
+		form.setUserId("4001");
+		// 勤務日付
 		String date = "20140328";
 		// 勤怠入力画面情報設定
 		try {
-			attS.setAttForm(form, date, userId);
+			attS.setAttForm(form, date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -219,42 +102,48 @@ public class AttendanceInputTest extends AbstractTransactionalJUnit4SpringContex
 		// シフトコード
 		assertEquals(form.getShiftCd(), "0900");
 		// 勤務開始時刻
-		assertEquals(form.getWorkSHour(), "09");
-		assertEquals(form.getWorkSMinute(), "00");
+		assertEquals(form.getWorkSHour(), null);
+		assertEquals(form.getWorkSMinute(), null);
 		// 勤務終了時刻
-		assertEquals(form.getWorkEHour(), "23");
-		assertEquals(form.getWorkEMinute(), "30");
+		assertEquals(form.getWorkEHour(), null);
+		assertEquals(form.getWorkEMinute(), null);
 		// 休暇欠勤区分
-		assertEquals(form.getKyukaKb(), "");
+		assertEquals(form.getKyukaKb(), null);
 		// 超過勤務開始時刻
-		assertEquals(form.getChoSTime(), "18:00");
+		assertEquals(form.getChoSTime(), null);
 		// 超過勤務終了時刻
-		assertEquals(form.getChoETime(), "23:00");
+		assertEquals(form.getChoETime(), null);
+		// 休日勤務情報フラグ
+		assertEquals(form.getKinmuKun().toString(), "1");
 		// 平日割増
-		assertEquals(String.valueOf(form.getChoWeekday()), "4.0");
+		assertEquals(form.getChoWeekday(), null);
+		// 平日通常
+		assertEquals(form.getChoWeekdayNomal(), null);
+		// 超勤休日
+		assertEquals(form.getChoHoliday(), null);
 		// 深夜
-		assertEquals(String.valueOf(form.getmNHours()), "1.5");
+		assertEquals(form.getmNHours(), null);
 		// 休暇欠勤区分リスト
-		assertEquals(form.getKyukakbList().size(), 3);
+		assertEquals(form.getKyukakbList().size(), 9);
 		// 個人倦怠プロジェクト情報リスト
 		assertEquals(form.getProjectList().size(), 1);
 		// ロケーション情報設定
 		assertEquals(form.getLocationItemList().size(), 3);
 	}
-
-	/**
-	 * 就業データを取得をテスト
-	 */
-	@Test
-	public void testUpdateAttdendanceInfo(){
-		
-		AttendanceInputForm form = new AttendanceInputForm();
-
-		form.setWorkSTime("1000");
-		form.setWorkETime("2100");
-		Integer updateFlg = attS.updateAttdendanceInfo(form);
-		
-		// ユーザ作業情報
-		assertEquals(updateFlg, Integer.valueOf(1));
-	}
+//
+//	/**
+//	 * 就業データを取得をテスト
+//	 */
+//	@Test
+//	public void testUpdateAttdendanceInfo(){
+//		
+//		AttendanceInputForm form = new AttendanceInputForm();
+//
+//		form.setWorkSTime("1000");
+//		form.setWorkETime("2100");
+//		Integer updateFlg = attS.updateAttdendanceInfo(form);
+//		
+//		// ユーザ作業情報
+//		assertEquals(updateFlg, Integer.valueOf(1));
+//	}
 }
