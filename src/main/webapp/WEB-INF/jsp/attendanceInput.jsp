@@ -209,8 +209,8 @@ function submitAction(action) {
 					<tr>
 						<td width="90">平日通常</td>
 						<td>
-							<c:if test="${attendanceInputForm.choWeekday_nomal != 0.0 && attendanceInputForm.choWeekday_nomal != null}">
-								${attendanceInputForm.choWeekday_nomal}h
+							<c:if test="${attendanceInputForm.choWeekdayNomal != 0.0 && attendanceInputForm.choWeekdayNomal != null}">
+								${attendanceInputForm.choWeekdayNomal}h
 							</c:if>
 						</td>
 					</tr>

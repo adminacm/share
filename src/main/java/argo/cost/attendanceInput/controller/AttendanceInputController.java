@@ -182,10 +182,10 @@ public class AttendanceInputController extends AbstractController {
 
 		form.clearMessages();
 		// チェックを実行する。TODO
-		if (attendanceInputService.checkCountInput(form)) {
+//		if (attendanceInputService.checkCountInput(form)) {
 			// 勤務情報を計算する。
 			attendanceInputService.calcWorkingRec(form);
-		}
+//		}
 		
 		return ATTDENDANCE_INPUT;
 	}

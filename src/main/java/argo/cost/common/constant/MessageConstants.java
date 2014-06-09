@@ -35,4 +35,16 @@ public class MessageConstants {
 	 *　勤務開始時刻・終了時刻は両方入力してください
 	 */
 	public static final String COSE_E_006 = "勤務開始時刻・終了時刻は両方入力してください。";
+	/**
+	 *　｛0｝は30分単位で入力してください。
+	 */
+	public static final String COSE_E_007 = "｛0｝は30分単位で入力してください。";
+	/**
+	 *　勤務開始時刻は定時勤務時間内の時刻を入力してください
+	 */
+	public static final String COSE_E_008 = "勤務開始時刻は定時勤務時間内の時刻を入力してください。";
+	/**
+	 *　勤務終了時刻は勤務開始時刻より後の時刻を入力してください
+	 */
+	public static final String COSE_E_009 = "勤務終了時刻は勤務開始時刻より後の時刻を入力してください。";
 }

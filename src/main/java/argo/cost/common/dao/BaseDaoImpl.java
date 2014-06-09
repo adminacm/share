@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 単一テーブル操作DAOImpl <br />
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Repository
+@Transactional
 public class BaseDaoImpl implements BaseDao {
 	
 	// ############################
