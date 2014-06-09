@@ -6,6 +6,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.utils.CostDateUtils;
 
 public class AtendanceOnHolidayCheck implements Validator {
@@ -62,7 +63,7 @@ public class AtendanceOnHolidayCheck implements Validator {
 		    	if (StringUtils.isEmpty(hurikaeDate)) {
 		    		errors.rejectValue("strHurikaeDate", "er1118", new Object[]{"振替休日"}, "{0}を入力してください");
 		    	// 振替休日に日付以外が入力されている
-		    	} else if (!CostDateUtils.isValidDate(hurikaeDate)) {
+		    	} else if (!CostDateUtils.isValidDate(hurikaeDate, CommonConstant.YYYY_MM_DD)) {
 		    		errors.rejectValue("strAtendanceTimeStat", "E003", new Object[]{"振替休日"}, "{0}を正しく入力してください");
 		    	// 振替休日が当日の日付
 		    	} else if (StringUtils.equals(hurikaeDate, atendanceOnHoliday.getStrAtendanceDate())) {

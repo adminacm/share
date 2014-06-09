@@ -1,5 +1,6 @@
 package argo.cost.attendanceOnHolidayRecord.controller;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	 * 休日出勤管理サービス
 	 */
 	@Autowired
-	protected AttendanceOnHolidayRecordService attendanceOnHolidayRecordService;
+	protected AttendanceOnHolidayRecordService service;
 
 	/**
 	 * 休日出勤管理画面ID
@@ -60,12 +61,12 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		form.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
 
 		// 氏名をセット
-		form.setUserNameList(comService.getUserNameList(form.getUserId()));
+		form.setUserNameList(service.getUserNameList(form.getUserId()));
 		// 初期選択値に自分をセット
 		form.setUserName(form.getUserId());
 		
 		// 画面情報を設定する。
-		attendanceOnHolidayRecordService.setAttendanceOnHolidayRecordInfo(form);
+		service.setAttendanceOnHolidayRecordInfo(form);
 		
 		model.addAttribute(form);
 
@@ -77,15 +78,17 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	/**
 	 * 休日出勤管理画面の検索処理
 	 * 
-	 * @param attendanceOnHolidayRecordForm
-	 *                                     休日出勤管理画面情報
+	 * @param form
+	 *            休日出勤管理画面情報
+	 *            
 	 * @return 休日出勤管理画面
+	 * @throws ParseException 
 	 */
 	@RequestMapping(value = SEARCH, method = RequestMethod.POST)
-	public String searchAttendanceOnHolidayRecord(AttendanceOnHolidayRecordForm attendanceOnHolidayRecordForm) {
+	public String searchAttendanceOnHolidayRecord(AttendanceOnHolidayRecordForm form) throws ParseException {
 		
 		// 画面情報を設定する。
-		attendanceOnHolidayRecordService.setAttendanceOnHolidayRecordInfo(attendanceOnHolidayRecordForm);
+		service.setAttendanceOnHolidayRecordInfo(form);
 
 		// 休日出勤管理画面を戻り
 		return ATTENDANCE_ONHOLIDAY_RECORD;

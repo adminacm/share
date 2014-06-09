@@ -1,6 +1,7 @@
 package argo.cost.holidayRecord.dao;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.utils.CostDateUtils;
 import argo.cost.holidayRecord.model.AbsenceVO;
 import argo.cost.holidayRecord.model.PayHolidayVO;
 import argo.cost.holidayRecord.model.SpecialHolidayVO;
@@ -24,27 +27,6 @@ import argo.cost.holidayRecord.model.SpecialHolidayVO;
  */
 @Repository
 public class HolidayRecordDaoImpl implements HolidayRecordDao {
-
-	/**
-	 * 休暇欠勤区分「全休(有給休暇)」
-	 */
-	private static final String KYUKA_KEKIN_KBN_01 = "01";
-	/**
-	 * 休暇欠勤区分「半休(有給休暇)」
-	 */
-	private static final String KYUKA_KEKIN_KBN_02 = "02";
-	/**
-	 * 休暇欠勤区分「時間休(有給休暇)」
-	 */
-	private static final String KYUKA_KEKIN_KBN_03 = "03";
-	/**
-	 * 休暇欠勤区分「特別休暇」
-	 */
-	private static final String KYUKA_KEKIN_KBN_04 = "04";
-	/**
-	 * 休暇欠勤区分「欠勤」
-	 */
-	private static final String KYUKA_KEKIN_KBN_06 = "06";
 	
 	/**
 	 * エンティティ管理クラス
@@ -90,11 +72,11 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 		query.setParameter(index++, yearPeriod);
 
 		// 「全休」をセット
-		query.setParameter(index++, KYUKA_KEKIN_KBN_01);
+		query.setParameter(index++, CommonConstant.KK_KBN_ZENKYU);
 		// 「半休」をセット
-		query.setParameter(index++, KYUKA_KEKIN_KBN_02);
+		query.setParameter(index++, CommonConstant.KK_KBN_HANKYU);
 		// 「時間休」をセット
-		query.setParameter(index++, KYUKA_KEKIN_KBN_03);
+		query.setParameter(index++, CommonConstant.KK_KBN_JIKANKYU);
 		
 		// 有給休暇情報取得
 		@SuppressWarnings("unchecked")
@@ -120,7 +102,12 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 				index = 0;
 				// 検索結果に設定
 				//　日付
-				payHolidayInfo.setPayHolidayDate((String) items[index++]);
+				String payHolidayDate = (String) items[index++];
+				try {
+					payHolidayInfo.setPayHolidayDate(CostDateUtils.formatDate(payHolidayDate, CommonConstant.YYYY_MM_DD));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				// 休暇欠勤区分コード
 				payHolidayInfo.setHolidayKbnCode((String) items[index++]);
 				// 時間数
@@ -129,13 +116,13 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 				// 休暇欠勤区分名称
 				payHolidayInfo.setHolidayKbnName((String) items[index++]);
 				
-				if (KYUKA_KEKIN_KBN_01.equals(payHolidayInfo.getHolidayKbnCode())) {
+				if (CommonConstant.KK_KBN_ZENKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
 
 					// 日数
-					payHolidayInfo.setDayQuantity("1");
+					payHolidayInfo.setDayQuantity("1.0");
 					// 時間数
 					payHolidayInfo.setHourQuantity(null);
-				} else if (KYUKA_KEKIN_KBN_02.equals(payHolidayInfo.getHolidayKbnCode())) {
+				} else if (CommonConstant.KK_KBN_HANKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
 
 					// 日数
 					payHolidayInfo.setDayQuantity("0.5");
@@ -206,7 +193,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 		query.setParameter(index++, userId);
 		query.setParameter(index++, yearPeriod);
 		// 休暇欠勤区分に「欠勤」をセット
-		query.setParameter(index++, KYUKA_KEKIN_KBN_06);
+		query.setParameter(index++, CommonConstant.KK_KBN_KEKIN);
 		
 		// 欠勤情報取得
 		@SuppressWarnings("unchecked")
@@ -233,7 +220,12 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 				index = 0;
 				// 検索結果に設定
 				//　日付
-				absenceInfo.setAbsentDate((String) items[index++]);
+				String absentDate = (String) items[index++];
+				try {
+					absenceInfo.setAbsentDate(CostDateUtils.formatDate(absentDate, CommonConstant.YYYY_MM_DD));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				//　時間数
 				BigDecimal hourQuantity = (BigDecimal) items[index++];
 				absenceInfo.setHourQuantity(hourQuantity.toString());
@@ -241,7 +233,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 				if (absenceInfo.getHourQuantity().compareTo("7.5") >= 0) {
 
 					//　日数
-					absenceInfo.setDayQuantity("1");
+					absenceInfo.setDayQuantity("1.0");
 					//　時間数
 					absenceInfo.setHourQuantity(null);
 				}
@@ -307,7 +299,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 		query.setParameter(index++, userId);
 		query.setParameter(index++, yearPeriod);
 		// 休暇欠勤区分に「特別休暇」をセット
-		query.setParameter(index++, KYUKA_KEKIN_KBN_04);
+		query.setParameter(index++, CommonConstant.KK_KBN_TOKUBETUKYU);
 		
 		// 特別休暇情報取得
 		@SuppressWarnings("unchecked")
@@ -330,9 +322,14 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 				index = 0;
 				// 検索結果に設定
 				//　日付
-				specialHolidayInfo.setSpecialHolidayDate((String) resultList.get(i));
+				String specialHolidayDate = (String) resultList.get(i);
+				try {
+					specialHolidayInfo.setSpecialHolidayDate(CostDateUtils.formatDate(specialHolidayDate, CommonConstant.YYYY_MM_DD));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				//　日数
-				specialHolidayInfo.setDayQuantity("1");
+				specialHolidayInfo.setDayQuantity("1.0");
 
 				// 日数がnull以外の場合
 				if (specialHolidayInfo.getDayQuantity() != null) {

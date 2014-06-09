@@ -17,5 +17,5 @@ public interface HolidayRecordService {
 	 * @param form
 	 *            休暇管理画面情報
 	 */
-	void setHolidayRecordInfo(HolidayRecordForm holidayRecordForm);
+	void setHolidayRecordInfo(HolidayRecordForm form);
 }

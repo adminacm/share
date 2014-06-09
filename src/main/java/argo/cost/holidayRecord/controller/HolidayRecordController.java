@@ -68,15 +68,15 @@ public class HolidayRecordController extends AbstractController {
 	/**
 	 * 休暇管理画面の検索処理
 	 * 
-	 * @param holidayRecordForm
-	 *                          休暇管理画面情報
+	 * @param form
+	 *            休暇管理画面情報
 	 * @return 休暇管理画面
 	 */
 	@RequestMapping(value = SEARCH)
-	public String searchHolidayRecord(HolidayRecordForm holidayRecordForm) {
+	public String searchHolidayRecord(HolidayRecordForm form) {
 		
 		// 画面情報を設定する。
-		holidayRecordService.setHolidayRecordInfo(holidayRecordForm);
+		holidayRecordService.setHolidayRecordInfo(form);
 
 		// 休暇管理画面を戻り
 		return HOLIDAY_RECORD;

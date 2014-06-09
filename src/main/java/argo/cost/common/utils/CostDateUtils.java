@@ -25,23 +25,20 @@ public class CostDateUtils extends DateUtils {
 	private static final String HHNN = "HHmm";
 	
 	/**
-	 * 　数字を時間に変換する。
+	 * 　時間フォーマット
 	 * 
 	 * @param time
-	 *            半角整数
-	 * @return 表示用時間（HH：ｍｍ）
+	 *            時間（HHmm）
+	 * @return 表示用時間（HH:mm）
 	 */
-	public static String formatIntegerToTime(Integer time) {
+	public static String formatTime(String time) {
 
 		String result = StringUtils.EMPTY;
-		String str;
-		String hour;
-		String minute;
-		if (time != null) {
+		
+		if (!time.isEmpty()) {
 			// タイムのフォーマット
-			str = CostStringUtils.addZeroForNum(String.valueOf(time), 4);
-			hour = str.substring(0, 2);
-			minute = str.substring(2);
+			String hour = time.substring(0, 2);
+			String minute = time.substring(2);
 			result = hour.concat(CommonConstant.COLON_HANKAKU).concat(minute);
 		}
 
@@ -55,10 +52,10 @@ public class CostDateUtils extends DateUtils {
 	 *            日付
 	 * @return チェック結果
 	 */
-	public static boolean isValidDate(String date) {
+	public static boolean isValidDate(String date, String format) {
 
 		// 日付フォーマット
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		dateFormat.setLenient(false);
 		try {
 			// 日付変換
@@ -103,9 +100,10 @@ public class CostDateUtils extends DateUtils {
 
 		String formatDate = "";
 
-		Date date = toDate(yyyymmdd);
 		// 日付が空白以外の場合
-		if (date != null) {
+		if (yyyymmdd != null && !yyyymmdd.isEmpty()) {
+			
+			Date date = toDate(yyyymmdd);
 
 			// 日付フォーマット
 			SimpleDateFormat sdfDate = new SimpleDateFormat(format);

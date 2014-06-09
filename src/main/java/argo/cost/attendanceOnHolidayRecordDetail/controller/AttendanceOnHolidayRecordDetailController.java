@@ -29,7 +29,7 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 	 * 休日出勤管理サービス
 	 */
 	@Autowired
-	protected AttendanceOnHolidayRecordDetailService attendanceOnHolidayRecordDetailService;
+	protected AttendanceOnHolidayRecordDetailService service;
 
 	/**
 	 * 休日出勤管理画面ID
@@ -62,10 +62,11 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 		AttendanceOnHolidayRecordDetailForm form = initForm(AttendanceOnHolidayRecordDetailForm.class);
 
 		// 休日出勤管理詳細画面情報取得
-		AttendanceOnHolidayRecordDetailForm detailForm = attendanceOnHolidayRecordDetailService.getAttendanceOnHolidayRecordDetail(form.getUserId(), date, workKbn);
+		AttendanceOnHolidayRecordDetailForm detailForm = service.getAttendanceOnHolidayRecordDetail(form.getUserId(), date, workKbn);
 		
 		// 代休日が空白、代休期限があり、超勤振替申請日が空白の場合
-		if (detailForm.getTurnedHolidayDate().isEmpty() && !detailForm.getTurnedHolidayEndDate().isEmpty() && detailForm.getOverWorkTurnedReqDate().isEmpty()) {
+		if (detailForm.getTurnedHolidayDate() == null && detailForm.getTurnedHolidayEndDate() != null && detailForm.getOverWorkTurnedReqDate() == null) {
+			
 			// 超勤振替フラグ
 			detailForm.setOverWorkFlg(true);
 		}
@@ -80,20 +81,16 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 	/**
 	 * 超勤に振替えるボタンを押下
 	 * 
-	 * @param attendanceOnHolidayRecordDetailForm
-	 *                                           休日出勤管理詳細画面情報
+	 * @param form
+	 *            休日出勤管理詳細画面情報
 	 * @return
 	 *        休日出勤管理詳細画面
 	 */
 	@RequestMapping(value = OVERWORKEXCHANGE, method = RequestMethod.POST)
-	public String overworkExchange(AttendanceOnHolidayRecordDetailForm attendanceOnHolidayRecordDetailForm) {
+	public String overworkExchange(AttendanceOnHolidayRecordDetailForm form) {
 		
 		// 超勤振替申請を提出
-		Integer resultFlg = attendanceOnHolidayRecordDetailService.overWorkPayRequest(attendanceOnHolidayRecordDetailForm);
-
-		if (resultFlg == 1) {
-			System.out.print("超勤振替申請日を成功に更新された");
-		}
+		service.overWorkPayRequest(form);
 		
 		// 超勤振替申請が提出、休日出勤管理画面へ戻る
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_ONHOLIDAY_RECORD + INIT;
@@ -103,7 +100,7 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 	 * 戻るボタンを押下
 	 */
 	@RequestMapping(value = BACK)
-	public String returnAttendanceOnHolidayRecord() {
+	public String doBack() {
 
 		// 戻るボタンを押すと入力内容が破棄され、休日出勤管理画面へ戻る
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_ONHOLIDAY_RECORD + INIT;

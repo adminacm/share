@@ -2,6 +2,7 @@ package argo.cost.setup.model;
 
 import java.util.List;
 
+import argo.cost.common.entity.ShiftInfo;
 import argo.cost.common.model.UserVO;
 
 /**
@@ -34,7 +35,7 @@ public class SetupForm {
 	/**
 	 * 標準ｼﾌﾄ
 	 */
-//	private List<Shift> standardShiftList;
+	private List<ShiftInfo> standardShiftList;
 	
 	/**
 	 * 勤務開始時刻
@@ -118,13 +119,13 @@ public class SetupForm {
 		this.standardShift = standardShift;
 	}
 
-//	public List<Shift> getStandardShiftList() {
-//		return standardShiftList;
-//	}
-//
-//	public void setStandardShiftList(List<Shift> standardShiftList) {
-//		this.standardShiftList = standardShiftList;
-//	}
+	public List<ShiftInfo> getStandardShiftList() {
+		return standardShiftList;
+	}
+
+	public void setStandardShiftList(List<ShiftInfo> standardShiftList) {
+		this.standardShiftList = standardShiftList;
+	}
 
 	public String getWorkStart() {
 		return workStart;

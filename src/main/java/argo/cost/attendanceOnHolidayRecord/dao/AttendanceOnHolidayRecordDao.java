@@ -1,9 +1,10 @@
 package argo.cost.attendanceOnHolidayRecord.dao;
 
+import java.text.ParseException;
 import java.util.List;
 
 import argo.cost.attendanceOnHolidayRecord.model.HolidayExchangeWorkVO;
-import argo.cost.attendanceOnHolidayRecord.model.HolidayOverWorkVO;
+import argo.cost.attendanceOnHolidayRecord.model.HolidayWorkVO;
 
 /**
  * <p>
@@ -24,7 +25,7 @@ public interface AttendanceOnHolidayRecordDao {
 	 * @return
 	 *        休日振替勤務情報
 	 */
-	List<HolidayExchangeWorkVO> getHolidayExchangeWorkList(String yearPeriod, String userName);
+	List<HolidayExchangeWorkVO> getHolidayExchangeWorkList(String yearPeriod, String userName) throws ParseException ;
 	
 	/**
 	 * 休日勤務情報を取得
@@ -36,5 +37,5 @@ public interface AttendanceOnHolidayRecordDao {
 	 * @return
 	 *        休日勤務情報
 	 */
-	List<HolidayOverWorkVO> getHolidayOverWorkList(String yearPeriod, String userName);
+	List<HolidayWorkVO> getHolidayWorkList(String yearPeriod, String userName) throws ParseException ;
 }

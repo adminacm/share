@@ -84,5 +84,4 @@ public class HolidayRecordForm extends AbstractForm implements Serializable {
 	public void setSpecialHolidayList(List<SpecialHolidayVO> specialHolidayList) {
 		this.specialHolidayList = specialHolidayList;
 	}
-	
 }

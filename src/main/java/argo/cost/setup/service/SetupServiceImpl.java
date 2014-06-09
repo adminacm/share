@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.entity.ShiftInfo;
+import argo.cost.common.entity.ShiftJikoku;
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.UserVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.dao.SetupDao;
-import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
 
 /**
@@ -46,37 +49,37 @@ public class SetupServiceImpl implements SetupService {
 		SetupForm setupInfo = new SetupForm();
 
 		// DBから、個人設定情報を取得
-		SetupEntity setupEntity = setupDao.getSetupInfo(userId);
+		Users setupEntity = setupDao.getSetupInfo(userId);
 		
 		// 画面の個人設定情報を設定
 		
-		// 代理入力者コード
-		setupInfo.setAgentCd(setupEntity.getAgent());
+		// TODO 代理入力者コード
+		setupInfo.setAgentCd(setupEntity.getDairishaId());
 		
-		// 代理入力者名
-		UserVO agentInfo = comDao.findUserById(setupEntity.getAgent());
+		// TODO 代理入力者名
+		UserVO agentInfo = comDao.findUserById(setupEntity.getDairishaId());
 		setupInfo.setAgentName(agentInfo.getUserName());
 		
 		// 標準ｼﾌﾄ
-		setupInfo.setStandardShift(setupEntity.getStandardShift());
+		setupInfo.setStandardShift(setupEntity.getStandardShiftCd());
 		
 		// 勤務開始時刻
-		setupInfo.setWorkStart(CostDateUtils.formatIntegerToTime(setupEntity.getWorkStart()));
+		setupInfo.setWorkStart(setupEntity.getKinmuStartTime());
 		
 		// 勤務終了時刻
-		setupInfo.setWorkEnd(CostDateUtils.formatIntegerToTime(setupEntity.getWorkEnd()));
+		setupInfo.setWorkEnd(setupEntity.getKinmuEndTime());
 		
 		// 入社日
-		setupInfo.setJoinDate(setupEntity.getJoinDate());
+		setupInfo.setJoinDate(setupEntity.getNyushaDate());
 		
 		// 休業開始日
-		setupInfo.setHolidayStart(setupEntity.getHolidayStart());
+		setupInfo.setHolidayStart(setupEntity.getKyugyoStartDate());
 		
 		// 休業終了日
-		setupInfo.setHolidayEnd(setupEntity.getHolidayEnd());
+		setupInfo.setHolidayEnd(setupEntity.getKyugyoEndDate());
 		
 		// 退職日
-		setupInfo.setOutDate(setupEntity.getOutDate());
+		setupInfo.setOutDate(setupEntity.getTaisyokuDate());
 		
 		// 個人設定情報を戻る
 		return setupInfo;
@@ -94,7 +97,7 @@ public class SetupServiceImpl implements SetupService {
 		setupInfo.setAgentList(getAgentList());
     	
 		// 標準ｼﾌﾄリスト
-//		setupInfo.setStandardShiftList(getShiftList());
+		setupInfo.setStandardShiftList(getShiftList());
     	
     	// 勤務開始時刻
     	if (!setupInfo.getWorkStart().isEmpty()){
@@ -128,25 +131,25 @@ public class SetupServiceImpl implements SetupService {
 	public void changeShift(SetupForm setupInfo) {
 		
 		// 標準ｼﾌﾄより、ｼﾌﾄ時刻情報を取得
-//		ShiftTime shiftTime = setupDao.getshiftTime(setupInfo.getStandardShift());
+		ShiftJikoku shiftTime = setupDao.getshiftTime(setupInfo.getStandardShift());
 		
     	// 勤務開始時刻
-//    	if (shiftTime != null && !shiftTime.getStandSTime().isEmpty()){
-//
-//        	// 勤務開始時刻（時）
-//    		setupInfo.setWorkStartH(shiftTime.getStandSTime().substring(0, 2));
-//        	// 勤務開始時刻（分）
-//    		setupInfo.setWorkStartM(shiftTime.getStandSTime().substring(2, 4));
-//    		
-//    	}
-//    	// 勤務終了時刻
-//    	if (shiftTime != null && !shiftTime.getStandEtime().isEmpty()){
-//    		
-//        	// 勤務終了時刻（時）
-//    		setupInfo.setWorkEndH(shiftTime.getStandEtime().substring(0, 2));
-//        	// 勤務終了時刻（分）
-//    		setupInfo.setWorkEndM(shiftTime.getStandEtime().substring(2, 4));
-//    	}
+    	if (shiftTime != null && !shiftTime.getTeijiKinmuTime().isEmpty()){
+
+        	// 勤務開始時刻（時）
+    		setupInfo.setWorkStartH(shiftTime.getTeijiTaikinTime().substring(0, 2));
+        	// 勤務開始時刻（分）
+    		setupInfo.setWorkStartM(shiftTime.getTeijiTaikinTime().substring(2, 4));
+    		
+    	}
+    	// 勤務終了時刻
+    	if (shiftTime != null && !shiftTime.getTeijiTaikinTime().isEmpty()){
+    		
+        	// 勤務終了時刻（時）
+    		setupInfo.setWorkEndH(shiftTime.getTeijiTaikinTime().substring(0, 2));
+        	// 勤務終了時刻（分）
+    		setupInfo.setWorkEndM(shiftTime.getTeijiTaikinTime().substring(2, 4));
+    	}
 		
 	}
 
@@ -182,8 +185,8 @@ public class SetupServiceImpl implements SetupService {
 		}
 		
 		// 休業開始日、休業終了日、退職日は日付の値であること
-		if (!CostDateUtils.isValidDate(setupInfo.getHolidayStart()) && !CostDateUtils.isValidDate(setupInfo.getHolidayEnd()) 
-				&& !CostDateUtils.isValidDate(setupInfo.getOutDate())) {
+		if (!CostDateUtils.isValidDate(setupInfo.getHolidayStart(), CommonConstant.YYYY_MM_DD) && !CostDateUtils.isValidDate(setupInfo.getHolidayEnd(), CommonConstant.YYYY_MM_DD)
+				&& !CostDateUtils.isValidDate(setupInfo.getOutDate(), CommonConstant.YYYY_MM_DD)) {
 			
 			// エラー
 			return false;
@@ -212,13 +215,13 @@ public class SetupServiceImpl implements SetupService {
 	 * @return
 	 *        ｼﾌﾄリスト
 	 */
-//	private List<Shift> getShiftList() {
-//
-//		// ｼﾌﾄリストを取得
-//		List<Shift> shiftList = setupDao.getShiftList();
-//		
-//		return shiftList;
-//	}
+	private List<ShiftInfo> getShiftList() {
+
+		// ｼﾌﾄリストを取得
+		List<ShiftInfo> shiftList = setupDao.getShiftList();
+		
+		return shiftList;
+	}
 	
 	/**
 	 * 保存処理を実行

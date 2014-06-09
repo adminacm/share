@@ -1,5 +1,7 @@
 package argo.cost.attendanceOnHolidayRecordDetail.service;
 
+import java.text.ParseException;
+
 import argo.cost.attendanceOnHolidayRecordDetail.model.AttendanceOnHolidayRecordDetailForm;
 
 /**
@@ -22,14 +24,14 @@ public interface AttendanceOnHolidayRecordDetailService {
 	 *               勤務区分
 	 * @return 休日出勤管理詳細画面情報取得
 	 */
-	AttendanceOnHolidayRecordDetailForm getAttendanceOnHolidayRecordDetail(String userId, String date, String workKbn);
+	AttendanceOnHolidayRecordDetailForm getAttendanceOnHolidayRecordDetail(String userId, String date, String workKbn) throws ParseException;
 
 	/**
 	 * 超勤振替申請を提出
 	 * 
-	 * @param attendanceOnHolidayRecordDetailForm
-	 *                                           休日出勤管理詳細画面情報
-	 * @return 更新結果フラグ
+	 * @param form
+	 *            休日出勤管理詳細画面情報
+	 *            
 	 */
-	Integer overWorkPayRequest(AttendanceOnHolidayRecordDetailForm attendanceOnHolidayRecordDetailForm);
+	void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form);
 }

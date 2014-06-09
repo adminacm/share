@@ -3,10 +3,15 @@ package argo.cost.setup.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.ShiftInfo;
+import argo.cost.common.entity.ShiftJikoku;
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.UserVO;
-import argo.cost.setup.model.SetupEntity;
 import argo.cost.setup.model.SetupForm;
 
 /**
@@ -18,6 +23,12 @@ import argo.cost.setup.model.SetupForm;
 public class SetupDaoImpl implements SetupDao {
 	
 	/**
+	 * 共通DAO
+	 */
+	@Autowired
+	BaseDao baseDao;
+	
+	/**
 	 * 個人設定情報を取得
 	 * @param UserId
 	 *           ユーザＩＤ
@@ -25,36 +36,14 @@ public class SetupDaoImpl implements SetupDao {
 	 *        個人設定情報
 	 */
 	@Override
-	public SetupEntity getSetupInfo(String userId) {
+	public Users getSetupInfo(String userId) {
 		
-		// 個人設定
-		SetupEntity setup = new SetupEntity();
+		BaseCondition personalInfoSelectCondition = new BaseCondition();
+		personalInfoSelectCondition.addConditionEqual("users", baseDao.findById(userId, Users.class));
+		
+		Users users = (Users) baseDao.findResultList(personalInfoSelectCondition, Users.class);
 	
-		// 代理入力者
-		setup.setAgent("xiongyl");
-		
-		// 標準ｼﾌﾄ
-		setup.setStandardShift("0900");
-		
-		// 勤務開始時刻
-		setup.setWorkStart(900);
-		
-		// 勤務終了時刻
-		setup.setWorkEnd(1730);
-		
-		// 入社日
-		setup.setJoinDate("1997/4/1");
-		
-		// 休業開始日
-		setup.setHolidayStart("2012/5/9");
-		
-		// 休業終了日
-		setup.setHolidayEnd("2013/4/30");
-		
-		// 退職日
-		setup.setOutDate("2013/8/30");
-
-		return setup;
+		return users;
 	}
 
 	/**
@@ -66,6 +55,7 @@ public class SetupDaoImpl implements SetupDao {
 	@Override
 	public List<UserVO> getAgentList() {
 		
+		// TODO 代理入力者未定、課題中
 		List<UserVO> userList = new ArrayList<UserVO>();
 		UserVO user = new UserVO();
 		
@@ -92,41 +82,13 @@ public class SetupDaoImpl implements SetupDao {
 	 * @return
 	 *        ｼﾌﾄリスト
 	 */
-//	@Override
-//	public List<Shift> getShiftList() {
-//		
-//		List<Shift> shiftList = new ArrayList<Shift>();
-//		Shift shift = new Shift();
-//		
-//		shift.setShiftCd("0900");
-//		shiftList.add(shift);
-//		
-//		shift = new Shift();
-//		shift.setShiftCd("0930");
-//		shiftList.add(shift);
-//		
-//		shift = new Shift();
-//		shift.setShiftCd("0800");
-//		shiftList.add(shift);
-//		
-//		shift = new Shift();
-//		shift.setShiftCd("0830");
-//		shiftList.add(shift);
-//		
-//		shift = new Shift();
-//		shift.setShiftCd("1000");
-//		shiftList.add(shift);
-//		
-//		shift = new Shift();
-//		shift.setShiftCd("1030");
-//		shiftList.add(shift);
-//		
-//		shift = new Shift();
-//		shift.setShiftCd("1100");
-//		shiftList.add(shift);
-//		
-//		return shiftList;
-//	}
+	@Override
+	public List<ShiftInfo> getShiftList() {
+		
+		List<ShiftInfo> shiftInfoList = baseDao.findAll(ShiftInfo.class);
+		
+		return shiftInfoList;
+	}
 	
 	/**
 	 * ｼﾌﾄ時刻情報を取得
@@ -135,15 +97,18 @@ public class SetupDaoImpl implements SetupDao {
 	 * 					標準ｼﾌﾄ
 	 * @return
 	 */
-//	@Override
-//	public ShiftTime getshiftTime(String standardShift) {
-//		
-//		ShiftTime shiftTime = new ShiftTime();
-//		shiftTime.setStandSTime("0930");
-//		shiftTime.setStandEtime("1800");
-//		
-//		return shiftTime;
-//	}
+	@Override
+	public ShiftJikoku getshiftTime(String standardShift) {
+		
+		BaseCondition shiftStandardJikokuSelectbaseCondition = new BaseCondition();
+		// 検索条件：定時出勤時刻
+		shiftStandardJikokuSelectbaseCondition.addConditionEqual("teijiKinmuTime", "0900");
+		// 検索条件：定時退勤時刻
+		shiftStandardJikokuSelectbaseCondition.addConditionEqual("teijiTaikinTime", "0530");
+		ShiftJikoku shiftStandardJikoku = (ShiftJikoku) baseDao.findResultList(shiftStandardJikokuSelectbaseCondition,ShiftJikoku.class);
+		
+		return shiftStandardJikoku;
+	}
 
 	/**
 	 * 保存処理を実行
@@ -153,7 +118,19 @@ public class SetupDaoImpl implements SetupDao {
 	 */
 	@Override
 	public void doSave(SetupForm setupInfo) {
-		// TODO 自動生成されたメソッド・スタブ
+		
+		Users user = new Users();
+		// 代理者ID
+		user.setDairishaId(setupInfo.getAgentCd());
+		// 標準シフト
+		user.setStandardShiftCd(setupInfo.getStandardShift());
+		// 勤務開始時間
+		user.setKinmuStartTime(setupInfo.getWorkStart());
+		// 勤務終了時間
+		user.setKinmuEndTime(setupInfo.getWorkEnd());
+		// 退職日
+		user.setTaisyokuDate(setupInfo.getOutDate());
+		baseDao.insert(user);
 		
 	}
 
