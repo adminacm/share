@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.entity.AffiliationMaster;
+import argo.cost.common.entity.StatusMaster;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.dao.MonthlyReportStatusListDao;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
@@ -39,54 +42,12 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 */
 	@Autowired
 	ComDao comDao;
-
+	
 	/**
-	 * 月報状況一覧リストを取得
-	 * 
-	 * @param monthlyReportStatusListForm
-	 *                                   月報状況一覧情報
-	 * @return 
-	 *        月報状況一覧リスト
-	 */
-	@Override
-	public List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
-		
-		// 月報状況一覧リスト
-		List<MonthlyReportStatusListVo> monthlyReportStatusList = new ArrayList<MonthlyReportStatusListVo>();
-		
-//		// ＤＢから、月報状況一覧データを取得
-//		List<MonthlyReportStatusListVo> monthlyReportStatusDataList = monthlyReportStatusListDao.getMonthlyReportStatusList(monthlyReportStatusListForm);
-//		
-//		// 月報状況一覧データがnull以外の場合
-//		if (monthlyReportStatusDataList != null && monthlyReportStatusDataList.size() > 0) {
-//			for (int i = 0; i < monthlyReportStatusDataList.size(); i++) {
-//				MonthlyReportStatusListVo monthlyReportStatusInfo = monthlyReportStatusDataList.get(i);
-//				MonthlyReportStatusListVo monthlyReportStatusListVo = new MonthlyReportStatusListVo();
-//				// 申請番号
-//				monthlyReportStatusListVo.setApplyNo(monthlyReportStatusInfo.getApplyNo());
-//				// 所属
-//				monthlyReportStatusListVo.setAffiliation(monthlyReportStatusInfo.getAffiliation());
-//				// ID
-//				monthlyReportStatusListVo.setId(monthlyReportStatusInfo.getId());
-//				// 氏名
-//				monthlyReportStatusListVo.setName(monthlyReportStatusInfo.getName());
-//				// 申請区分コード
-//				monthlyReportStatusListVo.setApplyKbnCd(monthlyReportStatusInfo.getApplyKbn());
-//				// 申請区分名
-//				monthlyReportStatusListVo.setApplyKbnName(comDao.findApplyKbnName(monthlyReportStatusInfo.getApplyKbn()));
-//				// 申請内容
-//				monthlyReportStatusListVo.setApplyDetail(monthlyReportStatusInfo.getApplyDetail());
-//				// 状況
-//				String statusName = comDao.findStatusName(monthlyReportStatusInfo.getStatus());
-//				monthlyReportStatusListVo.setStatus(statusName);
-//				
-//				monthlyReportStatusList.add(monthlyReportStatusListVo);
-//			}
-//		}
-//		
-		// 月報状況一覧リストを戻り
-		return monthlyReportStatusList;
-	}
+	 * 単一テーブル操作DAO
+	 */	
+	@Autowired
+	private BaseDao baseDao;
 
 	/**
 	 * 年プルダウンリストを取得
@@ -154,10 +115,18 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 			item = new ListItemVO();
 
 			// データを設定する
-			// 区分値 
-			item.setValue(String.valueOf(i));
-			// 区分名称
-			item.setName(String.valueOf(i) + "月");
+			if (i < 10) {
+				// 区分値 
+				item.setValue("0" + i);
+				// 区分名称
+				item.setName("0" + i + "月");
+			} else {
+				
+				// 区分値 
+				item.setValue(String.valueOf(i));
+				// 区分名称
+				item.setName(String.valueOf(i) + "月");
+			}
 
 			// リストに追加
 			resultList.add(item);
@@ -178,17 +147,97 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	public List<ListItemVO> getAffiliationList() {
 		
 		// ＤＢから、所属プルダウンリスト取得
-		List<ListItemVO> affiliationList = monthlyReportStatusListDao.getAffiliationList();
+		List<AffiliationMaster> affiliationList = baseDao.findAll(AffiliationMaster.class);
+
+		// ドロップダウンリスト
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
+		// ドロップダウン項目
+		ListItemVO item = new ListItemVO();
+		item.setValue("");
+		item.setName(null);
+		resultList.add(item);
+
+		// ドロップダウンリスト設定
+		for (AffiliationMaster resultInfo : affiliationList) {
+			
+			item = new ListItemVO();
+
+			// データを設定する
+			// 区分値 
+			item.setValue(resultInfo.getCode());
+			// 区分名称
+			item.setName(resultInfo.getName());
+
+			// リストに追加
+			resultList.add(item);
+		}
 
 		// 所属プルダウンリストを返却する。
-		return affiliationList;
+		return resultList;
+	}
+
+	/**
+	 * 状況プルダウンリストを取得
+	 * 
+	 * @return 
+	 *        状況プルダウンリスト
+	 */
+	@Override
+	public List<ListItemVO> getStatusList() {
+		
+		// ＤＢから、状況プルダウンリスト取得
+		List<StatusMaster> StatusList = baseDao.findAll(StatusMaster.class);
+
+		// ドロップダウンリスト
+		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
+		// ドロップダウン項目
+		ListItemVO item = new ListItemVO();
+		item.setValue("");
+		item.setName(null);
+		resultList.add(item);
+
+		// ドロップダウンリスト設定
+		for (StatusMaster resultInfo : StatusList) {
+			
+			item = new ListItemVO();
+
+			// データを設定する
+			// 区分値 
+			item.setValue(resultInfo.getCode());
+			// 区分名称
+			item.setName(resultInfo.getName());
+
+			// リストに追加
+			resultList.add(item);
+		}
+
+		// 状況プルダウンリストを返却する。
+		return resultList;
+	}
+
+	/**
+	 * 月報状況一覧リストを取得
+	 * 
+	 * @param form
+	 *            月報状況一覧情報
+	 * @return 
+	 *        月報状況一覧リスト
+	 */
+	@Override
+	public List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm form) {
+		
+		// 月報状況一覧リスト
+		List<MonthlyReportStatusListVo> monthlyReportStatusList = monthlyReportStatusListDao.getMonthlyReportStatusList(form);
+
+		// 月報状況一覧リストを戻り
+		return monthlyReportStatusList;
 	}
 
 	/**
 	 * CSVファイルを作成
 	 * 
-	 * @param monthlyReportStatusListForm
-	 *                                   月報状況一覧情報
+	 * @param form
+	 *            月報状況一覧情報
      * @param response
      *                レスポンス
 	 * @return
@@ -197,10 +246,10 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 *                  異常
 	 */
 	@Override
-	public void createCSVFile(MonthlyReportStatusListForm monthlyReportStatusListForm, HttpServletResponse response) throws Exception {
+	public void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
 		
 		// 給与奉行向けCSVファイル情報を取得
-		List<PayMagistrateCsvInfo> csvDetailList = monthlyReportStatusListDao.getPayMagistrateCsvList(monthlyReportStatusListForm);
+		List<PayMagistrateCsvInfo> csvDetailList = monthlyReportStatusListDao.getPayMagistrateCsvList(form);
 		try {
 			String path = "D:\\";
 			
@@ -214,8 +263,6 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
        }
 	}
 
-	/**
-	 */
 	/**
 	 * ヘッダ部データ設定
 	 * 
@@ -253,6 +300,22 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		 
 		OutputStream out = null;
 		PrintWriter pw = null;
+
+		// 社員番号
+		String employeeNo = "";
+		// 超過勤務時間数（平日_割増）
+		String overWeekdayHours = "";
+		// 超過勤務時間数（休日）
+		String overWeekdayNomalHours = "";
+		// 超過勤務時間数（深夜）
+		String overHolidayChangeWorkHours = "";
+		// 超過勤務時間数（休日出勤振替分）
+		String overHolidayHours = "";
+		// 欠勤時間数
+		String overNightHours = "";
+		// 超過勤務時間数（平日_通常）
+		String absenceHours = "";
+		
 		try {
 			File file = new File(path + fileName + ".csv");
 			out = new FileOutputStream(file);
@@ -263,19 +326,20 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 			for (int i = 0; i < csvDetailList.size(); i++) {
 
 				// 社員番号
-				String employeeNo = (csvDetailList.get(i).getEmployeeNo());
+				employeeNo = (csvDetailList.get(i).getEmployeeNo());
 				// 超過勤務時間数（平日_割増）
-				String overWeekdayHours = (csvDetailList.get(i).getOverWeekdayHours());
+				overWeekdayHours = (csvDetailList.get(i).getOverWeekdayHours());
 				// 超過勤務時間数（休日）
-				String overWeekdayNomalHours = (csvDetailList.get(i).getOverWeekdayNomalHours());
+				overWeekdayNomalHours = (csvDetailList.get(i).getOverWeekdayNomalHours());
 				// 超過勤務時間数（深夜）
-				String overHolidayChangeWorkHours = (csvDetailList.get(i).getOverHolidayChangeWorkHours());
+				overHolidayChangeWorkHours = (csvDetailList.get(i).getOverHolidayChangeWorkHours());
 				// 超過勤務時間数（休日出勤振替分）
-				String overHolidayHours = (csvDetailList.get(i).getOverHolidayHours());
+				overHolidayHours = (csvDetailList.get(i).getOverHolidayHours());
 				// 欠勤時間数
-				String overNightHours = (csvDetailList.get(i).getOverNightHours());
+				overNightHours = (csvDetailList.get(i).getOverNightHours());
 				// 超過勤務時間数（平日_通常）
-				String absenceHours = (csvDetailList.get(i).getAbsenceHours());
+				absenceHours = (csvDetailList.get(i).getAbsenceHours());
+				
 				pw.append("\n");
 				pw.append(employeeNo + ",");
 				pw.append(overWeekdayHours + ",");

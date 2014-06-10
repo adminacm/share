@@ -1,6 +1,6 @@
 package argo.cost.attendanceInput.model;
 
-public class ShiftInfo {
+public class ShiftVO {
 
 	/**
 	 * シフトコード
@@ -31,7 +31,32 @@ public class ShiftInfo {
 	 * シフト超勤開始時刻
 	 */
 	private String chokinSTime;
+	
+	/**
+	 * 定時出勤時刻(hhnn)
+	 */
+	private String startTimeStr;
 
+	/**
+	 * 午前終了時刻(hhnn)
+	 */
+	private String amETimeStr;
+	
+	/**
+	 * 午後開始時刻(hhnn)
+	 */
+	private String fmSTimeStr;
+	
+	/**
+	 * 定時退勤時刻(hhnn)
+	 */
+	private String endTimeStr;
+	
+	/**
+	 * シフト超勤開始時刻(hhnn)
+	 */
+	private String chokinSTimeStr;
+	
 	public String getCode() {
 		return code;
 	}
@@ -78,6 +103,46 @@ public class ShiftInfo {
 
 	public void setChokinSTime(String chokinSTime) {
 		this.chokinSTime = chokinSTime;
+	}
+
+	public String getStartTimeStr() {
+		return startTimeStr;
+	}
+
+	public void setStartTimeStr(String startTimeStr) {
+		this.startTimeStr = startTimeStr;
+	}
+
+	public String getAmETimeStr() {
+		return amETimeStr;
+	}
+
+	public void setAmETimeStr(String amETimeStr) {
+		this.amETimeStr = amETimeStr;
+	}
+
+	public String getFmSTimeStr() {
+		return fmSTimeStr;
+	}
+
+	public void setFmSTimeStr(String fmSTimeStr) {
+		this.fmSTimeStr = fmSTimeStr;
+	}
+
+	public String getEndTimeStr() {
+		return endTimeStr;
+	}
+
+	public void setEndTimeStr(String endTimeStr) {
+		this.endTimeStr = endTimeStr;
+	}
+
+	public String getChokinSTimeStr() {
+		return chokinSTimeStr;
+	}
+
+	public void setChokinSTimeStr(String chokinSTimeStr) {
+		this.chokinSTimeStr = chokinSTimeStr;
 	}
 	
 	

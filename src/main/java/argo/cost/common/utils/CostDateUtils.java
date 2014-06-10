@@ -177,30 +177,6 @@ public class CostDateUtils extends DateUtils {
 
 	}
 	
-//	/**
-//	 * 祝休日の判定を行う。 <BR>
-//	 * 
-//	 * @param yyyymmdd
-//	 *            西暦年月日
-//	 * @return boolean true:祝休日(金融機関休日含む) false :平日
-//	 */
-//	public static boolean isHoliday(String yyyymmdd) {
-//		
-//		// TODO:現存のDBより、詳細の処理はない
-//		String weekday = null;
-//		try {
-//			weekday = getWeekOfDate(toDate(yyyymmdd));
-//		} catch (ParseException e) {
-//			// TODO 自動生成された catch ブロック
-//			e.printStackTrace();
-//		}
-//		if (StringUtils.equals("土", weekday) || StringUtils.equals("日", weekday)) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-	
 	/**
 	 * 時と分を取得。 <BR>
 	 * 
@@ -268,4 +244,50 @@ public class CostDateUtils extends DateUtils {
 		return true;
 	}
 	
+	/**
+	 * 時刻の比較 。 <BR>
+	 * 
+	 * @param date1
+	 *            時刻１
+	 * @param date2
+	 *            時刻２
+	 * @return 1:時刻１>時刻２
+	 * 		   -1:時刻１<時刻２
+	 * 			0:時刻１=時刻２
+	 */
+	public static int compareDate(String date1, String date2) {
+		DateFormat df = new SimpleDateFormat("hhmm");
+		try {
+			java.util.Date d1 = df.parse(date1);
+			java.util.Date d2 = df.parse(date2);
+			if (d1.getTime() > d2.getTime()) {
+
+				return 1;
+			} else if (d1.getTime() < d2.getTime()) {
+
+				return -1;
+			} else {
+				return 0;
+			}
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return 0;
+
+	}
+
+	/**
+	 * 時刻の計算。 <BR>
+	 * 
+	 * @param time
+	 *            時刻
+	 * 
+	 * @return 時刻＋24H
+	 */
+	public static String AddForOneDay(String time) {
+		
+		Integer t1 = Integer.parseInt(time);
+		
+		return String.valueOf(t1 + 2400);
+	}
 }

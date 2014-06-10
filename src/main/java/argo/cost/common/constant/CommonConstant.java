@@ -95,5 +95,15 @@ public class CommonConstant {
 	 *　勤務日区分：振替休日「04」
 	 */
 	public static final String WORKDAY_KBN_FURIKAE_KYUJITU = "04";
+	
+	/**
+	 * 申請区分：月報「1」
+	 */
+	public static final String APPLY_KBN_GETUHOU = "1";
+	
+	/**
+	 * 申請区分：超勤振替「2」
+	 */
+	public static final String APPLY_KBN_CHOKIN_FURIKAE = "2";
 
 }

@@ -13,11 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.attendanceInput.checker.AttendanceInputChecker;
 import argo.cost.attendanceInput.dao.AttendanceInputDao;
 import argo.cost.attendanceInput.model.AttendanceInputForm;
 import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.model.HolidayAttendanceVO;
-import argo.cost.attendanceInput.model.ShiftInfo;
+import argo.cost.attendanceInput.model.ShiftVO;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
 import argo.cost.common.dao.BaseCondition;
@@ -30,6 +31,7 @@ import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.ShiftInfo;
 import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
 import argo.cost.common.service.ComService;
@@ -50,31 +52,24 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 	// 明日
 	private final String NEXT = "next";
-	/**
-	 * シフトコード。
-	 */
-	private final String SHIFT_CODE = "シフトコード";
+
 	/**
 	 * ｼﾌﾄｺｰﾄﾞの時刻データ
 	 */
 	private final String SHIFT_TIME_DATA = "ｼﾌﾄｺｰﾄﾞの時刻データ";
-	/**
-	 * 勤務開始時刻。
-	 */
-	private final String KINMU_START_TIME = "勤務開始時刻";
-	/**
-	 * 勤務終了時刻
-	 */
-	private final String KINMU_END_TIME = "勤務終了時刻";
-	/**
-	 * 勤務開始時刻・勤務終了時刻
-	 */
-	private final String KINMU_START_END_TIME = "勤勤務開始時刻・勤務終了時刻終了時刻";
-	/**
-	 * 休暇欠勤区分
-	 */
-	private final String KYUKA_KEKIN_KBN = "休暇欠勤区分";
 	
+	/**
+	 * 零時タイム
+	 */
+	private final String STR_REIJI = "2400";
+	/**
+	 * 一日開始時刻
+	 */
+	private final String DAY_START_TIME = "0000";
+	/**
+	 * 一日終了時刻
+	 */
+	private final String DAY_OVER_TIME = "2330";
 	/**
 	 * 共通サービスです。
 	 */
@@ -146,17 +141,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public void setAttForm(AttendanceInputForm form, String newDate) throws ParseException {
 		
-//		// testStart
-//		MCalendar ma = new MCalendar();
-//		ma.setKyujisuName("123123");
-//		ma.setOnDutyDate("111111");
-//		ma.setOnDutyFlg("1");
-//		ma.setCreatedDate(null);
-//		ma.setCreatedUserId(null);
-//		ma.setUpdateDate(null);
-//		ma.setUpdatedUserId(null);
-//		baseDao.insert(ma);
-		
 		// 社員番号
 		String userId = form.getUserId();
 		// システム日付を取得
@@ -169,10 +153,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 就業データを取得
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
-		// ユーザーID
-		condition.addConditionEqual("users.id", userId);
-		// 勤怠日付
-		condition.addConditionEqual("atendanceBookDate", date);
 
 		// 勤怠日付を設定
 		form.setAttDate(date);
@@ -270,7 +250,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			// 平日割増
 			form.setChoWeekday(conBigDecimalToDouble(kintaiEntity.getChokinHeijituJikansu()));
 			// 平日通常
-			form.setChoWeekday_nomal(conBigDecimalToDouble(kintaiEntity.getChokinHeijituTujyoJikansu()));
+			form.setChoWeekdayNomal(conBigDecimalToDouble(kintaiEntity.getChokinHeijituTujyoJikansu()));
 			// 休日
 			form.setChoHoliday(conBigDecimalToDouble(kintaiEntity.getChokinKyujituJikansu()));
 			// 深夜
@@ -278,7 +258,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			// ロケーション情報設定
 			form.setLocationId(kintaiEntity.getLocation().getCode());
 			
-
 			// 個人プロジェクト勤務情報設定
 			// 検索条件
 			condition = new BaseCondition();
@@ -415,97 +394,107 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public Boolean checkCountInput(AttendanceInputForm form) {
 		
-		// シフトコード
-		String shiftCode = form.getShiftCd();
-
-		
+//		// シフトコード
+//		String shiftCode = form.getShiftCd();
+//		
 //		// 勤務終了時刻が未入力の場合
 //		if (StringUtils.isEmpty(kinmuETime)) {
 //			// 勤務終了時刻が未入力です！
 //			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {KINMU_END_TIME});
 //		}
-
-		// シフトコードより、シフト情報を取得
-		BaseCondition condition = new BaseCondition();
-		condition.addConditionEqual("shiftCode", shiftCode);
-		List<argo.cost.common.entity.ShiftInfo> shiftList = baseDao.findResultList(condition, argo.cost.common.entity.ShiftInfo.class);
-		// シフトコード値がm_シフト表から抽出されない
-		if (shiftList == null || shiftList.size() == 0) {
-			// ｼﾌﾄｺｰﾄﾞを正しく入力してください
-			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {SHIFT_CODE});
-		}
-		// 勤務開始時刻
-		String kinmuSTime = form.getWorkSHour().concat(form.getWorkSMinute());
-		// 勤務開始時刻が入力される場合
-		if (!StringUtils.isEmpty(kinmuSTime)) {
-			// 勤務開始時刻のhhnn形式値が数値以外
-			if (!CostDateUtils.isTimeHHnn(kinmuSTime)) {
-				// 勤務開始時刻を正しく入力してください
-				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
-			}
-
-		}
-		// 勤務終了時刻
-		String kinmuETime = form.getWorkEHour().concat(form.getWorkEMinute());
-		// 勤務終了時刻が入力される場合
-		if (!StringUtils.isEmpty(kinmuETime)) {
-			// 勤務開始時刻のhhnn形式値が数値以外
-			if (!CostDateUtils.isTimeHHnn(kinmuETime)) {
-				// 勤務終了時刻を正しく入力してください
-				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
-			}
-		}
-
-		// 休暇欠勤区分
-		String kyukaKbn = form.getKyukaKb();
-		// 休暇欠勤区分を選択された場合
-		if (!StringUtils.isEmpty(kyukaKbn)) {
-			// 休暇欠勤区分"01"(全休(有給休暇))or"04"(特別休暇)or"05"(代休)or"06"(欠勤)or"08"(無給公休)で
-			if (StringUtils.equals(CommonConstant.KK_KBN_ZENKYU, kyukaKbn) ||
-					StringUtils.equals(CommonConstant.KK_KBN_TOKUBETUKYU, kyukaKbn) ||
-					StringUtils.equals(CommonConstant.KK_KBN_TAIKYU, kyukaKbn) ||
-					StringUtils.equals(CommonConstant.KK_KBN_KEKIN, kyukaKbn) ||
-					StringUtils.equals(CommonConstant.KK_KBN_MUKYU, kyukaKbn)) {
-				// 勤務開始時刻または勤務終了時刻に入力あり
-				if ((!StringUtils.isEmpty(kinmuSTime)) ||
-						(!StringUtils.isEmpty(kinmuETime))) {
-					
-					// 終日休暇の日は勤務できません
-					form.putConfirmMsg(MessageConstants.COSE_E_003);
-				}
-			// 上計以外の場合(休暇欠勤区分""or"02"or"03"or"07")
-			} else {
-				// 勤務区分"01"(出勤)or"03"(休日振替勤務)で勤務開始時刻または勤務終了時刻が未入力
-				String kinmuKbn = form.getWorkDayKbn();
-				if ((StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, kinmuKbn) ||
-						StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, kinmuKbn)) &&
-						(StringUtils.isEmpty(kinmuSTime) || StringUtils.isEmpty(kinmuETime))) {
-					// 勤務開始時刻・終了時刻を入力してください
-					form.putConfirmMsg(MessageConstants.COSE_E_004,new String[] {KINMU_START_END_TIME});
-				}
-			}
-		}
-		// シフト時刻情報を取得
-		ShiftJikoku shiftJikokuEntity = baseDao.findById(shiftCode, ShiftJikoku.class);
-		// シフト時刻からレコードが取得できない
-		if (shiftJikokuEntity == null) {
-			// ｼﾌﾄｺｰﾄﾞの時刻データが設定されていません
-			form.putConfirmMsg(MessageConstants.COSE_E_005, new String[] {SHIFT_TIME_DATA});
-		}
-		// 勤務開始時刻と勤務終了時刻が片方だけ入力されている
-		if ((StringUtils.isEmpty(kinmuSTime) && !StringUtils.isEmpty(kinmuETime)) ||
-				StringUtils.isEmpty(kinmuETime) && !StringUtils.isEmpty(kinmuSTime)) {
-			// 勤務開始時刻・終了時刻は両方入力してください
-			form.putConfirmMsg(MessageConstants.COSE_E_006);
-		}
-		// 勤務開始時刻の分
-		String kinmuSMinute = form.getWorkSMinute();
-		// 勤務終了時刻の分
-		String kinmuEMinute = form.getWorkEMinute();
-		// エラーが発生する場合
-		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
-			return false;
-		}
+//
+//		// シフトコードより、シフト情報を取得
+//		ShiftVO shiftinfo = this.getShiftInfo(form);
+//		// 勤務開始時刻の型チェックとフォーマット
+//		AttendanceInputChecker.chkWorkSTimeFormat(form, shiftinfo.getStartTimeStr());
+//		// 勤務終了時刻の型チェックとフォーマット
+//		AttendanceInputChecker.chkWorkSTimeFormat(form, shiftinfo.getStartTimeStr());
+//
+//		// 休暇欠勤区分
+//		String kyukaKbn = form.getKyukaKb();
+//		// 休暇欠勤区分を選択された場合
+//		if (!StringUtils.isEmpty(kyukaKbn)) {
+//			// 休暇欠勤区分"01"(全休(有給休暇))or"04"(特別休暇)or"05"(代休)or"06"(欠勤)or"08"(無給公休)で
+//			if (StringUtils.equals(CommonConstant.KK_KBN_ZENKYU, kyukaKbn) ||
+//					StringUtils.equals(CommonConstant.KK_KBN_TOKUBETUKYU, kyukaKbn) ||
+//					StringUtils.equals(CommonConstant.KK_KBN_TAIKYU, kyukaKbn) ||
+//					StringUtils.equals(CommonConstant.KK_KBN_KEKIN, kyukaKbn) ||
+//					StringUtils.equals(CommonConstant.KK_KBN_MUKYU, kyukaKbn)) {
+//				// 勤務開始時刻または勤務終了時刻に入力あり
+//				if ((!StringUtils.isEmpty(kinmuSTime)) ||
+//						(!StringUtils.isEmpty(kinmuETime))) {
+//					
+//					// 終日休暇の日は勤務できません
+//					form.putConfirmMsg(MessageConstants.COSE_E_003);
+//				}
+//			// 上計以外の場合(休暇欠勤区分""or"02"or"03"or"07")
+//			} else {
+//				// 勤務区分"01"(出勤)or"03"(休日振替勤務)で勤務開始時刻または勤務終了時刻が未入力
+//				String kinmuKbn = form.getWorkDayKbn();
+//				if ((StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, kinmuKbn) ||
+//						StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, kinmuKbn)) &&
+//						(StringUtils.isEmpty(kinmuSTime) || StringUtils.isEmpty(kinmuETime))) {
+//					// 勤務開始時刻・終了時刻を入力してください
+//					form.putConfirmMsg(MessageConstants.COSE_E_004,new String[] {KINMU_START_END_TIME});
+//				}
+//			}
+//		}
+//		// シフト時刻情報を取得
+//		ShiftJikoku shiftJikokuEntity = baseDao.findById(shiftCode, ShiftJikoku.class);
+//		// シフト時刻からレコードが取得できない
+//		if (shiftJikokuEntity == null) {
+//			// ｼﾌﾄｺｰﾄﾞの時刻データが設定されていません
+//			form.putConfirmMsg(MessageConstants.COSE_E_005, new String[] {SHIFT_TIME_DATA});
+//		}
+//		// 定時出勤時刻
+//		String teijiStartTime = shiftJikokuEntity.getTeijiKinmuTime();
+//		// 定時退勤時刻
+//		String teijiEndTime = shiftJikokuEntity.getTeijiTaikinTime();
+//		// 勤務開始時刻と勤務終了時刻が片方だけ入力されている
+//		if ((StringUtils.isEmpty(kinmuSTime) && !StringUtils.isEmpty(kinmuETime)) ||
+//				StringUtils.isEmpty(kinmuETime) && !StringUtils.isEmpty(kinmuSTime)) {
+//			// 勤務開始時刻・終了時刻は両方入力してください
+//			form.putConfirmMsg(MessageConstants.COSE_E_006);
+//		}
+//		// 勤務開始時刻の分
+//		String kinmuSMinute = form.getWorkSMinute();
+//		// 時刻の分を入力された場合
+//		if (!StringUtils.isEmpty(kinmuSMinute) ) {
+//			// 時刻の分が30単位でない
+//			if (!CostDateUtils.isHalfHour(kinmuSMinute)) {
+//				// 勤務開始は30分単位で入力してください
+//				form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_START_TIME});
+//			}
+//			
+//		}
+//
+//		// 勤務終了時刻の分
+//		String kinmuEMinute = form.getWorkEMinute();
+//		// 時刻の分を入力された場合
+//		if (!StringUtils.isEmpty(kinmuEMinute)) {
+//			// 時刻の分が30単位でない
+//			if (!CostDateUtils.isHalfHour(kinmuEMinute)) {
+//				// 勤務終了は30分単位で入力してください
+//				form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_END_TIME});
+//			}
+//		}
+//		
+//		// 勤務開始時刻が定時出勤時刻より前、または勤務開始時刻が定時退勤時刻時刻以降
+//		if ((CostDateUtils.compareDate(kinmuSTime, teijiStartTime) < 0) ||
+//				(CostDateUtils.compareDate(kinmuSTime, teijiEndTime) > 0)) {
+//			// 勤務開始時刻は定時勤務時間内の時刻を入力してください
+//			form.putConfirmMsg(MessageConstants.COSE_E_008);
+//		}
+//		
+//		// 勤務終了時刻が勤務開始時刻以前
+//		if (CostDateUtils.compareDate(kinmuETime, kinmuSTime) < 0) {
+//			// 勤務終了時刻は勤務開始時刻より後の時刻を入力してください
+//			form.putConfirmMsg(MessageConstants.COSE_E_009);
+//		}
+//		// エラーが発生する場合
+//		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
+//			return false;
+//		}
 		// TODO 自動生成されたメソッド・スタブ
 		return true;
 		
@@ -533,16 +522,30 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	@Override
 	public void calcWorkingRec(AttendanceInputForm form) throws ParseException {
+		
+		// シフトコードより、シフト情報を取得
+		ShiftVO shiftinfo = getShiftInfo(form, form.getShiftCd());
+		if (StringUtils.isEmpty(form.getConfirmMsg())) {
+			form.setShiftInfo(shiftinfo);
+		}
+		// 休暇欠勤区分
+		String kyukaKbn = form.getKyukaKb();
+		// 勤務開始時刻の型チェックとフォーマット
+		AttendanceInputChecker.chkWorkSTimeFormat(form, shiftinfo.getStartTimeStr());
+		// 勤務終了時刻の型チェックとフォーマット
+		AttendanceInputChecker.chkWorkETimeFormat(form, shiftinfo.getStartTimeStr());
 
-		// シフト情報を取得
-		ShiftInfo shiftInfo = getShiftInfo(form.getShiftCd());
-
-		form.setShiftInfo(shiftInfo);
+		form.setShiftInfo(shiftinfo);
 
 		// 勤務時間取得
-		getWHours(form);
-		// 休暇時間数を算出する
-		getKyukaHours(form);
+		getWorkHours(form);
+		// 「時間休(有給休暇)」または「遅刻・早退」の場合
+		if (StringUtils.equals(CommonConstant.KK_KBN_JIKANKYU, kyukaKbn) 
+				|| StringUtils.equals(CommonConstant.KK_KBN_CHIKOKU, kyukaKbn)) {
+			// 休暇時間数を算出する
+			getRestHours(form, shiftinfo);
+		}
+		
 		// 超勤時間帯の勤務時間数を算出する
 		getChokin(form);
 		// 深夜勤務時間数を算出する
@@ -557,26 +560,31 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 *            勤怠入力画面情報
 	 * @throws ParseException 
 	 */
-	private void getWHours(AttendanceInputForm form) throws ParseException {
+	private void getWorkHours(AttendanceInputForm form) throws ParseException {
 
 		// 勤務時間取得
 		Double hours = 0.0;
+		// シフトコード
 		String shiftCode = form.getShiftCd();
-		String wSTime = form.getWorkSHour().concat(form.getWorkSMinute());
-		String wETime = form.getWorkEHour().concat(form.getWorkEMinute());
+		// 勤務開始時刻
+		String wStime = form.getWorkSTime();
+		// 勤務終了時刻
+		String wEtime = form.getWorkETime();
+		// 勤務開始時刻(hhnn)
+		String wSTimeStr = form.getWorkSTimeStr();
+		// 勤務終了時刻(hhnn)
+		String wETimeStr = form.getWorkETimeStr();
 
 		// 勤務開始から勤務終了が24:00をまたいでいる場合
-		if ("2400".compareTo(wSTime) > 0
-				&& "2400".compareTo(wETime) < 0) {
-
-			// 勤務開始時刻 ~ 2330 + 0000 ~ 勤務終了時刻
-			hours = getHours(wSTime, "2330", shiftCode)
-					+ getHours("0000", wETime, shiftCode);
+		if (wSTimeStr.compareTo(STR_REIJI) < 0
+				&& STR_REIJI.compareTo(wETimeStr) < 0) {
+			hours = countWorkTime(shiftCode, wSTimeStr, DAY_OVER_TIME) 
+					+ countWorkTime(shiftCode, DAY_START_TIME, wEtime);
 		} else {
 
 			// 勤務開始時刻 ~ 勤務終了時刻
-			hours = getHours(wSTime, wETime,
-					shiftCode);
+			hours = countWorkTime(shiftCode, wStime,
+					wEtime);
 		}
 		// 勤務時間
 		form.setWorkHours(hours);
@@ -587,60 +595,69 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * 
 	 * @param form
 	 *            勤怠入力画面情報
+	 * @param shiftinfo
+	 *            シフト情報
 	 * @throws ParseException 
 	 */
-	private void getKyukaHours(AttendanceInputForm form) throws ParseException {
+	private void getRestHours(AttendanceInputForm form, ShiftVO shiftinfo) throws ParseException {
 
-		// 遅刻時間取得
-		Double wVhikoku = 0.0;
-		// 早退時間取得
+		// 遅刻時刻
+		Double wChikoku = 0.0;
+		// 早退時刻
 		Double wSotai = 0.0;
-		ShiftInfo shift = form.getShiftInfo();
-		String wSTime = form.getWorkSHour().concat(form.getWorkSMinute());
-		String wETime = form.getWorkEHour().concat(form.getWorkEMinute());
+		// シフトコード
+		String shiftCode = form.getShiftCd();
+		// 定時出勤時刻(hhnn)
+		String standSTimeStr = shiftinfo.getStartTimeStr();
+		// 定時退勤時刻(hhnn)
+		String standETimeStr = shiftinfo.getEndTimeStr();
+		// 勤務開始時刻
+		String wStime = form.getWorkSTime();
+		// 勤務終了時刻
+		String wEtime = form.getWorkETime();
+		// 勤務開始時刻(hhnn)
+		String wSTimeStr = form.getWorkSTimeStr();
+		// 勤務終了時刻(hhnn)
+		String wETimeStr = form.getWorkETimeStr();
 
 		// 遅刻の時間数をカウントする
-		if (shift.getStartTime().compareTo(wSTime) < 0) {
+		if (standSTimeStr.compareTo(wSTimeStr) < 0) {
 
 			// 定時出勤時刻から勤務開始時刻が24:00をまたいでいる場合
-			if ("2400".compareTo(shift.getStartTime()) > 0
-					&& "2400".compareTo(wSTime) < 0) {
+			if (standSTimeStr.compareTo(STR_REIJI) < 0
+					&& STR_REIJI.compareTo(wSTimeStr) < 0) {
+				
+				// 定時出勤時刻～23:30＋"0000"～勤務開始時刻
+				wChikoku = countRestTime(shiftCode, standSTimeStr, DAY_OVER_TIME, 0)
+						+ countRestTime(shiftCode, DAY_START_TIME, wStime, 1);
 
-				// 定時出勤時刻 ~ 2330 + 0000 ~ 勤務開始時刻
-				wVhikoku = getHours(shift.getStartTime(), "2330",
-						form.getShiftCd())
-						+ getHours("0000", wSTime,
-								form.getShiftCd());
 			} else {
 
 				// 定時出勤時刻 ~ 勤務開始時刻
-				wVhikoku = getHours(shift.getStartTime(), wSTime,
-						form.getShiftCd());
+				wChikoku = countRestTime(shiftCode, standSTimeStr, wStime, 2);
 			}
 		}
+		
 		// 早退の時間数をカウントする
-		if (shift.getEndTime().compareTo(wETime) > 0) {
+		if (wETimeStr.compareTo(standETimeStr) < 0) {
 
 			// 24:00をまたいでいる場合
-			if ("2400".compareTo(wETime) > 0
-					&& "2400".compareTo(shift.getEndTime()) < 0) {
+			if (wETimeStr.compareTo(STR_REIJI) < 0
+					&& STR_REIJI.compareTo(standETimeStr) < 0) {
+				
+				// 勤務終了時刻~23:30 + "0000"~定時退勤時刻
+				wSotai = countRestTime(shiftCode, wEtime, DAY_OVER_TIME, 0)
+						+ countRestTime(shiftCode, DAY_START_TIME, shiftinfo.getEndTime(), 1);
 
-				// TODO form.getStandEtimeStr() -> shiftT.getStandEtime()
-				// 勤務終了時刻 ~ 2330 + 0000 ~ 定時退勤時刻
-				wSotai = getHours(wETime, "2330",
-						form.getShiftCd())
-						+ getHours("0000", shift.getEndTime(),
-								form.getShiftCd());
 			} else {
 
 				// 勤務終了時刻 ~ 定時退勤時刻
-				wSotai = getHours(wETime, shift.getEndTime(),
-						form.getShiftCd());
+				wSotai = countRestTime(shiftCode, wEtime, shiftinfo.getEndTime(), 2);
 			}
 		}
 
 		// 休暇時間
-		form.setKyukaHours(wVhikoku + wSotai);
+		form.setKyukaHours(wChikoku + wSotai);
 	}
 
 	/**
@@ -653,80 +670,96 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 		// 超勤時間
 		Double wChokinHours = 0.0;
-		ShiftInfo shift = form.getShiftInfo();
-		String wETime = form.getWorkEHour().concat(form.getWorkEMinute());
+		// シフト情報
+		ShiftVO shift = form.getShiftInfo();
+		// 勤務終了時刻
+		String wETime = form.getWorkETime();
+		// 勤務終了時刻(hhnn)
+		String wETimeStr = form.getWorkETimeStr();
 		
-		//TODO form.getChokinSTimeStr() -> shiftT.getChokinSTime()
-		// シフト超勤開始時刻から勤務終了が24:00をまたいでいる場合
-		if ("2400".compareTo(shift.getChokinSTime()) > 0 && "2400".compareTo(wETime) < 0) {
+		// 勤務終了時刻が定時退勤時刻を越えている場合超勤時間数を取得
+		if (shift.getChokinSTimeStr().compareTo(wETimeStr) < 0) {
 			
-			// シフト超勤開始時刻 ~ 2330 + 0000 ~ 勤務終了時刻
-			wChokinHours = getHours(shift.getChokinSTime(), "2330", shift.getCode()) + getHours("0000", wETime, shift.getCode());
-		} else {
-			
-			// シフト超勤開始時刻 ~ 勤務終了時刻
-			wChokinHours = getHours(shift.getChokinSTime(), wETime, shift.getCode());
-		}
-		
-		// 超勤時間は１時間以上の場合
-		if(wChokinHours >= 1) {
-			//TODO form.getChokinSTimeStr() -> shiftT.getChokinSTime()
-			// 超勤開始時刻＝シフト超勤開始時刻
-			form.setChoSTime(shift.getChokinSTime());
-			// 超勤終了時刻＝勤務終了時刻
-			form.setChoETime(wETime);
-				
-			// 休日か平日の判断
-			if("休日".equals(form.getKinmuKun()) || "振替休日".equals(form.getKinmuKun())){
-				
-				form.setChoWeekday(0.0);
-				form.setChoWeekday_nomal(0.0);
-				// 超勤休日を設定する
-				form.setChoHoliday(wChokinHours);
+			// シフト超勤開始時刻から勤務終了が24:00をまたいでいる場合
+			if (shift.getChokinSTimeStr().compareTo(STR_REIJI) < 0
+					&& STR_REIJI.compareTo(wETimeStr) < 0) {
+				// シフト超勤開始時刻→23:30＋"0000"→勤務終了時刻
+				wChokinHours = countRestTime(shift.getCode(), shift.getChokinSTime(), DAY_OVER_TIME, 0)
+						+ countRestTime(shift.getCode(), DAY_START_TIME, wETime, 1);
 				
 			} else {
-				// 休暇欠勤区分
-				if ("".equals(form.getKyukaKb())){
-					
-					// 超勤平日（割増）を設定する
+				// シフト超勤開始時刻→勤務終了時刻
+				wChokinHours = countRestTime(shift.getCode(), shift.getChokinSTime(), wETime, 1);
+			}
+			
+			// １時間未満の超勤は切り捨て
+			if (wChokinHours < 1) {
+				form.setChoSTime("");
+				form.setChoETime("");
+				form.setChoHoliday(0.0);
+				form.setChoWeekday(0.0);
+				form.setChoWeekdayNomal(0.0);
+			} else {
+				// 超勤開始時刻＝シフト超勤開始時刻
+				form.setChoSTime(shift.getChokinSTime());
+				// 超勤終了時刻＝勤務終了時刻
+				form.setChoETime(wETime);
+				// 休日か平日の判断
+				// 休日振替勤務の場合
+				if (StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, form.getWorkDayKbn())) {
+					// 超勤平日（割増）
+					form.setChoWeekday(0.0);
+					// 超勤平日（通常）
+					form.setChoWeekdayNomal(0.0);
+					// 超勤休日を設定する
+					form.setChoHoliday(wChokinHours);
+				// 超勤時間から割増部分と通常部分の切り分けを実施
+				} else if (StringUtils.isEmpty(form.getKyukaKb())) {
+					// 超勤平日（割増）
 					form.setChoWeekday(wChokinHours);
-					
-				} else {
-					if ("半休(有給休暇)".equals(form.getKyukaKb())){
-						
-						if (form.getWorkHours() <= 7.5){
-							form.setChoHoliday(0.0);
-							form.setChoWeekday(0.0);
-							// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
-							form.setChoWeekday_nomal(wChokinHours);
-						} else {
-		
-							form.setChoWeekday(form.getWorkHours() - 7.5);
-							form.setChoWeekday_nomal(wChokinHours - form.getChoWeekday());
-						}
-						
-					} else if ("時間休(有給休暇)".equals(form.getKyukaKb())){
-		
-						if (form.getWorkHours() <= 7.5){
-							
-							// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
-							form.setChoWeekday_nomal(wChokinHours);
-						} else {
-		
-							// 勤務時間が7.5時間以上だった場合は休暇時間分を通常として扱う
-							form.setChoWeekday_nomal(form.getKyukaHours());
-							// 超勤時間 - 通常として扱った時間を割増時間として扱う
-							form.setChoWeekday(wChokinHours - form.getKyukaHours());
-						}
+					// 超勤平日（通常）
+					form.setChoWeekdayNomal(0.0);
+					// 超勤休日を設定
+					form.setChoHoliday(0.0);
+				// 休暇欠勤区分＝半休(有給休暇)
+				} else if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, form.getKyukaKb())) {
+					// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
+					if (form.getWorkHours() <= 7.5) {
+						// 超勤平日（割増）
+						form.setChoWeekday(0.0);
+						// 超勤平日（通常）
+						form.setChoWeekdayNomal(wChokinHours);
+					} else {
+						// 超勤平日（割増）
+						form.setChoWeekday(form.getWorkHours() - 7.5);
+						// 超勤平日（通常）
+						form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
+					}
+				// 休暇欠勤区分＝時間休(有給休暇)、時間休の場合、使用した時間数があるのでそこから算出
+				} else if (StringUtils.equals(CommonConstant.KK_KBN_JIKANKYU, form.getKyukaKb())) {
+					// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
+					if (form.getWorkHours() <= 7.5) {
+						// 超勤平日（割増）
+						form.setChoWeekday(0.0);
+						// 超勤平日（通常）
+						form.setChoWeekdayNomal(wChokinHours);
+					} else {
+						// 超勤平日（割増）
+						form.setChoWeekday(form.getWorkHours() - form.getKyukaHours());
+						// 超勤平日（通常）：超勤時間 - 通常として扱った時間を割増時間として扱う
+						form.setChoWeekdayNomal(wChokinHours - form.getKyukaHours());
 					}
 				}
 			}
 		} else {
-			form.setChoSTime("");
-			form.setChoETime("");
-			form.setChoHoliday(0.0);
-			form.setChoWeekday(0.0);
-			form.setChoWeekday_nomal(0.0);
+			// 休日出勤は7.5h未満勤務は超勤とする
+			if ((StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU, form.getWorkDayKbn())
+					|| StringUtils.equals(CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU, form.getWorkDayKbn()))
+					&& form.getWorkHours() < 7.5) {
+				
+				form.setChoHoliday(form.getWorkHours());
+				
+			}
 		}
 	}
 
@@ -738,70 +771,19 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	private void getMidnight(AttendanceInputForm form) throws ParseException {
 
-		ShiftInfo shift = form.getShiftInfo();
+		ShiftVO shift = form.getShiftInfo();
 		// 深夜勤務時間
 		Double wMNHours = 0.0;
-		// 深夜勤務時間0点以前
-		Double wMNHoursBe = 0.0;
-		// 深夜勤務時間0点以后
-		Double wMNHoursAf = 0.0;
-		String wSTime = form.getWorkSHour().concat(form.getWorkSMinute());
-		String wETime = form.getWorkEHour().concat(form.getWorkEMinute());
 		
 		// 勤務開始から勤務終了が24:00をまたぐとき
-		if ("2400".compareTo(wSTime) > 0 && "2400".compareTo(wETime) < 0) {
-			// 深夜勤務時間0点以前
-			if ("2200".compareTo(wSTime) >= 0){
-				
-				wMNHoursBe = getHours("2200", "2330", shift.getCode());
-			} else {
-				
-				wMNHoursBe = getHours(wSTime, "2330", shift.getCode());
-			}
-			// 深夜勤務時間0点以后
-			if ("0430".compareTo(wETime) >= 0) {
-				
-				wMNHoursAf = getHours("0000", wETime, shift.getCode());
-			} else {
-				
-				wMNHoursAf = getHours("0000", "0430", shift.getCode());
-			}
-			// 深夜勤務時間
-			wMNHours = wMNHoursBe + wMNHoursAf;
+		if (form.getWorkSTimeStr().compareTo(STR_REIJI) < 0 
+				&& STR_REIJI.compareTo(form.getWorkETimeStr()) < 0) {
+			// 勤務開始時刻→23:30＋"0000"→勤務終了時刻
+			wMNHours = getMNHours(shift.getCode(), form.getWorkSTime(), DAY_OVER_TIME, 0)
+					+ getMNHours(shift.getCode(), DAY_START_TIME, form.getWorkETime(), 1);
 		} else {
-			// 勤務開始時間と勤務終了時間が0点以前
-			if ("2200".compareTo(wSTime) >= 0){
-				
-				if ("2330".compareTo(wETime) <= 0) {
-
-					wMNHours = getHours("2200", "2330", shift.getCode());
-				} else {
-					
-					wMNHours = getHours("2200", wETime, shift.getCode());
-				}
-				
-			} else {
-
-				if ("2330".compareTo(wETime) <= 0) {
-
-					wMNHours = getHours(wSTime, "2330", shift.getCode());
-				} else {
-					
-					wMNHours = getHours(wSTime, wETime, shift.getCode());
-				}
-			}
-			
-			// 勤務開始時間と勤務終了時間が0点以后
-			if ("2400".compareTo(wSTime) <= 0) {
-				
-				if ("2830".compareTo(wETime) >= 0) {
-
-					wMNHours = getHours(wSTime, "2830", shift.getCode());
-				} else {
-					
-					wMNHours = getHours(wSTime, wETime, shift.getCode());
-				}
-			}
+			// 勤務開始時刻→勤務終了時刻
+			wMNHours = getMNHours(shift.getCode(), form.getWorkSTime(), form.getWorkETime(), 1);
 		}
 		
 		// 深夜を設定する
@@ -810,107 +792,90 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		} else {
 			form.setmNHours(0.0);
 		}
-	
 		
 	}
+
 	/**
-	 * 時間を取得する
+	 * シフト情報を取得する
 	 * 
-	 * @param sTime
-	 *            開始時間hhmm
-	 * @param eTime
-	 *            　終了時間hhmm
+	 * @param form
+	 *            画面情報
 	 * @param shiftCode
-	 *            　シフトコード
-	 * @return 時間数
+	 *            シフトコード
+	 * @return シフト情報
 	 */
-	private Double getHours(String sTime, String eTime, String shiftCode) {
+	private ShiftVO getShiftInfo(AttendanceInputForm form, String shiftCode) {
 
-		// TODO SQL文を利用しDBから取得する。
-		// 仮
-		// 終了時間hour
-		Double eTimeH = 0.0;
-		// 開始時間
-		Double sTimeH = 0.0;
-		// 時間数
-		Double Hours = 0.0;
-
-		// TODO シフト表シートを検索
-		if (!eTime.isEmpty()) {
-			eTimeH = Double.valueOf(eTime.substring(0, 2))
-					+ Double.valueOf(eTime.substring(2, 4)) / 60;
+		// ｼﾌﾄｺｰﾄﾞが未入力なら"0900"を使用する
+		if (StringUtils.isEmpty(shiftCode)) {
+			shiftCode = "0900";
 		}
-		if (!sTime.isEmpty()) {
-			sTimeH = Double.valueOf(sTime.substring(0, 2))
-					+ Double.valueOf(sTime.substring(2, 4)) / 60;
-		}
-
-		Hours = eTimeH - sTimeH;
-		if ((Hours > 7.5
-				&& "1300".compareTo(sTime) > 0)
-				|| (Hours < 7.5 && "1200".compareTo(sTime) > 0 && "1300"
-						.compareTo(eTime) < 0)) {
-			Hours = Hours - 1;
-		}
-
-		if (Hours >= 8 || "2200".compareTo(eTime) < 0) {
-			Hours = Hours - 0.5;
-		}
-
-		if ("1000".equals(sTime) || "1100".equals(sTime)
-				|| "1300".equals(sTime)) {
-			Hours = Hours - 0.5;
-		}
-
-		if (Hours >= 12) {
-			Hours = Hours - 0.5;
-
-		}
-		// 時間差戻る
-		return Hours;
-	}
-
-	private ShiftInfo getShiftInfo(String shiftCode) {
-
-		// TODO 自動生成されたメソッド・スタブ Dao を必要
-		ShiftInfo info = null;
-		// シフトコードが存在しないの場合
-		if (StringUtils.equals("0900", shiftCode)) {
-
-			info = new ShiftInfo();
-
+		ShiftVO info = null;
+		// シフト時刻情報を取得
+		ShiftJikoku entity = baseDao.findById(shiftCode, ShiftJikoku.class);
+		// シフト時刻からレコードが取得できない
+		if (entity == null) {
+			// ｼﾌﾄｺｰﾄﾞの時刻データが設定されていません
+			form.putConfirmMsg(MessageConstants.COSE_E_005, new String[] {SHIFT_TIME_DATA});
+		} else {
+			String standSTime = entity.getTeijiKinmuTime();               // 定時出勤時刻
+			String amETime = entity.getAmEndTime();                       // 午前終了時刻
+			String pmSTime = entity.getPmStartTime();                     // 午後開始時刻
+			String standEtime = entity.getTeijiTaikinTime();              // 定時退勤時刻
+			String chokinSTime = entity.getChokinStartTime();             // 超勤開始時刻
+			String standSTimeStr = entity.getTeijiKinmuTime();            // 定時出勤時刻(hhnn)
+			
+			// 午前終了時刻(hhnn)
+			String amETimeStr = amETime;
+			// 午前終了時刻＜＝定時出勤時刻(hhnn)
+			if (amETime.compareTo(standSTimeStr) <= 0) {
+				amETimeStr = CostDateUtils.AddForOneDay(amETime);
+			}
+			// 午後開始時刻(hhnn)
+			String pmSTimeStr = pmSTime;
+			// 午後開始時刻＜＝定時出勤時刻(hhnn)
+			if (pmSTime.compareTo(standSTimeStr) <= 0) {
+				pmSTimeStr = CostDateUtils.AddForOneDay(pmSTime);
+			}
+			// 定時退勤時刻(hhnn)
+			String standEtimeStr = standEtime;
+			// 定時退勤時刻＜＝定時出勤時刻(hhnn)
+			if (standEtime.compareTo(standSTimeStr) <= 0) {
+				standEtimeStr = CostDateUtils.AddForOneDay(standEtime);
+			}
+			// シフト超勤開始時刻(hhnn)
+			String chokinSTimeStr = chokinSTime;
+			// シフト超勤開始時刻＜＝定時出勤時刻(hhnn)
+			if (chokinSTime.compareTo(standSTimeStr) <= 0) {
+				chokinSTimeStr = CostDateUtils.AddForOneDay(chokinSTime);
+			}
+			
+			info = new ShiftVO();
+			
 			// シフトコード
-			info.setCode("0900");
+			info.setCode(shiftCode);
 			// 定時出勤時刻
-			info.setStartTime("0900");
+			info.setStartTime(standSTime);
+			// 定時出勤時刻
+			info.setStartTimeStr(standSTimeStr);
 			// 午前終了時刻
-			info.setAmETime("1200");
+			info.setAmETime(amETime);
+			// 午前終了時刻
+			info.setAmETimeStr(amETimeStr);
 			// 午後開始時刻
-			info.setFmSTime("1300");
+			info.setFmSTime(pmSTime);
+			// 午後開始時刻
+			info.setFmSTimeStr(pmSTimeStr);
 			// 定時退勤時刻
-			info.setEndTime("1730");
+			info.setEndTime(standEtime);
+			// 定時退勤時刻
+			info.setEndTimeStr(standEtimeStr);
 			// 超勤開始時刻
-			info.setChokinSTime("1800");
+			info.setChokinSTime(chokinSTime);
+			// 超勤開始時刻
+			info.setChokinSTimeStr(chokinSTimeStr);
 		}
 		
-		if (StringUtils.equals("1000", shiftCode)) {
-
-			info = new ShiftInfo();
-
-			// シフトコード
-			info.setCode("1000");
-			// 定時出勤時刻
-			info.setStartTime("1000");
-			// 午前終了時刻
-			info.setAmETime("1200");
-			// 午後開始時刻
-			info.setFmSTime("1300");
-			// 定時退勤時刻
-			info.setEndTime("1830");
-			// 超勤開始時刻
-			info.setChokinSTime("1900");
-		}
-
 		return info;
 
 	}
@@ -922,6 +887,94 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		} else {
 			return b.doubleValue();
 		}
-		
 	}
+	
+	/**
+	 * シフトテーブルから作業時間数を取得する
+	 * 
+	 * @param shiftCode 
+	 * 				シフトコード
+	 * @param sTime 
+	 * 				作業開始時刻
+	 * @param eTime 
+	 * 				作業終了時刻
+	 * 
+	 * @return 作業時間数
+	 */
+	private Double countWorkTime(String shiftCode, String sTime, String eTime) {
+		
+		return attendanceInputDao.countWorkTime(shiftCode, sTime, eTime, 0);
+	}
+
+	/**
+	 * シフトテーブルから休暇時間数を取得する
+	 * 
+	 * @param shiftCode 
+	 * 				シフトコード
+	 * @param sTime 
+	 * 				作業開始時刻
+	 * @param eTime 
+	 * 				作業終了時刻
+	 * @param flag 
+	 * 				遅刻・早退フラグ(0:遅刻；1:早退)
+	 * 
+	 * @return 休暇時間数
+	 */
+	private Double countRestTime(String shiftCode, String sTime, String eTime, int flag) {
+		
+		return attendanceInputDao.countWorkTime(shiftCode, sTime, eTime, flag);
+	}
+	/**
+	 * シフトテーブルから深夜時間数を取得する
+	 * 
+	 * @param shiftCode 
+	 * 				シフトコード
+	 * @param sTime 
+	 * 				作業開始時刻
+	 * @param eTime 
+	 * 				作業終了時刻
+	 * @param flag 
+	 * 				計算フラグ（0：「<=A」;1:「< A」）
+	 * 
+	 * @return 深夜勤務時間数
+	 */
+	private Double getMNHours(String shiftCode, String sTime, String eTime, int flag) {
+		
+		BaseCondition condition = new BaseCondition();
+		
+		condition.addConditionEqual("shiftCode", shiftCode);
+
+		condition.addConditionGreaterEqualThan("timeZoneCode", sTime);
+		// 終了十区
+		if (flag == 0) {
+			condition.addConditionLessEqualThan("timeZoneCode", eTime);
+		} else {
+			condition.addConditionLessThan("timeZoneCode", eTime);
+		}
+		
+		
+		List<ShiftInfo> list1 = baseDao.findResultList(condition, ShiftInfo.class);
+		
+		condition.addConditionEqual("shiftCode", "MN");
+		List<ShiftInfo> list2 = baseDao.findResultList(condition, ShiftInfo.class);
+		Double hours = 0.0;
+		if (list1 != null && list2 != null) {
+			
+			for (ShiftInfo info1 : list1) {
+				for (ShiftInfo info2 : list2) {
+					// 同一時刻の場合
+					if (StringUtils.equals(info1.getTimeZoneCode(), info2.getTimeZoneCode())) {
+						// 勤務フラグが”１”の場合
+						if (StringUtils.equals(info1.getKinmuFlg(), "1")
+								&& StringUtils.equals(info2.getKinmuFlg(), "1")) {
+							hours = hours + 0.5;
+						}
+					}
+				}
+			}
+		}
+		
+		return hours;
+	}
+	
 }

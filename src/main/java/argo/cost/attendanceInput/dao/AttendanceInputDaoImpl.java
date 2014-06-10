@@ -1,8 +1,13 @@
 package argo.cost.attendanceInput.dao;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
@@ -19,7 +24,13 @@ import argo.cost.attendanceInput.model.HolidayRecord;
  */
 @Repository
 public class AttendanceInputDaoImpl implements AttendanceInputDao {
-
+	
+	/**
+	 * エンティティ管理クラス
+	 */
+	@PersistenceContext
+	protected EntityManager em;	
+	
 	/**
 	 * 休日勤務情報を取得
 	 * 
@@ -96,5 +107,66 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 			return 1;
 		}
 		return 0;
+	}
+	
+	/**
+	 * シフトテーブルから作業時間数を取得する
+	 * 
+	 * @param shiftCode 
+	 * 				シフトコード
+	 * @param sTime 
+	 * 				作業開始時刻
+	 * @param eTime 
+	 * 				作業終了時刻
+	 * @param flag 
+	 * 				計算フラグ(0:Between；1:以上;2:以下)
+	 * 
+	 * @return 作業時間数
+	 */
+	@Override
+	public Double countWorkTime(String shiftCode, String sTime, String eTime, int flag) {
+
+		// JPQLを作成する
+		StringBuilder q = new StringBuilder();
+
+		q.append("SELECT ");
+		q.append("		count(");
+		q.append(" 		kinmu_flg)");
+		q.append("	FROM");
+		q.append("		shift_info");
+		q.append("	WHERE");
+		q.append("	kinmu_flg = 1");
+		q.append("	AND");
+		q.append("	shift_code = ?");
+		q.append("	AND");
+		// 遅刻の場合
+		if (flag == 0) {
+			q.append("	time_zone_code >= ?");
+			q.append("	AND");
+			q.append("	time_zone_code <= ?");
+		// 以上
+		} else if (flag == 1) {
+			q.append("	time_zone_code >= ?");
+			q.append("	AND");
+			q.append("	time_zone_code < ?");
+		// 以下
+		} else if (flag == 2) {
+			q.append("	time_zone_code > ?");
+			q.append("	AND");
+			q.append("	time_zone_code <= ?");
+		}
+		
+		// クエリー取得
+		Query query = this.em.createNativeQuery(q.toString());
+		
+		int index = 1;
+
+		query.setParameter(index++, shiftCode); // シフトコード
+		query.setParameter(index++, sTime);     // 計算開始時刻
+		query.setParameter(index++, eTime);     // 計算開始時刻
+		
+		// 出力対象一覧情報取得
+		Double result = ((BigInteger)query.getSingleResult()).doubleValue() * 0.5;
+		return result;
 	}
 }

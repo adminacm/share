@@ -44,4 +44,20 @@ public interface AttendanceInputDao {
 	 * @return 更新結果　０：更新失敗　１：更新成功
 	 */
 	Integer updateAttdendanceInfo(AttendanceInputForm form);
+	
+	/**
+	 * シフトテーブルから作業時間数を取得する
+	 * 
+	 * @param shiftCode 
+	 * 				シフトコード
+	 * @param sTime 
+	 * 				作業開始時刻
+	 * @param eTime 
+	 * 				作業終了時刻
+	 * @param flag 
+	 * 				計算フラグ(0:Between；1:以上;2:以下)
+	 * 
+	 * @return 作業時間数
+	 */
+	Double countWorkTime(String shiftCode, String sTime, String eTime, int flag);
 }

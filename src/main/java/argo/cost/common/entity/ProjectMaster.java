@@ -17,7 +17,6 @@ public class ProjectMaster implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
 	private String code;
 
 	@Column(name="created_date")
@@ -26,6 +25,12 @@ public class ProjectMaster implements Serializable {
 	@Column(name="created_user_id")
 	private String createdUserId;
 
+	@Column(name="item_no")
+	private String itemNo;
+
+	@Column(name="kigyo_code")
+	private String kigyoCode;
+
 	private String name;
 
 	@Column(name="update_date")
@@ -33,6 +38,10 @@ public class ProjectMaster implements Serializable {
 
 	@Column(name="updated_user_id")
 	private String updatedUserId;
+
+	//bi-directional many-to-one association to HolidayAtendanceYotei
+	@OneToMany(mappedBy="projectMaster")
+	private List<HolidayAtendanceYotei> holidayAtendanceYoteis;
 
 	//bi-directional many-to-one association to ProjWorkTimeManage
 	@OneToMany(mappedBy="projectMaster")
@@ -65,6 +74,22 @@ public class ProjectMaster implements Serializable {
 		this.createdUserId = createdUserId;
 	}
 
+	public String getItemNo() {
+		return this.itemNo;
+	}
+
+	public void setItemNo(String itemNo) {
+		this.itemNo = itemNo;
+	}
+
+	public String getKigyoCode() {
+		return this.kigyoCode;
+	}
+
+	public void setKigyoCode(String kigyoCode) {
+		this.kigyoCode = kigyoCode;
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -87,6 +112,28 @@ public class ProjectMaster implements Serializable {
 
 	public void setUpdatedUserId(String updatedUserId) {
 		this.updatedUserId = updatedUserId;
+	}
+
+	public List<HolidayAtendanceYotei> getHolidayAtendanceYoteis() {
+		return this.holidayAtendanceYoteis;
+	}
+
+	public void setHolidayAtendanceYoteis(List<HolidayAtendanceYotei> holidayAtendanceYoteis) {
+		this.holidayAtendanceYoteis = holidayAtendanceYoteis;
+	}
+
+	public HolidayAtendanceYotei addHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
+		getHolidayAtendanceYoteis().add(holidayAtendanceYotei);
+		holidayAtendanceYotei.setProjectMaster(this);
+
+		return holidayAtendanceYotei;
+	}
+
+	public HolidayAtendanceYotei removeHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
+		getHolidayAtendanceYoteis().remove(holidayAtendanceYotei);
+		holidayAtendanceYotei.setProjectMaster(null);
+
+		return holidayAtendanceYotei;
 	}
 
 	public List<ProjWorkTimeManage> getProjWorkTimeManages() {

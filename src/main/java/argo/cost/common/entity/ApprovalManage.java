@@ -17,14 +17,14 @@ public class ApprovalManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
-	private Integer id;
+	@Column(name="apply_no")
+	private String applyNo;
 
 	@Column(name="apply_detail")
 	private String applyDetail;
-
-	@Column(name="apply_no")
-	private String applyNo;
+	
+	@Column(name="app_ym")
+	private String appYm;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
@@ -60,14 +60,6 @@ public class ApprovalManage implements Serializable {
 	public ApprovalManage() {
 	}
 
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public String getApplyDetail() {
 		return this.applyDetail;
 	}
@@ -82,6 +74,14 @@ public class ApprovalManage implements Serializable {
 
 	public void setApplyNo(String applyNo) {
 		this.applyNo = applyNo;
+	}
+
+	public String getAppYm() {
+		return this.appYm;
+	}
+
+	public void setAppYm(String appYm) {
+		this.appYm = appYm;
 	}
 
 	public Timestamp getCreatedDate() {
