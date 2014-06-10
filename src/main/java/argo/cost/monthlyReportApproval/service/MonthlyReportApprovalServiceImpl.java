@@ -1,12 +1,15 @@
 package argo.cost.monthlyReportApproval.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.entity.KintaiInfo;
+import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.monthlyReportApproval.dao.MonthlyReportApprovalDao;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 
@@ -56,8 +59,45 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	@Override
 	public List<MonthlyReportApprovalVo> getMonReApprovalList(String applyNo) {
 
+		
+		List<MonthlyReportApprovalVo> monthlyReportApprovalList = new ArrayList<MonthlyReportApprovalVo>();
 		// 月報承認データを取得
-		List<MonthlyReportApprovalVo> monthlyReportApprovalList = monApprovalDao.searchMonthReportApprovalList(applyNo);
+		List<KintaiInfo> kintaiInfoList = monApprovalDao.searchMonthReportApprovalList(applyNo);
+		
+		for(int i = 0; i<kintaiInfoList.size(); i++) {
+			
+			for (int j = 0;j<monthlyReportApprovalList.size();j++) {
+				// 区分
+				monthlyReportApprovalList.get(i).setWorkKbn(kintaiInfoList.get(j).getKyukaKekinKbnMaster().getCode());
+				// ｼﾌﾄ
+				monthlyReportApprovalList.get(i).setShift(kintaiInfoList.get(j).getShiftJikoku().getShiftCode());
+				// 出勤
+				monthlyReportApprovalList.get(i).setWorkSTime(kintaiInfoList.get(j).getKinmuStartTime());
+				// 退勤
+				monthlyReportApprovalList.get(i).setWorkETime(kintaiInfoList.get(j).getKinmuEndTime());
+				// 休暇
+				monthlyReportApprovalList.get(i).setRestHours(kintaiInfoList.get(j).getKyukaJikansu().doubleValue());
+				// 勤務時間数
+				monthlyReportApprovalList.get(i).setWorkHours(kintaiInfoList.get(j).getKinmuJikansu().doubleValue());
+				// 超勤開始
+				monthlyReportApprovalList.get(i).setChoSTime(kintaiInfoList.get(j).getChokinStartTime());
+				// 超勤終了
+				monthlyReportApprovalList.get(i).setChoETime(kintaiInfoList.get(j).getChokinEndTime());
+				// 超勤平増
+				monthlyReportApprovalList.get(i).setChoWeekday(kintaiInfoList.get(j).getChokinHeijituJikansu().doubleValue());
+				// 超勤平常
+				monthlyReportApprovalList.get(i).setChoWeekdayNomal(kintaiInfoList.get(j).getChokinHeijituTujyoJikansu().doubleValue());
+				// 超勤休日
+				monthlyReportApprovalList.get(i).setChoHoliday(kintaiInfoList.get(j).getChokinKyujituJikansu().doubleValue());
+				// 超勤深夜
+				monthlyReportApprovalList.get(i).setmNHours(kintaiInfoList.get(j).getSinyaKinmuJikansu().doubleValue());
+				// ﾛｹｰｼｮﾝコード
+				monthlyReportApprovalList.get(i).setLocationCode(kintaiInfoList.get(j).getLocation().getCode());
+				// ﾛｹｰｼｮﾝ名前
+				monthlyReportApprovalList.get(i).setLocationName(kintaiInfoList.get(j).getLocation().getName());
+			}
+			
+		}
 		
 		// 合計休暇時間数
 		Double totleRestHours = 0.0;
@@ -135,15 +175,15 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 * @return
 	 *        プロジェクト情報
 	 */
-//	@Override
-//	public List<Project> getProjectList(String applyNo) {
-//
-//		// プロジェクト情報を取得
-//		List<Project> projectList = monApprovalDao.searchProjectList(applyNo);
-//		
-//		return projectList;
-//		
-//	}
+	@Override
+	public List<ProjWorkTimeManage> getProjectList(String applyNo) {
+
+		// プロジェクト情報を取得
+		List<ProjWorkTimeManage> projectList = monApprovalDao.searchProjectList(applyNo);
+		
+		return projectList;
+		
+	}
 
 	/**
 	 * 申請状況更新
