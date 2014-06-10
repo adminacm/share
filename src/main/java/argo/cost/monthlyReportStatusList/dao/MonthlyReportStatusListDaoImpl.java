@@ -250,7 +250,7 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 			
 			csvInfo = new PayMagistrateCsvInfo();
 			// 社員番号
-			csvInfo.setEmployeeNo(userId);
+			csvInfo.setUserId(userId);
 			
 			for (int i = 0; i < resultList.size(); i++) {
 				

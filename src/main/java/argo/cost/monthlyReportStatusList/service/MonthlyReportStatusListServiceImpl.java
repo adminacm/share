@@ -10,8 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -246,21 +244,17 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 *                  異常
 	 */
 	@Override
-	public void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
+	public void createCSVFile(MonthlyReportStatusListForm form) throws Exception {
 		
 		// 給与奉行向けCSVファイル情報を取得
 		List<PayMagistrateCsvInfo> csvDetailList = monthlyReportStatusListDao.getPayMagistrateCsvList(form);
-		try {
-			String path = "D:\\";
-			
-			SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyyMMddHHmmss");
-			// 日付設定
-			String filaName = sdfYearM.format(new Date());
-   		 	// CSV ダウンロード
-        	exportCsvfiles(path, filaName, getTitleList(), csvDetailList, response);
-       } catch (Exception e) {
-            e.printStackTrace();
-       }
+		String path = "D:\\";
+		
+		SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyyMMddHHmmss");
+		// 日付設定
+		String filaName = sdfYearM.format(new Date());
+	 	// CSV ダウンロード
+    	exportCsvfiles(path, filaName, getTitleList(), csvDetailList);
 	}
 
 	/**
@@ -296,7 +290,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 * @throws Exception
 	 *                  異常
 	 */
-	 private void exportCsvfiles(String path, String fileName, List<String> titleList, List<PayMagistrateCsvInfo> csvDetailList, HttpServletResponse response) throws Exception {
+	 private void exportCsvfiles(String path, String fileName, List<String> titleList, List<PayMagistrateCsvInfo> csvDetailList) throws Exception {
 		 
 		OutputStream out = null;
 		PrintWriter pw = null;
@@ -326,7 +320,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 			for (int i = 0; i < csvDetailList.size(); i++) {
 
 				// 社員番号
-				employeeNo = (csvDetailList.get(i).getEmployeeNo());
+				employeeNo = (csvDetailList.get(i).getUserId());
 				// 超過勤務時間数（平日_割増）
 				overWeekdayHours = (csvDetailList.get(i).getOverWeekdayHours());
 				// 超過勤務時間数（休日）

@@ -20,8 +20,7 @@ public class ChokinKanri implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
-	@Column(name="user_id")
-	private String userId;
+	private Integer id;
 
 	@Column(name="chokin_date")
 	private String chokinDate;
@@ -54,18 +53,17 @@ public class ChokinKanri implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="user_id",insertable=false,updatable=false)
 	private Users users;
 
 	public ChokinKanri() {
 	}
 
-	public String getUserId() {
-		return this.userId;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getChokinDate() {
