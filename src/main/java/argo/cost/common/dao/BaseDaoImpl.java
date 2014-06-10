@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
  * テーブル操作に関する処理を行う。
  * 
  */
-@Transactional
 @Repository
 @Transactional
 public class BaseDaoImpl implements BaseDao {
