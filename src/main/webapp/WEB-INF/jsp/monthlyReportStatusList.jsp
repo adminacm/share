@@ -128,13 +128,13 @@ function submitAction(action) {
 											<a href="/monthlyReportStatusList/applyNoClick?applyNo=${mRS.applyNo}&applyKbnCd=${mRS.applyKbnCd}">${mRS.applyNo}</a>
 										</td>
 										<td>
-											${mRS.affiliation}
+											${mRS.affiliationName}
 										</td>
 										<td>
-											${mRS.id}
+											${mRS.userId}
 										</td>
 										<td>
-											${mRS.name}
+											${mRS.userName}
 										</td>
 										<td>
 											${mRS.applyKbnName}
@@ -143,7 +143,7 @@ function submitAction(action) {
 											${mRS.applyDetail}
 										</td>
 										<td>
-											${mRS.status}
+											${mRS.statusName}
 										</td>
 									</tr>
 								</c:forEach>

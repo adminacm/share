@@ -2,7 +2,7 @@ package argo.cost.monthlyReportStatusList.model;
 
 /**
  * <p>
- * 承認リストを記載します。
+ * 月報状況一覧リストを記載します。
  * </p>
  *
  */
@@ -19,17 +19,17 @@ public class MonthlyReportStatusListVo {
 	/**
 	 * 所属
 	 */
-	private String affiliation;
+	private String affiliationName;
 	
 	/**
 	 * ID
 	 */
-	private String id;
+	private String userId;
 	
 	/**
 	 * 氏名
 	 */
-	private String name;
+	private String userName;
 	
 	/**
 	 * 申請区分
@@ -49,11 +49,17 @@ public class MonthlyReportStatusListVo {
 	/**
 	 * 状況
 	 */
-	private String status;
+	private String statusName;
+	
+	/**
+	 * 申請年月
+	 */
+	private String applyYm;
 
 	// ************************
 	// ** アクセサメソッド　** 
 	// ************************
+	
 	public String getApplyNo() {
 		return applyNo;
 	}
@@ -61,29 +67,29 @@ public class MonthlyReportStatusListVo {
 	public void setApplyNo(String applyNo) {
 		this.applyNo = applyNo;
 	}
-	
-	public String getAffiliation() {
-		return affiliation;
+
+	public String getAffiliationName() {
+		return affiliationName;
 	}
 
-	public void setAffiliation(String affiliation) {
-		this.affiliation = affiliation;
+	public void setAffiliationName(String affiliationName) {
+		this.affiliationName = affiliationName;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getApplyKbnCd() {
@@ -110,11 +116,19 @@ public class MonthlyReportStatusListVo {
 		this.applyDetail = applyDetail;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getStatusName() {
+		return statusName;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	public String getApplyYm() {
+		return applyYm;
+	}
+
+	public void setApplyYm(String applyYm) {
+		this.applyYm = applyYm;
 	}
 }

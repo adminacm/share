@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
@@ -37,7 +38,7 @@ public class MonthlyReportStatusListController extends AbstractController  {
 	 * 月報状況一覧サービス
 	 */
 	@Autowired
-	protected MonthlyReportStatusListService monthlyReportStatusListService;
+	protected MonthlyReportStatusListService sevice;
 
 	/**
 	 * 月報状況一覧画面ID
@@ -63,39 +64,31 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
     	model.addAttribute(form);
     	
-    	// 状況リストを取得
-//    	List<ListItemVO> statusList = comService.getStatusList();
-//    	
-//    	// 状況リストを設定
-//    	form.setStatusList(statusList);
-    	
     	// 年リストを取得
-    	List<ListItemVO> yearList = monthlyReportStatusListService.getYearList(new Date());
+    	List<ListItemVO> yearList = sevice.getYearList(new Date());
     	
     	// 年リストを設定
     	form.setYearList(yearList);
     	
     	// 月リストを取得
-    	List<ListItemVO> monthList = monthlyReportStatusListService.getMonthList();
+    	List<ListItemVO> monthList = sevice.getMonthList();
     	
     	// 月リストを設定
     	form.setMonthList(monthList);
 
     	// 所属リストを取得
-    	List<ListItemVO> affiliationList = monthlyReportStatusListService.getAffiliationList();
+    	List<ListItemVO> affiliationList = sevice.getAffiliationList();
     	
     	// 所属リストを設定
     	form.setAffiliationList(affiliationList);
     	
-    	// 月報状況一覧リストを取得
-    	List<MonthlyReportStatusListVo> monthlyReportStatusList = monthlyReportStatusListService.getMonthlyReportStatusList(form);
+    	// 状況リストを取得
+    	List<ListItemVO> statusList = sevice.getStatusList();
     	
-    	form.setMonthlyReportStatusList(monthlyReportStatusList);
+    	// 状況リストを設定
+    	form.setStatusList(statusList);
 
     	// 初期値設定
-    	// 状況
-    	form.setStatus("01");
-
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int year = cal.get(Calendar.YEAR);
@@ -103,9 +96,23 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	// 当年
     	form.setYear(String.valueOf(year));
     	// 当月
-    	form.setMonth(String.valueOf(month));
+    	if (month < 10) {
+    		
+        	form.setMonth("0" + month);
+    	} else {
+
+        	form.setMonth(String.valueOf(month));
+    	}
+    	
     	// 所属
-    	form.setAffiliation("00");
+    	form.setAffiliation("");
+    	// 状況
+    	form.setStatus("01");
+    	
+    	// 月報状況一覧リストを取得
+    	List<MonthlyReportStatusListVo> monthlyReportStatusList = sevice.getMonthlyReportStatusList(form);
+    	
+    	form.setMonthlyReportStatusList(monthlyReportStatusList);
     	
     	// 月報状況一覧画面を戻り
         return MONTHLYREPORT_STATUS_LIST;
@@ -114,18 +121,18 @@ public class MonthlyReportStatusListController extends AbstractController  {
     /**
      * 表示切替ボタンを押して、表示対象を切り替える
      * 
-     * @param monthlyReportStatusListForm
-     *                                   月報状況一覧画面情報
+     * @param form
+     *            月報状況一覧画面情報
      * @return 月報状況一覧画面
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String searchMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm) {
+    public String searchMonthlyReportStatusList(MonthlyReportStatusListForm form) {
     	
     	// 月報状況一覧リストを取得
-    	List<MonthlyReportStatusListVo> monthlyReportStatusList = monthlyReportStatusListService.getMonthlyReportStatusList(monthlyReportStatusListForm);
+    	List<MonthlyReportStatusListVo> monthlyReportStatusList = sevice.getMonthlyReportStatusList(form);
     	
     	// 月報状況一覧リストを設定
-    	monthlyReportStatusListForm.setMonthlyReportStatusList(monthlyReportStatusList);
+    	form.setMonthlyReportStatusList(monthlyReportStatusList);
 
     	// 月報状況一覧画面を戻り
         return MONTHLYREPORT_STATUS_LIST;
@@ -153,13 +160,13 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	String backUrl = "backUrl=";
     	
     	// 申請区分が月報の場合
-    	if ("1".equals(applyKbnCd)) {
+    	if (CommonConstant.APPLY_KBN_GETUHOU.equals(applyKbnCd)) {
 
         	// 月報承認詳細画面
     		strApprovalDisplay = REDIRECT + UrlConstant.URL_MONTHLYREPORT_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo 
     				+ AND_MARK + backUrl + UrlConstant.URL_MONTHLYREPORT_STATUS_LIST;
         	// 申請区分が超勤振替の場合
-    	} else if ("2".equals(applyKbnCd)) {
+    	} else if (CommonConstant.APPLY_KBN_CHOKIN_FURIKAE.equals(applyKbnCd)) {
 
         	// 超勤振替申請承認詳細画面
     		strApprovalDisplay = REDIRECT + UrlConstant.URL_HOLIDAYFOROVERTIME_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo + AND_MARK 
@@ -173,8 +180,8 @@ public class MonthlyReportStatusListController extends AbstractController  {
     /**
      * 給与奉行向けCSV出力ボタンを押下
      * 
-     * @param monthlyReportStatusListForm
-     *                                   月報状況一覧画面情報
+     * @param form
+     *            月報状況一覧画面情報
      * @param response
      *                レスポンス
      * @return 月報状況一覧画面
@@ -182,10 +189,10 @@ public class MonthlyReportStatusListController extends AbstractController  {
      *                  異常
      */
     @RequestMapping(value = "/csvOutput", method = RequestMethod.POST)
-    public String doCSV(MonthlyReportStatusListForm monthlyReportStatusListForm, HttpServletResponse response) throws Exception {
+    public String doCSV(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
     	
 		// CSVファイルデータ作成
-    	monthlyReportStatusListService.createCSVFile(monthlyReportStatusListForm, response);
+    	sevice.createCSVFile(form, response);
 
     	// 月報状況一覧画面を戻り
         return MONTHLYREPORT_STATUS_LIST;

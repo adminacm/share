@@ -19,16 +19,6 @@ import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 public interface MonthlyReportStatusListService {
 
 	/**
-	 * 月報状況一覧リストを取得
-	 * 
-	 * @param monthlyReportStatusListForm
-	 *                                   月報状況一覧情報
-	 * @return 
-	 *        月報状況一覧リスト
-	 */
-	List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm monthlyReportStatusListForm);
-
-	/**
 	 * 年プルダウンリストを取得
 	 * 
 	 * @param date
@@ -55,14 +45,32 @@ public interface MonthlyReportStatusListService {
 	List<ListItemVO> getAffiliationList();
 
 	/**
+	 * 状況プルダウンリストを取得
+	 * 
+	 * @return 
+	 *        状況プルダウンリスト
+	 */
+	List<ListItemVO> getStatusList();
+
+	/**
+	 * 月報状況一覧リストを取得
+	 * 
+	 * @param form
+	 *            月報状況一覧情報
+	 * @return 
+	 *        月報状況一覧リスト
+	 */
+	List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
+
+	/**
 	 * CSVファイルを作成
 	 * 
-	 * @param monthlyReportStatusListForm
-	 *                                   月報状況一覧情報
+	 * @param form
+	 *            月報状況一覧情報
      * @param response
      *                レスポンス
 	 * @throws Exception 
 	 *                  異常
 	 */
-	void createCSVFile(MonthlyReportStatusListForm monthlyReportStatusListForm, HttpServletResponse response) throws Exception;
+	void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception;
 }
