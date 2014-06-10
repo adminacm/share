@@ -98,7 +98,7 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		
 		// 取得した勤務IDによって、関連のプロジェクト作業時間を取得する
 		BaseCondition projectWorkTImeSelectCondition = new BaseCondition();
-		projectWorkTImeSelectCondition.addConditionEqual("approvalManage", baseDao.findById(approvalManageInfo.getId().toString(), KintaiInfo.class));
+		projectWorkTImeSelectCondition.addConditionEqual("approvalManage", baseDao.findById(approvalManageInfo.getApplyNo().toString(), KintaiInfo.class));
 		
 		ArrayList<ProjWorkTimeManage> projWorkTimeManageInfoList = (ArrayList<ProjWorkTimeManage>) baseDao.findResultList(projectWorkTImeSelectCondition, ProjWorkTimeManage.class);
 		
