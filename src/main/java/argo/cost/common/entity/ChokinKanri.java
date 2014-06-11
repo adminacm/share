@@ -53,6 +53,7 @@ public class ChokinKanri implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
+	@JoinColumn(name="user_id")
 	private Users users;
 
 	public ChokinKanri() {

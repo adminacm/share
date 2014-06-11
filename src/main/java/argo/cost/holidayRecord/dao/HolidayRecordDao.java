@@ -2,9 +2,8 @@ package argo.cost.holidayRecord.dao;
 
 import java.util.List;
 
-import argo.cost.holidayRecord.model.AbsenceVO;
+import argo.cost.common.entity.KyukaKekin;
 import argo.cost.holidayRecord.model.PayHolidayVO;
-import argo.cost.holidayRecord.model.SpecialHolidayVO;
 
 /**
  * <p>
@@ -22,6 +21,7 @@ public interface HolidayRecordDao {
 	 *              ユーザＩＤ
 	 * @param yearPeriod
 	 *                  年度
+	 * @return 有給休暇情報
 	 */
 	List<PayHolidayVO> getPayHolidayList(String userId, String yearPeriod);
 	
@@ -32,8 +32,9 @@ public interface HolidayRecordDao {
 	 *              ユーザＩＤ
 	 * @param yearPeriod
 	 *                  年度
+	 * @return 欠勤情報
 	 */
-	List<AbsenceVO> getAbsenceList(String userId, String yearPeriod);
+	List<KyukaKekin> getAbsenceList(String userId, String yearPeriod);
 	
 	/**
 	 * 特別休暇情報取得
@@ -42,6 +43,7 @@ public interface HolidayRecordDao {
 	 *              ユーザＩＤ
 	 * @param yearPeriod
 	 *                  年度
+	 * @return 特別休暇情報
 	 */
-	List<SpecialHolidayVO> getSpecialHolidayList(String userId, String yearPeriod);
+	List<KyukaKekin> getSpecialHolidayList(String userId, String yearPeriod);
 }

@@ -1,5 +1,7 @@
 package argo.cost.holidayRecord.service;
 
+import java.text.ParseException;
+
 import argo.cost.holidayRecord.model.HolidayRecordForm;
 
 /**
@@ -17,5 +19,5 @@ public interface HolidayRecordService {
 	 * @param form
 	 *            休暇管理画面情報
 	 */
-	void setHolidayRecordInfo(HolidayRecordForm form);
+	void setHolidayRecordInfo(HolidayRecordForm form) throws ParseException;
 }

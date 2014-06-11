@@ -33,4 +33,14 @@ public interface MonthlyReportStatusListDao {
 	 */
 	List<PayMagistrateCsvInfo> getPayMagistrateCsvList(MonthlyReportStatusListForm form);
 
+	/**
+	 * 超勤管理テーブルを更新
+	 * 
+	 * @param userId
+	 *              ユーザＩＤ
+	 * @param applyYm
+	 *               申請年月
+	 */
+	void updateChokinKanri(String userId, String applyYm);
+
 }

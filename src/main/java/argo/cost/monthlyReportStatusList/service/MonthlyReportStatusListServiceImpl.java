@@ -255,6 +255,14 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		String filaName = sdfYearM.format(new Date());
 	 	// CSV ダウンロード
     	exportCsvfiles(path, filaName, getTitleList(), csvDetailList);
+    	// 超勤管理テーブルを更新
+    	if (form.getMonthlyReportStatusList().size() > 0)
+    	{
+    		for (MonthlyReportStatusListVo monthlyReportStatusInfo : form.getMonthlyReportStatusList()) {
+
+    	    	monthlyReportStatusListDao.updateChokinKanri(monthlyReportStatusInfo.getUserId(), monthlyReportStatusInfo.getApplyYm());
+    		}
+    	}
 	}
 
 	/**
