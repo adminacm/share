@@ -1,5 +1,6 @@
 package argo.cost.holidayRecord.controller;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +52,15 @@ public class HolidayRecordController extends AbstractController {
 	public String initHolidayRecord(Model model) throws Exception {
 		
 		// 休日勤務入力画面情報初期化
-		HolidayRecordForm holidayRecordForm = initForm(HolidayRecordForm.class);
+		HolidayRecordForm form = initForm(HolidayRecordForm.class);
 		// 年度リストをセット
-		holidayRecordForm.setYearPeriodList(comService.getYearList(new Date()));
+		form.setYearPeriodList(comService.getYearList(new Date()));
 		// 初期値に当年度をセット
-		holidayRecordForm.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
+		form.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
 		
 		// 画面情報を設定
-		holidayRecordService.setHolidayRecordInfo(holidayRecordForm);
-		model.addAttribute(holidayRecordForm);
+		holidayRecordService.setHolidayRecordInfo(form);
+		model.addAttribute(form);
 
 		// 休暇管理画面を戻り
 		return HOLIDAY_RECORD;
@@ -71,9 +72,10 @@ public class HolidayRecordController extends AbstractController {
 	 * @param form
 	 *            休暇管理画面情報
 	 * @return 休暇管理画面
+	 * @throws ParseException 
 	 */
 	@RequestMapping(value = SEARCH)
-	public String searchHolidayRecord(HolidayRecordForm form) {
+	public String searchHolidayRecord(HolidayRecordForm form) throws ParseException {
 		
 		// 画面情報を設定する。
 		holidayRecordService.setHolidayRecordInfo(form);

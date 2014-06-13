@@ -3,8 +3,6 @@ package argo.cost.monthlyReportStatusList.service;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
@@ -72,5 +70,5 @@ public interface MonthlyReportStatusListService {
 	 * @throws Exception 
 	 *                  異常
 	 */
-	void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception;
+	void createCSVFile(MonthlyReportStatusListForm form) throws Exception;
 }

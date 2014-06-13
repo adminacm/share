@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -189,10 +187,10 @@ public class MonthlyReportStatusListController extends AbstractController  {
      *                  異常
      */
     @RequestMapping(value = "/csvOutput", method = RequestMethod.POST)
-    public String doCSV(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
+    public String doCSV(MonthlyReportStatusListForm form) throws Exception {
     	
 		// CSVファイルデータ作成
-    	sevice.createCSVFile(form, response);
+    	sevice.createCSVFile(form);
 
     	// 月報状況一覧画面を戻り
         return MONTHLYREPORT_STATUS_LIST;

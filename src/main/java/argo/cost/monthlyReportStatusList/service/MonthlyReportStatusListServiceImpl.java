@@ -10,8 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -246,21 +244,25 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 *                  異常
 	 */
 	@Override
-	public void createCSVFile(MonthlyReportStatusListForm form, HttpServletResponse response) throws Exception {
+	public void createCSVFile(MonthlyReportStatusListForm form) throws Exception {
 		
 		// 給与奉行向けCSVファイル情報を取得
 		List<PayMagistrateCsvInfo> csvDetailList = monthlyReportStatusListDao.getPayMagistrateCsvList(form);
-		try {
-			String path = "D:\\";
-			
-			SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyyMMddHHmmss");
-			// 日付設定
-			String filaName = sdfYearM.format(new Date());
-   		 	// CSV ダウンロード
-        	exportCsvfiles(path, filaName, getTitleList(), csvDetailList, response);
-       } catch (Exception e) {
-            e.printStackTrace();
-       }
+		String path = "D:\\";
+		
+		SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyyMMddHHmmss");
+		// 日付設定
+		String filaName = sdfYearM.format(new Date());
+	 	// CSV ダウンロード
+    	exportCsvfiles(path, filaName, getTitleList(), csvDetailList);
+    	// 超勤管理テーブルを更新
+    	if (form.getMonthlyReportStatusList().size() > 0)
+    	{
+    		for (MonthlyReportStatusListVo monthlyReportStatusInfo : form.getMonthlyReportStatusList()) {
+
+    	    	monthlyReportStatusListDao.updateChokinKanri(monthlyReportStatusInfo.getUserId(), monthlyReportStatusInfo.getApplyYm());
+    		}
+    	}
 	}
 
 	/**
@@ -296,7 +298,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 	 * @throws Exception
 	 *                  異常
 	 */
-	 private void exportCsvfiles(String path, String fileName, List<String> titleList, List<PayMagistrateCsvInfo> csvDetailList, HttpServletResponse response) throws Exception {
+	 private void exportCsvfiles(String path, String fileName, List<String> titleList, List<PayMagistrateCsvInfo> csvDetailList) throws Exception {
 		 
 		OutputStream out = null;
 		PrintWriter pw = null;
@@ -326,19 +328,19 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 			for (int i = 0; i < csvDetailList.size(); i++) {
 
 				// 社員番号
-				employeeNo = (csvDetailList.get(i).getEmployeeNo());
+				employeeNo = (nullToBlank(csvDetailList.get(i).getUserId()));
 				// 超過勤務時間数（平日_割増）
-				overWeekdayHours = (csvDetailList.get(i).getOverWeekdayHours());
+				overWeekdayHours = (nullToBlank(csvDetailList.get(i).getOverWeekdayHours()));
 				// 超過勤務時間数（休日）
-				overWeekdayNomalHours = (csvDetailList.get(i).getOverWeekdayNomalHours());
+				overWeekdayNomalHours = (nullToBlank(csvDetailList.get(i).getOverWeekdayNomalHours()));
 				// 超過勤務時間数（深夜）
-				overHolidayChangeWorkHours = (csvDetailList.get(i).getOverHolidayChangeWorkHours());
+				overHolidayChangeWorkHours = (nullToBlank(csvDetailList.get(i).getOverHolidayChangeWorkHours()));
 				// 超過勤務時間数（休日出勤振替分）
-				overHolidayHours = (csvDetailList.get(i).getOverHolidayHours());
+				overHolidayHours = (nullToBlank(csvDetailList.get(i).getOverHolidayHours()));
 				// 欠勤時間数
-				overNightHours = (csvDetailList.get(i).getOverNightHours());
+				overNightHours = (nullToBlank(csvDetailList.get(i).getOverNightHours()));
 				// 超過勤務時間数（平日_通常）
-				absenceHours = (csvDetailList.get(i).getAbsenceHours());
+				absenceHours = (nullToBlank(csvDetailList.get(i).getAbsenceHours()));
 				
 				pw.append("\n");
 				pw.append(employeeNo + ",");
@@ -358,5 +360,23 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 			out.flush();
 			out.close();
 		}
+	}
+	
+	 
+
+	 /**
+	  * CSV項目内容変換(null→"0.0")
+	  * 
+	  * @param str　CSV項目内容
+	  * 
+	  * @return　変換後のCSV項目内容
+	  */
+	 private String nullToBlank(String str) {
+		
+		if (str == null) {
+			
+			return "0.0";
+		}
+		return str;
 	}
 }

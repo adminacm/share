@@ -8,8 +8,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.ChokinKanri;
+import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
@@ -29,6 +34,12 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 	 */
 	@PersistenceContext
 	protected EntityManager em;
+	
+	/**
+	 * 単一テーブル操作DAO
+	 */	
+	@Autowired
+	private BaseDao baseDao;
 	
 	// CSV項目名
 	/**
@@ -250,7 +261,7 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 			
 			csvInfo = new PayMagistrateCsvInfo();
 			// 社員番号
-			csvInfo.setEmployeeNo(userId);
+			csvInfo.setUserId(userId);
 			
 			for (int i = 0; i < resultList.size(); i++) {
 				
@@ -293,5 +304,38 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 		}
 		
 		return csvInfo;
+	}
+
+	/**
+	 * 超勤管理テーブルを更新
+	 * 
+	 * @param userId
+	 *              ユーザＩＤ
+	 * @param applyYm
+	 *               申請年月
+	 */
+	@Override
+	public void updateChokinKanri(String userId, String applyYm) {
+
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		// ユーザＩＤ
+		condition.addConditionEqual("users.id", userId);
+		// 日付
+		condition.addConditionLike("chokinDate", applyYm + "%");
+		// 休日出勤管理詳細情報を取得
+		List<ChokinKanri> chokinList = baseDao.findResultList(condition, ChokinKanri.class);
+		
+		if (chokinList.size() > 0) {
+			
+			for (ChokinKanri chokinInfo : chokinList) {
+
+				// CSV出力フラグに「１」を更新
+				chokinInfo.setCsvOutputFlg(new BigDecimal(1));
+				// CSV出力日に「現在日付」を更新
+				chokinInfo.setCsvOutDate(CostDateUtils.getNowDate());
+				baseDao.update(chokinInfo);
+			}
+		}
 	}
 }

@@ -2,6 +2,7 @@ package argo.cost.monthlyReportStatusList;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,79 +13,35 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.ApplyKbnMaster;
+import argo.cost.common.entity.ApprovalManage;
+import argo.cost.common.entity.ChokinKanri;
+import argo.cost.common.entity.StatusMaster;
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
 import argo.cost.monthlyReportStatusList.service.MonthlyReportStatusListServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
+@ContextConfiguration(locations = {"classpath:/applicationContextTest.xml"}) 
 public class MonthlyReportStatusListTest {
 
 
 	// 月報状況一覧サビース
 	@Resource
-	MonthlyReportStatusListServiceImpl monS;
+	MonthlyReportStatusListServiceImpl serviceImpl;
 	
 	/**
-	 * 月報状況一覧リスト取得をテスト
-	 */
-	@Test
-	public void testGetMonthlyReportStatusList(){
-
-		// 月報状況一覧画面入力情報
-		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
-
-		// 所属
-		form.setAffiliation("01");
-		// 状況
-		form.setStatus("01");
-		// 年
-		form.setYear("2014");
-		// 月
-		form.setMonth("3");
-		
-		// 月報状況一覧リスト取得
-		List<MonthlyReportStatusListVo> monList = monS.getMonthlyReportStatusList(form);
-		
-		// 月報状況一覧リストのサイズ
-		assertEquals(monList.size(), 4);
-		assertEquals(monList.get(0).getApplyNo(), "user01120140500");
-		assertEquals(monList.get(0).getAffiliation(), "ＢＳ２");
-		assertEquals(monList.get(0).getId(), "aaa");
-		assertEquals(monList.get(0).getName(), "あｘｘｘｘｘ");
-		assertEquals(monList.get(0).getApplyKbnName(), "月報");
-		assertEquals(monList.get(0).getApplyDetail(), "2014年5月分");
-		assertEquals(monList.get(0).getStatus(), "作成中");
-
-		assertEquals(monList.get(1).getApplyNo(), "user02120140500");
-		assertEquals(monList.get(1).getAffiliation(), "ＢＳ２");
-		assertEquals(monList.get(1).getId(), "uuu");
-		assertEquals(monList.get(1).getName(), "うｘｘｘｘｘ");
-		assertEquals(monList.get(1).getApplyKbnName(), "月報");
-		assertEquals(monList.get(1).getApplyDetail(), "2014年5月分");
-		assertEquals(monList.get(1).getStatus(), "作成中");
-
-		assertEquals(monList.get(2).getApplyNo(), "user03220140500");
-		assertEquals(monList.get(2).getAffiliation(), "ＢＳ２");
-		assertEquals(monList.get(2).getId(), "iii");
-		assertEquals(monList.get(2).getName(), "えｘｘｘｘｘ");
-		assertEquals(monList.get(2).getApplyKbnName(), "超勤振替申請");
-		assertEquals(monList.get(2).getApplyDetail(), "休日勤務日：2014/5/5");
-		assertEquals(monList.get(2).getStatus(), "申請");
-
-		assertEquals(monList.get(3).getApplyNo(), "user04220140500");
-		assertEquals(monList.get(3).getAffiliation(), "ＢＳ２");
-		assertEquals(monList.get(3).getId(), "uuu");
-		assertEquals(monList.get(3).getName(), "うｘｘｘｘｘ");
-		assertEquals(monList.get(3).getApplyKbnName(), "超勤振替申請");
-		assertEquals(monList.get(3).getApplyDetail(), "休日勤務日：2014/5/5");
-		assertEquals(monList.get(3).getStatus(), "申請");
-		
-	}
+	 * 単一テーブル操作DAO
+	 */	
+	@Autowired
+	private BaseDao baseDao;
 
 	/**
 	 * 年プルダウンリスト取得をテスト
@@ -101,7 +58,7 @@ public class MonthlyReportStatusListTest {
 		}
 		
 		// 年プルダウンリスト取得
-		List<ListItemVO> yearMonthList = monS.getYearList(date);
+		List<ListItemVO> yearMonthList = serviceImpl.getYearList(date);
 		
 		// 年プルダウンリストのサイズ
 		assertEquals(yearMonthList.size(), 3);
@@ -121,16 +78,16 @@ public class MonthlyReportStatusListTest {
 	public void testGetMonthList(){
 
 		// 年プルダウンリスト取得
-		List<ListItemVO> yearMonthList = monS.getMonthList();
+		List<ListItemVO> yearMonthList = serviceImpl.getMonthList();
 		
 		// 年プルダウンリストのサイズ
 		assertEquals(yearMonthList.size(), 12);
-		assertEquals(yearMonthList.get(0).getValue(), "1");
-		assertEquals(yearMonthList.get(0).getName(), "1月");
-		assertEquals(yearMonthList.get(1).getValue(), "2");
-		assertEquals(yearMonthList.get(1).getName(), "2月");
-		assertEquals(yearMonthList.get(2).getValue(), "3");
-		assertEquals(yearMonthList.get(2).getName(), "3月");
+		assertEquals(yearMonthList.get(0).getValue(), "01");
+		assertEquals(yearMonthList.get(0).getName(), "01月");
+		assertEquals(yearMonthList.get(1).getValue(), "02");
+		assertEquals(yearMonthList.get(1).getName(), "02月");
+		assertEquals(yearMonthList.get(2).getValue(), "03");
+		assertEquals(yearMonthList.get(2).getName(), "03月");
 		
 	}
 
@@ -140,27 +97,287 @@ public class MonthlyReportStatusListTest {
 	@Test
 	public void testGetAffiliationList(){
 		
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		// ドロップダウン項目
-		ListItemVO item = new ListItemVO();
-		item.setValue("01");
-		item.setName("ＢＳ１");
-		resultList.add(item);
-		
-		item = new ListItemVO();
-		item.setValue("02");
-		item.setName("ＢＳ２");
-		resultList.add(item);
-		
 		// 所属プルダウンリスト取得
-		List<ListItemVO> affiliationList = monS.getAffiliationList();
+		List<ListItemVO> affiliationList = serviceImpl.getAffiliationList();
 		
 		// 所属プルダウンリストのサイズ
-		assertEquals(affiliationList.size(), 3);
-		assertEquals(affiliationList.get(1).getValue(), resultList.get(0).getValue());
-		assertEquals(affiliationList.get(1).getName(), resultList.get(0).getName());
-		assertEquals(affiliationList.get(2).getValue(), resultList.get(1).getValue());
-		assertEquals(affiliationList.get(2).getName(), resultList.get(1).getName());
+		assertEquals(affiliationList.size(), 18);
+		assertEquals(affiliationList.get(1).getValue(), "10");
+		assertEquals(affiliationList.get(1).getName(), "総務部");
+		assertEquals(affiliationList.get(2).getValue(), "11");
+		assertEquals(affiliationList.get(2).getName(), "総務課");
+		assertEquals(affiliationList.get(3).getValue(), "12");
+		assertEquals(affiliationList.get(3).getName(), "経理課");
 		
+	}
+
+	/**
+	 * 状況プルダウンリスト取得テスト
+	 */
+	@Test
+	public void testGetStatusList(){
+		
+		// 状況プルダウンリスト取得
+		List<ListItemVO> affiliationList = serviceImpl.getAffiliationList();
+		
+		// 状況プルダウンリストのサイズ
+		assertEquals(affiliationList.size(), 6);
+		assertEquals(affiliationList.get(1).getValue(), "01");
+		assertEquals(affiliationList.get(1).getName(), "作成中");
+		assertEquals(affiliationList.get(2).getValue(), "02");
+		assertEquals(affiliationList.get(2).getName(), "提出");
+		
+	}
+	
+	/**
+	 * 月報状況一覧リスト取得をテスト
+	 */
+	@Test
+	public void testGetMonthlyReportStatusList(){
+
+		// テストデータ
+		ApprovalManage approvalInfo1 = new ApprovalManage();
+		approvalInfo1.setApplyNo("4001120140500");
+		StatusMaster statusInfo1 = new StatusMaster();
+		statusInfo1.setCode("01");
+		approvalInfo1.setStatusMaster(statusInfo1);
+		approvalInfo1.setApplyDetail("2014年5月分");
+		ApplyKbnMaster applyKbn1 = new ApplyKbnMaster();
+		applyKbn1.setCode("1");
+		approvalInfo1.setApplyKbnMaster(applyKbn1);
+		Users users1 = new Users();
+		users1.setId("4001");
+		approvalInfo1.setUser(users1);
+		approvalInfo1.setAppYm("201405");
+		
+		ApprovalManage approvalInfo2 = new ApprovalManage();
+		approvalInfo2.setApplyNo("4002120140500");
+		StatusMaster statusInfo2 = new StatusMaster();
+		statusInfo2.setCode("01");
+		approvalInfo2.setStatusMaster(statusInfo2);
+		approvalInfo2.setApplyDetail("2014年5月分");
+		ApplyKbnMaster applyKbn2 = new ApplyKbnMaster();
+		applyKbn2.setCode("1");
+		approvalInfo2.setApplyKbnMaster(applyKbn2);
+		Users user2 = new Users();
+		user2.setId("4002");
+		approvalInfo2.setUser(user2);
+		approvalInfo2.setAppYm("201405");
+
+		ApprovalManage approvalInfo3 = new ApprovalManage();
+		approvalInfo3.setApplyNo("4003120140500");
+		StatusMaster statusInfo3 = new StatusMaster();
+		statusInfo3.setCode("01");
+		approvalInfo3.setStatusMaster(statusInfo3);
+		approvalInfo3.setApplyDetail("2014年5月分");
+		ApplyKbnMaster applyKbn3 = new ApplyKbnMaster();
+		applyKbn3.setCode("1");
+		approvalInfo3.setApplyKbnMaster(applyKbn3);
+		Users user3 = new Users();
+		user3.setId("4003");
+		approvalInfo3.setUser(user3);
+		approvalInfo3.setAppYm("201405");
+		
+		ApprovalManage approvalInfo4 = new ApprovalManage();
+		approvalInfo4.setApplyNo("4004220140505");
+		StatusMaster statusInfo4 = new StatusMaster();
+		statusInfo4.setCode("01");
+		approvalInfo4.setStatusMaster(statusInfo4);
+		approvalInfo4.setApplyDetail("2014年5月分");
+		ApplyKbnMaster applyKbn4 = new ApplyKbnMaster();
+		applyKbn4.setCode("1");
+		approvalInfo4.setApplyKbnMaster(applyKbn4);
+		Users user4 = new Users();
+		user4.setId("4004");
+		approvalInfo4.setUser(user4);
+		approvalInfo4.setAppYm("201405");
+
+		baseDao.insert(approvalInfo1);
+		baseDao.insert(approvalInfo2);
+		baseDao.insert(approvalInfo3);
+		baseDao.insert(approvalInfo4);
+		
+		// 月報状況一覧画面入力情報
+		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
+
+		// 所属
+		form.setAffiliation("");
+		// 状況
+		form.setStatus("01");
+		// 年
+		form.setYear("2014");
+		// 月
+		form.setMonth("05");
+		
+		// 月報状況一覧リスト取得
+		List<MonthlyReportStatusListVo> monList = serviceImpl.getMonthlyReportStatusList(form);
+		
+		// 月報状況一覧リストのサイズ
+		assertEquals(monList.size(), 4);
+		assertEquals(monList.get(0).getApplyNo(), "4001120140500");
+		assertEquals(monList.get(0).getAffiliationName(), "BS3");
+		assertEquals(monList.get(0).getUserId(), "4001");
+		assertEquals(monList.get(0).getUserName(), "０１ＰＴＳ");
+		assertEquals(monList.get(0).getApplyKbnName(), "月報");
+		assertEquals(monList.get(0).getApplyDetail(), "2014年5月分");
+		assertEquals(monList.get(0).getStatusName(), "作成中");
+		
+	}
+	
+	/**
+	 * CSVファイル作成をテスト
+	 */
+	@Test
+	public void testCreateCSVFile(){
+		
+		// ユーザ情報
+		Users users = new Users();
+		
+		// 超勤管理
+		ChokinKanri chokinInfo = new ChokinKanri();
+		users.setId("4001");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140501");
+		chokinInfo.setHimokuKbnCode("KN09");
+		chokinInfo.setHours(new BigDecimal(1.0));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+		
+		chokinInfo = new ChokinKanri();
+		users.setId("4001");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140502");
+		chokinInfo.setHimokuKbnCode("KN10");
+		chokinInfo.setHours(new BigDecimal(4.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4001");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140505");
+		chokinInfo.setHimokuKbnCode("KN11");
+		chokinInfo.setHours(new BigDecimal(1.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4001");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140510");
+		chokinInfo.setHimokuKbnCode("KN12");
+		chokinInfo.setHours(new BigDecimal(5.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4001");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140520");
+		chokinInfo.setHimokuKbnCode("KN08");
+		chokinInfo.setHours(new BigDecimal(1.0));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4001");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140515");
+		chokinInfo.setHimokuKbnCode("KN13");
+		chokinInfo.setHours(new BigDecimal(3.0));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4001");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140517");
+		chokinInfo.setHimokuKbnCode("KN09");
+		chokinInfo.setHours(new BigDecimal(1.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+		
+		chokinInfo = new ChokinKanri();
+		users.setId("4002");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140503");
+		chokinInfo.setHimokuKbnCode("KN09");
+		chokinInfo.setHours(new BigDecimal(5.0));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+		
+		chokinInfo = new ChokinKanri();
+		users.setId("4002");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140504");
+		chokinInfo.setHimokuKbnCode("KN10");
+		chokinInfo.setHours(new BigDecimal(1.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4002");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140506");
+		chokinInfo.setHimokuKbnCode("KN11");
+		chokinInfo.setHours(new BigDecimal(3.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4002");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140511");
+		chokinInfo.setHimokuKbnCode("KN12");
+		chokinInfo.setHours(new BigDecimal(5.0));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4002");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140520");
+		chokinInfo.setHimokuKbnCode("KN12");
+		chokinInfo.setHours(new BigDecimal(4.0));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4002");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140515");
+		chokinInfo.setHimokuKbnCode("KN09");
+		chokinInfo.setHours(new BigDecimal(3.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+
+		chokinInfo = new ChokinKanri();
+		users.setId("4002");
+		chokinInfo.setUsers(users);
+		chokinInfo.setChokinDate("20140517");
+		chokinInfo.setHimokuKbnCode("KN09");
+		chokinInfo.setHours(new BigDecimal(1.5));
+		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
+		baseDao.insert(chokinInfo);
+		
+		// 月報状況一覧画面入力情報
+		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
+		
+		List<MonthlyReportStatusListVo> monthlyReportStatusList = new ArrayList<MonthlyReportStatusListVo>();
+		MonthlyReportStatusListVo monthlyReportStatusInfo = new MonthlyReportStatusListVo();
+		monthlyReportStatusInfo.setUserId("4001");
+		monthlyReportStatusInfo.setApplyYm("201405");
+		monthlyReportStatusList.add(monthlyReportStatusInfo);
+		monthlyReportStatusInfo = new MonthlyReportStatusListVo();
+		monthlyReportStatusInfo.setUserId("4002");
+		monthlyReportStatusInfo.setApplyYm("201405");
+		monthlyReportStatusList.add(monthlyReportStatusInfo);
+		form.setMonthlyReportStatusList(monthlyReportStatusList );
+		
+		try {
+			serviceImpl.createCSVFile(form);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

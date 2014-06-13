@@ -5,7 +5,7 @@ public class PayMagistrateCsvInfo {
 	/**
 	 * 社員番号
 	 */
-	private String EmployeeNo;
+	private String userId;
 
 	/**
 	 * 超過勤務時間数（平日_割増）
@@ -37,13 +37,12 @@ public class PayMagistrateCsvInfo {
 	 */
 	private String overWeekdayNomalHours;
 
-	
-	public String getEmployeeNo() {
-		return EmployeeNo;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setEmployeeNo(String employeeNo) {
-		EmployeeNo = employeeNo;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getOverWeekdayHours() {

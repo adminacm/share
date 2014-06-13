@@ -9,13 +9,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.KyukaKekin;
 import argo.cost.common.utils.CostDateUtils;
-import argo.cost.holidayRecord.model.AbsenceVO;
 import argo.cost.holidayRecord.model.PayHolidayVO;
-import argo.cost.holidayRecord.model.SpecialHolidayVO;
 
 
 /**
@@ -33,6 +35,12 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 */
 	@PersistenceContext
 	protected EntityManager em;
+	
+	/**
+	 * 単一テーブル操作DAO
+	 */	
+	@Autowired
+	private BaseDao baseDao;
 
 	/**
 	 * 有給休暇情報取得
@@ -41,6 +49,7 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 *              ユーザＩＤ
 	 * @param yearPeriod
 	 *                  年度
+	 * @return 有給休暇情報
 	 */
 	@Override
 	public List<PayHolidayVO> getPayHolidayList(String userId, String yearPeriod) {
@@ -169,106 +178,25 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 *              ユーザＩＤ
 	 * @param yearPeriod
 	 *                  年度
+	 * @return 欠勤情報
 	 */
 	@Override
-	public List<AbsenceVO> getAbsenceList(String userId, String yearPeriod) {
+	public List<KyukaKekin> getAbsenceList(String userId, String yearPeriod) {
 
-		// JPQLを作成する
-		StringBuilder strSql = new StringBuilder();
-
-		strSql.append("SELECT                          ");
-		strSql.append(" 	t.kyuka_date               ");
-		strSql.append(" 	, t.kyuka_jikansu          ");
-		strSql.append("FROM                            ");
-		strSql.append(" 	kyuka_kekin t              ");
-		strSql.append("WHERE                           ");
-		strSql.append(" 	t.user_id = ?              ");
-		strSql.append("  AND LEFT(t.kyuka_date, 4) = ? ");
-		strSql.append("  AND t.kyuka_kekin_code = ?    ");
-		
-		// クエリー取得
-		Query query = this.em.createNativeQuery(strSql.toString());
-		
-		int index = 1;
-		query.setParameter(index++, userId);
-		query.setParameter(index++, yearPeriod);
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		// ユーザＩＤ
+		condition.addConditionEqual("users.id", userId);
+		// 日付
+		condition.addConditionLike("kyukaDate", yearPeriod + "%");
 		// 休暇欠勤区分に「欠勤」をセット
-		query.setParameter(index++, CommonConstant.KK_KBN_KEKIN);
-		
+		condition.addConditionEqual("kyukaKekinKbnMaster.code", CommonConstant.KK_KBN_KEKIN);
 		// 欠勤情報取得
-		@SuppressWarnings("unchecked")
-		List<Object> resultList = query.getResultList();
-
-		// 欠勤リスト
-		List<AbsenceVO> absenceList = new ArrayList<AbsenceVO>();
-		AbsenceVO absenceInfo = null;
-		
-		// 合計日数
-		Double totleDayQuantity = 0.0;
-		// 合計時間数
-		Double totleTimeQuantity = 0.0;
-		
-		// 出力対象一覧情報あり
-		if (resultList.size() > 0) {
-			
-			for (int i = 0; i < resultList.size(); i++) {
+		List<KyukaKekin> kyukaKekinList = baseDao.findResultList(condition, KyukaKekin.class);
 				
-				absenceInfo = new AbsenceVO();
-				
-				Object[] items = (Object[]) resultList.get(i);
-				
-				index = 0;
-				// 検索結果に設定
-				//　日付
-				String absentDate = (String) items[index++];
-				try {
-					absenceInfo.setAbsentDate(CostDateUtils.formatDate(absentDate, CommonConstant.YYYY_MM_DD));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				//　時間数
-				BigDecimal hourQuantity = (BigDecimal) items[index++];
-				absenceInfo.setHourQuantity(hourQuantity.toString());
-				
-				if (absenceInfo.getHourQuantity().compareTo("7.5") >= 0) {
-
-					//　日数
-					absenceInfo.setDayQuantity("1.0");
-					//　時間数
-					absenceInfo.setHourQuantity(null);
-				}
-
-				// 日数がnull以外の場合
-				if (absenceInfo.getDayQuantity() != null) {
-
-					totleDayQuantity += Double.valueOf(absenceInfo.getDayQuantity());
-				}
-				
-				// 時間数がnull以外の場合
-				if (absenceInfo.getHourQuantity() != null) {
-					totleTimeQuantity += Double.valueOf(absenceInfo.getHourQuantity());
-				}
-				
-				absenceList.add(absenceInfo);
-			}
-
-			// 合計行
-			absenceInfo = new AbsenceVO();
-			absenceInfo.setAbsentDate("累計");
-			// 日数
-			if (totleDayQuantity != 0) {
-				absenceInfo.setDayQuantity(totleDayQuantity.toString() + "日");
-			}
-			// 時間数
-			if (totleTimeQuantity != 0) {
-				absenceInfo.setHourQuantity(totleTimeQuantity.toString() + "時間");
-			}
-			absenceList.add(absenceInfo);
-		}
-				
-		return absenceList;
+		return kyukaKekinList;
 	}
-	
+
 	/**
 	 * 特別休暇情報取得
 	 * 
@@ -276,80 +204,22 @@ public class HolidayRecordDaoImpl implements HolidayRecordDao {
 	 *              ユーザＩＤ
 	 * @param yearPeriod
 	 *                  年度
+	 * @return 特別休暇情報
 	 */
 	@Override
-	public List<SpecialHolidayVO> getSpecialHolidayList(String userId, String yearPeriod) {
+	public List<KyukaKekin> getSpecialHolidayList(String userId, String yearPeriod) {
 
-		// JPQLを作成する
-		StringBuilder strSql = new StringBuilder();
-
-		strSql.append("SELECT                          ");
-		strSql.append(" 	t.kyuka_date               ");
-		strSql.append("FROM                            ");
-		strSql.append(" 	kyuka_kekin t              ");
-		strSql.append("WHERE                           ");
-		strSql.append(" 	t.user_id = ?              ");
-		strSql.append("  AND LEFT(t.kyuka_date, 4) = ? ");
-		strSql.append("  AND t.kyuka_kekin_code = ?    ");
-		
-		// クエリー取得
-		Query query = this.em.createNativeQuery(strSql.toString());
-		
-		int index = 1;
-		query.setParameter(index++, userId);
-		query.setParameter(index++, yearPeriod);
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		// ユーザＩＤ
+		condition.addConditionEqual("users.id", userId);
+		// 日付
+		condition.addConditionLike("kyukaDate", yearPeriod + "%");
 		// 休暇欠勤区分に「特別休暇」をセット
-		query.setParameter(index++, CommonConstant.KK_KBN_TOKUBETUKYU);
-		
+		condition.addConditionEqual("kyukaKekinKbnMaster.code", CommonConstant.KK_KBN_TOKUBETUKYU);
 		// 特別休暇情報取得
-		@SuppressWarnings("unchecked")
-		List<Object> resultList = query.getResultList();
-
-		// 特別休暇リスト
-		List<SpecialHolidayVO> ｓpecialHolidayList = new ArrayList<SpecialHolidayVO>();
-		
-		SpecialHolidayVO specialHolidayInfo = null;
-		
-		// 合計日数
-		Double totleDayQuantity = 0.0;
-		
-		// 出力対象一覧情報あり
-		if (resultList.size() > 0) {
-			
-			for (int i = 0; i < resultList.size(); i++) {
-				specialHolidayInfo = new SpecialHolidayVO();
+		List<KyukaKekin> kyukaKekinList = baseDao.findResultList(condition, KyukaKekin.class);
 				
-				index = 0;
-				// 検索結果に設定
-				//　日付
-				String specialHolidayDate = (String) resultList.get(i);
-				try {
-					specialHolidayInfo.setSpecialHolidayDate(CostDateUtils.formatDate(specialHolidayDate, CommonConstant.YYYY_MM_DD));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				//　日数
-				specialHolidayInfo.setDayQuantity("1.0");
-
-				// 日数がnull以外の場合
-				if (specialHolidayInfo.getDayQuantity() != null) {
-
-					totleDayQuantity += Double.valueOf(specialHolidayInfo.getDayQuantity());
-				}
-				
-				ｓpecialHolidayList.add(specialHolidayInfo);
-			}
-		}
-
-		// 合計行
-		specialHolidayInfo = new SpecialHolidayVO();
-		specialHolidayInfo.setSpecialHolidayDate("累計");
-		// 日数
-		if (totleDayQuantity != 0) {
-			specialHolidayInfo.setDayQuantity(totleDayQuantity.toString() + "日");
-		}
-		ｓpecialHolidayList.add(specialHolidayInfo);
-				
-		return ｓpecialHolidayList;
+		return kyukaKekinList;
 	}
 }
