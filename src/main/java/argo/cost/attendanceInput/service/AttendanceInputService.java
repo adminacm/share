@@ -52,11 +52,4 @@ public interface AttendanceInputService {
 	 */
 	void calcWorkingRec(AttendanceInputForm form) throws ParseException;
 	
-	/**
-	 * 入力チェック（計算）
-	 * 
-	 * @param form
-	 *            勤怠入力画面情報
-	 */
-	Boolean checkCountInput(AttendanceInputForm form);
 }

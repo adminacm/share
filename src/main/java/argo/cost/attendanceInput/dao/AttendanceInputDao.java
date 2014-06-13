@@ -1,11 +1,6 @@
 package argo.cost.attendanceInput.dao;
 
-import java.text.ParseException;
-import java.util.List;
-
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProjectVO;
-import argo.cost.attendanceInput.model.HolidayRecord;
 
 /**
  * 勤怠入力DAO
@@ -14,26 +9,6 @@ import argo.cost.attendanceInput.model.HolidayRecord;
  * @author COST argo Corporation.
  */
 public interface AttendanceInputDao {
-
-	/**
-	 * 休日勤務情報を取得
-	 * 
-	 * @param userId
-	 * 			ユーザID
-	 * @param yyyymmdd 日付
-	 * @return 休日勤務情報
-	 */
-	HolidayRecord getHolidayRecord(String userId, String yyyymmdd);
-	
-	/**
-	 * ユーザ作業情報を取得
-	 * 
-	 * @param userId
-	 * 			ユーザID
-	 * @param yyyymmdd 日付
-	 * @return ユーザ作業情報
-	 */
-	List<AttendanceProjectVO> getProjectList(String userId, String yyyymmdd) throws ParseException;
 	
 	/**
 	 * 就業データを取得
@@ -60,4 +35,17 @@ public interface AttendanceInputDao {
 	 * @return 作業時間数
 	 */
 	Double countWorkTime(String shiftCode, String sTime, String eTime, int flag);
+	/**
+	 * 本年度の休暇時間数を取得する
+	 * 
+	 * @param userId 
+	 * 				社員番号
+	 * @param yyyymmdd 
+	 * 				対象日
+	 * @param flag 
+	 * 				計算フラグ（０：全ての有給休暇数、1：時間休のみ）
+	 * 
+	 * @return 対象日までの本年度の休暇時間数
+	 */
+	Double getSumKyukaTime(String userId, String yyyymmdd, int flag);
 }

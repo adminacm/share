@@ -181,12 +181,9 @@ public class AttendanceInputController extends AbstractController {
 	public String count(AttendanceInputForm form) throws Exception {
 
 		form.clearMessages();
-		// チェックを実行する。TODO
-//		if (attendanceInputService.checkCountInput(form)) {
-			// 勤務情報を計算する。
-			attendanceInputService.calcWorkingRec(form);
-//		}
-		
+		// 勤務情報を計算する。
+		attendanceInputService.calcWorkingRec(form);
+
 		return ATTDENDANCE_INPUT;
 	}
 
