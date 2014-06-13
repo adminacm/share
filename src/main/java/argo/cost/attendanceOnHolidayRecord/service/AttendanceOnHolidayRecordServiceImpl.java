@@ -7,16 +7,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import argo.cost.attendanceOnHolidayRecord.dao.AttendanceOnHolidayRecordDao;
 import argo.cost.attendanceOnHolidayRecord.model.AttendanceOnHolidayRecordForm;
 import argo.cost.attendanceOnHolidayRecord.model.HolidayExchangeWorkVO;
 import argo.cost.attendanceOnHolidayRecord.model.HolidayWorkVO;
 import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.HolidayAtendance;
 import argo.cost.common.entity.HolidayAtendanceYotei;
-import argo.cost.common.entity.Users;
-import argo.cost.common.model.ListItemVO;
 import argo.cost.common.utils.CostDateUtils;
 
 /**
@@ -30,53 +28,10 @@ import argo.cost.common.utils.CostDateUtils;
 public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHolidayRecordService {
 	
 	/**
-	 * 休日出勤管理DAO
-	 */
-	@Autowired
-	private AttendanceOnHolidayRecordDao attendanceOnHolidayRecordDao;
-	
-	/**
 	 * 単一テーブル操作DAO
 	 */	
 	@Autowired
 	private BaseDao baseDao;
-
-	/**
-	 * 氏名プルダウンリスト取得
-	 * 
-	 * @param userId
-	 *              ユーザＩＤ
-	 * @return 氏名プルダウンリスト
-	 */
-	@Override
-	public List<ListItemVO> getUserNameList(String userId) {
-		
-		Users userInfo = baseDao.findById(userId, Users.class);
-		
-		// ドロップダウンリスト
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		
-		// ドロップダウン項目
-		// 自分データを設定する
-		ListItemVO item = new ListItemVO();
-		item.setValue(userId);
-		item.setName(userInfo.getUserName());
-		resultList.add(item);
-		
-		// 代理人があり
-		if (!userInfo.getDairishaId().isEmpty()) {
-			
-			Users dairiInfo = baseDao.findById(userInfo.getDairishaId(), Users.class);
-			
-			// 代理入力データを設定する
-			item = new ListItemVO();
-			item.setValue(userInfo.getDairishaId());
-			item.setName(dairiInfo.getUserName());
-			resultList.add(item);
-		}
-		
-		return resultList;
-	}
 	
 	/**
 	 * 休日出勤管理情報をセット
@@ -88,14 +43,16 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 	@Override
 	public void setAttendanceOnHolidayRecordInfo(AttendanceOnHolidayRecordForm form) throws ParseException {
 
-		// 年度を取得
-		String strYearPeriod = form.getYearPeriod();
-		
-		// 氏名を取得
-		String strUserName = form.getUserName();
-		
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		// ユーザＩＤ
+		condition.addConditionEqual("users.id", form.getUserName());
+		// 日付
+		condition.addConditionLike("atendanceBookDate", form.getYearPeriod() + "%");
+		// 勤務日区分「休日振替勤務」をセット
+		condition.addConditionEqual("workDayKbnMaster.code", CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE);
 		// 休日振替勤務情報を取得
-		List<HolidayAtendanceYotei> kyukafurikaeList = attendanceOnHolidayRecordDao.getHolidayExchangeWorkList(strYearPeriod, strUserName);
+		List<HolidayAtendanceYotei> kyukafurikaeList = baseDao.findResultList(condition, HolidayAtendanceYotei.class);
 
 		// 休日振替勤務リスト
 		List<HolidayExchangeWorkVO> holidayExchangeWorkList = new ArrayList<HolidayExchangeWorkVO>();
@@ -119,8 +76,15 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		// 休日振替勤務情報をセット
 		form.setHolidayExchangeWorkList(holidayExchangeWorkList);
 		
-		// 休日勤務情報を取得
-		List<HolidayAtendance> kyukaSyukinList = attendanceOnHolidayRecordDao.getHolidayWorkList(strYearPeriod, strUserName);
+		
+		// 検索条件
+		condition = new BaseCondition();
+		// ユーザＩＤ
+		condition.addConditionEqual("users.id", form.getUserName());
+		// 日付
+		condition.addConditionLike("holidaySyukinDate", form.getYearPeriod() + "%");
+		// 休日勤務情報取得
+		List<HolidayAtendance> kyukaSyukinList = baseDao.findResultList(condition, HolidayAtendance.class);
 
 		// 休日勤務リスト
 		List<HolidayWorkVO> holidayWorkList = new ArrayList<HolidayWorkVO>();

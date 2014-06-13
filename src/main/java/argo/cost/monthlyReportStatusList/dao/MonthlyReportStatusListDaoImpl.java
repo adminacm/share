@@ -106,7 +106,7 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 		strSql.append(" 	 	 WHERE t5.shozoku_id = t6.code) t4         ");
 		strSql.append(" 	ON t1.user_id = t4.userId                      ");
 		strSql.append("WHERE                                               ");
-		strSql.append(" 	t1.app_ym = ?                                  ");
+		strSql.append(" 	substr(t1.app_ym, 0, 7) = ?                    ");
 		strSql.append(" AND t1.apply_status_code = ?                       ");
 		strSql.append("ORDER BY                                            ");
 		strSql.append(" 	applyNo                                        ");
@@ -323,7 +323,7 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 		condition.addConditionEqual("users.id", userId);
 		// 日付
 		condition.addConditionLike("chokinDate", applyYm + "%");
-		// 休日出勤管理詳細情報を取得
+		// 超勤管理詳細情報を取得
 		List<ChokinKanri> chokinList = baseDao.findResultList(condition, ChokinKanri.class);
 		
 		if (chokinList.size() > 0) {

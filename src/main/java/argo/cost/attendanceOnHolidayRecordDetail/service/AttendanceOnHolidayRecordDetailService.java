@@ -33,5 +33,5 @@ public interface AttendanceOnHolidayRecordDetailService {
 	 *            休日出勤管理詳細画面情報
 	 *            
 	 */
-	void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form);
+	void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form) throws ParseException;
 }

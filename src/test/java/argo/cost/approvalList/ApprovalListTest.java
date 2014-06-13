@@ -101,7 +101,7 @@ public class ApprovalListTest {
 		Users users1 = new Users();
 		users1.setId("4001");
 		approvalInfo1.setUser(users1);
-		approvalInfo1.setAppYm("201406");
+		approvalInfo1.setAppYmd("20140600");
 		
 		ApprovalManage approvalInfo2 = new ApprovalManage();
 		approvalInfo2.setApplyNo("4002120140600");
@@ -115,7 +115,7 @@ public class ApprovalListTest {
 		Users user2 = new Users();
 		user2.setId("4002");
 		approvalInfo2.setUser(user2);
-		approvalInfo2.setAppYm("201406");
+		approvalInfo2.setAppYmd("20140600");
 
 		ApprovalManage approvalInfo3 = new ApprovalManage();
 		approvalInfo3.setApplyNo("4003120140600");
@@ -129,7 +129,7 @@ public class ApprovalListTest {
 		Users user3 = new Users();
 		user3.setId("4003");
 		approvalInfo3.setUser(user3);
-		approvalInfo3.setAppYm("201406");
+		approvalInfo3.setAppYmd("20140600");
 		
 		ApprovalManage approvalInfo4 = new ApprovalManage();
 		approvalInfo4.setApplyNo("4004220140605");
@@ -143,7 +143,7 @@ public class ApprovalListTest {
 		Users user4 = new Users();
 		user4.setId("4004");
 		approvalInfo4.setUser(user4);
-		approvalInfo4.setAppYm("201406");
+		approvalInfo4.setAppYmd("20140600");
 		
 		ApprovalManage approvalInfo5 = new ApprovalManage();
 		approvalInfo5.setApplyNo("4005220140605");
@@ -157,8 +157,8 @@ public class ApprovalListTest {
 		Users user5 = new Users();
 		user5.setId("4005");
 		approvalInfo5.setUser(user5);
-		approvalInfo5.setAppYm("201406");
-
+		approvalInfo5.setAppYmd("20140600");
+		
 		baseDao.insert(approvalInfo1);
 		baseDao.insert(approvalInfo2);
 		baseDao.insert(approvalInfo3);
