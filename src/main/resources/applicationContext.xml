@@ -46,7 +46,7 @@
 
     <beans profile="prod">
         <bean class="java.net.URI" id="dbUrl">
-            <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
+            <constructor-arg value="postgres://postgres:1234@Localhost:5432/postgres"></constructor-arg>
         </bean>
 
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
