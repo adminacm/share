@@ -82,7 +82,7 @@ public class KintaiInfo implements Serializable {
 
 	//bi-directional many-to-one association to ApprovalManage
 	@ManyToOne
-	@JoinColumn(name="approval_id")
+	@JoinColumn(name="apply_no")
 	private ApprovalManage approvalManage;
 
 	//bi-directional many-to-one association to KyukaKekinKbnMaster
