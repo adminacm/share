@@ -148,7 +148,7 @@ public class MonthlyReportStatusListTest {
 		Users users1 = new Users();
 		users1.setId("4001");
 		approvalInfo1.setUser(users1);
-		approvalInfo1.setAppYm("201405");
+		approvalInfo1.setAppYmd("20140500");
 		
 		ApprovalManage approvalInfo2 = new ApprovalManage();
 		approvalInfo2.setApplyNo("4002120140500");
@@ -162,7 +162,7 @@ public class MonthlyReportStatusListTest {
 		Users user2 = new Users();
 		user2.setId("4002");
 		approvalInfo2.setUser(user2);
-		approvalInfo2.setAppYm("201405");
+		approvalInfo2.setAppYmd("20140500");
 
 		ApprovalManage approvalInfo3 = new ApprovalManage();
 		approvalInfo3.setApplyNo("4003120140500");
@@ -176,7 +176,7 @@ public class MonthlyReportStatusListTest {
 		Users user3 = new Users();
 		user3.setId("4003");
 		approvalInfo3.setUser(user3);
-		approvalInfo3.setAppYm("201405");
+		approvalInfo3.setAppYmd("20140500");
 		
 		ApprovalManage approvalInfo4 = new ApprovalManage();
 		approvalInfo4.setApplyNo("4004220140505");
@@ -190,7 +190,7 @@ public class MonthlyReportStatusListTest {
 		Users user4 = new Users();
 		user4.setId("4004");
 		approvalInfo4.setUser(user4);
-		approvalInfo4.setAppYm("201405");
+		approvalInfo4.setAppYmd("20140500");
 
 		baseDao.insert(approvalInfo1);
 		baseDao.insert(approvalInfo2);
