@@ -65,6 +65,7 @@ public class CostDateUtils extends DateUtils {
 			return false;
 		}
 	}
+	
 	/**
 	 * 時刻のフォマーとチェック：hhnn
 	 * 
@@ -219,7 +220,6 @@ public class CostDateUtils extends DateUtils {
 		return CostStringUtils.addZeroForNum(str1, 2).concat( CostStringUtils.addZeroForNum(str2, 2));
 	}
 	
-
 	/**
 	 * 分のチェック。 <BR>
 	 * 
@@ -240,7 +240,6 @@ public class CostDateUtils extends DateUtils {
 		if (minu % 30 != 0) {
 			return false;
 		}
-		
 		return true;
 	}
 	
@@ -290,4 +289,56 @@ public class CostDateUtils extends DateUtils {
 		
 		return String.valueOf(t1 + 2400);
 	}
+
+	/**
+	 * 時刻差の計算。 <BR>
+	 * 
+	 * @param time1
+	 *            時刻1
+	 * @param time2
+	 *            時刻2
+	 *
+	 * @return 時刻1 - 時刻2
+	 * 
+	 * @throws ParseException 
+	 */
+	public static long MinusTime(String time1, String time2) throws ParseException {
+		
+		SimpleDateFormat df = new SimpleDateFormat("HHmm");
+
+		// 開始時刻
+		Date begin = df.parse(time1);
+		//　終了時刻
+		Date end = df.parse(time2);
+
+		long between = (end.getTime() - begin.getTime()) / 1000;
+
+		long hour = between % (24 * 3600) / 3600;
+
+		return hour;
+	}
+	
+	public static String addDays(String yyyymmdd, int amount) {
+		
+		String result = StringUtils.EMPTY;
+		
+		try {
+			Date date = toDate(yyyymmdd);
+			
+			date = DateUtils.addDays(date, amount);
+			Calendar calendar = Calendar.getInstance();   
+			calendar.setTime(date);
+			String year = String.valueOf(calendar.get(Calendar.YEAR));
+			String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+			String day = String.valueOf(calendar.get(Calendar.DATE));
+			calendar.get(Calendar.DATE);
+			result = year.concat(month).concat(day);
+		} catch (ParseException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 }

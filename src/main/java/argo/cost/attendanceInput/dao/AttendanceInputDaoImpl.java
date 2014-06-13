@@ -1,20 +1,15 @@
 package argo.cost.attendanceInput.dao;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
-import argo.cost.attendanceInput.model.AttendanceProjectVO;
-import argo.cost.attendanceInput.model.HolidayRecord;
 
 /**
  * 勤怠入力DAOImpl
@@ -30,66 +25,7 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 	 */
 	@PersistenceContext
 	protected EntityManager em;	
-	
-	/**
-	 * 休日勤務情報を取得
-	 * 
-	 * @param userId
-	 * 			ユーザID
-	 * @param yyyymmdd 日付
-	 * @return 休日勤務情報
-	 */
-	@Override
-	public HolidayRecord getHolidayRecord(String userId, String yyyymmdd) {
-		// TODO 自動生成されたメソッド・スタブ
-		HolidayRecord record = new HolidayRecord();
-		
-		record.setDate("20140329");
-		record.setUserId("user01");
-		record.setLimitDate("20140630");
-		record.setExchangeDay("20140331");
-		record.setTransferAppDay("");
-		record.setPayOutYM("");
-		record.setProcessKbn(0);
-		record.setProcessDate("20140501");
-		record.setProjectCode("01");
-		record.setProjectName("原価管理");
-		record.setWorkNaiyo("定期メンテナンス作業");
-		
-		if (StringUtils.equals("20140329", yyyymmdd)) {
-			return record;
-		}
-		
-		return null;
-	}
-	/**
-	 * ユーザ作業情報を取得
-	 * 
-	 * @param userId
-	 *            ユーザID
-	 * @param yyyymmdd
-	 *            日付
-	 * @return ユーザ作業情報
-	 * @throws ParseException
-	 */
-	@Override
-	public List<AttendanceProjectVO> getProjectList(String userId, String yyyymmdd)
-			throws ParseException {
-		// TODO 自動生成されたメソッド・スタブ　Daoを利用する予定
-		List<AttendanceProjectVO> result = new ArrayList<AttendanceProjectVO>();
 
-		AttendanceProjectVO pro = null;
-		for (int i = 0; i < 1; i++) {
-			pro = new AttendanceProjectVO();
-			pro.setHours(3.5);
-			pro.setProjectId("01");
-			pro.setWorkId("01");
-			result.add(pro);
-		}
-
-		return result;
-	}
-	
 	/**
 	 * 就業データを取得
 	 * 
@@ -167,6 +103,67 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		
 		// 出力対象一覧情報取得
 		Double result = ((BigInteger)query.getSingleResult()).doubleValue() * 0.5;
+		return result;
+	}
+	
+	/**
+	 * 本年度の休暇時間数を取得する
+	 * 
+	 * @param userId 
+	 * 				社員番号
+	 * @param yyyymmdd 
+	 * 				対象日
+	 * @param flag 
+	 * 				計算フラグ（０：全ての有給休暇数、1：時間休のみ）
+	 * 
+	 * @return 対象日までの本年度の休暇時間数
+	 */
+	@Override
+	public Double getSumKyukaTime(String userId, String yyyymmdd, int flag) {
+
+		// JPQLを作成する
+		StringBuilder q = new StringBuilder();
+
+		q.append("SELECT ");
+		q.append("		sum(");
+		q.append(" 		kyuka_jikansu)");
+		q.append("	FROM");
+		q.append("		kyuka_kekin");
+		q.append("	WHERE");
+		if (flag == 0) {
+			q.append("	(kyuka_kekin_code = '01'");
+			q.append("	OR");
+			q.append("	kyuka_kekin_code = '02'");
+			q.append("	OR");
+			q.append("	kyuka_kekin_code = '03')");
+			q.append("	AND");
+		} else {
+			q.append("	kyuka_kekin_code = '03'");
+			q.append("	AND");
+		}
+		q.append("	user_id = ?");
+		q.append("	AND");
+		q.append("	kyuka_date >= ?");
+		q.append("	AND");
+		q.append("	kyuka_date < ?");
+		
+		// クエリー取得
+		Query query = this.em.createNativeQuery(q.toString());
+		
+		int index = 1;
+		String yearStart = yyyymmdd.substring(0, 4).concat("0401");
+
+		query.setParameter(index++, userId);        // 社員番号
+		query.setParameter(index++, yearStart);     // 計算開始時刻
+		query.setParameter(index++, yyyymmdd);      // 計算開始時刻
+		
+		Double result = 0.0;
+		// 出力対象一覧情報取得
+		Object res = query.getSingleResult();
+		if (res != null) {
+			result = ((BigDecimal)res).doubleValue();
+		}
+		
 		return result;
 	}
 }
