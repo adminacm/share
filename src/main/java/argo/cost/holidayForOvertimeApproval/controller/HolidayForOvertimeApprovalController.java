@@ -67,7 +67,6 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 		model.addAttribute(holidayForOvertimeApprovalInfo);
 
 		return HOLIDAYFOROVERTIME_APPROVAL;
-
 	}
 
 	/**
@@ -82,15 +81,10 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 		String proStatus = "03";
 		
 		// 申請状況が承認に更新
-		String updateFlg = holidayForOvertimeApprovalService.updateProStatus(form.getApplyNo(), proStatus);
-		
-		if ("1".equals(updateFlg)) {
-			System.out.print("超勤振替申請承認画面申請状況が承認に更新しました");
-		}
+		holidayForOvertimeApprovalService.updateProStatus(form.getApplyNo(), proStatus);
 
 		// 承認一覧画面へ遷移する
 		return REDIRECT + form.getBackUrl() + INIT;
-
 	}
 
 	/**
@@ -105,15 +99,10 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 		String proStatus = "04";
 		
 		// 申請状況が差戻しに更新
-		String updateFlg = holidayForOvertimeApprovalService.updateProStatus(form.getApplyNo(), proStatus);
-		
-		if ("1".equals(updateFlg)) {
-			System.out.print("超勤振替申請承認画面申請状況が差戻に更新しました");
-		}
+		holidayForOvertimeApprovalService.updateProStatus(form.getApplyNo(), proStatus);
 		
 		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する
 		return REDIRECT + form.getBackUrl() + INIT;
-
 	}
 
 	/**
@@ -126,6 +115,5 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 
 		// 戻るボタンを押すと、承認一覧画面へ戻る
 		return REDIRECT + form.getBackUrl() + INIT;
-
 	}
 }

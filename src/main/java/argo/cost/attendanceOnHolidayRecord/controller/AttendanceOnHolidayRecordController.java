@@ -61,7 +61,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		form.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
 
 		// 氏名をセット
-		form.setUserNameList(service.getUserNameList(form.getUserId()));
+		form.setUserNameList(comService.getUserNameList(form.getUserId()));
 		// 初期選択値に自分をセット
 		form.setUserName(form.getUserId());
 		
