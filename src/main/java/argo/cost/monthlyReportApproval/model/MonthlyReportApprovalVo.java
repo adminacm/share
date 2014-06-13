@@ -9,6 +9,12 @@ public class MonthlyReportApprovalVo {
 	 * 日付(表示用)
 	 */
 	private String day;
+	
+	/**
+	 * 日付
+	 */
+	private String date;
+	
 
 	/**
 	 * 曜日
@@ -95,9 +101,19 @@ public class MonthlyReportApprovalVo {
 	 */
 	private Boolean totleFlg;
 	
+	
+	
 	//#################################
 	//#################################
 	
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	public String getDay() {
 		return day;
 	}

@@ -1,9 +1,8 @@
 package argo.cost.monthlyReportApproval.service;
 
-import java.util.List;
+import java.text.ParseException;
 
-import argo.cost.common.entity.ProjWorkTimeManage;
-import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
+import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
 
 
 public interface MonthlyReportApprovalService {
@@ -16,7 +15,7 @@ public interface MonthlyReportApprovalService {
 	 * @return
 	 *        処理状況表示名
 	 */
-	String getStatus(String applyNo);
+	String getStatusCode(String applyNo);
 	
 	/**
 	 * 月報承認データを取得
@@ -25,18 +24,19 @@ public interface MonthlyReportApprovalService {
 	 *               申請番号
 	 * @return
 	 *        月報承認データ一覧リスト
+	 * @throws ParseException 
 	 */
-	List<MonthlyReportApprovalVo> getMonReApprovalList(String applyNo);
+	MonthlyReportApprovalForm getMonReApprovalList(MonthlyReportApprovalForm monthlyReportApprovalForm, String applyNo) throws ParseException;
 	
-	/**
-	 * 【PJ別作業時間集計】情報を取得
-	 * 
-	 * @param applyNo
-	 *               申請番号
-	 * @return
-	 *        プロジェクト情報
-	 */
-	List<ProjWorkTimeManage> getProjectList(String applyNo);
+//	/**
+//	 * 【PJ別作業時間集計】情報を取得
+//	 * 
+//	 * @param applyNo
+//	 *               申請番号
+//	 * @return
+//	 *        プロジェクト情報
+//	 */
+//	List<ProjWorkTimeManage> getProjectList(String applyNo);
 
 	/**
 	 * 申請状況更新

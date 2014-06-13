@@ -1,7 +1,5 @@
 package argo.cost.monthlyReportApproval.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +9,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
-import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 import argo.cost.monthlyReportApproval.service.MonthlyReportApprovalService;
 
 /**
@@ -55,33 +51,31 @@ public class MonthlyReportApprovalController extends AbstractController {
 	public String initMonthlyReportApproval(Model model, @RequestParam("applyNo") String applyNo, @RequestParam("backUrl") String backUrl) throws Exception {
 		
 		// 月報承認画面情報初期化
-		MonthlyReportApprovalForm form = initForm(MonthlyReportApprovalForm.class);
+		MonthlyReportApprovalForm monthlyReportApprovalForm = initForm(MonthlyReportApprovalForm.class);
 		
 		//　申請番号を設定
-		form.setApplyNo(applyNo);
+		monthlyReportApprovalForm.setApplyNo(applyNo);
 		
 		//　戻り用画面URL
-		form.setBackUrl(backUrl);
+		monthlyReportApprovalForm.setBackUrl(backUrl);
 		
 		// 処理状況を取得
-		String status = monthlyReportApprovalService.getStatus(applyNo);
+		String strProjectStatusCode = monthlyReportApprovalService.getStatusCode(applyNo);
 		
 		// 処理状況設定
-		form.setProStatus(status);
+		monthlyReportApprovalForm.setProStatus(strProjectStatusCode);
 
-		// 月報承認データを取得
-		List<MonthlyReportApprovalVo> monthlyReportApprovalList = monthlyReportApprovalService.getMonReApprovalList(applyNo);
 		
-		// 月報承認リスト設定
-		form.setMonthlyReportApprovalList(monthlyReportApprovalList);
+		// 月報承認データ設定
+		monthlyReportApprovalService.getMonReApprovalList(monthlyReportApprovalForm,applyNo);
 
-		// 【PJ別作業時間集計】を取得
-		List<ProjWorkTimeManage> projectList = monthlyReportApprovalService.getProjectList(applyNo);
+//		// 【PJ別作業時間集計】を取得
+//		List<ProjWorkTimeManage> projectList = monthlyReportApprovalService.getProjectList(applyNo);
+//		
+//		// プロジェクト情報設定
+//		form.setProjectList(projectList);
 		
-		// プロジェクト情報設定
-		form.setProjectList(projectList);
-		
-		model.addAttribute(form);
+		model.addAttribute(monthlyReportApprovalForm);
 
 		return MONTHLYREPORT_APPROVAL;
 
@@ -96,10 +90,10 @@ public class MonthlyReportApprovalController extends AbstractController {
 	public String doApproval(MonthlyReportApprovalForm form) {
 		
 		// 申請状況「承認」
-		String proStatus = "03";
+		String proStatusCode = "03";
 		
 		// 申請状況が承認に更新
-		String updateFlg = monthlyReportApprovalService.updateProStatus(form.getApplyNo(), proStatus);
+		String updateFlg = monthlyReportApprovalService.updateProStatus(form.getApplyNo(), proStatusCode);
 		
 		if ("1".equals(updateFlg)) {
 			System.out.print("月報承認画面申請状況が承認に更新しました");
