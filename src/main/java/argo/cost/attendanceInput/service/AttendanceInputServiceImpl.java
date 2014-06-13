@@ -1064,7 +1064,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			kintaiEntity.setChokinHeijituTujyoJikansu(toBigDecimal(form.getChoWeekdayNomal())); // 超勤平日_通常時間数
 			kintaiEntity.setChokinKyujituJikansu(toBigDecimal(form.getChoHoliday()));  // 超勤休日時間数
 			kintaiEntity.setSinyaKinmuJikansu(toBigDecimal(form.getmNHours()));        // 深夜時間数
-			kintaiEntity.setTorikomiSyoriDate(null);             // 取込処理日
 			
 			// ロケーション情報を取得
 			Locations location = baseDao.findById(form.getLocationId(), Locations.class);

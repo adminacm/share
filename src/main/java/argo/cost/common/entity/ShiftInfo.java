@@ -1,10 +1,14 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -18,27 +22,28 @@ public class ShiftInfo implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 	
-	@Column(name="shift_code")
+	@Column(name="shift_code", length=4)
 	private String shiftCode;
 	
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="kinmu_flg")
+	@Column(name="kinmu_flg", nullable=false, length=1)
 	private String kinmuFlg;
 
-	@Column(name="time_zone_code")
+	@Column(name="time_zone_code", nullable=false, length=4)
 	private String timeZoneCode;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
 

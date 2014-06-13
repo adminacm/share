@@ -1,10 +1,20 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -18,60 +28,56 @@ public class KintaiInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="atendance_book_date")
+	@Column(name="atendance_book_date", nullable=false, length=8)
 	private String atendanceBookDate;
 
-	@Column(name="chokin_end_time")
+	@Column(name="chokin_end_time", length=4)
 	private String chokinEndTime;
 
-	@Column(name="chokin_heijitu_jikansu")
+	@Column(name="chokin_heijitu_jikansu", precision=3, scale=1)
 	private BigDecimal chokinHeijituJikansu;
 
-	@Column(name="chokin_heijitu_tujyo_jikansu")
+	@Column(name="chokin_heijitu_tujyo_jikansu", precision=3, scale=1)
 	private BigDecimal chokinHeijituTujyoJikansu;
 
-	@Column(name="chokin_kyujitu_jikansu")
+	@Column(name="chokin_kyujitu_jikansu", precision=3, scale=1)
 	private BigDecimal chokinKyujituJikansu;
 
-	@Column(name="chokin_start_time")
+	@Column(name="chokin_start_time", length=4)
 	private String chokinStartTime;
-
-	private String code;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="furikae_date")
+	@Column(name="furikae_date", length=8)
 	private String furikaeDate;
 
-	@Column(name="kinmu_end_time")
+	@Column(name="kinmu_end_time", nullable=false, length=4)
 	private String kinmuEndTime;
 
-	@Column(name="kinmu_jikansu")
+	@Column(name="kinmu_jikansu", precision=3, scale=1)
 	private BigDecimal kinmuJikansu;
 
-	@Column(name="kinmu_start_time")
+	@Column(name="kinmu_start_time", nullable=false, length=4)
 	private String kinmuStartTime;
 
-	@Column(name="kyuka_jikansu")
+	@Column(name="kyuka_jikansu", precision=3, scale=1)
 	private BigDecimal kyukaJikansu;
 
-	@Column(name="sinya_kinmu_jikansu")
+	@Column(name="sinya_kinmu_jikansu", precision=2, scale=1)
 	private BigDecimal sinyaKinmuJikansu;
-
-	@Column(name="torikomi_syori_date")
-	private String torikomiSyoriDate;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
 	//bi-directional many-to-one association to ApprovalManage
@@ -167,14 +173,6 @@ public class KintaiInfo implements Serializable {
 		this.chokinStartTime = chokinStartTime;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public Timestamp getCreatedDate() {
 		return this.createdDate;
 	}
@@ -237,14 +235,6 @@ public class KintaiInfo implements Serializable {
 
 	public void setSinyaKinmuJikansu(BigDecimal sinyaKinmuJikansu) {
 		this.sinyaKinmuJikansu = sinyaKinmuJikansu;
-	}
-
-	public String getTorikomiSyoriDate() {
-		return this.torikomiSyoriDate;
-	}
-
-	public void setTorikomiSyoriDate(String torikomiSyoriDate) {
-		this.torikomiSyoriDate = torikomiSyoriDate;
 	}
 
 	public Timestamp getUpdateDate() {

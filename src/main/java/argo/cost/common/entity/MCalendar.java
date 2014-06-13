@@ -1,10 +1,14 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -18,25 +22,25 @@ public class MCalendar implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="on_duty_date")
+	@Column(name="on_duty_date", unique=true, nullable=false, length=8)
 	private String onDutyDate;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="kyujisu_name")
+	@Column(name="kyujisu_name", length=20)
 	private String kyujisuName;
 
-	@Column(name="on_duty_flg")
+	@Column(name="on_duty_flg", nullable=false, length=1)
 	private String onDutyFlg;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
 	public MCalendar() {

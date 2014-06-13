@@ -1,9 +1,19 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -17,25 +27,26 @@ public class ApprovalManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="apply_no")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="apply_no", unique=true, nullable=false, length=30)
 	private String applyNo;
 
-	@Column(name="apply_detail")
-	private String applyDetail;
-	
-	@Column(name="app_ym")
+	@Column(name="app_ym", nullable=false, length=6)
 	private String appYm;
+
+	@Column(name="apply_detail", length=255)
+	private String applyDetail;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
 	//bi-directional many-to-one association to ApplyKbnMaster

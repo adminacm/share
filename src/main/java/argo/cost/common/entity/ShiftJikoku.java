@@ -1,9 +1,16 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -16,35 +23,35 @@ public class ShiftJikoku implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
-	@Column(name="shift_code")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="shift_code", unique=true, nullable=false, length=4)
 	private String shiftCode;
 
-	@Column(name="am_end_time")
+	@Column(name="am_end_time", nullable=false, length=4)
 	private String amEndTime;
 
-	@Column(name="chokin_start_time")
+	@Column(name="chokin_start_time", nullable=false, length=4)
 	private String chokinStartTime;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="pm_start_time")
+	@Column(name="pm_start_time", nullable=false, length=4)
 	private String pmStartTime;
 
-	@Column(name="teiji_kinmu_time")
+	@Column(name="teiji_kinmu_time", nullable=false, length=4)
 	private String teijiKinmuTime;
 
-	@Column(name="teiji_taikin_time")
+	@Column(name="teiji_taikin_time", nullable=false, length=4)
 	private String teijiTaikinTime;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
 	//bi-directional many-to-one association to KintaiInfo

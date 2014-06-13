@@ -28,53 +28,56 @@ public class Users implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false, length=20)
 	private String id;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="dairisha_id")
+	@Column(name="dairisha_id", length=20)
 	private String dairishaId;
 
-	@Column(name="kinmu_end_time")
+	@Column(name="kinmu_end_time", nullable=false, length=4)
 	private String kinmuEndTime;
 
-	@Column(name="kinmu_start_time")
+	@Column(name="kinmu_start_time", nullable=false, length=4)
 	private String kinmuStartTime;
 
-	@Column(name="kyugyo_end_date")
+	@Column(name="kyugyo_end_date", length=8)
 	private String kyugyoEndDate;
 
-	@Column(name="kyugyo_start_date")
+	@Column(name="kyugyo_start_date", length=8)
 	private String kyugyoStartDate;
 
-	@Column(name="login_mail_address")
+	@Column(name="login_mail_address", nullable=false, length=40)
 	private String loginMailAddress;
 
-	@Column(name="nyusha_date")
+	@Column(name="nyusha_date", nullable=false, length=8)
 	private String nyushaDate;
 
+	@Column(nullable=false, length=16)
 	private String password;
 
-	@Column(name="standard_shift_cd")
+	@Column(name="standard_shift_cd", nullable=false, length=4)
 	private String standardShiftCd;
 
+	@Column(nullable=false, precision=1)
 	private BigDecimal status;
 
-	@Column(name="taisyoku_date")
+	@Column(name="taisyoku_date", length=8)
 	private String taisyokuDate;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
-	@Column(name="user_name")
+	@Column(name="user_name", nullable=false, length=30)
 	private String userName;
 	
 	//bi-directional many-to-one association to ApprovalManage

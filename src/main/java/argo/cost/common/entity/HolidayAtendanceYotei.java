@@ -1,8 +1,17 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
@@ -16,33 +25,35 @@ public class HolidayAtendanceYotei implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="atendance_book_date")
+	@Column(name="atendance_book_date", nullable=false, length=8)
 	private String atendanceBookDate;
 
+	@Column(length=255)
 	private String commont;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="furikae_date")
+	@Column(name="furikae_date", length=8)
 	private String furikaeDate;
 
-	@Column(name="kinmu_end_time")
+	@Column(name="kinmu_end_time", nullable=false, length=4)
 	private String kinmuEndTime;
 
-	@Column(name="kinmu_start_time")
+	@Column(name="kinmu_start_time", nullable=false, length=4)
 	private String kinmuStartTime;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
 	//bi-directional many-to-one association to ProjectMaster

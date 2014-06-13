@@ -81,11 +81,11 @@ function submitAction(action) {
 				<tr>
 					<td align="right" width="30px"><input type="button" value="←" onclick="submitAction('/attendanceInput/lastDay');" /></td>
 					<!-- 勤務日 -->
-					<c:if test="${attendanceInputForm.kinmuKun != 1}">
+					<c:if test="${attendanceInputForm.workDayKbn != '01'}">
 						<td align="center" width="160px" style="background: #FF99CC">${attendanceInputForm.attDateShow}</td>
 					</c:if>
 					<!-- 社休日 -->
-					<c:if test="${attendanceInputForm.kinmuKun == 1}">
+					<c:if test="${attendanceInputForm.workDayKbn == '01'}">
 						<td align="center" width="160px" style="background: #CCFFFF">${attendanceInputForm.attDateShow}</td>
 					</c:if>
 					<td align="left" width="30px"><input type="button" value="→" onclick="submitAction('/attendanceInput/nextDay');" /></td>
@@ -99,14 +99,14 @@ function submitAction(action) {
 				</tr>
 			</table>
 			<!-- 社休日 -->
-			<c:if test="${attendanceInputForm.kinmuKun != 1}">
+			<c:if test="${attendanceInputForm.workDayKbn != '01'}">
 				<table style="margin:auto; width:300px;">
 					<tr>
 						<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attendanceOnHoliday');" /></td>
 					</tr>
 				</table>
 			</c:if>
-			<c:if test="${attendanceInputForm.kinmuKun == 3}">
+			<c:if test="${attendanceInputForm.workDayKbn == '03'}">
 				<table style="margin:auto;width:300px;border: 1px solid #333;">
 					<tr>
 						<td colspan="2" align="center"><b>［休日勤務］</b></td>
@@ -133,7 +133,7 @@ function submitAction(action) {
 					</tr>
 				</table>
 			</c:if>
-			<c:if test="${attendanceInputForm.kinmuKun == 1 || attendanceInputForm.kinmuKun == 3}">
+			<c:if test="${attendanceInputForm.workDayKbn == '01' || attendanceInputForm.workDayKbn == '03'}">
 				<table style="margin:auto;width:300px;">
 					<tr>
 						<td align="left" width="120px">シフトコード</td>

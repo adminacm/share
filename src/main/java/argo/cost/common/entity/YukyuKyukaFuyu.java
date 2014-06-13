@@ -2,7 +2,15 @@ package argo.cost.common.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
@@ -16,13 +24,14 @@ public class YukyuKyukaFuyu implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
 	@Column(name="fuyu_all_hours")
 	private Integer fuyuAllHours;
 
-	@Column(name="fuyu_year")
+	@Column(name="fuyu_year", length=4)
 	private String fuyuYear;
 
 	@Column(name="huyu_days")
@@ -33,6 +42,7 @@ public class YukyuKyukaFuyu implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
+	@JoinColumn(name="user_id")
 	private Users users;
 
 	public YukyuKyukaFuyu() {
