@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.model.AbstractForm;
-import argo.cost.common.model.ListItemVO;
 
 /**
  * <p>
@@ -54,7 +54,7 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 	/**
 	 *　プロジェクト名リスト
 	 */
-	private List<ListItemVO> projCdList;
+	private List<ProjectMaster> projCdList;
 	/**
 	 *　プロジェクト名区分
 	 */
@@ -136,11 +136,11 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 		this.atendanceDayKbnList = atendanceDayKbnList;
 	}
 
-	public List<ListItemVO> getProjCdList() {
+	public List<ProjectMaster> getProjCdList() {
 		return projCdList;
 	}
 
-	public void setProjCdList(List<ListItemVO> projCdList) {
+	public void setProjCdList(List<ProjectMaster> projCdList) {
 		this.projCdList = projCdList;
 	}
 

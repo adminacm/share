@@ -4,10 +4,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
-import argo.cost.common.entity.HolidayAtendanceYotei;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.WorkDayKbnMaster;
-import argo.cost.common.model.ListItemVO;
 
 /**
  * 休日勤務入力画面サービスのインタフェース
@@ -54,7 +52,7 @@ public interface AtendanceOnHolidayService {
 	 * 
 	 * @return 休日勤務データ保存結果
 	 */
-	String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHolidayForm,String UserID);
+	String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHolidayForm);
 	
 	/**
 	 * 休日勤務データ削除

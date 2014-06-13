@@ -37,7 +37,7 @@ function submitAction(action) {
 						<td style="width:120px;">代理入力者</td>
 						<td>
 							<form:select path="agentCd" style="width:145px;border:2px solid #333333;" id="agentCd">
-								<form:options items="${setupForm.agentList}" itemValue="userId" itemLabel="userName"/>
+								<form:options items="${setupForm.agentList}" itemValue="id" itemLabel="userName"/>
 							</form:select>
 						</td>
 					</tr>
@@ -48,48 +48,48 @@ function submitAction(action) {
 						<td>標準ｼﾌﾄ</td>
 						<td>
 							<form:select path="standardShift" style="width:145px;border:2px solid #333333;" id="standardShift" onchange="submitAction('/setup/shiftChange');">
-								<form:options items="${setupForm.standardShiftList}" itemValue="shiftCd" itemLabel="shiftCd"/>
+								<form:options items="${setupForm.standardShiftList}" itemValue="shiftCode" itemLabel="shiftCode"/>
 							</form:select>
 						</td>
 					</tr>
 					<tr>
 						<td>勤務開始時刻</td>
 						<td>
-							<input style="width:40px;text-align:right;border:2px solid #333333;" value="${setupForm.workStartH}"></input>
+							<form:input style="width:40px;text-align:right;border:2px solid #333333;" path="workStartH"></form:input>
 							&nbsp;：
-							<input style="width:40px;text-align:center;border:2px solid #333333;" value="${setupForm.workStartM}"></input>
+							<form:input style="width:40px;text-align:center;border:2px solid #333333;" path="workStartM"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>勤務終了時刻</td>
 						<td>
-							<input style="width:40px;text-align:right;border:2px solid #333333;" value="${setupForm.workEndH}"></input>
+							<form:input style="width:40px;text-align:right;border:2px solid #333333;" path ="workEndH"></form:input>
 							&nbsp;：
-							<input style="width:40px;text-align:center;border:2px solid #333333;" value="${setupForm.workEndM}"></input>
+							<form:input style="width:40px;text-align:center;border:2px solid #333333;" path ="workEndM"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>入社日</td>
 						<td>
-							<input style="width:124px;border:2px solid #333333;" value="${setupForm.joinDate}"></input>
+							<form:input style="width:124px;border:2px solid #333333;" path="joinDate"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>休業開始日</td>
 						<td>
-							<input style="width:124px;border:2px solid #333333;" value="${setupForm.holidayStart}"></input>
+							<form:input style="width:124px;border:2px solid #333333;" path="holidayStart"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>休業終了日</td>
 						<td>
-							<input style="width:124px;border:2px solid #333333;" value="${setupForm.holidayEnd}"></input>
+							<form:input style="width:124px;border:2px solid #333333;" path="holidayEnd"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>退職日</td>
 						<td>
-							<input style="width:124px;border:2px solid #333333;" value="${setupForm.outDate}"></input>
+							<form:input style="width:124px;border:2px solid #333333;" path ="outDate"></form:input>
 						</td>
 					</tr>
 				</table>

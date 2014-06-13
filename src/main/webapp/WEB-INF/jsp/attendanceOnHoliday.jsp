@@ -46,7 +46,7 @@ function submitAction(action) {
 						<td width="120px">勤務区分</td>
 						<td width="180px">
 							<form:select path="selectedAtendanceDayKbn" style="width:80%;" >
-								<form:options items="${attendanceOnHolidayInfo.atendanceDayKbnList}" itemValue="value" itemLabel="name"/>
+								<form:options items="${attendanceOnHolidayInfo.atendanceDayKbnList}" itemValue="code" itemLabel="name"/>
 							</form:select>
 						</td>
 					</tr>
@@ -75,7 +75,7 @@ function submitAction(action) {
 						<td width="180px">
 							<form:select path="selectedProjCd" style="width:80%;" >
 								<form:option value=""></form:option>
-								<form:options items="${attendanceOnHolidayInfo.projCdList}" itemValue="value" itemLabel="name"/>
+								<form:options items="${attendanceOnHolidayInfo.projCdList}" itemValue="code" itemLabel="name"/>
 							</form:select>
 						</td>
 					</tr>

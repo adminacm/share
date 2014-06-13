@@ -16,7 +16,7 @@ public interface SetupService {
 	 * @return
 	 *        個人設定情報
 	 */
-	SetupForm getSetupInfo(String UserId);
+	void getSetupInfo(SetupForm form);
 
 	/**
 	 * 個人設定変更情報を取得
