@@ -12,5 +12,5 @@ public interface MonthlyReportApprovalDao {
 	 * @return
 	 *        更新フラグ
 	 */
-	String getLatestShinseiDate();
+	String getLatestShinseiDate(String userId);
 }

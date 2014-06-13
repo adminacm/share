@@ -1,9 +1,9 @@
-package argo.cost.monthlyReportApproval.model;
+package argo.cost.common.model;
 
 /**
- * 月報承認一覧情報
+ * 月報承認一覧詳細情報
  */
-public class MonthlyReportApprovalVo {
+public class MonthlyReportDispVO {
 	
 	/**
 	 * 日付(表示用)
@@ -11,7 +11,7 @@ public class MonthlyReportApprovalVo {
 	private String day;
 	
 	/**
-	 * 日付
+	 * 日付(処理用)
 	 */
 	private String date;
 	

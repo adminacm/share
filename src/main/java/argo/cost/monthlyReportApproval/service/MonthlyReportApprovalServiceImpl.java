@@ -19,11 +19,11 @@ import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.entity.StatusMaster;
+import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
 import argo.cost.monthlyReportApproval.dao.MonthlyReportApprovalDao;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
-import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 
 @Service
 public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalService {
@@ -85,10 +85,10 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	@Override
 	public MonthlyReportApprovalForm getMonReApprovalList(MonthlyReportApprovalForm monthlyReportApprovalForm, String applyNo) throws ParseException {
 		
-		List<MonthlyReportApprovalVo> monthlyReportApprovalList = new ArrayList<MonthlyReportApprovalVo>();
+		List<MonthlyReportDispVO> monthlyReportApprovalList = new ArrayList<MonthlyReportDispVO>();
 		
 		// 最新の申請日付を取得
-		String strLatestShinseiDate = monthlyReportApprovalDao.getLatestShinseiDate();
+		String strLatestShinseiDate = monthlyReportApprovalDao.getLatestShinseiDate(monthlyReportApprovalForm.getUserId());
 		monthlyReportApprovalList = getMonReList(CostDateUtils.toDate(strLatestShinseiDate.concat("01")));
 		// 月報データを取得
 		BaseCondition kintaiInfoSelectCondition = new BaseCondition();
@@ -184,7 +184,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 		Double totleMNHours = 0.0;
 		
 		// 月報承認明細情報合計行作成
-		for (MonthlyReportApprovalVo itemInfo : monthlyReportApprovalList) {
+		for (MonthlyReportDispVO itemInfo : monthlyReportApprovalList) {
 			
 			if (itemInfo.getRestHours() != null) {
 
@@ -218,7 +218,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 			}
 		}
 		
-		MonthlyReportApprovalVo totleInfo = new MonthlyReportApprovalVo();
+		MonthlyReportDispVO totleInfo = new MonthlyReportDispVO();
 		// 合計フラグ
 		totleInfo.setTotleFlg(true);
 		totleInfo.setRestHours(totleRestHours);
@@ -246,16 +246,16 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 * 
 	 * @return 月報一覧
 	 */
-	private List<MonthlyReportApprovalVo> getMonReList(Date date) {
+	private List<MonthlyReportDispVO> getMonReList(Date date) {
 		
 		// 月報一覧
-		List<MonthlyReportApprovalVo> monReList = new ArrayList<MonthlyReportApprovalVo>();
+		List<MonthlyReportDispVO> monthyReportList = new ArrayList<MonthlyReportDispVO>();
 		
 		// 日付が空白以外の場合
 		if (date != null) {
 
 			// 月報の詳細
-			MonthlyReportApprovalVo monReport;
+			MonthlyReportDispVO monReport;
 			
 			// カレンダー変換
 			Calendar calendar = Calendar.getInstance();
@@ -266,7 +266,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 				
 				// 日付フォーマット
 				SimpleDateFormat sdfYearM = new SimpleDateFormat(YYYYMMDD);
-				monReport = new MonthlyReportApprovalVo();
+				monReport = new MonthlyReportDispVO();
 				// 日付を設定
 				monReport.setDay(CostStringUtils.addZeroForNum(String.valueOf(calendar.get(Calendar.DATE)), 2));
 				monReport.setDate(sdfYearM.format(date));
@@ -298,14 +298,14 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 				}
 				
 				// 一覧追加
-				monReList.add(monReport);
+				monthyReportList.add(monReport);
 				
 				calendar.add(Calendar.DATE, 1);
 				date = calendar.getTime();
 			}
 		}
 		
-		return monReList;
+		return monthyReportList;
 	}
 	
 

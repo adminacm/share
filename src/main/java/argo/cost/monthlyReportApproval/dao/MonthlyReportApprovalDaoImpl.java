@@ -22,7 +22,7 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 *        最新の申請日付
 	 */
 	@Override
-	public String getLatestShinseiDate() {
+	public String getLatestShinseiDate(String userId) {
 		
 		// JPQLを作成する
 		StringBuilder stbLatestShinseiDateSql = new StringBuilder();
@@ -36,9 +36,11 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		stbLatestShinseiDateSql.append("	APPLY_KBN_CODE = '1'");
 		stbLatestShinseiDateSql.append("	and");
 		stbLatestShinseiDateSql.append("	APPLY_STATUS_CODE not in ('01','04')");
-			
+		stbLatestShinseiDateSql.append("	and");
+		stbLatestShinseiDateSql.append("	USER_ID = ?");
 		// クエリー取得
 		Query query = this.entityManager.createNativeQuery(stbLatestShinseiDateSql.toString());
+		query.setParameter(1, userId);
 		String strLatestShinseiDate = "";
 		// 出力対象一覧情報取得
 		Object res = query.getSingleResult();
