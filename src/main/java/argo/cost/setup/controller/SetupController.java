@@ -56,14 +56,14 @@ public class SetupController extends AbstractController {
 	 * @param loginId
 	 *            ユーザID
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(INIT)
-	public String initSetup(Model model) {
+	public String initSetup(Model model) throws Exception {
 
-		String loginId = getSession().getUserInfo().getUserId();
-
+		SetupForm form = initForm(SetupForm.class);
 		// 画面情報を作成
-		SetupForm form = setupService.getSetupInfo(loginId);
+		setupService.getSetupInfo(form);
 		model.addAttribute(form);
 
 		return SETUP_GAMENID;
@@ -92,13 +92,16 @@ public class SetupController extends AbstractController {
 	 * @param setupInfo
 	 *            個人設定情報
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(INITSETUPEDIT)
-	public String initSetupEdit(Model model, SetupForm setupInfo) {
+	public String initSetupEdit(Model model, SetupForm setupInfo) throws Exception {
 
+		setupInfo = initForm(SetupForm.class);
 		// 画面情報を作成
 		setupService.getSetupEditInfo(setupInfo);
-
+		// 画面へ設定します。
+		model.addAttribute(setupInfo);
 		return SETUPEDIT_GAMENID;
 	}
 

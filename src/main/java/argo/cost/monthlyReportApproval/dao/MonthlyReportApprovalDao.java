@@ -2,7 +2,8 @@ package argo.cost.monthlyReportApproval.dao;
 
 import java.util.List;
 
-import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
+import argo.cost.common.entity.KintaiInfo;
+import argo.cost.common.entity.ProjWorkTimeManage;
 
 
 public interface MonthlyReportApprovalDao {
@@ -25,7 +26,7 @@ public interface MonthlyReportApprovalDao {
 	 * @return
 	 *        月報承認データ一覧リスト
 	*/
-	List<MonthlyReportApprovalVo> searchMonthReportApprovalList(String applyNo);
+	List<KintaiInfo> searchMonthReportApprovalList(String applyNo);
 
 	/**
 	 * プロジェクト情報を取得
@@ -35,7 +36,7 @@ public interface MonthlyReportApprovalDao {
 	 * @return
 	 *        プロジェクト情報リスト
 	 */
-//	List<Project> searchProjectList(String applyNo);
+	List<ProjWorkTimeManage> searchProjectList(String applyNo);
 
 	/**
 	 * 申請状況更新

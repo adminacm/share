@@ -87,42 +87,18 @@ public class AtendanceOnHolidayController extends AbstractController {
 		AtendanceOnHolidayCheck atendanceOnHolidayCheck = new AtendanceOnHolidayCheck();
 		atendanceOnHolidayCheck.validate(atendanceOnHolidayInfo, result);
 		
-		AtendanceOnHolidayForm atendanceOnHoliday = new AtendanceOnHolidayForm();
 		// TODO　チャック処理の結果がエラーがない場合
 		if (!result.hasErrors()) {
-			// 日付
-			atendanceOnHoliday.setStrAtendanceDate(atendanceOnHolidayInfo
-					.getStrAtendanceDate());
-			// 選択された勤務日区分
-			atendanceOnHoliday
-					.setSelectedAtendanceDayKbn(atendanceOnHolidayInfo
-							.getSelectedAtendanceDayKbn());
-			// 勤務開始時間
-			atendanceOnHoliday.setStrAtendanceTimeStat(atendanceOnHolidayInfo
-					.getStrAtendanceTimeStat());
-			// 勤務完了時間
-			atendanceOnHoliday.setStrAtendanceTimeEnd(atendanceOnHolidayInfo
-					.getStrAtendanceTimeEnd());
-			// 振替日
-			atendanceOnHoliday.setStrHurikaeDate(atendanceOnHolidayInfo
-					.getStrHurikaeDate());
-			// 選択されたプロジェクト名
-			atendanceOnHoliday.setSelectedProjCd(atendanceOnHolidayInfo
-					.getSelectedProjCd());
-			// 業務内容
-			atendanceOnHoliday.setStrCommont(atendanceOnHolidayInfo
-					.getStrCommont());
-
 			// TODO 保存成功の場合、勤怠入力画面に遷移する
-			if ("1".equals(atendanceOnHolidayService.saveAtendanceOnHoliday(atendanceOnHoliday,
-					getSession().getUserInfo().getLoginMailAdress()))) {
+			if ("1".equals(atendanceOnHolidayService.saveAtendanceOnHoliday(atendanceOnHolidayInfo))) {
 
-				// TODO 保存失敗の場合、エラーメッセージを出力する、
+				
 				// 勤怠入力画面へ遷移する
 				return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK 
 						+ "attDate=" + atendanceOnHolidayInfo.getStrAtendanceDate().replace("/", "");
 			} else {
 
+				// TODO 保存失敗の場合、エラーメッセージを出力する
 				return ATTENDANCE_HOLIDAY;
 			}
 

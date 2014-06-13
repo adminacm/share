@@ -2,17 +2,17 @@ package argo.cost.setup.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import argo.cost.common.constant.CommonConstant;
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
-import argo.cost.common.entity.ShiftInfo;
 import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
-import argo.cost.common.model.UserVO;
 import argo.cost.common.utils.CostDateUtils;
-import argo.cost.setup.dao.SetupDao;
 import argo.cost.setup.model.SetupForm;
 
 /**
@@ -22,12 +22,12 @@ import argo.cost.setup.model.SetupForm;
  */
 @Service
 public class SetupServiceImpl implements SetupService {
-
+	
 	/**
-	 * 個人設定画面のDAO
+	 * 共通DAO
 	 */
 	@Autowired
-	SetupDao setupDao;
+	BaseDao baseDao;
 
 	/**
 	 * 共通処理のDAO
@@ -43,46 +43,46 @@ public class SetupServiceImpl implements SetupService {
 	 *        SetupForm 個人設定情報
 	 */
 	@Override
-	public SetupForm getSetupInfo(String userId) {
+	public void getSetupInfo(SetupForm form) {
 		
-		// 画面の個人設定情報
-		SetupForm setupInfo = new SetupForm();
 
 		// DBから、個人設定情報を取得
-		Users setupEntity = setupDao.getSetupInfo(userId);
+		BaseCondition personalInfoSelectCondition = new BaseCondition();
+		personalInfoSelectCondition.addConditionEqual("id", form.getUserId());
+		
+		Users setupEntity = (Users) baseDao.findSingleResult(personalInfoSelectCondition, Users.class);
 		
 		// 画面の個人設定情報を設定
 		
-		// TODO 代理入力者コード
-		setupInfo.setAgentCd(setupEntity.getDairishaId());
+		// 代理入力者コード
+		String strDairishaId = setupEntity.getDairishaId();
+		form.setAgentCd(strDairishaId);
 		
-		// TODO 代理入力者名
-		UserVO agentInfo = comDao.findUserById(setupEntity.getDairishaId());
-		setupInfo.setAgentName(agentInfo.getUserName());
+		// 代理入力者名
+		Users agentInfo = baseDao.findById(strDairishaId,Users.class);
+		form.setAgentName(agentInfo.getUserName());
 		
 		// 標準ｼﾌﾄ
-		setupInfo.setStandardShift(setupEntity.getStandardShiftCd());
+		form.setStandardShift(setupEntity.getStandardShiftCd());
 		
 		// 勤務開始時刻
-		setupInfo.setWorkStart(setupEntity.getKinmuStartTime());
+		form.setWorkStart(CostDateUtils.formatTime(setupEntity.getKinmuStartTime()));
 		
 		// 勤務終了時刻
-		setupInfo.setWorkEnd(setupEntity.getKinmuEndTime());
+		form.setWorkEnd(CostDateUtils.formatTime(setupEntity.getKinmuEndTime()));
 		
 		// 入社日
-		setupInfo.setJoinDate(setupEntity.getNyushaDate());
+		form.setJoinDate(setupEntity.getNyushaDate());
 		
 		// 休業開始日
-		setupInfo.setHolidayStart(setupEntity.getKyugyoStartDate());
+		form.setHolidayStart(setupEntity.getKyugyoStartDate());
 		
 		// 休業終了日
-		setupInfo.setHolidayEnd(setupEntity.getKyugyoEndDate());
+		form.setHolidayEnd(setupEntity.getKyugyoEndDate());
 		
 		// 退職日
-		setupInfo.setOutDate(setupEntity.getTaisyokuDate());
+		form.setOutDate(setupEntity.getTaisyokuDate());
 		
-		// 個人設定情報を戻る
-		return setupInfo;
 	}
 
 	/**
@@ -94,13 +94,18 @@ public class SetupServiceImpl implements SetupService {
 	public void getSetupEditInfo(SetupForm setupInfo) {
 				
 		// 代理入力者リスト
-		setupInfo.setAgentList(getAgentList());
+		String userId = setupInfo.getUserId();
+		BaseCondition personalInfoSelectCondition = new BaseCondition();
+		personalInfoSelectCondition.addConditionNotEqual("id", userId);
+		
+		List<Users> agentList = baseDao.findResultList(personalInfoSelectCondition, Users.class);
+		setupInfo.setAgentList(agentList);
     	
 		// 標準ｼﾌﾄリスト
 		setupInfo.setStandardShiftList(getShiftList());
     	
     	// 勤務開始時刻
-    	if (!setupInfo.getWorkStart().isEmpty()){
+    	if (StringUtils.isNotEmpty(setupInfo.getWorkStart())){
 
     		String[] workStart = setupInfo.getWorkStart().split(":");
         	// 勤務開始時刻（時）
@@ -110,7 +115,7 @@ public class SetupServiceImpl implements SetupService {
     		
     	}
     	// 勤務終了時刻
-    	if (!setupInfo.getWorkEnd().isEmpty()){
+    	if (StringUtils.isNotEmpty(setupInfo.getWorkEnd())){
     		
     		String[] workEnd = setupInfo.getWorkEnd().split(":");
         	// 勤務終了時刻（時）
@@ -131,7 +136,12 @@ public class SetupServiceImpl implements SetupService {
 	public void changeShift(SetupForm setupInfo) {
 		
 		// 標準ｼﾌﾄより、ｼﾌﾄ時刻情報を取得
-		ShiftJikoku shiftTime = setupDao.getshiftTime(setupInfo.getStandardShift());
+		BaseCondition shiftStandardJikokuSelectbaseCondition = new BaseCondition();
+		// 検索条件：定時出勤時刻
+		shiftStandardJikokuSelectbaseCondition.addConditionEqual("teijiKinmuTime", "0900");
+		// 検索条件：定時退勤時刻
+		shiftStandardJikokuSelectbaseCondition.addConditionEqual("teijiTaikinTime", "0530");
+		ShiftJikoku shiftTime = (ShiftJikoku) baseDao.findResultList(shiftStandardJikokuSelectbaseCondition,ShiftJikoku.class);
 		
     	// 勤務開始時刻
     	if (shiftTime != null && !shiftTime.getTeijiKinmuTime().isEmpty()){
@@ -170,7 +180,7 @@ public class SetupServiceImpl implements SetupService {
 		String strHalfHours = "30";
 
 		// 勤務開始時刻は30分単位で入力
-		if (strWholeHours.equals(setupInfo.getWorkStartM()) || strHalfHours.equals(setupInfo.getWorkStartM())) {
+		if (!StringUtils.equals(strWholeHours,setupInfo.getWorkStartM()) && !StringUtils.equals(strHalfHours,setupInfo.getWorkStartM())) {
 			
 			// エラー(勤務開始時刻は30分単位で入力してください)
 			return false;
@@ -178,7 +188,7 @@ public class SetupServiceImpl implements SetupService {
 		}
 		
 		// 勤務終了時刻は30分単位で入力
-		if (strWholeHours.equals(setupInfo.getWorkEndM()) || strHalfHours.equals(setupInfo.getWorkEndM())) {
+		if (!StringUtils.equals(strWholeHours, setupInfo.getWorkEndM()) && !StringUtils.equals(strHalfHours, setupInfo.getWorkEndM())) {
 			
 			// エラー(勤務終了時刻は30分単位で入力してください)
 			return false;
@@ -192,21 +202,9 @@ public class SetupServiceImpl implements SetupService {
 			return false;
 		}
 		
+		setupInfo.setWorkStart(setupInfo.getWorkStartH().concat(setupInfo.getWorkStartM()));
+		setupInfo.setWorkEnd(setupInfo.getWorkEndH().concat(setupInfo.getWorkEndM()));
 		return true;
-	}
-
-	/**
-	 * 代理入力者リストを取得
-	 * 
-	 * @return
-	 *        代理入力者リスト
-	 */
-	private List<UserVO> getAgentList() {
-
-		// 代理入力者リストを取得
-		List<UserVO> agentList = setupDao.getAgentList();
-		
-		return agentList;
 	}
 
 	/**
@@ -215,10 +213,10 @@ public class SetupServiceImpl implements SetupService {
 	 * @return
 	 *        ｼﾌﾄリスト
 	 */
-	private List<ShiftInfo> getShiftList() {
+	private List<ShiftJikoku> getShiftList() {
 
 		// ｼﾌﾄリストを取得
-		List<ShiftInfo> shiftList = setupDao.getShiftList();
+		List<ShiftJikoku> shiftList = baseDao.findAll(ShiftJikoku.class);
 		
 		return shiftList;
 	}
@@ -231,8 +229,24 @@ public class SetupServiceImpl implements SetupService {
 	 */
 	@Override
 	public void doSave(SetupForm setupInfo) {
+		
+		Users user = baseDao.findById(setupInfo.getUserId(), Users.class);
+		// 代理者ID
+		user.setDairishaId(setupInfo.getAgentCd());
+		// 標準シフト
+		user.setStandardShiftCd(setupInfo.getStandardShift());
+		// 勤務開始時間
+		user.setKinmuStartTime(setupInfo.getWorkStart());
+		// 勤務終了時間
+		user.setKinmuEndTime(setupInfo.getWorkEnd());
+		// 休業開始日
+		user.setKyugyoStartDate(setupInfo.getHolidayStart().replaceAll("/", ""));
+		// 休業終了日
+		user.setKyugyoEndDate(setupInfo.getHolidayEnd().replaceAll("/", ""));
+		// 退職日
+		user.setTaisyokuDate(setupInfo.getOutDate().replaceAll("/", ""));
+		baseDao.update(user);
 
-		setupDao.doSave(setupInfo);
 		
 	}
 }

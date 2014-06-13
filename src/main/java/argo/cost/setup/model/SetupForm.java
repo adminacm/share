@@ -1,17 +1,24 @@
 package argo.cost.setup.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-import argo.cost.common.entity.ShiftInfo;
-import argo.cost.common.model.UserVO;
+import argo.cost.common.entity.ShiftJikoku;
+import argo.cost.common.entity.Users;
+import argo.cost.common.model.AbstractForm;
 
 /**
  * 個人設定画面情報FORM
  *
  * @author COST argo Corporation.
  */
-public class SetupForm {
+public class SetupForm extends AbstractForm implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7059601126898226721L;
+
 	/**
 	 * 代理入力者コード
 	 */
@@ -25,7 +32,7 @@ public class SetupForm {
 	/**
 	 * 代理入力者リスト
 	 */
-	private List<UserVO> agentList;
+	private List<Users> agentList;
 	
 	/**
 	 * 標準ｼﾌﾄリスト
@@ -35,7 +42,7 @@ public class SetupForm {
 	/**
 	 * 標準ｼﾌﾄ
 	 */
-	private List<ShiftInfo> standardShiftList;
+	private List<ShiftJikoku> standardShiftList;
 	
 	/**
 	 * 勤務開始時刻
@@ -103,11 +110,11 @@ public class SetupForm {
 		this.agentName = agentName;
 	}
 
-	public List<UserVO> getAgentList() {
+	public List<Users> getAgentList() {
 		return agentList;
 	}
 
-	public void setAgentList(List<UserVO> agentList) {
+	public void setAgentList(List<Users> agentList) {
 		this.agentList = agentList;
 	}
 
@@ -119,11 +126,11 @@ public class SetupForm {
 		this.standardShift = standardShift;
 	}
 
-	public List<ShiftInfo> getStandardShiftList() {
+	public List<ShiftJikoku> getStandardShiftList() {
 		return standardShiftList;
 	}
 
-	public void setStandardShiftList(List<ShiftInfo> standardShiftList) {
+	public void setStandardShiftList(List<ShiftJikoku> standardShiftList) {
 		this.standardShiftList = standardShiftList;
 	}
 

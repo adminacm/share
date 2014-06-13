@@ -3,12 +3,33 @@ package argo.cost.monthlyReportApproval.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.ApprovalManage;
+import argo.cost.common.entity.KintaiInfo;
+import argo.cost.common.entity.ProjWorkTimeManage;
 
 @Repository
 public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
+	
+	/**
+	 * 共通DAO
+	 */
+	@Autowired
+	BaseDao baseDao;
+	
+	/**
+	 * エンティティ管理クラス
+	 */
+	@PersistenceContext
+	protected EntityManager em;
+	
 
 	/**
 	 * 処理状況値を取得
@@ -20,8 +41,21 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 */
 	@Override
 	public String getStatus(String applyNo) {
-		// TODO ＤＢから、申請番号による、処理状况値を取得
-		return "02";
+		
+		// ＤＢから、申請番号による、処理状况値を取得
+		BaseCondition approvalStatusSelectCondition = new BaseCondition();
+		approvalStatusSelectCondition.addConditionEqual("approvalManage", baseDao.findById(applyNo, ApprovalManage.class));
+		
+		ApprovalManage approvalStatus = baseDao.findSingleResult(approvalStatusSelectCondition, ApprovalManage.class);
+		
+		// 処理状況
+		String strStatus = "";
+		if(approvalStatus.getStatusMaster() != null) {
+			
+			strStatus = approvalStatus.getStatusMaster().getName();
+		}
+	
+		return strStatus;
 	}
 	
 	/**
@@ -33,172 +67,15 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 *        月報承認データ一覧リスト
 	*/
 	@Override
-	public List<MonthlyReportApprovalVo> searchMonthReportApprovalList(String applyNo) {
+	public List<KintaiInfo> searchMonthReportApprovalList(String applyNo) {
+		
 		// TODO 自動生成されたメソッド・スタブ
-		List<MonthlyReportApprovalVo> monthlyReportApprovalList = new ArrayList<MonthlyReportApprovalVo>();
-		MonthlyReportApprovalVo monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("01");
-		monthlyReportVo.setWeek("水");
-		monthlyReportVo.setWorkKbnName("出勤日");
-		monthlyReportVo.setShift("0900");
-		monthlyReportVo.setWorkSTime("10:00");
-		monthlyReportVo.setWorkETime("20:30");
-		monthlyReportVo.setRestHours(1.0);;
-		monthlyReportVo.setWorkHours(9.0);
-		monthlyReportVo.setChoSTime("18:00");
-		monthlyReportVo.setChoETime("20:30");
-		monthlyReportVo.setChoWeekday(1.5);
-		monthlyReportVo.setChoWeekdayNomal(1.0);
-		monthlyReportApprovalList.add(monthlyReportVo);
+		BaseCondition approvalStatusSelectCondition = new BaseCondition();
+        approvalStatusSelectCondition.addConditionEqual("kintaiInfo", baseDao.findById(applyNo, KintaiInfo.class));
 		
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("02");
-		monthlyReportVo.setWeek("木");
-		monthlyReportVo.setWorkKbnName("出勤日");
-		monthlyReportVo.setShift("0800");
-		monthlyReportVo.setWorkSTime("09:00");
-		monthlyReportVo.setWorkETime("16:30");
-		monthlyReportVo.setWorkHours(6.5);
-		monthlyReportApprovalList.add(monthlyReportVo);
+		ArrayList<KintaiInfo> monthlyShoninInfoList = (ArrayList<KintaiInfo>) baseDao.findResultList(approvalStatusSelectCondition, KintaiInfo.class);
 		
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("03");
-		monthlyReportVo.setWeek("金");
-		monthlyReportVo.setWorkKbnName("出勤日");
-		monthlyReportVo.setShift("0900");
-		monthlyReportVo.setWorkSTime("09:00");
-		monthlyReportVo.setWorkETime("19:00");
-		monthlyReportVo.setWorkHours(8.5);
-		monthlyReportVo.setChoSTime("18:00");
-		monthlyReportVo.setChoETime("19:00");
-		monthlyReportVo.setChoWeekday(1.0);
-		monthlyReportVo.setLocationName("日本");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("04");
-		monthlyReportVo.setWeek("土");
-		monthlyReportVo.setWorkKbnName("休日");
-		monthlyReportVo.setShift("0900");
-		monthlyReportVo.setWorkSTime("09:00");
-		monthlyReportVo.setWorkETime("23:30");
-		monthlyReportVo.setWorkHours(12.0);
-		monthlyReportVo.setChoSTime("18:00");
-		monthlyReportVo.setChoETime("23:30");
-		monthlyReportVo.setChoHoliday(4.5);
-		monthlyReportVo.setmNHours(0.5);
-		monthlyReportVo.setLocationName("日本");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("05");
-		monthlyReportVo.setWeek("日");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("06");
-		monthlyReportVo.setWeek("月");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("07");
-		monthlyReportVo.setWeek("火");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("08");
-		monthlyReportVo.setWeek("水");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("09");
-		monthlyReportVo.setWeek("木");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("10");
-		monthlyReportVo.setWeek("金");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("11");
-		monthlyReportVo.setWeek("土");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("12");
-		monthlyReportVo.setWeek("日");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("13");
-		monthlyReportVo.setWeek("月");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("14");
-		monthlyReportVo.setWeek("火");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("15");
-		monthlyReportVo.setWeek("水");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("16");
-		monthlyReportVo.setWeek("木");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("17");
-		monthlyReportVo.setWeek("金");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("18");
-		monthlyReportVo.setWeek("土");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("19");
-		monthlyReportVo.setWeek("日");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("20");
-		monthlyReportVo.setWeek("月");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("21");
-		monthlyReportVo.setWeek("火");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("22");
-		monthlyReportVo.setWeek("水");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("23");
-		monthlyReportVo.setWeek("木");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("24");
-		monthlyReportVo.setWeek("金");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("25");
-		monthlyReportVo.setWeek("土");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo.setDay("26");
-		monthlyReportVo.setWeek("日");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("27");
-		monthlyReportVo.setWeek("月");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("28");
-		monthlyReportVo.setWeek("火");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("29");
-		monthlyReportVo.setWeek("水");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("30");
-		monthlyReportVo.setWeek("木");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		monthlyReportVo = new MonthlyReportApprovalVo();
-		monthlyReportVo.setDay("31");
-		monthlyReportVo.setWeek("金");
-		monthlyReportApprovalList.add(monthlyReportVo);
-		
-		return monthlyReportApprovalList;
+		return monthlyShoninInfoList;
 	}
 
 	/**
@@ -209,33 +86,24 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 * @return
 	 *        プロジェクト情報リスト
 	 */
-//	@Override
-//	public List<Project> searchProjectList(String applyNo) {
-//		
-//		// TODO 自動生成されたメソッド・スタブ
-//		List<Project> projectList = new ArrayList<Project>();
-//		Project projectInfo = new Project();
-//		projectInfo.setProjName("SPA収益計画システム");
-//		projectInfo.setProjHours(162.0);
-//		projectInfo.setProjManageHours(53.0);
-//		projectInfo.setBasicDesignHours(25.0);
-//		projectInfo.setMeetingHours(10.0);
-//		projectList.add(projectInfo);
-//		
-//		projectInfo = new Project();
-//		projectInfo.setProjName("桜美林大学留学生管理システム保守");
-//		projectInfo.setProjHours(100.0);
-//		projectInfo.setProjManageHours(50.0);
-//		projectInfo.setBasicDesignHours(20.0);
-//		projectInfo.setMeetingHours(15.0);
-//		projectList.add(projectInfo);
-//		
-//		projectInfo = new Project();
-//		projectInfo.setProjName("事務処理・社内会議");
-//		projectList.add(projectInfo);
-//		
-//		return projectList;
-//	}
+	@Override
+	public List<ProjWorkTimeManage> searchProjectList(String applyNo) {
+		
+		// 申請番号によって、勤怠情報の勤務IDを取得する
+		BaseCondition approvalStatusSelectCondition = new BaseCondition();
+		approvalStatusSelectCondition.addConditionEqual("approvalManage", baseDao.findById(applyNo, KintaiInfo.class));
+		
+		ApprovalManage approvalManageInfo = baseDao.findSingleResult(approvalStatusSelectCondition, ApprovalManage.class);
+		
+		
+		// 取得した勤務IDによって、関連のプロジェクト作業時間を取得する
+		BaseCondition projectWorkTImeSelectCondition = new BaseCondition();
+		projectWorkTImeSelectCondition.addConditionEqual("approvalManage", baseDao.findById(approvalManageInfo.getApplyNo().toString(), KintaiInfo.class));
+		
+		ArrayList<ProjWorkTimeManage> projWorkTimeManageInfoList = (ArrayList<ProjWorkTimeManage>) baseDao.findResultList(projectWorkTImeSelectCondition, ProjWorkTimeManage.class);
+		
+		return projWorkTimeManageInfoList;
+	}
 
 	/**
 	 * 申請状況更新
@@ -249,7 +117,33 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 	 */
 	@Override
 	public String updateProStatus(String applyNo, String proStatus) {
-		// TODO 自動生成されたメソッド・スタブ
-		return "1";
+		
+		// 更新フラグ
+		String strUpdateFlg = "1";
+		
+		BaseCondition approvalStatusSelectCondition = new BaseCondition();
+		
+		approvalStatusSelectCondition.addConditionEqual("approvalManage.id", applyNo);
+		
+		ApprovalManage approvalManageInfo = new ApprovalManage();
+		try {
+	    // 申請番号によって、承認管理テーブルから承認情報を取得する
+		approvalManageInfo = baseDao.findSingleResult(approvalStatusSelectCondition, ApprovalManage.class);
+        } catch (Exception ex) {
+			
+			System.out.print("11111111111");
+		}
+		// 申請状況を設定する
+		approvalManageInfo.getApplyKbnMaster().setCode(proStatus);
+		try {
+			baseDao.insert(approvalManageInfo);
+			
+		} catch (Exception e) {
+			
+			strUpdateFlg = "0";
+			System.out.print("11111111111");
+		}
+		
+		return strUpdateFlg;
 	}
 }

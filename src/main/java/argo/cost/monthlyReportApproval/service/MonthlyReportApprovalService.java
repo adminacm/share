@@ -2,6 +2,7 @@ package argo.cost.monthlyReportApproval.service;
 
 import java.util.List;
 
+import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 
 
@@ -35,7 +36,7 @@ public interface MonthlyReportApprovalService {
 	 * @return
 	 *        プロジェクト情報
 	 */
-//	LOist<Project> getProjectList(String applyNo);
+	List<ProjWorkTimeManage> getProjectList(String applyNo);
 
 	/**
 	 * 申請状況更新

@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import argo.cost.common.entity.Project;
 import argo.cost.monthlyReport.model.MonthlyReportInfo;
 
 /**
@@ -62,16 +63,16 @@ public interface MonthlyReportService {
 	 */
 	void setUserMonthReport(String userId, String date, List<MonthlyReportInfo> monthList);
 	
-//	/**
-//	 * 【PJ別作業時間集計】情報を取得
-//	 * 
-//	 * @param userId
-//	 * 			ユーザID
-//	 * @param date 
-//	 * 			日付
-//	 * @return
-//	 *        プロジェクト情報
-//	 */
-//	List<Project> getProjectList(String userId, String date);
+	/**
+	 * 【PJ別作業時間集計】情報を取得
+	 * 
+	 * @param userId
+	 * 			ユーザID
+	 * @param date 
+	 * 			日付
+	 * @return
+	 *        プロジェクト情報
+	 */
+	List<Project> getProjectList(String userId, String date);
 
 }
