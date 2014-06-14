@@ -1,8 +1,5 @@
 package argo.cost.monthlyReport.dao;
 
-import java.util.List;
-
-import argo.cost.monthlyReport.model.MonthlyReportEntity;
 
 /**
  * 月報画面Dao
@@ -12,39 +9,16 @@ import argo.cost.monthlyReport.model.MonthlyReportEntity;
  */
 public interface MonthlyReportDao {
 	
-	/**
-	 * 
-	 * ユーザの最後の月報提出年月を取得処理
-	 * 
-	 * @param userId 
-	 * 				ユーザID
-	 * 
-	 * @return 最後の月報提出年月
-	 */
-	String getUserMonth(String userId);
 	
 	/**
+	 * 申請状況更新
 	 * 
-	 * ユーザの月報情報を取得処理
-	 * 
-	 * @param userId 
-	 * 				ユーザID
-	 * @param date 
-	 * 				年月
-	 * 
-	 * @return ユーザの月報情報
+	 * @param applyNo
+	 *               申請番号
+	 * @param proStatus
+	 *                 申請状況
+	 * @return
+	 *        更新フラグ
 	 */
-	List<MonthlyReportEntity> getUserMonthReport(String userId, String date);
-	
-//	/**
-//	 * 【PJ別作業時間集計】情報を取得
-//	 * 
-//	 * @param userId
-//	 * 			ユーザID
-//	 * @param date 
-//	 * 			日付
-//	 * @return
-//	 *        プロジェクト情報
-//	 */
-//	List<Project> getProjectList(String userId, String date);
+	String getUserLatestShinseiMonth(String userId);
 }

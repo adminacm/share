@@ -5,6 +5,7 @@ import java.util.List;
 
 import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.model.AbstractForm;
+import argo.cost.common.model.MonthlyReportDispVO;
 
 /**
  * <p>
@@ -37,7 +38,7 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	/**
 	 * 月報承認明細一覧
 	 */
-	private List<MonthlyReportApprovalVo> monthlyReportApprovalList;
+	private List<MonthlyReportDispVO> monthlyReportApprovalList;
 
 	/**
 	 * プロジェクト情報
@@ -71,12 +72,12 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 		this.backUrl = backUrl;
 	}
 
-	public List<MonthlyReportApprovalVo> getMonthlyReportApprovalList() {
+	public List<MonthlyReportDispVO> getMonthlyReportApprovalList() {
 		return monthlyReportApprovalList;
 	}
 
 	public void setMonthlyReportApprovalList(
-			List<MonthlyReportApprovalVo> monthlyReportApprovalList) {
+			List<MonthlyReportDispVO> monthlyReportApprovalList) {
 		this.monthlyReportApprovalList = monthlyReportApprovalList;
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
+import argo.cost.common.model.MonthlyReportDispVO;
 
 /**
  * <p>
@@ -50,7 +51,7 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	/**
 	 * 月報一覧
 	 */
-	private List<MonthlyReportInfo> mRList;
+	private List<MonthlyReportDispVO> mRList;
 	
 	/**
 	 * プロジェクト名
@@ -113,11 +114,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 		this.yearMonth = yearMonth;
 	}
 
-	public List<MonthlyReportInfo> getmRList() {
+	public List<MonthlyReportDispVO> getmRList() {
 		return mRList;
 	}
 
-	public void setmRList(List<MonthlyReportInfo> mRList) {
+	public void setmRList(List<MonthlyReportDispVO> mRList) {
 		this.mRList = mRList;
 	}
 

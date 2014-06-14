@@ -4,8 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import argo.cost.common.entity.Project;
-import argo.cost.monthlyReport.model.MonthlyReportInfo;
+import argo.cost.common.model.MonthlyReportDispVO;
 
 /**
  * 月報画面サービス
@@ -31,7 +30,7 @@ public interface MonthlyReportService {
 	 * 
 	 * @return 月報一覧
 	 */
-	List<MonthlyReportInfo> getMonReList(Date date);
+	List<MonthlyReportDispVO> getMonthyReportList(Date date);
 
 	/**
 	 * 
@@ -43,15 +42,6 @@ public interface MonthlyReportService {
 	 */
 	String changeYearMonth(String changeFlg, String date) throws ParseException;
 	
-	/**
-	 * 
-	 * ユーザの最後の月報提出年月を取得処理
-	 * 
-	 * @param userId ユーザID
-	 * 
-	 * @return 最後の月報提出年月
-	 */
-	String getUserMonth(String userId);
 	
 	/**
 	 * ユーザの月報情報を取得し、月報リストに設定する
@@ -60,19 +50,20 @@ public interface MonthlyReportService {
 	 * 			ユーザID
 	 * @param date 
 	 * 			日付
+	 * @throws ParseException 
 	 */
-	void setUserMonthReport(String userId, String date, List<MonthlyReportInfo> monthList);
+	void setUserMonthReport(String userId, String date, List<MonthlyReportDispVO> monthList) throws ParseException;
+	
 	
 	/**
-	 * 【PJ別作業時間集計】情報を取得
+	 * 申請状況更新
 	 * 
-	 * @param userId
-	 * 			ユーザID
-	 * @param date 
-	 * 			日付
+	 * @param applyNo
+	 *               申請番号
+	 * @param proStatus
+	 *                 申請状況
 	 * @return
-	 *        プロジェクト情報
+	 *        更新フラグ
 	 */
-	List<Project> getProjectList(String userId, String date);
-
+	String getUserLatestShinseiMonth(String userId);
 }

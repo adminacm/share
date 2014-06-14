@@ -8,15 +8,18 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import argo.cost.common.entity.Project;
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.KintaiInfo;
+import argo.cost.common.entity.ProjWorkTimeManage;
+import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
 import argo.cost.monthlyReport.dao.MonthlyReportDao;
-import argo.cost.monthlyReport.dao.MonthlyReportDaoImpl;
-import argo.cost.monthlyReport.model.MonthlyReportEntity;
-import argo.cost.monthlyReport.model.MonthlyReportInfo;
 
 /**
  * 月報画面サービス実現するクラス
@@ -27,6 +30,18 @@ import argo.cost.monthlyReport.model.MonthlyReportInfo;
 @Service
 public class MonthlyReportServiceImpl implements MonthlyReportService {
 	
+	/**
+	 * 共通DAO
+	 */
+	@Autowired
+	BaseDao baseDao;
+	
+	/**
+	 * 月報処理DAO
+	 */
+	@Autowired
+	private MonthlyReportDao monthlyReportDao;
+	
 	/** 定数 */
 	// YYYYMMDD形式を表す文字列
 	private final String YYYYMMDD = "yyyyMMdd";
@@ -36,10 +51,6 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	
 	// 来月
 	private final String NEXT = "next";
-	/**
-	 * 月報処理Dao
-	 */
-	MonthlyReportDao monthlyReportDao = new MonthlyReportDaoImpl();
 
 	/**
 	 * 年月取得処理
@@ -74,17 +85,16 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	 * 
 	 * @return 月報一覧
 	 */
-	@Override
-	public List<MonthlyReportInfo> getMonReList(Date date) {
+	public List<MonthlyReportDispVO> getMonthlyReportList(Date date) {
 		
 		// 月報一覧
-		List<MonthlyReportInfo> monReList = new ArrayList<MonthlyReportInfo>();
+		List<MonthlyReportDispVO> monReList = new ArrayList<MonthlyReportDispVO>();
 		
 		// 日付が空白以外の場合
 		if (date != null) {
 
 			// 月報の詳細
-			MonthlyReportInfo monReport;
+			MonthlyReportDispVO monthlyReportApproval;
 			
 			// カレンダー変換
 			Calendar calendar = Calendar.getInstance();
@@ -95,39 +105,39 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 				
 				// 日付フォーマット
 				SimpleDateFormat sdfYearM = new SimpleDateFormat(YYYYMMDD);
-				monReport = new MonthlyReportInfo();
+				monthlyReportApproval = new MonthlyReportDispVO();
 				// 日付を設定
-				monReport.setDay(CostStringUtils.addZeroForNum(String.valueOf(calendar.get(Calendar.DATE)), 2));
-				monReport.setDate(sdfYearM.format(date));
+				monthlyReportApproval.setDay(CostStringUtils.addZeroForNum(String.valueOf(calendar.get(Calendar.DATE)), 2));
+				monthlyReportApproval.setDate(sdfYearM.format(date));
 				// 曜日設
 				switch (calendar.get(Calendar.DAY_OF_WEEK)) {
 					case Calendar.MONDAY:
-						monReport.setWeek("月");
+						monthlyReportApproval.setWeek("月");
 						break;
 					case Calendar.TUESDAY:
-						monReport.setWeek("火");
+						monthlyReportApproval.setWeek("火");
 						break;
 					case Calendar.WEDNESDAY:
-						monReport.setWeek("水");
+						monthlyReportApproval.setWeek("水");
 						break;
 					case Calendar.THURSDAY:
-						monReport.setWeek("木");
+						monthlyReportApproval.setWeek("木");
 						break;
 					case Calendar.FRIDAY:
-						monReport.setWeek("金");
+						monthlyReportApproval.setWeek("金");
 						break;
 					case Calendar.SATURDAY:
-						monReport.setWeek("土");
+						monthlyReportApproval.setWeek("土");
 						break;
 					case Calendar.SUNDAY:
-						monReport.setWeek("日");
+						monthlyReportApproval.setWeek("日");
 						break;
 					default:
 						break;
 				}
 				
 				// 一覧追加
-				monReList.add(monReport);
+				monReList.add(monthlyReportApproval);
 				
 				calendar.add(Calendar.DATE, 1);
 				date = calendar.getTime();
@@ -177,19 +187,6 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		return formatDate;
 	}
 
-	/**
-	 * 
-	 * ユーザの最後の月報提出年月を取得処理
-	 * 
-	 * @param userId ユーザID
-	 * 
-	 * @return 最後の月報提出年月
-	 */
-	@Override
-	public String getUserMonth(String userId) {
-		
-		return monthlyReportDao.getUserMonth(userId);
-	}
 	
 	/**
 	 * ユーザの月報情報を取得し、月報リストに設定する
@@ -198,9 +195,10 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	 * 			ユーザID
 	 * @param date 
 	 * 			日付
+	 * @throws ParseException 
 	 */
 	@Override
-	public void setUserMonthReport(String userId, String date, List<MonthlyReportInfo> monthList) {
+	public void setUserMonthReport(String userId, String date, List<MonthlyReportDispVO> monthList) throws ParseException {
 		
 		// 合計休暇時間数
 		Double totleRestHours = 0.0;
@@ -215,119 +213,219 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 合計超勤深夜
 		Double totleMNHours = 0.0;
 		// 合計情報
-		MonthlyReportInfo totleInfo = new MonthlyReportInfo();
+		MonthlyReportDispVO totleInfo = new MonthlyReportDispVO();
 		
-		List<MonthlyReportEntity> reportList = monthlyReportDao.getUserMonthReport(userId, date);
-
-		for (int i = 0; i < monthList.size(); i++) {
+        List<MonthlyReportDispVO> monthlyReportList = new ArrayList<MonthlyReportDispVO>();
+		
+		// 最新の申請日付を取得
+		String strLatestShinseiDate = monthlyReportDao.getUserLatestShinseiMonth(userId);
+		monthlyReportList = getMonthyReportList(CostDateUtils.toDate(strLatestShinseiDate.concat("01")));
+		
+		
+		// 月報情報を取得
+		BaseCondition monthReportInfoSelectCondition = new BaseCondition();
+		// 検索条件：ユーザーID
+		monthReportInfoSelectCondition.addConditionEqual("users.id", userId);
+		// 検索条件：年月
+		monthReportInfoSelectCondition.addConditionLike("atendanceBookDate",  date + "%");
+		        
+		ArrayList<KintaiInfo> monthlyKintaiInfoList = (ArrayList<KintaiInfo>) baseDao.findResultList(monthReportInfoSelectCondition, KintaiInfo.class);
+		List<ProjWorkTimeManage> projWorkTimeManageList = new ArrayList<ProjWorkTimeManage>();
+		
+		for(int i = 0; i < monthlyReportList.size(); i++){
 			
-			MonthlyReportInfo info = monthList.get(i);
 			
-			for (MonthlyReportEntity rep : reportList) {
-			
-				if (info.getDate().equals(rep.getWorkDate())) {
+			for (int j = 0; j < monthlyKintaiInfoList.size(); j++) {
+				// 対応した日付で、勤務情報を設定する
+				if (StringUtils.equals(monthlyReportList.get(j).getDate(), monthlyKintaiInfoList.get(i).getAtendanceBookDate())) {
 					
-					// シフトコード
-					info.setShift(rep.getShiftCode());;
-					// 勤務日区分
-					info.setWorkKbn(rep.getWorkKbn());
-					// 勤務区分名
-					info.setWorkKbnName(rep.getWorkKbnName());
+					
+					// 区分
+					if (monthlyKintaiInfoList.get(i).getKyukaKekinKbnMaster() != null ){
+						monthlyReportList.get(j).setWorkKbn(monthlyKintaiInfoList.get(i).getKyukaKekinKbnMaster().getCode());
+					}
+					if (monthlyKintaiInfoList.get(i).getShiftJikoku() != null ){
+						// ｼﾌﾄ
+						monthlyReportList.get(j).setShift(monthlyKintaiInfoList.get(i).getShiftJikoku().getShiftCode());
+					}
 					// 出勤
-					info.setWorkSTime(CostDateUtils.formatIntegerToTime(rep.getWorkSTime()));
+					monthlyReportList.get(j).setWorkSTime(monthlyKintaiInfoList.get(i).getKinmuStartTime());
 					// 退勤
-					info.setWorkETime(CostDateUtils.formatIntegerToTime(rep.getWorkETime()));
-					// 休暇時間数
-					info.setRestHours(rep.getRestHours());
-					// 勤務時間数
-					info.setWorkHours(rep.getWorkHours());
-					// 超勤開始
-					info.setChoSTime(CostDateUtils.formatIntegerToTime(rep.getOverSTime()));
-					// 超勤終了
-					info.setChoETime(CostDateUtils.formatIntegerToTime(rep.getOverETime()));
-					// 超勤平増
-					info.setChoWeekday(rep.getOverHours());
-					// 超勤平常
-					info.setChoWeekdayNomal(rep.getOverHoursOrdinary());
-					// 超勤休日
-					info.setChoHoliday(rep.getOverHoursHoliday());
-					// 超勤深夜
-					info.setmNHours(rep.getOverHoursNight());
-					// ﾛｹｰｼｮﾝ
-					info.setLocationCode(rep.getLocationCode());
-					// ロケーション名
-					info.setLocationName(rep.getLocationName());
+					monthlyReportList.get(j).setWorkETime(monthlyKintaiInfoList.get(i).getKinmuEndTime());
+					// 休暇
+					if (monthlyKintaiInfoList.get(i).getKyukaJikansu() != null ) {
+						monthlyReportList.get(j).setRestHours(monthlyKintaiInfoList.get(i).getKyukaJikansu().doubleValue());
+					}
 					
-					if (info.getRestHours() != null) {
-
-						totleRestHours += info.getRestHours();
+					// 勤務時間数
+					if (monthlyKintaiInfoList.get(i).getKinmuJikansu() != null ) {
+						monthlyReportList.get(j).setWorkHours(monthlyKintaiInfoList.get(i).getKinmuJikansu().doubleValue());
 					}
-					if (info.getWorkHours() != null) {
-
-						totleWorkHours += info.getWorkHours();
+					// 超勤開始
+					monthlyReportList.get(j).setChoSTime(monthlyKintaiInfoList.get(i).getChokinStartTime());
+					// 超勤終了
+					monthlyReportList.get(j).setChoETime(monthlyKintaiInfoList.get(i).getChokinEndTime());
+					// 超勤平増
+					if (monthlyKintaiInfoList.get(i).getChokinHeijituJikansu() != null ) {
+						monthlyReportList.get(j).setChoWeekday(monthlyKintaiInfoList.get(i).getChokinHeijituJikansu().doubleValue());
 					}
-					if (info.getChoWeekday() != null) {
-
-						totleChoWeekday += info.getChoWeekday();
+					
+					// 超勤平常
+					if (monthlyKintaiInfoList.get(i).getChokinHeijituTujyoJikansu() != null ) {
+						monthlyReportList.get(j).setChoWeekdayNomal(monthlyKintaiInfoList.get(i).getChokinHeijituTujyoJikansu().doubleValue());
 					}
-					if (info.getChoWeekdayNomal() != null) {
-
-						totleChoWeekdayNomal += info.getChoWeekdayNomal();
+					
+					// 超勤休日
+					if (monthlyKintaiInfoList.get(i).getChokinKyujituJikansu() != null ) {
+						monthlyReportList.get(j).setChoHoliday(monthlyKintaiInfoList.get(i).getChokinKyujituJikansu().doubleValue());
 					}
-					if (info.getChoHoliday() != null) {
-
-						totleChoHoliday += info.getChoHoliday();
+					
+					// 超勤深夜
+					if (monthlyKintaiInfoList.get(i).getSinyaKinmuJikansu() != null ) {
+						monthlyReportList.get(j).setmNHours(monthlyKintaiInfoList.get(i).getSinyaKinmuJikansu().doubleValue());
 					}
-					if (info.getmNHours() != null) {
-
-						totleMNHours += info.getmNHours();
-					}
-					break;
+					
+					// ﾛｹｰｼｮﾝコード
+					monthlyReportList.get(j).setLocationCode(monthlyKintaiInfoList.get(i).getLocation().getCode());
+					// ﾛｹｰｼｮﾝ名前
+					monthlyReportList.get(j).setLocationName(monthlyKintaiInfoList.get(i).getLocation().getName());
+					
+					
+					
 				}
+				
+			//  【PJ別作業時間集計】情報を取得
+			BaseCondition projectWorkTImeSelectCondition = new BaseCondition();
+			projectWorkTImeSelectCondition.addConditionEqual("kintaiInfo.id", monthlyKintaiInfoList.get(i).getId());
+			ProjWorkTimeManage projWorkTimeManageInfo = baseDao.findSingleResult(projectWorkTImeSelectCondition, ProjWorkTimeManage.class);
+			projWorkTimeManageList.add(projWorkTimeManageInfo);
 			}
 			
-			if (i + 1 == monthList.size()) {
+		}
+		
+		
+		// 月報承認明細情報合計行作成
+		for (MonthlyReportDispVO itemInfo : monthlyReportList) {
+			
+			if (itemInfo.getRestHours() != null) {
+
+				totleRestHours += itemInfo.getRestHours();
 				
-				// 合計フラグ
-				totleInfo.setTotleFlg(true);
-				if (totleRestHours != 0) {
-					totleInfo.setRestHours(totleRestHours);
-				}
-				if (totleWorkHours != 0) {
-					totleInfo.setWorkHours(totleWorkHours);
-				}
-				if (totleChoWeekday != 0) {
-					totleInfo.setChoWeekday(totleChoWeekday);
-				}
-				if (totleChoWeekdayNomal != 0) {
-					totleInfo.setChoWeekdayNomal(totleChoWeekdayNomal);
-				}
-				if (totleChoHoliday != 0) {
-					totleInfo.setChoHoliday(totleChoHoliday);
-				}
-				if (totleMNHours != 0) {
-					totleInfo.setmNHours(totleMNHours);
-				}
+			}
+			if (itemInfo.getWorkHours() != null) {
+
+				totleWorkHours += itemInfo.getWorkHours();
+				
+			}
+			if (itemInfo.getChoWeekday() != null) {
+
+				totleChoWeekday += itemInfo.getChoWeekday();
+				
+			}
+			if (itemInfo.getChoWeekdayNomal() != null) {
+
+				totleChoWeekdayNomal += itemInfo.getChoWeekdayNomal();
+				
+			}
+			if (itemInfo.getChoHoliday() != null) {
+
+				totleChoHoliday += itemInfo.getChoHoliday();
+				
+			}
+			if (itemInfo.getmNHours() != null) {
+
+				totleMNHours += itemInfo.getmNHours();
+				
 			}
 		}
 		
+		// 合計フラグ
+		totleInfo.setTotleFlg(true);
+		totleInfo.setRestHours(totleRestHours);
+		totleInfo.setWorkHours(totleWorkHours);
+		totleInfo.setChoWeekday(totleChoWeekday);
+		totleInfo.setChoWeekdayNomal(totleChoWeekdayNomal);
+		totleInfo.setChoHoliday(totleChoHoliday);
+		totleInfo.setmNHours(totleMNHours);
 		monthList.add(totleInfo);
 	}
 
+	
 	/**
-	 * 【PJ別作業時間集計】情報を取得
+	 * 月報一覧を取得
 	 * 
-	 * @param userId
-	 * 			ユーザID
-	 * @param date 
-	 * 			日付
-	 * @return
-	 *        プロジェクト情報
+	 * @param date 日付
+	 * 
+	 * @return 月報一覧
 	 */
 	@Override
-	public List<Project> getProjectList(String userId, String date) {
-		// TODO 自動生成されたメソッド・スタブ
-		return monthlyReportDao.getProjectList(userId, date);
+	public List<MonthlyReportDispVO> getMonthyReportList(Date date) {
+		
+		// 月報一覧
+		List<MonthlyReportDispVO> monthyReportList = new ArrayList<MonthlyReportDispVO>();
+		
+		// 日付が空白以外の場合
+		if (date != null) {
+
+			// 月報の詳細
+			MonthlyReportDispVO monReport;
+			
+			// カレンダー変換
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			Integer size = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+			
+			for (int i = 1; i <= size; i++) {
+				
+				// 日付フォーマット
+				SimpleDateFormat sdfYearM = new SimpleDateFormat(YYYYMMDD);
+				monReport = new MonthlyReportDispVO();
+				// 日付を設定
+				monReport.setDay(CostStringUtils.addZeroForNum(String.valueOf(calendar.get(Calendar.DATE)), 2));
+				monReport.setDate(sdfYearM.format(date));
+				// 曜日設
+				switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+					case Calendar.MONDAY:
+						monReport.setWeek("月");
+						break;
+					case Calendar.TUESDAY:
+						monReport.setWeek("火");
+						break;
+					case Calendar.WEDNESDAY:
+						monReport.setWeek("水");
+						break;
+					case Calendar.THURSDAY:
+						monReport.setWeek("木");
+						break;
+					case Calendar.FRIDAY:
+						monReport.setWeek("金");
+						break;
+					case Calendar.SATURDAY:
+						monReport.setWeek("土");
+						break;
+					case Calendar.SUNDAY:
+						monReport.setWeek("日");
+						break;
+					default:
+						break;
+				}
+				
+				// 一覧追加
+				monthyReportList.add(monReport);
+				
+				calendar.add(Calendar.DATE, 1);
+				date = calendar.getTime();
+			}
+		}
+		
+		return monthyReportList;
 	}
+
+	@Override
+	public String getUserLatestShinseiMonth(String userId) {
+		
+		return monthlyReportDao.getUserLatestShinseiMonth(userId);
+	}
+
 
 }

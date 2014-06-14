@@ -1,19 +1,11 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
+
+import javax.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 /**
@@ -27,26 +19,25 @@ public class ApprovalManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="apply_no", unique=true, nullable=false, length=30)
+	@Column(name="apply_no")
 	private String applyNo;
 
-	@Column(name="app_ym", nullable=false, length=6)
-	private String appYm;
+	@Column(name="app_ymd")
+	private String appYmd;
 
-	@Column(name="apply_detail", length=255)
+	@Column(name="apply_detail")
 	private String applyDetail;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id", length=20)
+	@Column(name="created_user_id")
 	private String createdUserId;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id", length=20)
+	@Column(name="updated_user_id")
 	private String updatedUserId;
 
 	//bi-directional many-to-one association to ApplyKbnMaster
@@ -71,14 +62,6 @@ public class ApprovalManage implements Serializable {
 	public ApprovalManage() {
 	}
 
-	public String getApplyDetail() {
-		return this.applyDetail;
-	}
-
-	public void setApplyDetail(String applyDetail) {
-		this.applyDetail = applyDetail;
-	}
-
 	public String getApplyNo() {
 		return this.applyNo;
 	}
@@ -87,12 +70,20 @@ public class ApprovalManage implements Serializable {
 		this.applyNo = applyNo;
 	}
 
-	public String getAppYm() {
-		return this.appYm;
+	public String getAppYmd() {
+		return this.appYmd;
 	}
 
-	public void setAppYm(String appYm) {
-		this.appYm = appYm;
+	public void setAppYmd(String appYmd) {
+		this.appYmd = appYmd;
+	}
+
+	public String getApplyDetail() {
+		return this.applyDetail;
+	}
+
+	public void setApplyDetail(String applyDetail) {
+		this.applyDetail = applyDetail;
 	}
 
 	public Timestamp getCreatedDate() {

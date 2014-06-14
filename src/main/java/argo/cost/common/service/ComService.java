@@ -71,4 +71,14 @@ public interface ComService {
 	 * @return  作業内容リスト
 	 */
 	List<ProjWorkMaster> getWorkItemList();
+	
+	
+	/**
+	 * 氏名プルダウンリスト取得
+	 * 
+	 * @param userId
+	 *              ユーザＩＤ
+	 * @return 氏名プルダウンリスト
+	 */
+	List<ListItemVO> getUserNameList(String userId);
 }

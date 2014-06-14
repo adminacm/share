@@ -1,14 +1,20 @@
-package argo.cost.monthlyReportApproval.model;
+package argo.cost.common.model;
 
 /**
- * 月報承認一覧情報
+ * 月報承認一覧詳細情報
  */
-public class MonthlyReportApprovalVo {
+public class MonthlyReportDispVO {
 	
 	/**
 	 * 日付(表示用)
 	 */
 	private String day;
+	
+	/**
+	 * 日付(処理用)
+	 */
+	private String date;
+	
 
 	/**
 	 * 曜日
@@ -95,9 +101,19 @@ public class MonthlyReportApprovalVo {
 	 */
 	private Boolean totleFlg;
 	
+	
+	
 	//#################################
 	//#################################
 	
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	public String getDay() {
 		return day;
 	}
