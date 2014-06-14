@@ -117,7 +117,13 @@ public class AttendanceInputController extends AbstractController {
 	public String save(AttendanceInputForm form) {
 
 		// 就業データを更新する
-		Integer result = attendanceInputService.updateAttdendanceInfo(form);
+		Integer result = 0;
+		try {
+			result = attendanceInputService.updateAttdendanceInfo(form);
+		} catch (Exception e) {
+			form.putConfirmMsg(e.getMessage());
+			result = 0;
+		}
 		
 		// 更新成功
 		if (1 == result) {

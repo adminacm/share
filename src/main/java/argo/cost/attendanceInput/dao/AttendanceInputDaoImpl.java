@@ -71,7 +71,7 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		q.append("	FROM");
 		q.append("		shift_info");
 		q.append("	WHERE");
-		q.append("	kinmu_flg = 1");
+		q.append("	kinmu_flg = '1'");
 		q.append("	AND");
 		q.append("	shift_code = ?");
 		q.append("	AND");

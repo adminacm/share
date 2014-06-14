@@ -41,7 +41,7 @@ public interface AttendanceInputService {
 	 * 
 	 * @return 更新結果　０：更新失敗　１：更新成功
 	 */
-	Integer updateAttdendanceInfo(AttendanceInputForm form);
+	Integer updateAttdendanceInfo(AttendanceInputForm form) throws Exception;
 	
 	/**
 	 * 各種値算出
