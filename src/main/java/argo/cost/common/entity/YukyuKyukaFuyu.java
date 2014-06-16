@@ -39,7 +39,7 @@ public class YukyuKyukaFuyu implements Serializable {
 	private Integer huyuDays;
 
 	@Column(name="last_year_remained_hours")
-	private float lastYearRemainedHours;
+	private BigDecimal lastYearRemainedHours;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
@@ -81,11 +81,11 @@ public class YukyuKyukaFuyu implements Serializable {
 		this.huyuDays = huyuDays;
 	}
 
-	public float getLastYearRemainedHours() {
+	public BigDecimal getLastYearRemainedHours() {
 		return this.lastYearRemainedHours;
 	}
 
-	public void setLastYearRemainedHours(float lastYearRemainedHours) {
+	public void setLastYearRemainedHours(BigDecimal lastYearRemainedHours) {
 		this.lastYearRemainedHours = lastYearRemainedHours;
 	}
 

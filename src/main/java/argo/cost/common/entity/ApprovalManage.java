@@ -1,11 +1,17 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -24,6 +30,9 @@ public class ApprovalManage implements Serializable {
 
 	@Column(name="app_ymd")
 	private String appYmd;
+
+	@Column(name="item_date")
+	private String itemDate;
 
 	@Column(name="apply_detail")
 	private String applyDetail;
@@ -76,6 +85,14 @@ public class ApprovalManage implements Serializable {
 
 	public void setAppYmd(String appYmd) {
 		this.appYmd = appYmd;
+	}
+	
+	public String getItemDate() {
+		return this.itemDate;
+	}
+
+	public void setItemDate(String itemDate) {
+		this.itemDate = itemDate;
 	}
 
 	public String getApplyDetail() {
