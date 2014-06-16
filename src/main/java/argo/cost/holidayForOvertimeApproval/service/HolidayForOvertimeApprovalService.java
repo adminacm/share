@@ -16,7 +16,7 @@ public interface HolidayForOvertimeApprovalService {
 	 * @return
 	 *        処理状況表示名
 	 */
-	String getStatus(String applyNo);
+	String getStatusName(String applyNo);
 
 	/**
 	 * 超勤振替申請承認画面情報取得

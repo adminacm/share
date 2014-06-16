@@ -50,21 +50,21 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	public String initHolidayForOvertimeApproval(Model model, @RequestParam("applyNo") String applyNo, @RequestParam("backUrl") String backUrl) throws Exception {
 
 		// 超勤振替申請承認情報を取得
-		HolidayForOvertimeApprovalForm holidayForOvertimeApprovalInfo = holidayForOvertimeApprovalService.getHolidayForOvertimeApproval(applyNo);
+		HolidayForOvertimeApprovalForm form = holidayForOvertimeApprovalService.getHolidayForOvertimeApproval(applyNo);
 		
 		//　申請番号を設定
-		holidayForOvertimeApprovalInfo.setApplyNo(applyNo);
+		form.setApplyNo(applyNo);
 		
 		//　戻り用画面URL
-		holidayForOvertimeApprovalInfo.setBackUrl(backUrl);
+		form.setBackUrl(backUrl);
 		
 		// 処理状況を取得
-		String status = holidayForOvertimeApprovalService.getStatus(applyNo);
+		String status = holidayForOvertimeApprovalService.getStatusName(applyNo);
 		
 		// 処理状況設定
-		holidayForOvertimeApprovalInfo.setProStatus(status);
+		form.setProStatus(status);
 		
-		model.addAttribute(holidayForOvertimeApprovalInfo);
+		model.addAttribute(form);
 
 		return HOLIDAYFOROVERTIME_APPROVAL;
 	}

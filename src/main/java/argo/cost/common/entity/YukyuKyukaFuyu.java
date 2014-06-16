@@ -1,6 +1,7 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ public class YukyuKyukaFuyu implements Serializable {
 	private Integer id;
 
 	@Column(name="fuyu_all_hours")
-	private Integer fuyuAllHours;
+	private BigDecimal fuyuAllHours;
 
 	@Column(name="fuyu_year", length=4)
 	private String fuyuYear;
@@ -56,11 +57,11 @@ public class YukyuKyukaFuyu implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getFuyuAllHours() {
+	public BigDecimal getFuyuAllHours() {
 		return this.fuyuAllHours;
 	}
 
-	public void setFuyuAllHours(Integer fuyuAllHours) {
+	public void setFuyuAllHours(BigDecimal fuyuAllHours) {
 		this.fuyuAllHours = fuyuAllHours;
 	}
 

@@ -122,7 +122,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 			// 所属名
 			approvalInfo.setAffiliationName(approvalManageInfo.getUser().getAffiliationMaster().getName());
 			// 氏名		
-			approvalInfo.setUserName(approvalManageInfo.getUser().getId());
+			approvalInfo.setUserName(approvalManageInfo.getUser().getUserName());
 			
 			approvalList.add(approvalInfo);
 		}
