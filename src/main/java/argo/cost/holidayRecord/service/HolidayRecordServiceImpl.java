@@ -84,69 +84,72 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		condition.addConditionEqual("users.id", userId);
 		// 日付
 		condition.addConditionLike("kyukaDate", yearPeriod + "%");
-		// 休暇欠勤区分に「欠勤」をセット
-		condition.addConditionEqual("kyukaKekinKbnMaster.code", CommonConstant.KK_KBN_KEKIN);
+		// 休暇欠勤区分に「有給休暇」をセット
+		String[] vals = {CommonConstant.KK_KBN_ZENKYU, CommonConstant.KK_KBN_HANKYU, CommonConstant.KK_KBN_JIKANKYU};
+		condition.addConditionIn("kyukaKekinKbnMaster.code", vals);
 		
 		// 有給休暇情報取得
-		List<KyukaKekin> KyukaList = baseDao.findResultList(condition, KyukaKekin.class);
+		List<KyukaKekin> kyukaList = baseDao.findResultList(condition, KyukaKekin.class);
 
 		// 画面の有給休暇一覧
 		List<PayHolidayVO> payHolidayList = new ArrayList<PayHolidayVO>();
 		PayHolidayVO payHolidayInfo = null;
 
+		if (kyukaList.size() > 0) {
 		
-		for (KyukaKekin kyukaInfo : KyukaList) {
+			for (KyukaKekin kyukaInfo : kyukaList) {
+				
+				payHolidayInfo = new PayHolidayVO();
+				//　日付
+				payHolidayInfo.setPayHolidayDate(CostDateUtils.formatDate(kyukaInfo.getKyukaDate(), CommonConstant.YYYY_MM_DD));
+				// 休暇欠勤区分コード
+				payHolidayInfo.setHolidayKbnCode(kyukaInfo.getKyukaKekinKbnMaster().getCode());
+				//　時間数
+				payHolidayInfo.setHourQuantity(kyukaInfo.getKyukaJikansu().toString());
+				// 休暇欠勤区分名称
+				payHolidayInfo.setHolidayKbnName(kyukaInfo.getKyukaKekinKbnMaster().getName());
+				
+				if (CommonConstant.KK_KBN_ZENKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
+	
+					// 日数
+					payHolidayInfo.setDayQuantity("1.0");
+					// 時間数
+					payHolidayInfo.setHourQuantity(null);
+				} else if (CommonConstant.KK_KBN_HANKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
+	
+					// 日数
+					payHolidayInfo.setDayQuantity("0.5");
+					// 時間数
+					payHolidayInfo.setHourQuantity(null);
+				} 
+	
+				// 日数がnull以外の場合
+				if (payHolidayInfo.getDayQuantity() != null) {
+	
+					totleDayQuantity += Double.valueOf(payHolidayInfo.getDayQuantity());
+				}
+				
+				// 時間数がnull以外の場合
+				if (payHolidayInfo.getHourQuantity() != null) {
+					totleTimeQuantity += Double.valueOf(payHolidayInfo.getHourQuantity());
+				}
+				
+				payHolidayList.add(payHolidayInfo);
+			}
 			
+			// 合計行
 			payHolidayInfo = new PayHolidayVO();
-			//　日付
-			payHolidayInfo.setPayHolidayDate(CostDateUtils.formatDate(kyukaInfo.getKyukaDate(), CommonConstant.YYYY_MM_DD));
-			// 休暇欠勤区分コード
-			payHolidayInfo.setHolidayKbnCode(kyukaInfo.getKyukaKekinKbnMaster().getCode());
-			//　時間数
-			payHolidayInfo.setHourQuantity(kyukaInfo.getKyukaJikansu().toString());
-			// 休暇欠勤区分名称
-			payHolidayInfo.setHolidayKbnName(kyukaInfo.getKyukaKekinKbnMaster().getName());
-			
-			if (CommonConstant.KK_KBN_ZENKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
-
-				// 日数
-				payHolidayInfo.setDayQuantity("1.0");
-				// 時間数
-				payHolidayInfo.setHourQuantity(null);
-			} else if (CommonConstant.KK_KBN_HANKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
-
-				// 日数
-				payHolidayInfo.setDayQuantity("0.5");
-				// 時間数
-				payHolidayInfo.setHourQuantity(null);
-			} 
-
-			// 日数がnull以外の場合
-			if (payHolidayInfo.getDayQuantity() != null) {
-
-				totleDayQuantity += Double.valueOf(payHolidayInfo.getDayQuantity());
+			payHolidayInfo.setPayHolidayDate("累計");
+			// 日数
+			if (totleDayQuantity != 0) {
+				payHolidayInfo.setDayQuantity(totleDayQuantity.toString() + "日");
 			}
-			
-			// 時間数がnull以外の場合
-			if (payHolidayInfo.getHourQuantity() != null) {
-				totleTimeQuantity += Double.valueOf(payHolidayInfo.getHourQuantity());
+			// 時間数
+			if (totleTimeQuantity != 0) {
+				payHolidayInfo.setHourQuantity(totleTimeQuantity.toString() + "時間");
 			}
-			
 			payHolidayList.add(payHolidayInfo);
 		}
-		
-		// 合計行
-		payHolidayInfo = new PayHolidayVO();
-		payHolidayInfo.setPayHolidayDate("累計");
-		// 日数
-		if (totleDayQuantity != 0) {
-			payHolidayInfo.setDayQuantity(totleDayQuantity.toString() + "日");
-		}
-		// 時間数
-		if (totleTimeQuantity != 0) {
-			payHolidayInfo.setHourQuantity(totleTimeQuantity.toString() + "時間");
-		}
-		payHolidayList.add(payHolidayInfo);
 
 		return payHolidayList;
 	}
@@ -228,7 +231,8 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 			}
 			absenceList.add(absenceInfo);
 		}
-		return null;
+		
+		return absenceList;
 	}
 	/**
 	 * 特別休暇一覧取得

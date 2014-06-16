@@ -32,7 +32,7 @@ public class HolidayForOvertimeApprovalTest {
 		String applyNo = "user01120140300";
 		
 		// 処理状況表示名
-		String status = holidayForOvertimeApprovalServiceImpl.getStatus(applyNo);
+		String status = holidayForOvertimeApprovalServiceImpl.getStatusName(applyNo);
 		
 		assertEquals(status, "提出");
 	}

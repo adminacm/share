@@ -43,7 +43,7 @@ public class AttendanceOnHolidayRecordTest {
 
 		// 社員番号
 		Users users = new Users();
-		users.setId("4002");
+		users.setId("4001");
 		// 勤務日区分コード
 		WorkDayKbnMaster workDayKbnMaster = new WorkDayKbnMaster();
 		workDayKbnMaster.setCode("03");
@@ -59,6 +59,8 @@ public class AttendanceOnHolidayRecordTest {
 		yoteiInfo1.setUser(users);
 		// プロジェクトコード
 		yoteiInfo1.setProjectMaster(projectMaster);
+		// 業務内容
+		yoteiInfo1.setCommont("トラブル対応");
 		// 予定出勤休日日付
 		yoteiInfo1.setAtendanceBookDate("20140601");
 		//勤務開始時刻
@@ -72,6 +74,7 @@ public class AttendanceOnHolidayRecordTest {
 		yoteiInfo2.setWorkDayKbnMaster(workDayKbnMaster);
 		yoteiInfo2.setUser(users);
 		yoteiInfo2.setProjectMaster(projectMaster);
+		yoteiInfo2.setCommont("トラブル対応");
 		yoteiInfo2.setAtendanceBookDate("20140501");
 		yoteiInfo2.setKinmuStartTime("0900");
 		yoteiInfo2.setKinmuEndTime("1730");
@@ -112,7 +115,7 @@ public class AttendanceOnHolidayRecordTest {
 		// 年度
 		form.setYearPeriod("2014");
 		// 氏名
-		form.setUserName("4002");
+		form.setUserName("4001");
 		
 		try {
 			serviceImpl.setAttendanceOnHolidayRecordInfo(form);

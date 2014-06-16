@@ -68,7 +68,7 @@ public class HolidayRecordTest {
 		Users users3 = new Users();
 		users3.setId("4001");
 		kyukaInfo3.setUsers(users3);
-		kyukaInfo3.setKyukaDate("20140305");
+		kyukaInfo3.setKyukaDate("20140518");
 		KyukaKekinKbnMaster kyukaKekinKbnMaster3 = new KyukaKekinKbnMaster();
 		kyukaKekinKbnMaster3.setCode("03");
 		kyukaInfo3.setKyukaKekinKbnMaster(kyukaKekinKbnMaster3);

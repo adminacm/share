@@ -82,7 +82,7 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 
 		strSql.append("SELECT                                              ");
 		strSql.append(" 	t1.apply_no          AS applyNo                ");
-		strSql.append(" 	, t1.app_ym          AS appYm                  ");
+		strSql.append(" 	, t1.app_ymd         AS appYmd                 ");
 		strSql.append(" 	, t4.affiliationName AS affiliationName        ");
 		strSql.append(" 	, t1.user_id         AS userId                 ");
 		strSql.append(" 	, t4.userName        AS userName               ");
@@ -106,7 +106,7 @@ public class MonthlyReportStatusListDaoImpl implements MonthlyReportStatusListDa
 		strSql.append(" 	 	 WHERE t5.shozoku_id = t6.code) t4         ");
 		strSql.append(" 	ON t1.user_id = t4.userId                      ");
 		strSql.append("WHERE                                               ");
-		strSql.append(" 	substr(t1.app_ym, 0, 7) = ?                    ");
+		strSql.append(" 	substr(t1.app_ymd, 0, 7) = ?                   ");
 		strSql.append(" AND t1.apply_status_code = ?                       ");
 		strSql.append("ORDER BY                                            ");
 		strSql.append(" 	applyNo                                        ");

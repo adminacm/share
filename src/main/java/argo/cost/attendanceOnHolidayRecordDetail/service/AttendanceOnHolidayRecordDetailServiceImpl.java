@@ -161,20 +161,22 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 
 		HolidayAtendanceYotei holidayAtendanceInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 
-		//　日付
-		form.setDate(CostDateUtils.formatDate(holidayAtendanceInfo.getAtendanceBookDate(), CommonConstant.YYYY_MM_DD));
-		// 勤務区分名
-		form.setWorkKbnName(holidayAtendanceInfo.getWorkDayKbnMaster().getName());
-		// 勤務開始時間
-		form.setWorkStartTime(CostDateUtils.formatTime(holidayAtendanceInfo.getKinmuStartTime()));
-		// 勤務終了時間
-		form.setWorkEndTime(CostDateUtils.formatTime(holidayAtendanceInfo.getKinmuEndTime()));
-		// 振替日
-		form.setExchangeDate(CostDateUtils.formatDate(holidayAtendanceInfo.getFurikaeDate(), CommonConstant.YYYY_MM_DD));
-		// プロジェクト名
-		form.setProjectName(holidayAtendanceInfo.getProjectMaster().getName());
-		// 業務内容
-		form.setWorkDetail(holidayAtendanceInfo.getCommont());
+		if (holidayAtendanceInfo != null) {
+			//　日付
+			form.setDate(CostDateUtils.formatDate(holidayAtendanceInfo.getAtendanceBookDate(), CommonConstant.YYYY_MM_DD));
+			// 勤務区分名
+			form.setWorkKbnName(holidayAtendanceInfo.getWorkDayKbnMaster().getName());
+			// 勤務開始時間
+			form.setWorkStartTime(CostDateUtils.formatTime(holidayAtendanceInfo.getKinmuStartTime()));
+			// 勤務終了時間
+			form.setWorkEndTime(CostDateUtils.formatTime(holidayAtendanceInfo.getKinmuEndTime()));
+			// 振替日
+			form.setExchangeDate(CostDateUtils.formatDate(holidayAtendanceInfo.getFurikaeDate(), CommonConstant.YYYY_MM_DD));
+			// プロジェクト名
+			form.setProjectName(holidayAtendanceInfo.getProjectMaster().getName());
+			// 業務内容
+			form.setWorkDetail(holidayAtendanceInfo.getCommont());
+		}
 		return form;
 	}
 }
