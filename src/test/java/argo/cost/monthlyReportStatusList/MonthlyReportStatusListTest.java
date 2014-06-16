@@ -118,7 +118,7 @@ public class MonthlyReportStatusListTest {
 	public void testGetStatusList(){
 		
 		// 状況プルダウンリスト取得
-		List<ListItemVO> affiliationList = serviceImpl.getAffiliationList();
+		List<ListItemVO> affiliationList = serviceImpl.getStatusList();
 		
 		// 状況プルダウンリストのサイズ
 		assertEquals(affiliationList.size(), 6);
@@ -185,7 +185,7 @@ public class MonthlyReportStatusListTest {
 		approvalInfo4.setStatusMaster(statusInfo4);
 		approvalInfo4.setApplyDetail("2014年5月分");
 		ApplyKbnMaster applyKbn4 = new ApplyKbnMaster();
-		applyKbn4.setCode("1");
+		applyKbn4.setCode("2");
 		approvalInfo4.setApplyKbnMaster(applyKbn4);
 		Users user4 = new Users();
 		user4.setId("4004");
