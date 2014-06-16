@@ -76,6 +76,30 @@ public class MessageConstants {
 	 */
 	public static final String COSE_E_016 = "有給休暇の取得限度を超えています";
 	/**
+	 *　｛0｝には日付を入力してください
+	 */
+	public static final String COSE_E_017 = "｛0｝には日付を入力してください";
+	/**
+	 *　｛0｝が当日の日付です
+	 */
+	public static final String COSE_E_018 = "｛0｝が当日の日付です";
+	/**
+	 *　休日振替勤務以外のときは振替休日は入力できません
+	 */
+	public static final String COSE_E_019 = "休日振替勤務以外のときは振替休日は入力できません";
+	/**
+	 *　｛0｝が入力範囲を超えています
+	 */
+	public static final String COSE_E_020 = "｛0｝が入力範囲を超えています";
+	/**
+	 *　｛0｝を選択してください
+	 */
+	public static final String COSE_E_021 = "｛0｝を選択してください";
+	/**
+	 *　｛0｝の値が不正です
+	 */
+	public static final String COSE_E_022 = "｛0｝の値が不正です";
+	/**
 	 *　有給休暇が余分に取得されています
 	 */
 	public static final String COSE_W_1101 = "有給休暇が余分に取得されています";

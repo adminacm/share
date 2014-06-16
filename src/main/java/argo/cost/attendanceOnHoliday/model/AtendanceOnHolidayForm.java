@@ -3,8 +3,6 @@ package argo.cost.attendanceOnHoliday.model;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.model.AbstractForm;
@@ -37,7 +35,6 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 	/**
 	 *　勤務日区分
 	 */
-	@NotBlank(message = "勤務日区分を選択してください")
 	private String selectedAtendanceDayKbn;
 	/**
 	 *　勤務開始時間

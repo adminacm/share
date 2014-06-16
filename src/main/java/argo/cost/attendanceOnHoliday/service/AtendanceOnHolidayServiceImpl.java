@@ -1,5 +1,6 @@
 package argo.cost.attendanceOnHoliday.service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -11,7 +12,6 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.HolidayAtendanceYotei;
-import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
@@ -59,13 +59,13 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			throws ParseException {
 		
 		// 当前の日付を検索条件として、DBの休日勤務情報有無をチェックする		
-		BaseCondition selectCurrentDateAtendanceYumuCondition = new BaseCondition();
+		BaseCondition condition = new BaseCondition();
 		// 検索条件：休日勤務の日付
-		selectCurrentDateAtendanceYumuCondition.addConditionEqual("atendanceBookDate", currentDate);
+		condition.addConditionEqual("atendanceBookDate", currentDate);
 		// 検索条件：社員ID
-		selectCurrentDateAtendanceYumuCondition.addConditionEqual("users.id", atendanceOnHolidayForm.getUserId());
+		condition.addConditionEqual("users.id", atendanceOnHolidayForm.getUserId());
 			
-		HolidayAtendanceYotei holidayAtendanceYoteiResultinfo = baseDao.findSingleResult(selectCurrentDateAtendanceYumuCondition, HolidayAtendanceYotei.class);
+		HolidayAtendanceYotei holidayAtendanceYoteiResultinfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		// 勤務日区分リストの設定
 		atendanceOnHolidayForm.setAtendanceDayKbnList(baseDao.findAll(WorkDayKbnMaster.class));
 		// プロジェクトリストの設定
@@ -88,9 +88,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			atendanceOnHolidayForm.setSelectedProjCd(holidayAtendanceYoteiResultinfo.getProjectMaster().getCode());
 			// 業務内容
 			atendanceOnHolidayForm.setStrCommont(holidayAtendanceYoteiResultinfo.getCommont());
-			}
-
-
+		}
 		// 休日勤務日付格式の設定
 		String attDate = CostDateUtils.formatDate(currentDate, CommonConstant.YYYYMMDD_KANJI);
 		String weekday = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(currentDate));
@@ -112,38 +110,59 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	@Override 
 	public String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday) {
 		
-	   HolidayAtendanceYotei holidayAtendanceYoteiEntity = new HolidayAtendanceYotei();
+		// 当前の日付を検索条件として、DBの休日勤務情報有無をチェックする		
+		BaseCondition condition = new BaseCondition();
+		String userId = atendanceOnHoliday.getUserId();
+			
+		// 検索条件：休日勤務の日付
+		condition.addConditionEqual("atendanceBookDate", atendanceOnHoliday.getStrAtendanceDate().replaceAll("/", ""));
+		// 検索条件：社員ID
+		condition.addConditionEqual("users.id", userId);
+			
+		HolidayAtendanceYotei entity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		
-	   String userId = atendanceOnHoliday.getUserId();
-		
+		// 更新フラグ
+		boolean flag = true;
+		// データが存在しない場合
+		if (entity == null) {
+			flag = false;
+			// 休日勤務情報を追加する
+			entity = new HolidayAtendanceYotei();
+			entity.setCreatedUserId(userId);               // 登録者
+			entity.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
+		}
 		// 勤務日の区分
-	   WorkDayKbnMaster workDayKbnMaster = new WorkDayKbnMaster();
-	   workDayKbnMaster.setCode(atendanceOnHoliday.getSelectedAtendanceDayKbn());
-		holidayAtendanceYoteiEntity.setWorkDayKbnMaster(workDayKbnMaster);
+		WorkDayKbnMaster workDayKbnMaster = baseDao.findById(atendanceOnHoliday.getSelectedAtendanceDayKbn(), WorkDayKbnMaster.class);
+		entity.setWorkDayKbnMaster(workDayKbnMaster);
 		// 社員番号:ユーザーIDを設定される
-		holidayAtendanceYoteiEntity.setUser(baseDao.findById(userId, Users.class));
+		entity.setUser(baseDao.findById(userId, Users.class));
 		// プロジェクト名
-		ProjectMaster projMaster = new ProjectMaster();
-		projMaster.setCode(atendanceOnHoliday.getSelectedProjCd());
-		holidayAtendanceYoteiEntity.setProjectMaster(projMaster);
+		ProjectMaster projMaster = baseDao.findById(atendanceOnHoliday.getSelectedProjCd(), ProjectMaster.class);
+		entity.setProjectMaster(projMaster);
 		// 休日勤務予定日格式を変更して、設定される
-		holidayAtendanceYoteiEntity.setAtendanceBookDate(atendanceOnHoliday.getStrAtendanceDate().replace("/", ""));
+		entity.setAtendanceBookDate(atendanceOnHoliday.getStrAtendanceDate().replace("/", ""));
 		// 勤務開始時間
-		holidayAtendanceYoteiEntity.setKinmuStartTime(atendanceOnHoliday.getStrAtendanceTimeStat());
+		entity.setKinmuStartTime(atendanceOnHoliday.getStrAtendanceTimeStat());
 		// 勤務終了時間
-		holidayAtendanceYoteiEntity	.setKinmuEndTime(atendanceOnHoliday.getStrAtendanceTimeEnd());
+		entity.setKinmuEndTime(atendanceOnHoliday.getStrAtendanceTimeEnd());
 		// 振替日
-		holidayAtendanceYoteiEntity.setFurikaeDate(atendanceOnHoliday.getStrHurikaeDate().replace("/", ""));
+		entity.setFurikaeDate(atendanceOnHoliday.getStrHurikaeDate().replace("/", ""));
 		// 業務内容
-		holidayAtendanceYoteiEntity.setCommont(atendanceOnHoliday.getStrCommont());
+		entity.setCommont(atendanceOnHoliday.getStrCommont());
+		entity.setUpdatedUserId(userId);               // 更新者
+		entity.setUpdateDate(new Timestamp(System.currentTimeMillis())); // 更新時刻
 		
-		String strHolidayAtendanceSaveFlg = "0";
+		String strHolidayAtendanceSaveFlg = "1";
 		try {
-			baseDao.insert(holidayAtendanceYoteiEntity);
-			strHolidayAtendanceSaveFlg = "1";
+			// 更新の場合
+			if (flag) {
+				baseDao.update(entity);
+			} else {
+				baseDao.insert(entity);
+			}
 		} catch (Exception e ) {
 			strHolidayAtendanceSaveFlg = "0";
-			System.out.print("休日勤務入力データ登録失敗しました！");
+			atendanceOnHoliday.putConfirmMsg("休日勤務入力データ登録失敗しました！");
 		}
 		
 		return strHolidayAtendanceSaveFlg;
@@ -163,38 +182,16 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	@Override
 	public Integer deleteAtendanceOnHoliday(String strAtendanceDate, String userID) {
 
-		Integer  intDeleteKyujitukimuInfoFlg = 0;
-		
 		// 当前の日付の休日勤務予定情報を削除する
 		BaseCondition deleteAtendanceOnHolidayCondition = new BaseCondition();
 		// 検索条件：休日勤務の日付
 		deleteAtendanceOnHolidayCondition.addConditionEqual("atendanceBookDate", strAtendanceDate.replace("/", ""));
 		// 検索条件：社員ID
 		deleteAtendanceOnHolidayCondition.addConditionEqual("users.id", userID);
-		int deleteResult = baseDao.deleteByCondition(deleteAtendanceOnHolidayCondition, HolidayAtendanceYotei.class);
-		// 削除結果を戻す
-		if (deleteResult != 0) {
-			intDeleteKyujitukimuInfoFlg = 1;
-		} 
+		Integer deleteResult = baseDao.deleteByCondition(deleteAtendanceOnHolidayCondition, HolidayAtendanceYotei.class);
 		
-		return intDeleteKyujitukimuInfoFlg;
+		return deleteResult;
 
-	}
-
-	/**
-	 * プロジェクト作業区分リスト取得処理
-	 * 
-	 *            
-	 * @return　projectWorkKbnList
-	 *            プロジェクト作業区分リスト
-	 */
-	@Override
-	public ArrayList<ProjWorkMaster> getProjectWorkKbnList() {
-		
-		// データベースからプロジェクト作業区分リストを検索する		
-		ArrayList<ProjWorkMaster> projectWorkKbnList = (ArrayList<ProjWorkMaster>) baseDao.findAll(ProjWorkMaster.class);
-						
-		return projectWorkKbnList;
 	}
 
 }

@@ -116,6 +116,7 @@ public class AttendanceInputController extends AbstractController {
 	@RequestMapping(SAVE)
 	public String save(AttendanceInputForm form) {
 
+		form.clearMessages();
 		// 就業データを更新する
 		Integer result = 0;
 		try {
@@ -152,7 +153,7 @@ public class AttendanceInputController extends AbstractController {
 
 			return REDIRECT + UrlConstant.URL_MENU + INIT;
 		} else {
-			return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + EQUAL_SIGN;
+			return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth" + EQUAL_SIGN;
 		}
 	}
 
