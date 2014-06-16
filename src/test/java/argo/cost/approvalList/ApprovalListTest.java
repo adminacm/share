@@ -43,43 +43,22 @@ public class ApprovalListTest {
 	@Test
 	public void testGetStatusList(){
 		
-		// テストデータ
-		StatusMaster statusInfo1 = new StatusMaster();
-		statusInfo1.setCode("01");
-		statusInfo1.setName("作成中");
-
-		StatusMaster statusInfo2 = new StatusMaster();
-		statusInfo2.setCode("02");
-		statusInfo2.setName("提出");
-
-		StatusMaster statusInfo3 = new StatusMaster();
-		statusInfo3.setCode("03");
-		statusInfo3.setName("承認");
-		
-		StatusMaster statusInfo4 = new StatusMaster();
-		statusInfo4.setCode("04");
-		statusInfo4.setName("差戻");
-		
-		StatusMaster statusInfo5 = new StatusMaster();
-		statusInfo5.setCode("05");
-		statusInfo5.setName("処理済");
-		
 		// 状況プルダウンリスト取得
 		List<ListItemVO> resultList = serviceImpl.getStatusList();
 
 		assertEquals(resultList.size(), 6);
 		assertEquals(resultList.get(0).getValue(), "");
 		assertEquals(resultList.get(0).getName(), "すべて");
-		assertEquals(resultList.get(1).getValue(), statusInfo1.getCode());
-		assertEquals(resultList.get(1).getName(), statusInfo1.getName());
-		assertEquals(resultList.get(2).getValue(), statusInfo2.getCode());
-		assertEquals(resultList.get(2).getName(), statusInfo2.getName());
-		assertEquals(resultList.get(3).getValue(), statusInfo3.getCode());
-		assertEquals(resultList.get(3).getName(), statusInfo3.getName());
-		assertEquals(resultList.get(4).getValue(), statusInfo4.getCode());
-		assertEquals(resultList.get(4).getName(), statusInfo4.getName());
-		assertEquals(resultList.get(5).getValue(), statusInfo5.getCode());
-		assertEquals(resultList.get(5).getName(), statusInfo5.getName());
+		assertEquals(resultList.get(1).getValue(), "01");
+		assertEquals(resultList.get(1).getName(), "作成中");
+		assertEquals(resultList.get(2).getValue(), "02");
+		assertEquals(resultList.get(2).getName(), "提出");
+		assertEquals(resultList.get(3).getValue(), "03");
+		assertEquals(resultList.get(3).getName(), "承認");
+		assertEquals(resultList.get(4).getValue(), "04");
+		assertEquals(resultList.get(4).getName(), "差戻");
+		assertEquals(resultList.get(5).getValue(), "05");
+		assertEquals(resultList.get(5).getName(), "処理済");
 	}
 	
 	/**
@@ -158,6 +137,12 @@ public class ApprovalListTest {
 		user5.setId("4005");
 		approvalInfo5.setUser(user5);
 		approvalInfo5.setAppYmd("20140600");
+		
+		baseDao.deleteById(approvalInfo1.getApplyNo(), ApprovalManage.class);
+		baseDao.deleteById(approvalInfo2.getApplyNo(), ApprovalManage.class);
+		baseDao.deleteById(approvalInfo3.getApplyNo(), ApprovalManage.class);
+		baseDao.deleteById(approvalInfo4.getApplyNo(), ApprovalManage.class);
+		baseDao.deleteById(approvalInfo5.getApplyNo(), ApprovalManage.class);
 		
 		baseDao.insert(approvalInfo1);
 		baseDao.insert(approvalInfo2);
