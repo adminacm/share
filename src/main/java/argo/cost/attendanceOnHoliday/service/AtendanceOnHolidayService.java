@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
-import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.WorkDayKbnMaster;
 
 /**
@@ -33,15 +32,6 @@ public interface AtendanceOnHolidayService {
 	 */
 	ArrayList<WorkDayKbnMaster> getAtendanceDayKbnList();
 	
-	
-	/**
-	 * プロジェクト名プルダウンリストを取得
-	 * 
-	 * @return　　プロジェクトリスト
-	 *            
-	 */
-	ArrayList<ProjWorkMaster> getProjectWorkKbnList();
-
 	/**
 	 * 休日勤務データ保存
 	 * 

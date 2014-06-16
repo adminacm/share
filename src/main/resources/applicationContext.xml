@@ -47,6 +47,7 @@
     <beans profile="prod">
         <bean class="java.net.URI" id="dbUrl">
             <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
+            <!-- <constructor-arg value="postgres://root:root@192.168.0.163:5432/postgres"></constructor-arg> -->
         </bean>
 
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -69,6 +70,17 @@
                 </props>
             </property>
         </bean>
+        <bean id="attInputchecker" class="argo.cost.attendanceInput.checker.AttendanceInputChecker">
+        	<property name="baseDao" ref="baseDao"></property>
+        	<property name="attendanceInputDao" ref="attendanceInputDao"></property>
+        </bean>
+        <bean id="baseDao" class="argo.cost.common.dao.BaseDaoImpl" autowire="byName"></bean>
+        <bean id="attendanceInputDao" class="argo.cost.attendanceInput.dao.AttendanceInputDaoImpl" autowire="byName"></bean>
+        <bean id="atendanceOnHolidayChecker" class="argo.cost.attendanceOnHoliday.checker.AtendanceOnHolidayChecker">
+        	<property name="baseDao" ref="baseDao"></property>
+        	<property name="atendanceOnHolidayDao" ref="atendanceOnHolidayDao"></property>
+        </bean>
+        <bean id="atendanceOnHolidayDao" class="argo.cost.attendanceOnHoliday.dao.AtendanceOnHolidayDaoImpl" autowire="byName"></bean>
     </beans>
     
 

@@ -113,11 +113,11 @@ function submitAction(action) {
 					</tr>
 					<tr>
 						<td align="left" width="150px">休日勤務区分</td>
-						<td align="left" width="150px">休日振替勤務</td>
+						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.kinmuKbnName}</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">勤務時間</td>
-						<td align="left" width="150px">${attendanceInputForm.workSTime}～${attendanceInputForm.workETime}</td>
+						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.kinmuStartTime}～${attendanceInputForm.holidayAttendance.kinmuEndTime}</td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">振替日</td>

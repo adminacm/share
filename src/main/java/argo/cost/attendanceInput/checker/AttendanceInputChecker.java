@@ -1,6 +1,7 @@
 package argo.cost.attendanceInput.checker;
 
 import java.text.ParseException;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -350,13 +351,16 @@ public class AttendanceInputChecker {
 		// 勤務区分"01"(出勤)or"03"(休日振替勤務)で
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, kinmuKbn)
 				|| StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, kinmuKbn)) {
-			// 定時時間帯の勤務が足りない場合
-			if (shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
-					|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0) {
-				// は休暇が入力されているか
-				if (StringUtils.isEmpty(kyukaKbn)) {
-					// 定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください
-					form.putConfirmMsg(MessageConstants.COSE_E_011);
+			if (StringUtils.isNotEmpty(form.getWorkSTimeStr())
+					&& StringUtils.isNotEmpty(form.getWorkETimeStr())) {
+				// 定時時間帯の勤務が足りない場合
+				if (shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
+						|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0) {
+					// は休暇が入力されているか
+					if (StringUtils.isEmpty(kyukaKbn)) {
+						// 定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください
+						form.putConfirmMsg(MessageConstants.COSE_E_011);
+					}
 				}
 			}
 		}
@@ -386,20 +390,24 @@ public class AttendanceInputChecker {
 		// 勤務区分"01"(出勤)or"03"(休日振替勤務)で
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, kinmuKbn)
 				|| StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, kinmuKbn)) {
-			// 定時時間帯の勤務が足りない場合
-			if (shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
-					|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0) {
-				// 休暇欠勤区分"02"(半休(有給休暇))で
-				if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, kyukaKbn)) {
-					// 午前も午後も勤務が欠けていたらエラー
-					// 勤務開始時刻が定時出勤時刻より後かつ勤務終了時刻が定時退勤時刻より前、
-					// または勤務終了時刻が午前終了時刻より前、または勤務開始時刻が午後開始時刻より後
-					if ((shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
-							&& form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0)
-							|| form.getWorkETimeStr().compareTo(shift.getAmETimeStr()) < 0
-							|| shift.getFmSTimeStr().compareTo(form.getWorkSTimeStr()) < 0) {
-						// 正しい休暇区分を入力してください
-						form.putConfirmMsg(MessageConstants.COSE_E_012, new String[] {KYUKA_KBN});
+			
+			if (StringUtils.isNotEmpty(form.getWorkSTimeStr())
+					&& StringUtils.isNotEmpty(form.getWorkETimeStr())) {
+				// 定時時間帯の勤務が足りない場合
+				if (shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
+						|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0) {
+					// 休暇欠勤区分"02"(半休(有給休暇))で
+					if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, kyukaKbn)) {
+						// 午前も午後も勤務が欠けていたらエラー
+						// 勤務開始時刻が定時出勤時刻より後かつ勤務終了時刻が定時退勤時刻より前、
+						// または勤務終了時刻が午前終了時刻より前、または勤務開始時刻が午後開始時刻より後
+						if ((shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
+								&& form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0)
+								|| form.getWorkETimeStr().compareTo(shift.getAmETimeStr()) < 0
+								|| shift.getFmSTimeStr().compareTo(form.getWorkSTimeStr()) < 0) {
+							// 正しい休暇区分を入力してください
+							form.putConfirmMsg(MessageConstants.COSE_E_012, new String[] {KYUKA_KBN});
+						}
 					}
 				}
 			}
@@ -427,13 +435,17 @@ public class AttendanceInputChecker {
 		// 勤務区分"01"(出勤)or"03"(休日振替勤務)で
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, kinmuKbn)
 				|| StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, kinmuKbn)) {
-			// 勤務開始時刻が定時出勤時刻、勤務終了時刻が定時退勤時刻以降
-			if (form.getWorkSTimeStr().compareTo(shift.getStartTimeStr()) == 0
-					&& shift.getEndTimeStr().compareTo(form.getWorkETimeStr()) <= 0) {
-				// 休暇欠勤区分が入力されている
-				if (StringUtils.isNotEmpty(kyukaKbn)) {
-					// 休暇欠勤区分が入力されています
-					form.putConfirmMsg(MessageConstants.COSE_E_013);
+			
+			if (StringUtils.isNotEmpty(form.getWorkSTimeStr())
+					&& StringUtils.isNotEmpty(form.getWorkETimeStr())) {
+				// 勤務開始時刻が定時出勤時刻、勤務終了時刻が定時退勤時刻以降
+				if (form.getWorkSTimeStr().compareTo(shift.getStartTimeStr()) == 0
+						&& shift.getEndTimeStr().compareTo(form.getWorkETimeStr()) <= 0) {
+					// 休暇欠勤区分が入力されている
+					if (StringUtils.isNotEmpty(kyukaKbn)) {
+						// 休暇欠勤区分が入力されています
+						form.putConfirmMsg(MessageConstants.COSE_E_013);
+					}
 				}
 			}
 		}
@@ -543,14 +555,15 @@ public class AttendanceInputChecker {
 		if (StringUtils.equals(CommonConstant.KK_KBN_TAIKYU, form.getKyukaKb())) {
 			// 休日勤務管理から代休取得期限が対象日以前で代休日がNULLのレコードを取得
 			BaseCondition condition = new BaseCondition();
+			condition.addConditionEqual("users.id", form.getUserId());          // 社員番号
 			// 代休取得期限
 			condition.addConditionGreaterEqualThan("daikyuGetShimekiriDate", form.getAttDate());
 			// 代休日がNULL
 			condition.addConditionIsNull("daikyuDate");
 			// 休日勤務管理情報を取得
-			HolidayAtendance entity = baseDao.findSingleResult(condition, HolidayAtendance.class);
+			List<HolidayAtendance> entity = baseDao.findResultList(condition, HolidayAtendance.class);
 			// 代休情報を取得されない
-			if (entity == null) {
+			if (entity == null || entity.isEmpty()) {
 				// 取得できる代休はありません
 				form.putConfirmMsg(MessageConstants.COSE_E_015);
 			}
@@ -635,19 +648,22 @@ public class AttendanceInputChecker {
 		// 勤務区分"01"(出勤)or"03"(休日振替勤務)で
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, kinmuKbn)
 				|| StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE, kinmuKbn)) {
-			// 勤務開始時刻が定時出勤時刻より後または勤務終了時刻が定時退勤時刻より前
-			if (shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
-					|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0) {
-				// 休暇欠勤区分"02"(半休(有給休暇))で、
-				if (StringUtils.equals(form.getKyukaKb(), CommonConstant.KK_KBN_HANKYU)) {
-					// 勤務開始時刻が定時出勤時刻で勤務終了時刻が定時退勤時刻より前
-					// または勤務開始時刻が午前終了時刻より前かつ勤務終了時刻が定時退勤時刻以降
-					if ((StringUtils.equals(form.getWorkSTimeStr(), shift.getStartTimeStr())
-							|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0)
-							|| (form.getWorkSTimeStr().compareTo(shift.getAmETimeStr()) < 0
-									&& shift.getEndTimeStr().compareTo(form.getWorkETimeStr()) <= 0)) {
-						// 有給休暇が余分に取得されています
-						form.putConfirmMsg(MessageConstants.COSE_W_1101);
+			if (StringUtils.isNotEmpty(form.getWorkSTimeStr())
+					&& StringUtils.isNotEmpty(form.getWorkETimeStr())) {
+				// 勤務開始時刻が定時出勤時刻より後または勤務終了時刻が定時退勤時刻より前
+				if (shift.getStartTimeStr().compareTo(form.getWorkSTimeStr()) < 0
+						|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0) {
+					// 休暇欠勤区分"02"(半休(有給休暇))で、
+					if (StringUtils.equals(form.getKyukaKb(), CommonConstant.KK_KBN_HANKYU)) {
+						// 勤務開始時刻が定時出勤時刻で勤務終了時刻が定時退勤時刻より前
+						// または勤務開始時刻が午前終了時刻より前かつ勤務終了時刻が定時退勤時刻以降
+						if ((StringUtils.equals(form.getWorkSTimeStr(), shift.getStartTimeStr())
+								|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0)
+								|| (form.getWorkSTimeStr().compareTo(shift.getAmETimeStr()) < 0
+										&& shift.getEndTimeStr().compareTo(form.getWorkETimeStr()) <= 0)) {
+							// 有給休暇が余分に取得されています
+							form.putConfirmMsg(MessageConstants.COSE_W_1101);
+						}
 					}
 				}
 			}
