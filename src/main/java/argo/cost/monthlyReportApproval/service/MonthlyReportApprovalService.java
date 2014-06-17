@@ -10,12 +10,12 @@ public interface MonthlyReportApprovalService {
 	/**
 	 * 処理状況を取得
 	 * 
-	 * @param applyNo
-	 *               申請番号
+	 * @param form
+	 *               画面情報
 	 * @return
 	 *        処理状況表示名
 	 */
-	String getStatusCode(String applyNo);
+	void getStatusCode(MonthlyReportApprovalForm form);
 	
 	/**
 	 * 月報承認データを取得

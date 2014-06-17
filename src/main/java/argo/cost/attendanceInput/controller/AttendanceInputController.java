@@ -149,7 +149,7 @@ public class AttendanceInputController extends AbstractController {
 		// 画面ID
 		String gameId = getSession().getForm();
 
-		if (StringUtils.equals("Menu", gameId)) {
+		if (StringUtils.equals("menu", gameId)) {
 
 			return REDIRECT + UrlConstant.URL_MENU + INIT;
 		} else {

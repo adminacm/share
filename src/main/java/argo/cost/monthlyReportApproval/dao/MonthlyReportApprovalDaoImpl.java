@@ -33,7 +33,7 @@ public class MonthlyReportApprovalDaoImpl implements MonthlyReportApprovalDao {
 		stbLatestShinseiDateSql.append("		APPROVAL_MANAGE");
 		stbLatestShinseiDateSql.append("	WHERE");
 			
-		stbLatestShinseiDateSql.append("	APPLY_KBN_CODE = '1'");
+		stbLatestShinseiDateSql.append("	APPLY_KBN_CODE = '01'");
 		stbLatestShinseiDateSql.append("	and");
 		stbLatestShinseiDateSql.append("	APPLY_STATUS_CODE not in ('01','04')");
 		stbLatestShinseiDateSql.append("	and");

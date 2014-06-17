@@ -53,24 +53,22 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	/**
 	 * 処理状況コードを取得
 	 * 
-	 * @param applyNo
-	 *               申請番号
+	 * @param form
+	 *               画面情報
 	 * @return
 	 *        処理状況表示名
 	 */
 	@Override
-	public String getStatusCode(String applyNo) {
+	public void getStatusCode(MonthlyReportApprovalForm form) {
 
 		// 申請番号によって、処理状况値を取得
-		BaseCondition approvalStatusSelectCondition = new BaseCondition();
-		approvalStatusSelectCondition.addConditionEqual("applyNo", applyNo);
+		String applyNo = form.getApplyNo();
 				
-		ApprovalManage approvalManageInfo = baseDao.findSingleResult(approvalStatusSelectCondition, ApprovalManage.class);
-				
+		ApprovalManage approvalManageInfo = baseDao.findById(applyNo, ApprovalManage.class);
 		// 処理状況コード取得
-		String statusCode = approvalManageInfo.getStatusMaster().getCode();
+		form.setProStatus(approvalManageInfo.getStatusMaster().getCode());
+		form.setProStatusName(approvalManageInfo.getStatusMaster().getName());
 		
-		return statusCode;
 	}
 
 	/**
@@ -325,31 +323,18 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 		// 更新フラグ
 		String strUpdateFlg = "1";
 		// 申請番号によって、承認情報を取得する		
-		BaseCondition approvalStatusSelectCondition = new BaseCondition();
-		
-		approvalStatusSelectCondition.addConditionEqual("applyNo", applyNo);
-				
-		ApprovalManage approvalManageInfo = new ApprovalManage();
-		try {
-			
-		    // 申請番号によって、承認管理テーブルから承認情報を取得する
-		    approvalManageInfo = baseDao.findSingleResult(approvalStatusSelectCondition, ApprovalManage.class);
-		} catch (Exception ex) {
-					
-			System.out.print("承認管理テーブルから承認情報を取得失敗されました");
-		}
+		ApprovalManage approvalManageInfo = baseDao.findById(applyNo, ApprovalManage.class);
 		// 申請状況を設定する
-		BaseCondition statusMasterSelectCondition = new BaseCondition();
-		statusMasterSelectCondition.addConditionEqual("code", proStatusCode);
-		StatusMaster statusMaster = baseDao.findSingleResult(statusMasterSelectCondition, StatusMaster.class);
+		StatusMaster statusMaster = baseDao.findById(proStatusCode, StatusMaster.class);
 		approvalManageInfo.setStatusMaster(statusMaster);
+
 		try {
+
+			// 承認情報を更新する
 			baseDao.update(approvalManageInfo);
-					
 		} catch (Exception e) {
-					
+
 			strUpdateFlg = "0";
-			System.out.print("申請状態更新失敗されました");
 		}
 				
 		return strUpdateFlg;

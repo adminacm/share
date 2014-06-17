@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.approvalList.model.ApprovalListForm;
 import argo.cost.approvalList.model.ApprovalListVO;
 import argo.cost.approvalList.service.ApprovalListService;
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
@@ -114,13 +115,13 @@ public class ApprovalListController extends AbstractController  {
     	String backUrl = "backUrl=";
     	
     	// 申請区分が月報の場合
-    	if ("1".equals(applyKbnCd)) {
+    	if (CommonConstant.APPLY_KBN_GETUHOU.equals(applyKbnCd)) {
 
         	// 月報承認詳細画面
     		strApprovalDisplay = REDIRECT + UrlConstant.URL_MONTHLYREPORT_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo 
     				+ AND_MARK + backUrl + UrlConstant.URL_APPROVALLIST;
         	// 申請区分が超勤振替の場合
-    	} else if ("2".equals(applyKbnCd)) {
+    	} else if (CommonConstant.APPLY_KBN_CHOKIN_FURIKAE.equals(applyKbnCd)) {
 
         	// 超勤振替申請承認詳細画面
     		strApprovalDisplay = REDIRECT + UrlConstant.URL_HOLIDAYFOROVERTIME_APPROVAL + INIT + QUESTION_MARK + strApplyNo + applyNo

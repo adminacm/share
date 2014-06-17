@@ -107,13 +107,13 @@ public class CommonConstant {
 
 	
 	/**
-	 * 申請区分：月報「1」
+	 * 申請区分：月報「01」
 	 */
-	public static final String APPLY_KBN_GETUHOU = "1";
+	public static final String APPLY_KBN_GETUHOU = "01";
 	
 	/**
-	 * 申請区分：超勤振替「2」
+	 * 申請区分：超勤振替「02」
 	 */
-	public static final String APPLY_KBN_CHOKIN_FURIKAE = "2";
+	public static final String APPLY_KBN_CHOKIN_FURIKAE = "02";
 
 }

@@ -51,31 +51,21 @@ public class MonthlyReportApprovalController extends AbstractController {
 	public String initMonthlyReportApproval(Model model, @RequestParam("applyNo") String applyNo, @RequestParam("backUrl") String backUrl) throws Exception {
 		
 		// 月報承認画面情報初期化
-		MonthlyReportApprovalForm monthlyReportApprovalForm = initForm(MonthlyReportApprovalForm.class);
+		MonthlyReportApprovalForm form = initForm(MonthlyReportApprovalForm.class);
 		
 		//　申請番号を設定
-		monthlyReportApprovalForm.setApplyNo(applyNo);
+		form.setApplyNo(applyNo);
 		
 		//　戻り用画面URL
-		monthlyReportApprovalForm.setBackUrl(backUrl);
+		form.setBackUrl(backUrl);
 		
 		// 処理状況を取得
-		String strProjectStatusCode = monthlyReportApprovalService.getStatusCode(applyNo);
-		
-		// 処理状況設定
-		monthlyReportApprovalForm.setProStatus(strProjectStatusCode);
+		monthlyReportApprovalService.getStatusCode(form);
 
-		
 		// 月報承認データ設定
-		monthlyReportApprovalService.getMonReApprovalList(monthlyReportApprovalForm,applyNo);
+		monthlyReportApprovalService.getMonReApprovalList(form, applyNo);
 
-//		// 【PJ別作業時間集計】を取得
-//		List<ProjWorkTimeManage> projectList = monthlyReportApprovalService.getProjectList(applyNo);
-//		
-//		// プロジェクト情報設定
-//		form.setProjectList(projectList);
-		
-		model.addAttribute(monthlyReportApprovalForm);
+		model.addAttribute(form);
 
 		return MONTHLYREPORT_APPROVAL;
 

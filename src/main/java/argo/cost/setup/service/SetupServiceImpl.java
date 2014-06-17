@@ -45,23 +45,19 @@ public class SetupServiceImpl implements SetupService {
 	@Override
 	public void getSetupInfo(SetupForm form) {
 		
-
 		// DBから、個人設定情報を取得
-		BaseCondition personalInfoSelectCondition = new BaseCondition();
-		personalInfoSelectCondition.addConditionEqual("id", form.getUserId());
-		
-		Users setupEntity = (Users) baseDao.findSingleResult(personalInfoSelectCondition, Users.class);
+		Users setupEntity = baseDao.findById(form.getUserId(), Users.class);
 		
 		// 画面の個人設定情報を設定
 		
 		// 代理入力者コード
 		String strDairishaId = setupEntity.getDairishaId();
 		form.setAgentCd(strDairishaId);
-		
+
 		// 代理入力者名
 		Users agentInfo = baseDao.findById(strDairishaId,Users.class);
 		form.setAgentName(agentInfo.getUserName());
-		
+
 		// 標準ｼﾌﾄ
 		form.setStandardShift(setupEntity.getStandardShiftCd());
 		
@@ -153,7 +149,7 @@ public class SetupServiceImpl implements SetupService {
     		
     	}
     	// 勤務終了時刻
-    	if (shiftTime != null && !shiftTime.getTeijiTaikinTime().isEmpty()){
+    	if (shiftTime != null && !shiftTime.getTeijiTaikinTime().isEmpty()) {
     		
         	// 勤務終了時刻（時）
     		setupInfo.setWorkEndH(shiftTime.getTeijiTaikinTime().substring(0, 2));
@@ -180,8 +176,8 @@ public class SetupServiceImpl implements SetupService {
 		String strHalfHours = "30";
 
 		// 勤務開始時刻は30分単位で入力
-		if (!StringUtils.equals(strWholeHours,setupInfo.getWorkStartM()) && !StringUtils.equals(strHalfHours,setupInfo.getWorkStartM())) {
-			
+		if (!StringUtils.equals(strWholeHours, setupInfo.getWorkStartM()) && !StringUtils.equals(strHalfHours, setupInfo.getWorkStartM())) {
+			setupInfo.putConfirmMsg("勤務開始時刻は30分単位で入力してください");
 			// エラー(勤務開始時刻は30分単位で入力してください)
 			return false;
 			

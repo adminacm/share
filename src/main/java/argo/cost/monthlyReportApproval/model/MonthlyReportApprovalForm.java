@@ -31,6 +31,11 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	private String proStatus;
 	
 	/**
+	 * 処理状況名
+	 */
+	private String proStatusName;
+	
+	/**
 	 *  戻り用画面のURL
 	 */
 	private String backUrl;
@@ -88,4 +93,13 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	public void setProjectList(List<ProjWorkTimeManage> projectList) {
 		this.projectList = projectList;
 	}
+
+	public String getProStatusName() {
+		return proStatusName;
+	}
+
+	public void setProStatusName(String proStatusName) {
+		this.proStatusName = proStatusName;
+	}
+	
 }
