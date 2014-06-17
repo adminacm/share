@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,28 +27,29 @@ public class ApprovalManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="apply_no")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="apply_no", unique=true, nullable=false, length=30)
 	private String applyNo;
 
-	@Column(name="app_ymd")
+	@Column(name="app_ymd", nullable=false, length=8)
 	private String appYmd;
 
-	@Column(name="item_date")
-	private String itemDate;
-
-	@Column(name="apply_detail")
+	@Column(name="apply_detail", length=255)
 	private String applyDetail;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id")
+	@Column(name="created_user_id", length=20)
 	private String createdUserId;
+
+	@Column(name="item_date", nullable=false, length=8)
+	private String itemDate;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id")
+	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
 	//bi-directional many-to-one association to ApplyKbnMaster
