@@ -1,8 +1,6 @@
 package argo.cost.attendanceOnHolidayRecordDetail.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,14 +97,10 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		// 休日出勤管理詳細情報を取得
 		HolidayAtendance detailInfo = baseDao.findSingleResult(condition, HolidayAtendance.class);
 		
-		// システム日付
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-		String systemDate = format.format(new Date());
-		
 		// 代休日
 		detailInfo.setDaikyuDate("超勤振替");
 		// 振替申請日がシステム日付になる
-		detailInfo.setFirikaeShiseiDate(systemDate);
+		detailInfo.setFirikaeShiseiDate(CostDateUtils.getNowDate());
 		
 		// 休日出勤テーブルを更新
 		baseDao.update(detailInfo);
@@ -114,7 +108,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		// 承認管理データを作成
 		ApprovalManage applyInfo = new ApprovalManage();
 		// 申請番号
-		applyInfo.setApplyNo(form.getUserId() + CommonConstant.APPLY_KBN_CHOKIN_FURIKAE + systemDate);
+		applyInfo.setApplyNo(form.getUserId() + CommonConstant.APPLY_KBN_CHOKIN_FURIKAE + CostDateUtils.getNowDate());
 		// 申請区分
 		ApplyKbnMaster applyKbnMaster = new ApplyKbnMaster();
 		applyKbnMaster.setCode(CommonConstant.APPLY_KBN_CHOKIN_FURIKAE);
@@ -130,7 +124,8 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		users.setId(form.getUserId());
 		applyInfo.setUser(users);
 		// 申請時間
-		applyInfo.setAppYmd(form.getDate().replaceAll("/", ""));
+		applyInfo.setAppYmd(CostDateUtils.getNowDate());
+		applyInfo.setItemDate(form.getDate().replaceAll("/", ""));
 		
 		// 休日出勤テーブルを更新
 		baseDao.insert(applyInfo);
