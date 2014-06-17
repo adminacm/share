@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 
 /**
- * The persistent class for the kintai_info database table.
+ * 勤怠情報テーブル.
  * 
  */
 @Entity
@@ -32,8 +32,8 @@ public class KintaiInfo implements Serializable {
 	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="atendance_book_date", nullable=false, length=8)
-	private String atendanceBookDate;
+	@Column(name="atendance_date", nullable=false, length=8)
+	private String atendanceDate;
 
 	@Column(name="chokin_end_time", length=4)
 	private String chokinEndTime;
@@ -56,20 +56,38 @@ public class KintaiInfo implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
+	@Column(name="csv_out_date", length=8)
+	private String csvOutDate;
+
+	@Column(name="csv_output_flg", length=1)
+	private String csvOutputFlg;
+
+	@Column(name="daikyu_date", length=8)
+	private String daikyuDate;
+
+	@Column(name="daikyu_get_shimekiri_date", length=8)
+	private String daikyuGetShimekiriDate;
+
 	@Column(name="furikae_date", length=8)
 	private String furikaeDate;
 
-	@Column(name="kinmu_end_time", nullable=false, length=4)
+	@Column(name="furikae_shinsei_date", length=8)
+	private String furikaeShinseiDate;
+
+	@Column(name="kinmu_end_time", length=4)
 	private String kinmuEndTime;
 
 	@Column(name="kinmu_jikansu", precision=3, scale=1)
 	private BigDecimal kinmuJikansu;
 
-	@Column(name="kinmu_start_time", nullable=false, length=4)
+	@Column(name="kinmu_start_time", length=4)
 	private String kinmuStartTime;
 
-	@Column(name="kyuka_jikansu", precision=3, scale=1)
+	@Column(name="kyuka_jikansu", precision=2)
 	private BigDecimal kyukaJikansu;
+
+	@Column(name="payout_ym", length=6)
+	private String payoutYm;
 
 	@Column(name="sinya_kinmu_jikansu", precision=2, scale=1)
 	private BigDecimal sinyaKinmuJikansu;
@@ -125,12 +143,61 @@ public class KintaiInfo implements Serializable {
 		this.id = id;
 	}
 
-	public String getAtendanceBookDate() {
-		return this.atendanceBookDate;
+
+	public String getAtendanceDate() {
+		return atendanceDate;
 	}
 
-	public void setAtendanceBookDate(String atendanceBookDate) {
-		this.atendanceBookDate = atendanceBookDate;
+	public void setAtendanceDate(String atendanceDate) {
+		this.atendanceDate = atendanceDate;
+	}
+
+	public String getCsvOutDate() {
+		return csvOutDate;
+	}
+
+	public void setCsvOutDate(String csvOutDate) {
+		this.csvOutDate = csvOutDate;
+	}
+
+	public String getCsvOutputFlg() {
+		return csvOutputFlg;
+	}
+
+	public void setCsvOutputFlg(String csvOutputFlg) {
+		this.csvOutputFlg = csvOutputFlg;
+	}
+
+	public String getDaikyuDate() {
+		return daikyuDate;
+	}
+
+	public void setDaikyuDate(String daikyuDate) {
+		this.daikyuDate = daikyuDate;
+	}
+
+	public String getDaikyuGetShimekiriDate() {
+		return daikyuGetShimekiriDate;
+	}
+
+	public void setDaikyuGetShimekiriDate(String daikyuGetShimekiriDate) {
+		this.daikyuGetShimekiriDate = daikyuGetShimekiriDate;
+	}
+
+	public String getFurikaeShinseiDate() {
+		return furikaeShinseiDate;
+	}
+
+	public void setFurikaeShinseiDate(String furikaeShinseiDate) {
+		this.furikaeShinseiDate = furikaeShinseiDate;
+	}
+
+	public String getPayoutYm() {
+		return payoutYm;
+	}
+
+	public void setPayoutYm(String payoutYm) {
+		this.payoutYm = payoutYm;
 	}
 
 	public String getChokinEndTime() {

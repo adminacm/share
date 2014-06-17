@@ -83,14 +83,6 @@ public class Users implements Serializable {
 	//bi-directional many-to-one association to ApprovalManage
 	@OneToMany(mappedBy="users")
 	private List<ApprovalManage> approvalManages;
-	
-	//bi-directional many-to-one association to ChokinKanri
-	@OneToMany(mappedBy="users")
-	private List<ChokinKanri> chokinKanris;
-
-	//bi-directional many-to-one association to HolidayAtendance
-	@OneToMany(mappedBy="users")
-	private List<HolidayAtendance> holidayAtendances;
 
 	//bi-directional many-to-one association to HolidayAtendanceYotei
 	@OneToMany(mappedBy="users")
@@ -99,10 +91,6 @@ public class Users implements Serializable {
 	//bi-directional many-to-one association to KintaiInfo
 	@OneToMany(mappedBy="users")
 	private List<KintaiInfo> kintaiInfos;
-
-	//bi-directional many-to-one association to KyukaKekin
-	@OneToMany(mappedBy="users")
-	private List<KyukaKekin> kyukaKekins;
 
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="users")
@@ -277,50 +265,6 @@ public class Users implements Serializable {
 
 		return approvalManage;
 	}
-	
-	public List<ChokinKanri> getChokinKanris() {
-		return this.chokinKanris;
-	}
-
-	public void setChokinKanris(List<ChokinKanri> chokinKanris) {
-		this.chokinKanris = chokinKanris;
-	}
-
-	public ChokinKanri addChokinKanri(ChokinKanri chokinKanri) {
-		getChokinKanris().add(chokinKanri);
-		chokinKanri.setUsers(this);
-
-		return chokinKanri;
-	}
-
-	public ChokinKanri removeChokinKanri(ChokinKanri chokinKanri) {
-		getChokinKanris().remove(chokinKanri);
-		chokinKanri.setUsers(null);
-
-		return chokinKanri;
-	}
-
-	public List<HolidayAtendance> getHolidayAtendances() {
-		return this.holidayAtendances;
-	}
-
-	public void setHolidayAtendances(List<HolidayAtendance> holidayAtendances) {
-		this.holidayAtendances = holidayAtendances;
-	}
-
-	public HolidayAtendance addHolidayAtendance(HolidayAtendance holidayAtendance) {
-		getHolidayAtendances().add(holidayAtendance);
-		holidayAtendance.setUsers(this);
-
-		return holidayAtendance;
-	}
-
-	public HolidayAtendance removeHolidayAtendance(HolidayAtendance holidayAtendance) {
-		getHolidayAtendances().remove(holidayAtendance);
-		holidayAtendance.setUsers(null);
-
-		return holidayAtendance;
-	}
 
 	public List<HolidayAtendanceYotei> getHolidayAtendanceYoteis() {
 		return this.holidayAtendanceYoteis;
@@ -363,28 +307,6 @@ public class Users implements Serializable {
 		kintaiInfo.setUsers(null);
 
 		return kintaiInfo;
-	}
-
-	public List<KyukaKekin> getKyukaKekins() {
-		return this.kyukaKekins;
-	}
-
-	public void setKyukaKekins(List<KyukaKekin> kyukaKekins) {
-		this.kyukaKekins = kyukaKekins;
-	}
-
-	public KyukaKekin addKyukaKekin(KyukaKekin kyukaKekin) {
-		getKyukaKekins().add(kyukaKekin);
-		kyukaKekin.setUsers(this);
-
-		return kyukaKekin;
-	}
-
-	public KyukaKekin removeKyukaKekin(KyukaKekin kyukaKekin) {
-		getKyukaKekins().remove(kyukaKekin);
-		kyukaKekin.setUsers(null);
-
-		return kyukaKekin;
 	}
 
 	public List<UserRole> getUserRoles() {

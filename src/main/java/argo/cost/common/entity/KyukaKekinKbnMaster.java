@@ -52,10 +52,6 @@ public class KyukaKekinKbnMaster implements Serializable {
 	@OneToMany(mappedBy="kyukaKekinKbnMaster")
 	private List<KintaiInfo> kintaiInfos;
 
-	//bi-directional many-to-one association to KyukaKekin
-	@OneToMany(mappedBy="kyukaKekinKbnMaster")
-	private List<KyukaKekin> kyukaKekins;
-
 	public KyukaKekinKbnMaster() {
 	}
 
@@ -135,28 +131,6 @@ public class KyukaKekinKbnMaster implements Serializable {
 		kintaiInfo.setKyukaKekinKbnMaster(null);
 
 		return kintaiInfo;
-	}
-
-	public List<KyukaKekin> getKyukaKekins() {
-		return this.kyukaKekins;
-	}
-
-	public void setKyukaKekins(List<KyukaKekin> kyukaKekins) {
-		this.kyukaKekins = kyukaKekins;
-	}
-
-	public KyukaKekin addKyukaKekin(KyukaKekin kyukaKekin) {
-		getKyukaKekins().add(kyukaKekin);
-		kyukaKekin.setKyukaKekinKbnMaster(this);
-
-		return kyukaKekin;
-	}
-
-	public KyukaKekin removeKyukaKekin(KyukaKekin kyukaKekin) {
-		getKyukaKekins().remove(kyukaKekin);
-		kyukaKekin.setKyukaKekinKbnMaster(null);
-
-		return kyukaKekin;
 	}
 
 }

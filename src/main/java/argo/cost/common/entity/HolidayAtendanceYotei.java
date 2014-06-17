@@ -29,8 +29,8 @@ public class HolidayAtendanceYotei implements Serializable {
 	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="atendance_book_date", nullable=false, length=8)
-	private String atendanceBookDate;
+	@Column(name="atendance_date", nullable=false, length=8)
+	private String atendanceDate;
 
 	@Column(length=255)
 	private String commont;
@@ -82,12 +82,12 @@ public class HolidayAtendanceYotei implements Serializable {
 		this.id = id;
 	}
 
-	public String getAtendanceBookDate() {
-		return this.atendanceBookDate;
+	public String getAtendanceDate() {
+		return this.atendanceDate;
 	}
 
-	public void setAtendanceBookDate(String atendanceBookDate) {
-		this.atendanceBookDate = atendanceBookDate;
+	public void setAtendanceDate(String atendanceDate) {
+		this.atendanceDate = atendanceDate;
 	}
 
 	public String getCommont() {

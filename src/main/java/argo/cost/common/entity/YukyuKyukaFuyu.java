@@ -29,16 +29,16 @@ public class YukyuKyukaFuyu implements Serializable {
 	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="fuyu_all_hours")
+	@Column(name="fuyu_all_hours", nullable=false, precision=4)
 	private BigDecimal fuyuAllHours;
 
-	@Column(name="fuyu_year", length=4)
+	@Column(name="fuyu_year", nullable=false, length=4)
 	private String fuyuYear;
 
-	@Column(name="huyu_days")
+	@Column(name="huyu_days", nullable=false)
 	private Integer huyuDays;
 
-	@Column(name="last_year_remained_hours")
+	@Column(name="last_year_remained_hours", nullable=false, precision=4)
 	private BigDecimal lastYearRemainedHours;
 
 	//bi-directional many-to-one association to User
