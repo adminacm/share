@@ -55,7 +55,7 @@ public class AtendanceOnHolidayDaoImpl implements AtendanceOnHolidayDao {
 		q.append("	AND");
 		q.append("	k.user_id = ?");
 		q.append("	AND");
-		q.append("	k.atendance_book_date = ?");
+		q.append("	k.atendance_date = ?");
 		
 		// クエリー取得
 		Query query = this.em.createNativeQuery(q.toString());

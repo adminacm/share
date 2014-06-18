@@ -61,7 +61,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 当前の日付を検索条件として、DBの休日勤務情報有無をチェックする		
 		BaseCondition condition = new BaseCondition();
 		// 検索条件：休日勤務の日付
-		condition.addConditionEqual("atendanceBookDate", currentDate);
+		condition.addConditionEqual("atendanceDate", currentDate);
 		// 検索条件：社員ID
 		condition.addConditionEqual("users.id", atendanceOnHolidayForm.getUserId());
 			
@@ -115,7 +115,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		String userId = atendanceOnHoliday.getUserId();
 			
 		// 検索条件：休日勤務の日付
-		condition.addConditionEqual("atendanceBookDate", atendanceOnHoliday.getStrAtendanceDate().replaceAll("/", ""));
+		condition.addConditionEqual("atendanceDate", atendanceOnHoliday.getStrAtendanceDate().replaceAll("/", ""));
 		// 検索条件：社員ID
 		condition.addConditionEqual("users.id", userId);
 			
@@ -140,7 +140,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		ProjectMaster projMaster = baseDao.findById(atendanceOnHoliday.getSelectedProjCd(), ProjectMaster.class);
 		entity.setProjectMaster(projMaster);
 		// 休日勤務予定日格式を変更して、設定される
-		entity.setAtendanceBookDate(atendanceOnHoliday.getStrAtendanceDate().replace("/", ""));
+		entity.setAtendanceDate(atendanceOnHoliday.getStrAtendanceDate().replace("/", ""));
 		// 勤務開始時間
 		entity.setKinmuStartTime(atendanceOnHoliday.getStrAtendanceTimeStat());
 		// 勤務終了時間
@@ -185,7 +185,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 当前の日付の休日勤務予定情報を削除する
 		BaseCondition deleteAtendanceOnHolidayCondition = new BaseCondition();
 		// 検索条件：休日勤務の日付
-		deleteAtendanceOnHolidayCondition.addConditionEqual("atendanceBookDate", strAtendanceDate.replace("/", ""));
+		deleteAtendanceOnHolidayCondition.addConditionEqual("atendanceDate", strAtendanceDate.replace("/", ""));
 		// 検索条件：社員ID
 		deleteAtendanceOnHolidayCondition.addConditionEqual("users.id", userID);
 		Integer deleteResult = baseDao.deleteByCondition(deleteAtendanceOnHolidayCondition, HolidayAtendanceYotei.class);
