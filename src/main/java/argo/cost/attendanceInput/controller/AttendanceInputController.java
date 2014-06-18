@@ -8,7 +8,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -60,7 +59,6 @@ public class AttendanceInputController extends AbstractController {
 	public String initAttendanceInput(Model model, @RequestParam(ATTDENDANCE_DATE) String newDate)
 			throws Exception {
 
-
 		// フォーム初期化
 		AttendanceInputForm form = initForm(AttendanceInputForm.class);
 		// 画面へ設定します。
@@ -79,7 +77,7 @@ public class AttendanceInputController extends AbstractController {
 	 *            フォーム
 	 * @return
 	 */
-	@RequestMapping(value = "/nextDay", method = RequestMethod.POST)
+	@RequestMapping(value = "/nextDay")
 	public String getNextDay(AttendanceInputForm form) throws Exception {
 
 		// 明日の日付を取得
@@ -96,7 +94,7 @@ public class AttendanceInputController extends AbstractController {
 	 *            フォーム
 	 * @return
 	 */
-	@RequestMapping(value = "/lastDay", method = RequestMethod.POST)
+	@RequestMapping(value = "/lastDay")
 	public String getLastDay(AttendanceInputForm form) throws Exception {
 
 		// 明日の日付を取得
@@ -128,7 +126,7 @@ public class AttendanceInputController extends AbstractController {
 		
 		// 更新成功
 		if (1 == result) {
-			return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + BACK;
+			return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + "/nextDay";
 		} else {
 			// errorMessageを追加
 			return ATTDENDANCE_INPUT;

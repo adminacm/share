@@ -128,7 +128,7 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		q.append("		sum(");
 		q.append(" 		kyuka_jikansu)");
 		q.append("	FROM");
-		q.append("		kyuka_kekin");
+		q.append("		kintai_info");
 		q.append("	WHERE");
 		if (flag == 0) {
 			q.append("	(kyuka_kekin_code = '01'");
@@ -143,9 +143,9 @@ public class AttendanceInputDaoImpl implements AttendanceInputDao {
 		}
 		q.append("	user_id = ?");
 		q.append("	AND");
-		q.append("	kyuka_date >= ?");
+		q.append("	atendance_date >= ?");
 		q.append("	AND");
-		q.append("	kyuka_date < ?");
+		q.append("	atendance_date < ?");
 		
 		// クエリー取得
 		Query query = this.em.createNativeQuery(q.toString());

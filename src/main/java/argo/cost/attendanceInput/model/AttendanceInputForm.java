@@ -151,6 +151,16 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	private Integer kinmuKun = 0;
 	
 	/**
+	 * 月報承認状況コード
+	 */
+	private String appStatusCode;
+
+	/**
+	 * 月報承認状況名
+	 */
+	private String appStatusName;
+	
+	/**
 	 * シフト情報
 	 */
 	private ShiftVO shiftVO;
@@ -459,6 +469,22 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 
 	public void setWorkETimeStr(String workETimeStr) {
 		this.workETimeStr = workETimeStr;
+	}
+
+	public String getAppStatusCode() {
+		return appStatusCode;
+	}
+
+	public void setAppStatusCode(String appStatusCode) {
+		this.appStatusCode = appStatusCode;
+	}
+
+	public String getAppStatusName() {
+		return appStatusName;
+	}
+
+	public void setAppStatusName(String appStatusName) {
+		this.appStatusName = appStatusName;
 	}
 
 }

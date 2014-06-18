@@ -13,7 +13,6 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.entity.HolidayAtendance;
 import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.KyukaKekinKbnMaster;
 import argo.cost.common.entity.MCalendar;
@@ -557,11 +556,12 @@ public class AttendanceInputChecker {
 			BaseCondition condition = new BaseCondition();
 			condition.addConditionEqual("users.id", form.getUserId());          // 社員番号
 			// 代休取得期限
-			condition.addConditionGreaterEqualThan("daikyuGetShimekiriDate", form.getAttDate());
+			condition.addConditionLessEqualThan("daikyuGetShimekiriDate", form.getAttDate());
 			// 代休日がNULL
 			condition.addConditionIsNull("daikyuDate");
-			// 休日勤務管理情報を取得
-			List<HolidayAtendance> entity = baseDao.findResultList(condition, HolidayAtendance.class);
+			// 代休可能の勤怠情報を取得する
+			List<KintaiInfo> entity = baseDao.findResultList(condition, KintaiInfo.class);
+
 			// 代休情報を取得されない
 			if (entity == null || entity.isEmpty()) {
 				// 取得できる代休はありません
