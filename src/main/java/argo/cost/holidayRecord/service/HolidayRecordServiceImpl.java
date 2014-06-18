@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.entity.KyukaKekin;
+import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.holidayRecord.model.AbsenceVO;
 import argo.cost.holidayRecord.model.HolidayRecordForm;
@@ -83,25 +83,25 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
 		// 日付
-		condition.addConditionLike("kyukaDate", yearPeriod + "%");
+		condition.addConditionLike("atendanceDate", yearPeriod + "%");
 		// 休暇欠勤区分に「有給休暇」をセット
 		String[] vals = {CommonConstant.KK_KBN_ZENKYU, CommonConstant.KK_KBN_HANKYU, CommonConstant.KK_KBN_JIKANKYU};
 		condition.addConditionIn("kyukaKekinKbnMaster.code", vals);
 		
 		// 有給休暇情報取得
-		List<KyukaKekin> kyukaList = baseDao.findResultList(condition, KyukaKekin.class);
+		List<KintaiInfo> kintaiList = baseDao.findResultList(condition, KintaiInfo.class);
 
 		// 画面の有給休暇一覧
 		List<PayHolidayVO> payHolidayList = new ArrayList<PayHolidayVO>();
 		PayHolidayVO payHolidayInfo = null;
 
-		if (kyukaList.size() > 0) {
+		if (kintaiList.size() > 0) {
 		
-			for (KyukaKekin kyukaInfo : kyukaList) {
+			for (KintaiInfo kyukaInfo : kintaiList) {
 				
 				payHolidayInfo = new PayHolidayVO();
 				//　日付
-				payHolidayInfo.setPayHolidayDate(CostDateUtils.formatDate(kyukaInfo.getKyukaDate(), CommonConstant.YYYY_MM_DD));
+				payHolidayInfo.setPayHolidayDate(CostDateUtils.formatDate(kyukaInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 				// 休暇欠勤区分コード
 				payHolidayInfo.setHolidayKbnCode(kyukaInfo.getKyukaKekinKbnMaster().getCode());
 				//　時間数
@@ -122,19 +122,19 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 					// 時間数
 					payHolidayInfo.setHourQuantity(null);
 				} 
+				// 有給休暇一覧リストを追加
+				payHolidayList.add(payHolidayInfo);
 	
 				// 日数がnull以外の場合
 				if (payHolidayInfo.getDayQuantity() != null) {
-	
+					// 日数合計
 					totleDayQuantity += Double.valueOf(payHolidayInfo.getDayQuantity());
 				}
-				
 				// 時間数がnull以外の場合
 				if (payHolidayInfo.getHourQuantity() != null) {
+					// 時間数合計
 					totleTimeQuantity += Double.valueOf(payHolidayInfo.getHourQuantity());
 				}
-				
-				payHolidayList.add(payHolidayInfo);
 			}
 			
 			// 合計行
@@ -151,6 +151,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 			payHolidayList.add(payHolidayInfo);
 		}
 
+		// 有給休暇一覧リストを戻り
 		return payHolidayList;
 	}
 
@@ -176,12 +177,12 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
 		// 日付
-		condition.addConditionLike("kyukaDate", yearPeriod + "%");
+		condition.addConditionLike("atendanceDate", yearPeriod + "%");
 		// 休暇欠勤区分に「欠勤」をセット
 		condition.addConditionEqual("kyukaKekinKbnMaster.code", CommonConstant.KK_KBN_KEKIN);
 		
 		// 欠勤情報取得
-		List<KyukaKekin> kekinList = baseDao.findResultList(condition, KyukaKekin.class);
+		List<KintaiInfo> kekinList = baseDao.findResultList(condition, KintaiInfo.class);
 		
 		// 画面の欠勤一覧
 		List<AbsenceVO> absenceList = new ArrayList<AbsenceVO>();
@@ -189,34 +190,34 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		
 		if (kekinList.size() > 0) {
 			
-			for (KyukaKekin kekinInfo : kekinList) {
+			for (KintaiInfo kekinInfo : kekinList) {
 				
 				absenceInfo = new AbsenceVO();
 				// 日付
-				absenceInfo.setAbsentDate(CostDateUtils.formatDate(kekinInfo.getKyukaDate(), CommonConstant.YYYY_MM_DD));
+				absenceInfo.setAbsentDate(CostDateUtils.formatDate(kekinInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 				//　時間数
 				absenceInfo.setHourQuantity(kekinInfo.getKyukaJikansu().toString());
 				// 欠勤時間数が定時勤務時間以上の場合
-				if (kekinInfo.getKyukaJikansu().compareTo(new BigDecimal("8")) >= 0) {
+				if (kekinInfo.getKyukaJikansu().compareTo(new BigDecimal("7.5")) >= 0) {
 
 					//　日数
 					absenceInfo.setDayQuantity("1.0");
 					//　時間数
-					absenceInfo.setHourQuantity(kekinInfo.getKyukaJikansu().subtract(new BigDecimal("8")).toString());
+					absenceInfo.setHourQuantity(null);
 				}
+				// 欠勤一覧リストを追加
 				absenceList.add(absenceInfo);
 				
 				// 日数がnull以外の場合
 				if (absenceInfo.getDayQuantity() != null) {
-
+					// 日数合計
 					totleDayQuantity += Double.valueOf(absenceInfo.getDayQuantity());
 				}
-				
 				// 時間数がnull以外の場合
 				if (absenceInfo.getHourQuantity() != null) {
+					// 時間数合計
 					totleTimeQuantity += Double.valueOf(absenceInfo.getHourQuantity());
 				}
-				
 			}
 			// 合計行
 			absenceInfo = new AbsenceVO();
@@ -231,9 +232,11 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 			}
 			absenceList.add(absenceInfo);
 		}
-		
+
+		// 欠勤一覧リストを戻り
 		return absenceList;
 	}
+	
 	/**
 	 * 特別休暇一覧取得
 	 * 
@@ -255,35 +258,35 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
 		// 日付
-		condition.addConditionLike("kyukaDate", yearPeriod + "%");
+		condition.addConditionLike("atendanceDate", yearPeriod + "%");
 		// 休暇欠勤区分に「特別休暇」をセット
 		condition.addConditionEqual("kyukaKekinKbnMaster.code", CommonConstant.KK_KBN_TOKUBETUKYU);
 		
 		// 特別休暇情報取得
-		List<KyukaKekin> tokubetukyuList = baseDao.findResultList(condition, KyukaKekin.class);
+		List<KintaiInfo> kintaiList = baseDao.findResultList(condition, KintaiInfo.class);
 
 		List<SpecialHolidayVO> specialHolidayList = new ArrayList<SpecialHolidayVO>();
 		SpecialHolidayVO specialHolidayInfo = null;
 		
-		if (tokubetukyuList.size() > 0) {
+		if (kintaiList.size() > 0) {
 			
-			for (KyukaKekin tokubetukyuInfo : tokubetukyuList) {
+			for (KintaiInfo kintaiInfo : kintaiList) {
 				
 				specialHolidayInfo = new SpecialHolidayVO();
 				// 日付
-				specialHolidayInfo.setSpecialHolidayDate(CostDateUtils.formatDate(tokubetukyuInfo.getKyukaDate(), CommonConstant.YYYY_MM_DD));
+				specialHolidayInfo.setSpecialHolidayDate(CostDateUtils.formatDate(kintaiInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 				//　日数
 				specialHolidayInfo.setDayQuantity("1.0");
+				// 特別休暇一覧リストを追加
+				specialHolidayList.add(specialHolidayInfo);
 				
 				// 日数がnull以外の場合
 				if (specialHolidayInfo.getDayQuantity() != null) {
-
+					// 日数合計
 					totleDayQuantity += Double.valueOf(specialHolidayInfo.getDayQuantity());
 				}
-				
-				specialHolidayList.add(specialHolidayInfo);
-				
 			}
+			
 			// 合計行
 			specialHolidayInfo = new SpecialHolidayVO();
 			specialHolidayInfo.setSpecialHolidayDate("累計");
@@ -294,6 +297,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 			specialHolidayList.add(specialHolidayInfo);
 		}
 
+		// 特別休暇一覧リストを戻り
 		return specialHolidayList;
 	}
 }
