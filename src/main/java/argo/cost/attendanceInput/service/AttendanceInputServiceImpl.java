@@ -391,9 +391,14 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			} else {
 				// 休日勤務情報を取得
 				condition = new BaseCondition();
-				condition.addConditionEqual("users.id", userId);          // 社員番号
+				// 社員番号
+				condition.addConditionEqual("users.id", userId);        
+		        // 勤務日区分
+				condition.addConditionIn("workDayKbnMaster.code", new String[] {CommonConstant.WORKDAY_KBN_SHUKIN, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU});
 				// 代休取得期限
 				condition.addConditionGreaterEqualThan("daikyuGetShimekiriDate", form.getAttDate());
+				// 勤務時間数＞＝7.5
+				condition.addConditionGreaterEqualThan("kinmuJikansu", new BigDecimal(7.5));
 				// 代休日がNULL
 				condition.addConditionIsNull("daikyuDate");
 				condition.addOrderAsc("holidaySyukinDate");
@@ -430,6 +435,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		form.setChoWeekday(null);
 		form.setChoWeekdayNomal(null);
 		form.setmNHours(null);
+		form.setChoSTime(null);
+		form.setChoETime(null);
 		// 入力チェック
 		doInputCheck(form);
 		// エラーが発生されているの場合
@@ -1022,6 +1029,12 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		AttendanceInputChecker.chkWorkETimeFormat(form);
 		// 休暇欠勤区分・勤務時刻:勤怠が未入力です
 		AttendanceInputChecker.chkKykaKbnAndWorkTime05(form);
+		// エラーを発生した時
+		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
+			return;
+		}
+		// 休暇欠勤区分と勤務区分のチェック
+		AttendanceInputChecker.chkKyuKaKbnAndKinmuKbn(form);
 		// エラーを発生した時
 		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
 			return;
