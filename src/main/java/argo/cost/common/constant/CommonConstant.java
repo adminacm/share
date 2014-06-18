@@ -10,7 +10,6 @@ public class CommonConstant {
 	// ############
 	// ### 定数 ###
 	// ############
-	
 	/**
 	 *　半角：コロン
 	 */
@@ -100,20 +99,44 @@ public class CommonConstant {
 	 *　勤務日フラグ：休日「0」
 	 */
 	public static final String WORKDAY_FLAG_KYUJITU = "0";
+	
 	/**
 	 *　勤務日フラグ：出勤「1」
 	 */
 	public static final String WORKDAY_FLAG_SHUKIN = "1";
-
 	
 	/**
-	 * 申請区分：月報「01」
+	 * 申請区分：月報「1」
 	 */
-	public static final String APPLY_KBN_GETUHOU = "01";
+	public static final String APPLY_KBN_GETUHOU = "1";
 	
 	/**
-	 * 申請区分：超勤振替「02」
+	 * 申請区分：超勤振替「2」
 	 */
-	public static final String APPLY_KBN_CHOKIN_FURIKAE = "02";
+	public static final String APPLY_KBN_CHOKIN_FURIKAE = "2";
 
+	/**
+	 *　状況：作成中「01」
+	 */
+	public static final String STATUS_SAKUSEIJYOU = "01";
+
+	/**
+	 *　状況：提出/申請「02」
+	 */
+	public static final String STATUS_TEISYUTU = "02";
+
+	/**
+	 *　状況：承認「03」
+	 */
+	public static final String STATUS_SYOUNIN = "03";
+
+	/**
+	 *　状況：差戻「04」
+	 */
+	public static final String STATUS_SASHIMODOSHI = "04";
+
+	/**
+	 *　状況：処理済「05」
+	 */
+	public static final String STATUS_SYORIZUMI = "05";
 }
