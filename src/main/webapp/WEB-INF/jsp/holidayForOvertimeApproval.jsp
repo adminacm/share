@@ -36,10 +36,14 @@ function submitAction(action) {
 					<tr>
 						<td style="border:1px solid #333333;width:60px" align="center">${holidayForOvertimeApprovalForm.proStatus}</td>
 						<td style="width:240px" align="center">
-							<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/holidayForOvertimeApproval/approval');" />
+							<c:if test="${holidayForOvertimeApprovalForm.proStatus ne '承認'}">
+								<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/holidayForOvertimeApproval/approval');" />
+							</c:if>
 						</td>
 						<td style="width:185px">
-							<input type="button" style="width:120px; height:25px" value="差戻" onclick="submitAction('/holidayForOvertimeApproval/remand');" />
+							<c:if test="${holidayForOvertimeApprovalForm.proStatus ne '承認'}">
+								<input type="button" style="width:120px; height:25px" value="差戻" onclick="submitAction('/holidayForOvertimeApproval/remand');" />
+							</c:if>
 						</td>
 						<td>
 							<input type="button" style="width:120px; height:25px" value="戻る" onclick="submitAction('/holidayForOvertimeApproval/back');" />

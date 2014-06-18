@@ -77,11 +77,8 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	@RequestMapping(value = APPROVAL)
 	public String doApproval(HolidayForOvertimeApprovalForm form) {
 		
-		// 申請状況「承認」
-		String proStatus = "03";
-		
-		// 申請状況が承認に更新
-		holidayForOvertimeApprovalService.updateProStatus(form.getApplyNo(), proStatus);
+		// 承認処理を実行
+		holidayForOvertimeApprovalService.approvalOverWork(form.getApplyNo());
 
 		// 承認一覧画面へ遷移する
 		return REDIRECT + form.getBackUrl() + INIT;
@@ -94,12 +91,9 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	 */
 	@RequestMapping(value = REMAND)
 	public String doRemand(HolidayForOvertimeApprovalForm form) {
-
-		// 申請状況「差戻」
-		String proStatus = "04";
 		
-		// 申請状況が差戻しに更新
-		holidayForOvertimeApprovalService.updateProStatus(form.getApplyNo(), proStatus);
+		// 差戻処理実行
+		holidayForOvertimeApprovalService.remandOverWork(form.getApplyNo());
 		
 		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する
 		return REDIRECT + form.getBackUrl() + INIT;

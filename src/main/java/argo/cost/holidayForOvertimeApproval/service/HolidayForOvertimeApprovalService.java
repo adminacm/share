@@ -29,12 +29,18 @@ public interface HolidayForOvertimeApprovalService {
 	HolidayForOvertimeApprovalForm getHolidayForOvertimeApproval(String applyNo) throws ParseException ;
 
 	/**
-	 * 申請状況更新
+	 * 承認処理を実行
 	 * 
 	 * @param applyNo
 	 *               申請番号
-	 * @param proStatus
-	 *                 申請状況
 	 */
-	void updateProStatus(String applyNo, String proStatus);
+	void approvalOverWork(String applyNo);
+
+	/**
+	 * 差戻処理実行
+	 * 
+	 * @param applyNo
+	 *               申請番号
+	 */
+	void remandOverWork(String applyNo);
 }
