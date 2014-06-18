@@ -12,7 +12,6 @@
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="../css/common.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
 /* アクション提出 */
@@ -83,7 +82,7 @@ function submitAction(action) {
 							<form:hidden path="yearMonth"/>
 						</td>
 						<td align="left"><input type="button" value="→" onclick="submitAction('/monthlyReport/nextMonth');" /></td>
-						<td align="right"><input type="button" value="月報提出" onclick="" /></td>
+						<td align="right"><input type="button" value="月報提出" onclick="submitAction('/monthlyReport/monthlyReportCommit');" /></td>
 					</tr>
 				</table>
 			</div>
@@ -116,7 +115,7 @@ function submitAction(action) {
 							<tr>
 								<c:if test="${not monthlyReport.totleFlg}">
 									<td align="center" width="25PX;">
-										<a href="/attendanceInput/init?attDate=${monthlyReport.date}">${monthlyReport.day}</a>
+										<a href="/attendanceInput/init?attendanceDate=${monthlyReport.date}">${monthlyReport.day}</a>
 									</td>
 									<td align="center" width="25PX;">
 										${monthlyReport.week}
@@ -176,39 +175,23 @@ function submitAction(action) {
 			</div>
 			<div style="margin-left:80px;">
 				<table style="width:400px">
-					<c:forEach var="projectInfo" items="${monthlyReportForm.projectList}">
+					<c:forEach var="projWorkTimeCountInfo" items="${monthlyReportForm.projWorkTimeCountVOList}">
+						<c:if test="${not empty projWorkTimeCountInfo.projName}">
 						<tr>
 							<td style="width:200px" colspan="2">
-								${projectInfo.projName}
+								${projWorkTimeCountInfo.projName}
 							</td>
 							<td>
-								${projectInfo.projHours}
+								${projWorkTimeCountInfo.prpjectWorkTotalHours}
 							</td>
 						</tr>
-						<c:if test="${not empty projectInfo.projManageHours}">
-							<tr>
-								<td style="width:40px">&nbsp;</td>
-								<td>プロジェクト管理</td>
-								<td>
-									${projectInfo.projManageHours}
-								</td>
-							</tr>
 						</c:if>
-						<c:if test="${not empty projectInfo.basicDesignHours}">
+						<c:if test="${not empty projWorkTimeCountInfo.workContentName}">
 							<tr>
 								<td style="width:40px">&nbsp;</td>
-								<td>基本設計</td>
+								<td>${projWorkTimeCountInfo.workContentName}</td>
 								<td>
-									${projectInfo.basicDesignHours}
-								</td>
-							</tr>
-						</c:if>
-						<c:if test="${not empty projectInfo.meetingHours}">
-							<tr>
-								<td style="width:40px">&nbsp;</td>
-								<td>会議</td>
-								<td>
-									${projectInfo.meetingHours}
+									${projWorkTimeCountInfo.workHoursNum}
 								</td>
 							</tr>
 						</c:if>

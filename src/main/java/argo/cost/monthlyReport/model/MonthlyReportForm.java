@@ -6,6 +6,7 @@ import java.util.List;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.MonthlyReportDispVO;
+import argo.cost.common.model.ProjWorkTimeCountVO;
 
 /**
  * <p>
@@ -77,6 +78,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	 * 事務処理・社内会議
 	 */
 	private String paperwork;
+	
+	/**
+	 * プロジェクト別作業時間集計情報
+	 */
+	private List<ProjWorkTimeCountVO> projWorkTimeCountVOList;
 //	/**
 //	 * プロジェクト情報
 //	 */
@@ -178,11 +184,13 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 		this.yearMonthHyoji = yearMonthHyoji;
 	}
 
-//	public List<Project> getProjectList() {
-//		return projectList;
-//	}
-//
-//	public void setProjectList(List<Project> projectList) {
-//		this.projectList = projectList;
-//	}
+	public List<ProjWorkTimeCountVO> getProjWorkTimeCountVOList() {
+		return projWorkTimeCountVOList;
+	}
+
+	public void setProjWorkTimeCountVOList(
+			List<ProjWorkTimeCountVO> projWorkTimeCountVOList) {
+		this.projWorkTimeCountVOList = projWorkTimeCountVOList;
+	}
+
 }

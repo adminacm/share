@@ -100,7 +100,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 			for (int i = 0;i < kintaiInfoList.size(); i++) {
 				
 				// 対応した日付で、勤務情報を設定する
-				if (StringUtils.equals(monthlyReportApprovalList.get(j).getDate(), kintaiInfoList.get(i).getAtendanceBookDate())) {
+				if (StringUtils.equals(monthlyReportApprovalList.get(j).getDate(), kintaiInfoList.get(i).getAtendanceDate())) {
 					
 					// 区分
 					if (kintaiInfoList.get(i).getKyukaKekinKbnMaster() != null ){

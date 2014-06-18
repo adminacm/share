@@ -54,19 +54,11 @@ function submitAction(action) {
 					</tr>
 					<tr>
 						<td>勤務開始時刻</td>
-						<td>
-							<form:input style="width:40px;text-align:right;border:2px solid #333333;" path="workStartH"></form:input>
-							&nbsp;：
-							<form:input style="width:40px;text-align:center;border:2px solid #333333;" path="workStartM"></form:input>
-						</td>
+						<td colspan="2">${setupForm.workStartH}${setupForm.workStartTime}</td>
 					</tr>
 					<tr>
 						<td>勤務終了時刻</td>
-						<td>
-							<form:input style="width:40px;text-align:right;border:2px solid #333333;" path ="workEndH"></form:input>
-							&nbsp;：
-							<form:input style="width:40px;text-align:center;border:2px solid #333333;" path ="workEndM"></form:input>
-						</td>
+						<td colspan="2">${setupForm.workEndH}${setupForm.workEndTime}</td>
 					</tr>
 					<tr>
 						<td>入社日</td>

@@ -18,6 +18,7 @@ import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
+import argo.cost.monthlyReport.checker.MonthlyReportChecker;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.service.MonthlyReportService;
 
@@ -48,7 +49,12 @@ public class MonthlyReportController extends AbstractController {
 	/**
 	 * 来月URL
 	 */
-	private static final String nextMONTH = "/nextMonth";
+	private static final String NEXTMONTH = "/nextMonth";
+	
+	/**
+	 * 月報提出URL
+	 */
+	private static final String MONTHLYREPORTCOMMIT = "/monthlyReportCommit";
 
 	/**
 	 * 初期化
@@ -65,7 +71,6 @@ public class MonthlyReportController extends AbstractController {
     @RequestMapping(value = INIT)
     public String initMonthlyReport(Model model, @RequestParam("newMonth") String newMonth) throws Exception {
     	
-//    	String loginId = getSession().getUserInfo().getLoginMailAdress();
     	// フォーム初期化
     	MonthlyReportForm monthlyReportForm = initForm(MonthlyReportForm.class);
     	// 画面へ設定します。
@@ -88,24 +93,21 @@ public class MonthlyReportController extends AbstractController {
     	if (StringUtils.isNotEmpty(newMonth)) {
     		date = newMonth.substring(0,6).concat("01");
     	}
-    	monthlyReportForm.setYearMonth(date);
-    	Date formatDate = CostDateUtils.toDate(date);
+    	monthlyReportForm.setYearMonth(date.substring(0,6).concat("01"));
+    	Date formatDate = CostDateUtils.toDate(date.substring(0,6).concat("01"));
     	monthlyReportForm.setYearMonthHyoji(monthlyReportService.getDateFormat(formatDate));
     	// 提出状態取得
     	String status = comService.getMonthReportStatus(userId, date);
     	monthlyReportForm.setProStatus(status);
     	
+    	// 勤怠内容チェック
+    	MonthlyReportChecker.chkKintaiInfoInput(monthlyReportForm);
+    	
     	List<MonthlyReportDispVO> monthlyReportDispVOList = monthlyReportService.getMonthyReportList(formatDate);
     	
     	monthlyReportForm.setmRList(monthlyReportDispVOList);
     	// 月報情報の設定
-    	monthlyReportService.setUserMonthReport(userId, date, monthlyReportDispVOList);
-    	
-//		// 【PJ別作業時間集計】を取得
-//		List<Project> projectList = monthlyReportService.getProjectList(loginId, date);
-//		
-//		// プロジェクト情報設定
-//		form.setProjectList(projectList);
+    	monthlyReportService.setUserMonthReport(userId, date, monthlyReportForm);
 		
         return MONTHLYREPORT;
     }
@@ -128,7 +130,7 @@ public class MonthlyReportController extends AbstractController {
     	form.setmRList(resultList);
     	
     	// 月報情報の設定
-    	monthlyReportService.setUserMonthReport(userId, form.getYearMonth(), resultList);
+    	monthlyReportService.setUserMonthReport(userId, form.getYearMonth(), form);
     	
         return MONTHLYREPORT;
     }
@@ -160,7 +162,7 @@ public class MonthlyReportController extends AbstractController {
 	 * @throws Exception
 	 *             Exception
 	 */
-    @RequestMapping(value = nextMONTH, method = RequestMethod.POST)
+    @RequestMapping(value = NEXTMONTH, method = RequestMethod.POST)
     public String getNextMonth(MonthlyReportForm form) throws Exception {
     	
     	// 来月を取得
@@ -169,4 +171,28 @@ public class MonthlyReportController extends AbstractController {
         return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + nextMonth;
     }
 
+    
+    /**
+	 * 月報提出処理
+	 *
+	 * @param monthlyReportForm
+	 *            月報提出画面フォーム情報
+	 * @return 月報画面
+	 * @throws Exception
+	 *             Exception
+	 */
+    @RequestMapping(value = MONTHLYREPORTCOMMIT, method = RequestMethod.POST)
+    public String monthlyReportCommit(MonthlyReportForm monthlyReportForm) throws Exception {
+    	
+    	String strMonthyReportCommitFlg = monthlyReportService.monthyReportCommit(monthlyReportForm);
+    	if ("1".equals(strMonthyReportCommitFlg)) {
+    		return MONTHLYREPORT;
+    	} else {
+    		
+    		// TODO
+    		return MONTHLYREPORT;
+    	}
+    	
+
+    }
 }
