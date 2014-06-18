@@ -2,7 +2,6 @@ package argo.cost.setup.service;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,10 +61,10 @@ public class SetupServiceImpl implements SetupService {
 		form.setStandardShift(setupEntity.getStandardShiftCd());
 		
 		// 勤務開始時刻
-		form.setWorkStart(CostDateUtils.formatTime(setupEntity.getKinmuStartTime()));
+		form.setWorkStartTime(CostDateUtils.formatTime(setupEntity.getKinmuStartTime()));
 		
 		// 勤務終了時刻
-		form.setWorkEnd(CostDateUtils.formatTime(setupEntity.getKinmuEndTime()));
+		form.setWorkEndTime(CostDateUtils.formatTime(setupEntity.getKinmuEndTime()));
 		
 		// 入社日
 		form.setJoinDate(setupEntity.getNyushaDate());
@@ -100,26 +99,6 @@ public class SetupServiceImpl implements SetupService {
 		// 標準ｼﾌﾄリスト
 		setupInfo.setStandardShiftList(getShiftList());
     	
-    	// 勤務開始時刻
-    	if (StringUtils.isNotEmpty(setupInfo.getWorkStart())){
-
-    		String[] workStart = setupInfo.getWorkStart().split(":");
-        	// 勤務開始時刻（時）
-    		setupInfo.setWorkStartH(workStart[0]);
-        	// 勤務開始時刻（分）
-    		setupInfo.setWorkStartM(workStart[1]);
-    		
-    	}
-    	// 勤務終了時刻
-    	if (StringUtils.isNotEmpty(setupInfo.getWorkEnd())){
-    		
-    		String[] workEnd = setupInfo.getWorkEnd().split(":");
-        	// 勤務終了時刻（時）
-    		setupInfo.setWorkEndH(workEnd[0]);
-        	// 勤務終了時刻（分）
-    		setupInfo.setWorkEndM(workEnd[1]);
-    		
-    	}
 	}
 
 	/**
@@ -129,7 +108,7 @@ public class SetupServiceImpl implements SetupService {
 	 *            個人設定情報
 	 */  
 	@Override
-	public void changeShift(SetupForm setupInfo) {
+	public void changeShift(SetupForm setupForm) {
 		
 		// 標準ｼﾌﾄより、ｼﾌﾄ時刻情報を取得
 		BaseCondition shiftStandardJikokuSelectbaseCondition = new BaseCondition();
@@ -142,19 +121,15 @@ public class SetupServiceImpl implements SetupService {
     	// 勤務開始時刻
     	if (shiftTime != null && !shiftTime.getTeijiKinmuTime().isEmpty()){
 
-        	// 勤務開始時刻（時）
-    		setupInfo.setWorkStartH(shiftTime.getTeijiTaikinTime().substring(0, 2));
-        	// 勤務開始時刻（分）
-    		setupInfo.setWorkStartM(shiftTime.getTeijiTaikinTime().substring(2, 4));
+        	// 勤務開始時刻
+    		setupForm.setWorkStartTime(CostDateUtils.formatTime(shiftTime.getTeijiTaikinTime()));
     		
     	}
     	// 勤務終了時刻
     	if (shiftTime != null && !shiftTime.getTeijiTaikinTime().isEmpty()) {
     		
-        	// 勤務終了時刻（時）
-    		setupInfo.setWorkEndH(shiftTime.getTeijiTaikinTime().substring(0, 2));
-        	// 勤務終了時刻（分）
-    		setupInfo.setWorkEndM(shiftTime.getTeijiTaikinTime().substring(2, 4));
+        	// 勤務終了時刻
+    		setupForm.setWorkEndTime(CostDateUtils.formatTime(shiftTime.getTeijiTaikinTime()));
     	}
 		
 	}
@@ -171,25 +146,6 @@ public class SetupServiceImpl implements SetupService {
 	@Override
 	public Boolean doSaveCheck(SetupForm setupInfo) {
 		
-		String strWholeHours = "00";
-		
-		String strHalfHours = "30";
-
-		// 勤務開始時刻は30分単位で入力
-		if (!StringUtils.equals(strWholeHours, setupInfo.getWorkStartM()) && !StringUtils.equals(strHalfHours, setupInfo.getWorkStartM())) {
-			setupInfo.putConfirmMsg("勤務開始時刻は30分単位で入力してください");
-			// エラー(勤務開始時刻は30分単位で入力してください)
-			return false;
-			
-		}
-		
-		// 勤務終了時刻は30分単位で入力
-		if (!StringUtils.equals(strWholeHours, setupInfo.getWorkEndM()) && !StringUtils.equals(strHalfHours, setupInfo.getWorkEndM())) {
-			
-			// エラー(勤務終了時刻は30分単位で入力してください)
-			return false;
-		}
-		
 		// 休業開始日、休業終了日、退職日は日付の値であること
 		if (!CostDateUtils.isValidDate(setupInfo.getHolidayStart(), CommonConstant.YYYY_MM_DD) && !CostDateUtils.isValidDate(setupInfo.getHolidayEnd(), CommonConstant.YYYY_MM_DD)
 				&& !CostDateUtils.isValidDate(setupInfo.getOutDate(), CommonConstant.YYYY_MM_DD)) {
@@ -198,8 +154,6 @@ public class SetupServiceImpl implements SetupService {
 			return false;
 		}
 		
-		setupInfo.setWorkStart(setupInfo.getWorkStartH().concat(setupInfo.getWorkStartM()));
-		setupInfo.setWorkEnd(setupInfo.getWorkEndH().concat(setupInfo.getWorkEndM()));
 		return true;
 	}
 
@@ -224,23 +178,23 @@ public class SetupServiceImpl implements SetupService {
 	 *        個人設定情報
 	 */
 	@Override
-	public void doSave(SetupForm setupInfo) {
+	public void doSave(SetupForm setupForm) {
 		
-		Users user = baseDao.findById(setupInfo.getUserId(), Users.class);
+		Users user = baseDao.findById(setupForm.getUserId(), Users.class);
 		// 代理者ID
-		user.setDairishaId(setupInfo.getAgentCd());
+		user.setDairishaId(setupForm.getAgentCd());
 		// 標準シフト
-		user.setStandardShiftCd(setupInfo.getStandardShift());
+		user.setStandardShiftCd(setupForm.getStandardShift());
 		// 勤務開始時間
-		user.setKinmuStartTime(setupInfo.getWorkStart());
+		user.setKinmuStartTime(setupForm.getWorkStartTime().replaceAll(":", ""));
 		// 勤務終了時間
-		user.setKinmuEndTime(setupInfo.getWorkEnd());
+		user.setKinmuEndTime(setupForm.getWorkEndTime().replaceAll(":", ""));
 		// 休業開始日
-		user.setKyugyoStartDate(setupInfo.getHolidayStart().replaceAll("/", ""));
+		user.setKyugyoStartDate(setupForm.getHolidayStart().replaceAll("/", ""));
 		// 休業終了日
-		user.setKyugyoEndDate(setupInfo.getHolidayEnd().replaceAll("/", ""));
+		user.setKyugyoEndDate(setupForm.getHolidayEnd().replaceAll("/", ""));
 		// 退職日
-		user.setTaisyokuDate(setupInfo.getOutDate().replaceAll("/", ""));
+		user.setTaisyokuDate(setupForm.getOutDate().replaceAll("/", ""));
 		baseDao.update(user);
 
 		

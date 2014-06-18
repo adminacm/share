@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +25,6 @@ public class ApprovalManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="apply_no", unique=true, nullable=false, length=30)
 	private String applyNo;
 
@@ -43,7 +40,7 @@ public class ApprovalManage implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="item_date", nullable=false, length=8)
+	@Column(name="item_date", length=8)
 	private String itemDate;
 
 	@Column(name="update_date")

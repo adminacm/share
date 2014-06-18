@@ -57,12 +57,12 @@ function submitAction(action) {
 					<tr>
 						<td></td>
 						<td>勤務開始時刻</td>
-						<td colspan="2">${setupForm.workStart}</td>
+						<td colspan="2">${setupForm.workStartTime}</td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>勤務終了時刻</td>
-						<td colspan="2">${setupForm.workEnd}</td>
+						<td colspan="2">${setupForm.workEndTime}</td>
 					</tr>
 					<tr>
 						<td></td>

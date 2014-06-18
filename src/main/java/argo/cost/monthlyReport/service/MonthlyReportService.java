@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import argo.cost.common.model.MonthlyReportDispVO;
+import argo.cost.monthlyReport.model.MonthlyReportForm;
 
 /**
  * 月報画面サービス
@@ -52,7 +53,7 @@ public interface MonthlyReportService {
 	 * 			日付
 	 * @throws ParseException 
 	 */
-	void setUserMonthReport(String userId, String date, List<MonthlyReportDispVO> monthList) throws ParseException;
+	void setUserMonthReport(String userId, String date, MonthlyReportForm monthlyReportForm) throws ParseException;
 	
 	
 	/**
@@ -66,4 +67,15 @@ public interface MonthlyReportService {
 	 *        更新フラグ
 	 */
 	String getUserLatestShinseiMonth(String userId);
+	
+	/**
+	 * 月報提出　　　　　　　　　　　　　　
+	 * 
+	 * @param userId
+	 * 			ユーザID
+	 * @param date 
+	 * 			日付
+	 * @throws ParseException 
+	 */
+	String monthyReportCommit(MonthlyReportForm monthlyReportForm) throws ParseException;
 }

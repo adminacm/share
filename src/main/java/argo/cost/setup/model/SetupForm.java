@@ -47,32 +47,12 @@ public class SetupForm extends AbstractForm implements Serializable {
 	/**
 	 * 勤務開始時刻
 	 */
-	private String workStart;
-	
-	/**
-	 * 勤務開始時刻（時）
-	 */
-	private String workStartH;
-	
-	/**
-	 * 勤務開始時刻（分）
-	 */
-	private String workStartM;
+	private String workStartTime;
 	
 	/**
 	 * 勤務終了時刻
 	 */
-	private String workEnd;
-	
-	/**
-	 * 勤務終了時刻（時）
-	 */
-	private String workEndH;
-	
-	/**
-	 * 勤務終了時刻（分）
-	 */
-	private String workEndM;
+	private String workEndTime;
 	
 	/**
 	 * 入社日
@@ -133,53 +113,21 @@ public class SetupForm extends AbstractForm implements Serializable {
 	public void setStandardShiftList(List<ShiftJikoku> standardShiftList) {
 		this.standardShiftList = standardShiftList;
 	}
-
-	public String getWorkStart() {
-		return workStart;
+	
+	public String getWorkStartTime() {
+		return workStartTime;
 	}
 
-	public void setWorkStart(String workStart) {
-		this.workStart = workStart;
+	public void setWorkStartTime(String workStartTime) {
+		this.workStartTime = workStartTime;
 	}
 
-	public String getWorkStartH() {
-		return workStartH;
+	public String getWorkEndTime() {
+		return workEndTime;
 	}
 
-	public void setWorkStartH(String workStartH) {
-		this.workStartH = workStartH;
-	}
-
-	public String getWorkStartM() {
-		return workStartM;
-	}
-
-	public void setWorkStartM(String workStartM) {
-		this.workStartM = workStartM;
-	}
-
-	public String getWorkEnd() {
-		return workEnd;
-	}
-
-	public void setWorkEnd(String workEnd) {
-		this.workEnd = workEnd;
-	}
-
-	public String getWorkEndH() {
-		return workEndH;
-	}
-
-	public void setWorkEndH(String workEndH) {
-		this.workEndH = workEndH;
-	}
-
-	public String getWorkEndM() {
-		return workEndM;
-	}
-
-	public void setWorkEndM(String workEndM) {
-		this.workEndM = workEndM;
+	public void setWorkEndTime(String workEndTime) {
+		this.workEndTime = workEndTime;
 	}
 
 	public String getJoinDate() {

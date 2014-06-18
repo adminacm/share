@@ -14,12 +14,19 @@ import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.ApplyKbnMaster;
+import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.ProjWorkTimeManage;
+import argo.cost.common.entity.StatusMaster;
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.MonthlyReportDispVO;
+import argo.cost.common.model.ProjWorkTimeCountVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
+import argo.cost.monthlyReport.checker.MonthlyReportChecker;
 import argo.cost.monthlyReport.dao.MonthlyReportDao;
+import argo.cost.monthlyReport.model.MonthlyReportForm;
 
 /**
  * 月報画面サービス実現するクラス
@@ -51,6 +58,8 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	
 	// 来月
 	private final String NEXT = "next";
+
+	private Double totalWorkHourNum = null;
 
 	/**
 	 * 年月取得処理
@@ -161,7 +170,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 
 		String formatDate = "";
 		Calendar calendar = new GregorianCalendar(); 
-		Date date = CostDateUtils.toDate(month);
+		Date date = CostDateUtils.toDate(month.substring(0, 6).concat("01"));
 		calendar.setTime(date);
 		 
 		// 年月の←ボタンを押すと、前の月に表示が切り替わる
@@ -198,8 +207,10 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	 * @throws ParseException 
 	 */
 	@Override
-	public void setUserMonthReport(String userId, String date, List<MonthlyReportDispVO> monthList) throws ParseException {
+	public void setUserMonthReport(String userId, String date, MonthlyReportForm monthlyReportForm) throws ParseException {
 		
+		
+		MonthlyReportChecker.chkKintaiInfoInput(monthlyReportForm);
 		// 合計休暇時間数
 		Double totleRestHours = 0.0;
 		// 合計勤務時間数
@@ -219,7 +230,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		
 		// 最新の申請日付を取得
 		String strLatestShinseiDate = monthlyReportDao.getUserLatestShinseiMonth(userId);
-		monthlyReportList = getMonthyReportList(CostDateUtils.toDate(strLatestShinseiDate.concat("01")));
+		monthlyReportList = getMonthyReportList(CostDateUtils.toDate(strLatestShinseiDate.substring(0,6).concat("01")));
 		
 		
 		// 月報情報を取得
@@ -227,17 +238,17 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 検索条件：ユーザーID
 		monthReportInfoSelectCondition.addConditionEqual("users.id", userId);
 		// 検索条件：年月
-		monthReportInfoSelectCondition.addConditionLike("atendanceBookDate",  date + "%");
+		monthReportInfoSelectCondition.addConditionLike("atendanceBookDate",  date.substring(0, 6) + "%");
 		        
 		ArrayList<KintaiInfo> monthlyKintaiInfoList = (ArrayList<KintaiInfo>) baseDao.findResultList(monthReportInfoSelectCondition, KintaiInfo.class);
 		List<ProjWorkTimeManage> projWorkTimeManageList = new ArrayList<ProjWorkTimeManage>();
 		
-		for(int i = 0; i < monthlyReportList.size(); i++){
+		for(int j = 0; j < monthlyReportList.size(); j++){
 			
 			
-			for (int j = 0; j < monthlyKintaiInfoList.size(); j++) {
+			for (int i = 0; i < monthlyKintaiInfoList.size(); i++) {
 				// 対応した日付で、勤務情報を設定する
-				if (StringUtils.equals(monthlyReportList.get(j).getDate(), monthlyKintaiInfoList.get(i).getAtendanceBookDate())) {
+				if (StringUtils.equals(monthlyReportList.get(j).getDate(), monthlyKintaiInfoList.get(i).getAtendanceDate())) {
 					
 					
 					// 区分
@@ -294,15 +305,18 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 					
 				}
 				
-			//  【PJ別作業時間集計】情報を取得
-			BaseCondition projectWorkTImeSelectCondition = new BaseCondition();
-			projectWorkTImeSelectCondition.addConditionEqual("kintaiInfo.id", monthlyKintaiInfoList.get(i).getId());
-			ProjWorkTimeManage projWorkTimeManageInfo = baseDao.findSingleResult(projectWorkTImeSelectCondition, ProjWorkTimeManage.class);
-			projWorkTimeManageList.add(projWorkTimeManageInfo);
 			}
 			
 		}
 		
+		for (int k = 0; k < monthlyKintaiInfoList.size(); k++) {
+			
+			//  【PJ別作業時間集計】情報を取得
+			BaseCondition projectWorkTImeSelectCondition = new BaseCondition();
+			projectWorkTImeSelectCondition.addConditionEqual("kintaiInfo.id", monthlyKintaiInfoList.get(k).getId());
+			projWorkTimeManageList = baseDao.findResultList(projectWorkTImeSelectCondition, ProjWorkTimeManage.class);
+
+		}
 		
 		// 月報承認明細情報合計行作成
 		for (MonthlyReportDispVO itemInfo : monthlyReportList) {
@@ -347,7 +361,33 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		totleInfo.setChoWeekdayNomal(totleChoWeekdayNomal);
 		totleInfo.setChoHoliday(totleChoHoliday);
 		totleInfo.setmNHours(totleMNHours);
-		monthList.add(totleInfo);
+		monthlyReportList.add(totleInfo);
+		
+		monthlyReportForm.setmRList(monthlyReportList);
+		
+		List<ProjWorkTimeCountVO> projWorkTimeCountList = new ArrayList<ProjWorkTimeCountVO>();
+		
+		for (int m = 0; m < projWorkTimeManageList.size(); m++) {
+			
+			ProjWorkTimeCountVO projWorkTimeCountVO = new ProjWorkTimeCountVO();
+			// プロジェクト名前（漢字）
+			projWorkTimeCountVO.setProjName(projWorkTimeManageList.get(m).getProjectMaster().getName());
+			// プロジェクトコード
+			projWorkTimeCountVO.setProjCode(projWorkTimeManageList.get(m).getProjectMaster().getCode());
+			// 作業内容名
+			projWorkTimeCountVO.setWorkContentName(projWorkTimeManageList.get(m).getProjWorkMaster().getName());
+			
+			Double everyWorkHoursNum = projWorkTimeManageList.get(m).getProjWorkMaster().getProjWorkTimeManages().get(m).getWorkTimes().doubleValue();
+			// 作業対応した時間数
+			projWorkTimeCountVO.setWorkHoursNum(everyWorkHoursNum);
+			
+			totalWorkHourNum  += everyWorkHoursNum;
+			// プロジェクトの総計時間数
+			projWorkTimeCountVO.setPrpjectWorkTotalHours(totalWorkHourNum);
+		
+			projWorkTimeCountList.add(projWorkTimeCountVO);
+		}
+		monthlyReportForm.setProjWorkTimeCountVOList(projWorkTimeCountList);
 	}
 
 	
@@ -425,6 +465,63 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	public String getUserLatestShinseiMonth(String userId) {
 		
 		return monthlyReportDao.getUserLatestShinseiMonth(userId);
+	}
+
+	@Override
+	public String monthyReportCommit(MonthlyReportForm monthlyReportForm)
+			throws ParseException {
+		
+		String userId = monthlyReportForm.getUserId();
+		ApprovalManage approvalManage = new ApprovalManage();
+		
+		String strApplyNo = userId.concat("1").concat(monthlyReportForm.getYearMonth().substring(0, 6).concat("00"));
+	
+		// 申請番号
+		approvalManage.setApplyNo(strApplyNo);
+		// 申請状況コードを"02"(提出)更新される
+		approvalManage.setStatusMaster(baseDao.findById("02", StatusMaster.class));
+		
+		// 申請内容
+		approvalManage.setApplyDetail("2014年5月分");
+		
+		// 申請区分("1"(月報)を設定する)
+		approvalManage.setApplyKbnMaster(baseDao.findById("1", ApplyKbnMaster.class));
+		
+		// 社員番号
+		approvalManage.setUser(baseDao.findById(userId, Users.class));
+		
+		// 申請日付
+		SimpleDateFormat simpleDateFormat= new SimpleDateFormat("yyyyMMdd");
+		approvalManage.setAppYmd(simpleDateFormat.format(new Date()));
+		
+		// 月報の日付
+		approvalManage.setItemDate(monthlyReportForm.getYearMonth());
+		String strMonthyReportCommitFlg = "1";
+		
+		// 勤怠情報の対応した申請番号を更新される
+		BaseCondition commitedMonthyReportSelect = new BaseCondition();
+		commitedMonthyReportSelect.addConditionEqual("users.id", userId);
+		commitedMonthyReportSelect.addConditionLike("atendanceBookDate", monthlyReportForm.getYearMonth().substring(0, 6) + "%");
+		List<KintaiInfo> monthyKintaiInfoList = baseDao.findResultList(commitedMonthyReportSelect, KintaiInfo.class);
+		
+		approvalManage.setKintaiInfos(monthyKintaiInfoList);
+		try {
+			baseDao.insert(approvalManage);
+			
+			for (int i = 0; i < monthyKintaiInfoList.size(); i++ ) {
+				// 申請番号を勤怠テーブルに更新される
+				monthyKintaiInfoList.get(i).setApprovalManage(approvalManage);
+				baseDao.update(monthyKintaiInfoList.get(i));
+			}
+		} catch (Exception e) {
+			strMonthyReportCommitFlg = "0";
+			System.out.print("1111");
+			
+		}
+		
+		return strMonthyReportCommitFlg;
+		
+		
 	}
 
 

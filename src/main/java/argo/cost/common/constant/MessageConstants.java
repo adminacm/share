@@ -107,4 +107,9 @@ public class MessageConstants {
 	 *　勤務開始時刻が前日の勤務終了時刻と同時刻です
 	 */
 	public static final String COSE_W_1102 = "勤務開始時刻が前日の勤務終了時刻と同時刻です";
+
+	/**
+	 *　｛0｝の{1}勤怠情報を入力ください！
+	 */
+	public static final String COSE_E_1103 = "｛0｝の{1}の勤怠情報を入力ください";
 }
