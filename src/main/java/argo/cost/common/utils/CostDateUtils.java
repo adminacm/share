@@ -340,5 +340,32 @@ public class CostDateUtils extends DateUtils {
 		
 		return result;
 	}
+	
+	/**
+	 * 処理年月の取得
+	 * 
+	 * @param strInputDate
+	 *            渡した日付
+	　* @param applyKbnCode
+	 *            申請内容区分コード
+	 * @return 処理年月
+	 */
+	public static String getDealDate(String strInputDate, String applyKbnCode) {
+		
+		// 申請内容が"月報"の場合
+		if (StringUtils.equals(CommonConstant.APPLY_KBN_GETUHOU, applyKbnCode)) {
+			int intNewMonth = (strInputDate.charAt(6) - 0) + 1;
+			strInputDate.replace(strInputDate.charAt(6), (char)intNewMonth);
+		// 申請内容が"超勤振替申請"の場合	
+		} else if (StringUtils.equals(CommonConstant.APPLY_KBN_CHOKIN_FURIKAE, applyKbnCode)) {
+			if((strInputDate.charAt(6) - 0) > 11 ) {
+				int intNewMonth = (strInputDate.charAt(6) - 0) + 1;
+				strInputDate.replace(strInputDate.charAt(6), (char)intNewMonth);
+			}
+		}
+		
+		return strInputDate;
+
+	}
 
 }

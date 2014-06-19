@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.ApplyKbnMaster;
@@ -479,13 +480,13 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 申請番号
 		approvalManage.setApplyNo(strApplyNo);
 		// 申請状況コードを"02"(提出)更新される
-		approvalManage.setStatusMaster(baseDao.findById("02", StatusMaster.class));
+		approvalManage.setStatusMaster(baseDao.findById(CommonConstant.STATUS_TEISYUTU, StatusMaster.class));
 		
 		// 申請内容
 		approvalManage.setApplyDetail("2014年5月分");
 		
 		// 申請区分("1"(月報)を設定する)
-		approvalManage.setApplyKbnMaster(baseDao.findById("1", ApplyKbnMaster.class));
+		approvalManage.setApplyKbnMaster(baseDao.findById(CommonConstant.APPLY_KBN_GETUHOU, ApplyKbnMaster.class));
 		
 		// 社員番号
 		approvalManage.setUser(baseDao.findById(userId, Users.class));
