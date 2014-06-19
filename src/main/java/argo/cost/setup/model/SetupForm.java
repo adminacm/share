@@ -75,14 +75,15 @@ public class SetupForm extends AbstractForm implements Serializable {
 	private String outDate;
 	
 	/**
-	 * 1日の勤務時間数
+	 * 選択された1日の勤務時間数
 	 */
-	private String oneDayKinmuHours;
+	private Double oneDayKinmuHours;
 	
 	/**
 	 * 1日の勤務可能時間数リスト
 	 */
 	private List<Double> oneDayMayKinmuHoursList;
+	
 
 	public String getAgentCd() {
 		return agentCd;
@@ -172,11 +173,11 @@ public class SetupForm extends AbstractForm implements Serializable {
 		this.outDate = outDate;
 	}
 
-	public String getOneDayKinmuHours() {
+	public Double getOneDayKinmuHours() {
 		return oneDayKinmuHours;
 	}
 
-	public void setOneDayKinmuHours(String oneDayKinmuHours) {
+	public void setOneDayKinmuHours(double oneDayKinmuHours) {
 		this.oneDayKinmuHours = oneDayKinmuHours;
 	}
 
@@ -187,5 +188,6 @@ public class SetupForm extends AbstractForm implements Serializable {
 	public void setOneDayMayKinmuHoursList(List<Double> oneDayMayKinmuHoursList) {
 		this.oneDayMayKinmuHoursList = oneDayMayKinmuHoursList;
 	}
+
 	
 }

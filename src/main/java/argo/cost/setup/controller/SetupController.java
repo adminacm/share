@@ -77,33 +77,34 @@ public class SetupController extends AbstractController {
 	 * @return
 	 */
 	@RequestMapping(value = EDIT, method = RequestMethod.POST)
-	public String editSetup(SetupForm setupInfo) {
-		// 遷移するURL
-		String strRedirectURL = "redirect:/setup/initSetupEdit";
-
-		return strRedirectURL;
-	}
-
-	/**
-	 * 個人設定変更初期化
-	 * 
-	 * @param model
-	 *            モデル
-	 * @param setupInfo
-	 *            個人設定情報
-	 * @return
-	 * @throws Exception 
-	 */
-	@RequestMapping(INITSETUPEDIT)
-	public String initSetupEdit(Model model, SetupForm setupInfo) throws Exception {
-
-		setupInfo = initForm(SetupForm.class);
+	public String editSetup(Model model,SetupForm setupForm) {
 		// 画面情報を作成
-		setupService.getSetupEditInfo(setupInfo);
+		setupService.getSetupEditInfo(setupForm);
 		// 画面へ設定します。
-		model.addAttribute(setupInfo);
+		model.addAttribute(setupForm);
 		return SETUPEDIT_GAMENID;
 	}
+
+//	/**
+//	 * 個人設定変更初期化
+//	 * 
+//	 * @param model
+//	 *            モデル
+//	 * @param setupInfo
+//	 *            個人設定情報
+//	 * @return
+//	 * @throws Exception 
+//	 */
+//	@RequestMapping(INITSETUPEDIT)
+//	public String initSetupEdit(Model model, SetupForm setupInfo) throws Exception {
+//
+//		setupInfo = initForm(SetupForm.class);
+//		// 画面情報を作成
+//		setupService.getSetupEditInfo(setupInfo);
+//		// 画面へ設定します。
+//		model.addAttribute(setupInfo);
+//		return SETUPEDIT_GAMENID;
+//	}
 
 	/**
 	 * 標準ｼﾌﾄ変更の場合

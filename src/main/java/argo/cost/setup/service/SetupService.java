@@ -1,5 +1,7 @@
 package argo.cost.setup.service;
 
+import java.text.ParseException;
+
 import argo.cost.setup.model.SetupForm;
 
 /**
@@ -15,8 +17,9 @@ public interface SetupService {
 	 *           ユーザＩＤ
 	 * @return
 	 *        個人設定情報
+	 * @throws ParseException 
 	 */
-	void getSetupInfo(SetupForm form);
+	void getSetupInfo(SetupForm form) throws ParseException;
 
 	/**
 	 * 個人設定変更情報を取得
