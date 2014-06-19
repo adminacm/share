@@ -85,26 +85,6 @@ public class SetupController extends AbstractController {
 		return SETUPEDIT_GAMENID;
 	}
 
-//	/**
-//	 * 個人設定変更初期化
-//	 * 
-//	 * @param model
-//	 *            モデル
-//	 * @param setupInfo
-//	 *            個人設定情報
-//	 * @return
-//	 * @throws Exception 
-//	 */
-//	@RequestMapping(INITSETUPEDIT)
-//	public String initSetupEdit(Model model, SetupForm setupInfo) throws Exception {
-//
-//		setupInfo = initForm(SetupForm.class);
-//		// 画面情報を作成
-//		setupService.getSetupEditInfo(setupInfo);
-//		// 画面へ設定します。
-//		model.addAttribute(setupInfo);
-//		return SETUPEDIT_GAMENID;
-//	}
 
 	/**
 	 * 標準ｼﾌﾄ変更の場合
