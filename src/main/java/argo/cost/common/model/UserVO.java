@@ -21,6 +21,10 @@ public class UserVO implements Serializable {
 	 */
 	private String userId;
 	/**
+	 * 対象社員番号です。
+	 */
+	private String taishoUserId;
+	/**
 	 * 表示用ユーザー名です。
 	 */
 	private String userName;
@@ -61,7 +65,6 @@ public class UserVO implements Serializable {
 	 * 入社日です。
 	 */
 	private String nyushaDate;
-
 	/**
 	 * 退職日です。
 	 */
@@ -88,6 +91,22 @@ public class UserVO implements Serializable {
 	public void setUserId(String userId) {
 
 		this.userId = userId;
+	}
+	/**
+	 * 対象ユーザIDを取得します。
+	 *
+	 * @return 対象ユーザID
+	 */
+	public String getTaishoUserId() {
+		return taishoUserId;
+	}
+	/**
+	 * 対象ユーザIDを設定します。
+	 *
+	 * @param 対象ユーザID
+	 */
+	public void setTaishoUserId(String taishoUserId) {
+		this.taishoUserId = taishoUserId;
 	}
 
 	/**

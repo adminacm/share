@@ -234,8 +234,10 @@ public class ComServiceImpl implements ComService {
         UserVO userinfo = new UserVO();
         // ユーザー情報が存在する場合
         if (user != null) {
-        	  // 社員番号
+        	// 社員番号
             userinfo.setUserId(user.getId());
+      	    // 対象社員番号
+            userinfo.setTaishoUserId(user.getId());
             // ユーザ名称(表示用)
             userinfo.setUserName(user.getUserName());
             // パスワード

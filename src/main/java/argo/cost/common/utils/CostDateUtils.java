@@ -189,7 +189,11 @@ public class CostDateUtils extends DateUtils {
 	 */
 	public static String getHourOrMinute(String hhmm, int flag) throws ParseException {
 		
-		String str = StringUtils.EMPTY;
+		String str = null;
+		// hhmmが存在しない場合
+		if (StringUtils.isEmpty(hhmm)) {
+			return str;
+		}
 		SimpleDateFormat format = new SimpleDateFormat("HHmm");
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(format.parse(hhmm));
