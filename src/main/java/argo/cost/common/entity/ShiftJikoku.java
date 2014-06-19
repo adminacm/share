@@ -1,7 +1,6 @@
 package argo.cost.common.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -39,9 +38,6 @@ public class ShiftJikoku implements Serializable {
 
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
-
-	@Column(name="kinmu_hours", nullable=false, precision=3, scale=1)
-	private BigDecimal kinmuHours;
 
 	@Column(name="pm_start_time", nullable=false, length=4)
 	private String pmStartTime;
@@ -103,14 +99,6 @@ public class ShiftJikoku implements Serializable {
 
 	public void setCreatedUserId(String createdUserId) {
 		this.createdUserId = createdUserId;
-	}
-
-	public BigDecimal getKinmuHours() {
-		return this.kinmuHours;
-	}
-
-	public void setKinmuHours(BigDecimal kinmuHours) {
-		this.kinmuHours = kinmuHours;
 	}
 	
 	public String getPmStartTime() {

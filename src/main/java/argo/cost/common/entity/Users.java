@@ -62,7 +62,7 @@ public class Users implements Serializable {
 	@Column(nullable=false, length=16)
 	private String password;
 
-	@Column(name="standard_shift_cd", nullable=false, length=4)
+	@Column(name="standard_shift_cd", nullable=false, length=6)
 	private String standardShiftCd;
 
 	@Column(nullable=false, precision=1)
