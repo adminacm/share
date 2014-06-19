@@ -2,7 +2,6 @@ package argo.cost.monthlyReportStatusList;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,11 +17,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.entity.ApplyKbnMaster;
-import argo.cost.common.entity.ApprovalManage;
-import argo.cost.common.entity.ChokinKanri;
-import argo.cost.common.entity.StatusMaster;
-import argo.cost.common.entity.Users;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
@@ -135,67 +129,6 @@ public class MonthlyReportStatusListTest {
 	@Test
 	public void testGetMonthlyReportStatusList(){
 
-		// テストデータ
-		ApprovalManage approvalInfo1 = new ApprovalManage();
-		approvalInfo1.setApplyNo("4001120140500");
-		StatusMaster statusInfo1 = new StatusMaster();
-		statusInfo1.setCode("01");
-		approvalInfo1.setStatusMaster(statusInfo1);
-		approvalInfo1.setApplyDetail("2014年5月分");
-		ApplyKbnMaster applyKbn1 = new ApplyKbnMaster();
-		applyKbn1.setCode("1");
-		approvalInfo1.setApplyKbnMaster(applyKbn1);
-		Users users1 = new Users();
-		users1.setId("4001");
-		approvalInfo1.setUser(users1);
-		approvalInfo1.setAppYmd("20140500");
-		
-		ApprovalManage approvalInfo2 = new ApprovalManage();
-		approvalInfo2.setApplyNo("4002120140500");
-		StatusMaster statusInfo2 = new StatusMaster();
-		statusInfo2.setCode("01");
-		approvalInfo2.setStatusMaster(statusInfo2);
-		approvalInfo2.setApplyDetail("2014年5月分");
-		ApplyKbnMaster applyKbn2 = new ApplyKbnMaster();
-		applyKbn2.setCode("1");
-		approvalInfo2.setApplyKbnMaster(applyKbn2);
-		Users user2 = new Users();
-		user2.setId("4002");
-		approvalInfo2.setUser(user2);
-		approvalInfo2.setAppYmd("20140500");
-
-		ApprovalManage approvalInfo3 = new ApprovalManage();
-		approvalInfo3.setApplyNo("4003120140500");
-		StatusMaster statusInfo3 = new StatusMaster();
-		statusInfo3.setCode("01");
-		approvalInfo3.setStatusMaster(statusInfo3);
-		approvalInfo3.setApplyDetail("2014年5月分");
-		ApplyKbnMaster applyKbn3 = new ApplyKbnMaster();
-		applyKbn3.setCode("1");
-		approvalInfo3.setApplyKbnMaster(applyKbn3);
-		Users user3 = new Users();
-		user3.setId("4003");
-		approvalInfo3.setUser(user3);
-		approvalInfo3.setAppYmd("20140500");
-		
-		ApprovalManage approvalInfo4 = new ApprovalManage();
-		approvalInfo4.setApplyNo("4004220140505");
-		StatusMaster statusInfo4 = new StatusMaster();
-		statusInfo4.setCode("01");
-		approvalInfo4.setStatusMaster(statusInfo4);
-		approvalInfo4.setApplyDetail("2014年5月分");
-		ApplyKbnMaster applyKbn4 = new ApplyKbnMaster();
-		applyKbn4.setCode("2");
-		approvalInfo4.setApplyKbnMaster(applyKbn4);
-		Users user4 = new Users();
-		user4.setId("4004");
-		approvalInfo4.setUser(user4);
-		approvalInfo4.setAppYmd("20140500");
-
-		baseDao.insert(approvalInfo1);
-		baseDao.insert(approvalInfo2);
-		baseDao.insert(approvalInfo3);
-		baseDao.insert(approvalInfo4);
 		
 		// 月報状況一覧画面入力情報
 		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
@@ -229,136 +162,6 @@ public class MonthlyReportStatusListTest {
 	 */
 	@Test
 	public void testCreateCSVFile(){
-		
-		// ユーザ情報
-		Users users = new Users();
-		
-		// 超勤管理
-		ChokinKanri chokinInfo = new ChokinKanri();
-		users.setId("4001");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140501");
-		chokinInfo.setHimokuKbnCode("KN09");
-		chokinInfo.setHours(new BigDecimal(1.0));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-		
-		chokinInfo = new ChokinKanri();
-		users.setId("4001");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140502");
-		chokinInfo.setHimokuKbnCode("KN10");
-		chokinInfo.setHours(new BigDecimal(4.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4001");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140505");
-		chokinInfo.setHimokuKbnCode("KN11");
-		chokinInfo.setHours(new BigDecimal(1.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4001");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140510");
-		chokinInfo.setHimokuKbnCode("KN12");
-		chokinInfo.setHours(new BigDecimal(5.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4001");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140520");
-		chokinInfo.setHimokuKbnCode("KN08");
-		chokinInfo.setHours(new BigDecimal(1.0));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4001");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140515");
-		chokinInfo.setHimokuKbnCode("KN13");
-		chokinInfo.setHours(new BigDecimal(3.0));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4001");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140517");
-		chokinInfo.setHimokuKbnCode("KN09");
-		chokinInfo.setHours(new BigDecimal(1.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-		
-		chokinInfo = new ChokinKanri();
-		users.setId("4002");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140503");
-		chokinInfo.setHimokuKbnCode("KN09");
-		chokinInfo.setHours(new BigDecimal(5.0));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-		
-		chokinInfo = new ChokinKanri();
-		users.setId("4002");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140504");
-		chokinInfo.setHimokuKbnCode("KN10");
-		chokinInfo.setHours(new BigDecimal(1.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4002");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140506");
-		chokinInfo.setHimokuKbnCode("KN11");
-		chokinInfo.setHours(new BigDecimal(3.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4002");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140511");
-		chokinInfo.setHimokuKbnCode("KN12");
-		chokinInfo.setHours(new BigDecimal(5.0));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4002");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140520");
-		chokinInfo.setHimokuKbnCode("KN12");
-		chokinInfo.setHours(new BigDecimal(4.0));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4002");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140515");
-		chokinInfo.setHimokuKbnCode("KN09");
-		chokinInfo.setHours(new BigDecimal(3.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
-
-		chokinInfo = new ChokinKanri();
-		users.setId("4002");
-		chokinInfo.setUsers(users);
-		chokinInfo.setChokinDate("20140517");
-		chokinInfo.setHimokuKbnCode("KN09");
-		chokinInfo.setHours(new BigDecimal(1.5));
-		chokinInfo.setCsvOutputFlg(new BigDecimal(0));
-		baseDao.insert(chokinInfo);
 		
 		// 月報状況一覧画面入力情報
 		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();

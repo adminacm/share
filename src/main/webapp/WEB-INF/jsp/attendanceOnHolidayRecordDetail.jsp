@@ -34,7 +34,7 @@ function submitAction(action) {
 			<table style="margin-left:100px;margin-top:30px;">
 				<tr>
 					<td style="width:150px">日付</td>
-					<td>${attendanceOnHolidayRecordDetailForm.date}</td>
+					<td>${attendanceOnHolidayRecordDetailForm.holidayWorkDate}</td>
 				</tr>
 				<tr>
 					<td>勤務区分</td>

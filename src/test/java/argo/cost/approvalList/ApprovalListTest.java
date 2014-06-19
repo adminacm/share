@@ -15,10 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import argo.cost.approvalList.model.ApprovalListVO;
 import argo.cost.approvalList.service.ApprovalListServiceImpl;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.entity.ApplyKbnMaster;
-import argo.cost.common.entity.ApprovalManage;
-import argo.cost.common.entity.StatusMaster;
-import argo.cost.common.entity.Users;
 import argo.cost.common.model.ListItemVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,119 +62,84 @@ public class ApprovalListTest {
 	 */
 	@Test
 	public void testGetApprovalList1(){
-
-		// テストデータ
-		ApprovalManage approvalInfo1 = new ApprovalManage();
-		approvalInfo1.setApplyNo("4001120140600");
-		StatusMaster statusInfo1 = new StatusMaster();
-		statusInfo1.setCode("01");
-		approvalInfo1.setStatusMaster(statusInfo1);
-		approvalInfo1.setApplyDetail("2014年6月分");
-		ApplyKbnMaster applyKbn1 = new ApplyKbnMaster();
-		applyKbn1.setCode("1");
-		approvalInfo1.setApplyKbnMaster(applyKbn1);
-		Users users1 = new Users();
-		users1.setId("4001");
-		approvalInfo1.setUser(users1);
-		approvalInfo1.setAppYmd("20140600");
-		
-		ApprovalManage approvalInfo2 = new ApprovalManage();
-		approvalInfo2.setApplyNo("4002120140600");
-		StatusMaster statusInfo2 = new StatusMaster();
-		statusInfo2.setCode("02");
-		approvalInfo2.setStatusMaster(statusInfo2);
-		approvalInfo2.setApplyDetail("2014年6月分");
-		ApplyKbnMaster applyKbn2 = new ApplyKbnMaster();
-		applyKbn2.setCode("1");
-		approvalInfo2.setApplyKbnMaster(applyKbn2);
-		Users user2 = new Users();
-		user2.setId("4002");
-		approvalInfo2.setUser(user2);
-		approvalInfo2.setAppYmd("20140600");
-
-		ApprovalManage approvalInfo3 = new ApprovalManage();
-		approvalInfo3.setApplyNo("4003120140600");
-		StatusMaster statusInfo3 = new StatusMaster();
-		statusInfo3.setCode("03");
-		approvalInfo3.setStatusMaster(statusInfo3);
-		approvalInfo3.setApplyDetail("2014年6月分");
-		ApplyKbnMaster applyKbn3 = new ApplyKbnMaster();
-		applyKbn3.setCode("1");
-		approvalInfo3.setApplyKbnMaster(applyKbn3);
-		Users user3 = new Users();
-		user3.setId("4003");
-		approvalInfo3.setUser(user3);
-		approvalInfo3.setAppYmd("20140600");
-		
-		ApprovalManage approvalInfo4 = new ApprovalManage();
-		approvalInfo4.setApplyNo("4004220140605");
-		StatusMaster statusInfo4 = new StatusMaster();
-		statusInfo4.setCode("02");
-		approvalInfo4.setStatusMaster(statusInfo4);
-		approvalInfo4.setApplyDetail("休日勤務日：2014/6/5");
-		ApplyKbnMaster applyKbn4 = new ApplyKbnMaster();
-		applyKbn4.setCode("2");
-		approvalInfo4.setApplyKbnMaster(applyKbn4);
-		Users user4 = new Users();
-		user4.setId("4004");
-		approvalInfo4.setUser(user4);
-		approvalInfo4.setAppYmd("20140600");
-		
-		ApprovalManage approvalInfo5 = new ApprovalManage();
-		approvalInfo5.setApplyNo("4005220140605");
-		StatusMaster statusInfo5 = new StatusMaster();
-		statusInfo5.setCode("02");
-		approvalInfo5.setStatusMaster(statusInfo5);
-		approvalInfo5.setApplyDetail("休日勤務日：2014/6/5");
-		ApplyKbnMaster applyKbn5 = new ApplyKbnMaster();
-		applyKbn5.setCode("2");
-		approvalInfo5.setApplyKbnMaster(applyKbn5);
-		Users user5 = new Users();
-		user5.setId("4005");
-		approvalInfo5.setUser(user5);
-		approvalInfo5.setAppYmd("20140600");
-		
-		baseDao.deleteById(approvalInfo1.getApplyNo(), ApprovalManage.class);
-		baseDao.deleteById(approvalInfo2.getApplyNo(), ApprovalManage.class);
-		baseDao.deleteById(approvalInfo3.getApplyNo(), ApprovalManage.class);
-		baseDao.deleteById(approvalInfo4.getApplyNo(), ApprovalManage.class);
-		baseDao.deleteById(approvalInfo5.getApplyNo(), ApprovalManage.class);
-		
-		baseDao.insert(approvalInfo1);
-		baseDao.insert(approvalInfo2);
-		baseDao.insert(approvalInfo3);
-		baseDao.insert(approvalInfo4);
-		baseDao.insert(approvalInfo5);
 		
 		// 状況
 		String status = "";
 		// 承認一覧リスト取得
-		List<ApprovalListVO> approvalList1 = serviceImpl.getApprovalList(status);
+		List<ApprovalListVO> approvalList = serviceImpl.getApprovalList(status);
 		
 		// 承認一覧リストのサイズ
-		assertEquals(approvalList1.size(), 5);
+		assertEquals(approvalList.size(), 5);
 		
-		assertEquals(approvalList1.get(0).getApplyNo(), "4001120140600");
-		assertEquals(approvalList1.get(0).getApplyKbnName(), "月報");
-		assertEquals(approvalList1.get(0).getApplyDetail(), "2014年6月分");
-		assertEquals(approvalList1.get(0).getStatusName(), "作成中");
-		assertEquals(approvalList1.get(0).getAffiliationName(), "BS3");
-		assertEquals(approvalList1.get(0).getUserName(), "０１ＰＴＳ");
+		assertEquals(approvalList.get(0).getApplyNo(), "4001120140500");
+		assertEquals(approvalList.get(0).getApplyKbnName(), "月報");
+		assertEquals(approvalList.get(0).getApplyDetail(), "2014年5月分");
+		assertEquals(approvalList.get(0).getStatusName(), "作成中");
+		assertEquals(approvalList.get(0).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(0).getUserName(), "０１ＰＴＳ");
+		
+		assertEquals(approvalList.get(1).getApplyNo(), "4002120140500");
+		assertEquals(approvalList.get(1).getApplyKbnName(), "月報");
+		assertEquals(approvalList.get(1).getApplyDetail(), "2014年5月分");
+		assertEquals(approvalList.get(1).getStatusName(), "提出");
+		assertEquals(approvalList.get(1).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(1).getUserName(), "０２ＰＴＳ");
+		
+		assertEquals(approvalList.get(2).getApplyNo(), "4003120140500");
+		assertEquals(approvalList.get(2).getApplyKbnName(), "月報");
+		assertEquals(approvalList.get(2).getApplyDetail(), "2014年5月分");
+		assertEquals(approvalList.get(2).getStatusName(), "承認");
+		assertEquals(approvalList.get(2).getAffiliationName(), "総務部");
+		assertEquals(approvalList.get(2).getUserName(), "０３ＰＴＳ");
+		
+		assertEquals(approvalList.get(3).getApplyNo(), "4001220140518");
+		assertEquals(approvalList.get(3).getApplyKbnName(), "超勤振替申請");
+		assertEquals(approvalList.get(3).getApplyDetail(), "休日勤務日：2014/5/18");
+		assertEquals(approvalList.get(3).getStatusName(), "提出");
+		assertEquals(approvalList.get(3).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(3).getUserName(), "０１ＰＴＳ");
+		
+		assertEquals(approvalList.get(4).getApplyNo(), "4012220140505");
+		assertEquals(approvalList.get(4).getApplyKbnName(), "超勤振替申請");
+		assertEquals(approvalList.get(4).getApplyDetail(), "休日勤務日：2014/5/5");
+		assertEquals(approvalList.get(4).getStatusName(), "提出");
+		assertEquals(approvalList.get(4).getAffiliationName(), "SA2-1");
+		assertEquals(approvalList.get(4).getUserName(), "１２ＰＴＳ");
+	}
+	
+	/**
+	 * 承認一覧リスト取得をテスト
+	 */
+	@Test
+	public void testGetApprovalList2(){
 		
 		// 状況
-		status = "02";
+		String status = "02";
 		// 承認一覧リスト取得
-		List<ApprovalListVO> approvalList2 = serviceImpl.getApprovalList(status);
+		List<ApprovalListVO> approvalList = serviceImpl.getApprovalList(status);
 		
 		// 承認一覧リストのサイズ
-		assertEquals(approvalList2.size(), 3);
+		assertEquals(approvalList.size(), 3);
 		
-		assertEquals(approvalList2.get(0).getApplyNo(), "4002120140600");
-		assertEquals(approvalList2.get(0).getApplyKbnName(), "月報");
-		assertEquals(approvalList2.get(0).getApplyDetail(), "2014年6月分");
-		assertEquals(approvalList2.get(0).getStatusName(), "提出");
-		assertEquals(approvalList2.get(0).getAffiliationName(), "BS3");
-		assertEquals(approvalList2.get(0).getUserName(), "０２ＰＴＳ");
+		assertEquals(approvalList.get(0).getApplyNo(), "4002120140500");
+		assertEquals(approvalList.get(0).getApplyKbnName(), "月報");
+		assertEquals(approvalList.get(0).getApplyDetail(), "2014年5月分");
+		assertEquals(approvalList.get(0).getStatusName(), "提出");
+		assertEquals(approvalList.get(0).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(0).getUserName(), "０２ＰＴＳ");
 		
+		assertEquals(approvalList.get(1).getApplyNo(), "4001220140518");
+		assertEquals(approvalList.get(1).getApplyKbnName(), "超勤振替申請");
+		assertEquals(approvalList.get(1).getApplyDetail(), "休日勤務日：2014/5/18");
+		assertEquals(approvalList.get(1).getStatusName(), "提出");
+		assertEquals(approvalList.get(1).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(1).getUserName(), "０１ＰＴＳ");
+		
+		assertEquals(approvalList.get(2).getApplyNo(), "4012220140505");
+		assertEquals(approvalList.get(2).getApplyKbnName(), "超勤振替申請");
+		assertEquals(approvalList.get(2).getApplyDetail(), "休日勤務日：2014/5/5");
+		assertEquals(approvalList.get(2).getStatusName(), "提出");
+		assertEquals(approvalList.get(2).getAffiliationName(), "SA2-1");
+		assertEquals(approvalList.get(2).getUserName(), "１２ＰＴＳ");
 	}
 }

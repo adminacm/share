@@ -21,7 +21,7 @@ public class AttendanceOnHolidayRecordDetailForm extends AbstractForm implements
 	/**
 	 * 日付
 	 */
-	private String date;
+	private String holidayWorkDate;
 	
 	/**
 	 * 勤務区分
@@ -73,13 +73,12 @@ public class AttendanceOnHolidayRecordDetailForm extends AbstractForm implements
 	 */
 	private Boolean overWorkFlg;
 
-	
-	public String getDate() {
-		return date;
+	public String getHolidayWorkDate() {
+		return holidayWorkDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setHolidayWorkDate(String holidayWorkDate) {
+		this.holidayWorkDate = holidayWorkDate;
 	}
 
 	public String getWorkKbnName() {

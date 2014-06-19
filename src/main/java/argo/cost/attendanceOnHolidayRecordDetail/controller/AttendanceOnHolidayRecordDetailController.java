@@ -66,8 +66,8 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 		// 休日出勤管理詳細画面情報取得
 		AttendanceOnHolidayRecordDetailForm detailForm = service.getAttendanceOnHolidayRecordDetail(form.getUserId(), date, workKbn);
 		
-		// 代休日が空白、代休期限があり、超勤振替申請日が空白の場合
-		if (detailForm.getTurnedHolidayDate() == null && detailForm.getTurnedHolidayEndDate() != null && detailForm.getOverWorkTurnedReqDate() == null) {
+		// 代休未取得
+		if (detailForm.getTurnedHolidayDate() == null) {
 			
 			// 超勤振替フラグ
 			detailForm.setOverWorkFlg(true);

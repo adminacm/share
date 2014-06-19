@@ -9,12 +9,10 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.ApprovalManage;
-import argo.cost.common.entity.HolidayAtendance;
 import argo.cost.common.entity.HolidayAtendanceYotei;
-import argo.cost.common.entity.KyukaKekin;
+import argo.cost.common.entity.KintaiInfo;
+import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.StatusMaster;
-import argo.cost.common.entity.Users;
-import argo.cost.common.entity.YukyuKyukaFuyu;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.holidayForOvertimeApproval.model.HolidayForOvertimeApprovalForm;
 
@@ -69,43 +67,54 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		// ユーザID
 		String userId = approvalInfo.getUser().getId();
 		// 超勤振替申請時間
-		String chokinDate = approvalInfo.getAppYmd();
+		String chokinDate = approvalInfo.getItemDate();
 		
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
 		// 日付
-		condition.addConditionLike("atendanceBookDate", chokinDate);
-		// 休日振替勤務情報取得
-		HolidayAtendanceYotei holidayAtendanceYoteiInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
+		condition.addConditionLike("atendanceDate", chokinDate);
+		// 勤怠情報取得
+		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 
 		// 検索条件
 		condition = new BaseCondition();
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
 		// 日付
-		condition.addConditionLike("holidaySyukinDate", chokinDate);
-		// 休日勤務情報取得
-		HolidayAtendance holidayAtendanceInfo = baseDao.findSingleResult(condition, HolidayAtendance.class);
+		condition.addConditionEqual("atendanceDate", chokinDate);
+		// 休日勤務予定情報を取得
+		HolidayAtendanceYotei holidayAtendanceYoteiInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		
-		if (holidayAtendanceYoteiInfo != null) {
+		// 休日名を取得
+		MCalendar kyujituInfo = baseDao.findById(chokinDate, MCalendar.class);
+		String kyujisuName = "";
+		if (kyujituInfo != null) {
+			
+			if (!kyujituInfo.getKyujisuName().isEmpty()) {
+
+				kyujisuName = "祝日（" + kyujituInfo.getKyujisuName() + "）";
+			}
+		}
+		
+		if (kintaiInfo != null) {
 			// 日付
-			form.setDate(getShowDate(holidayAtendanceYoteiInfo.getAtendanceBookDate()));
+			form.setDate(getShowDate(kintaiInfo.getAtendanceDate()) + kyujisuName);
 			// 勤務区分名
-			form.setWorkKbnName(holidayAtendanceYoteiInfo.getWorkDayKbnMaster().getName());
+			form.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
 			// 勤務開始時間
-			form.setWorkStartTime(CostDateUtils.formatTime(holidayAtendanceYoteiInfo.getKinmuStartTime()));
+			form.setWorkStartTime(CostDateUtils.formatTime(kintaiInfo.getKinmuStartTime()));
 			// 勤務終了時間
-			form.setWorkEndTime(CostDateUtils.formatTime(holidayAtendanceYoteiInfo.getKinmuEndTime()));
+			form.setWorkEndTime(CostDateUtils.formatTime(kintaiInfo.getKinmuEndTime()));
+			// 代休期限
+			form.setTurnedHolidayEndDate(getShowDate(kintaiInfo.getDaikyuGetShimekiriDate()));
+		}
+		if (holidayAtendanceYoteiInfo != null) {
 			// プロジェクト名
 			form.setProjectName(holidayAtendanceYoteiInfo.getProjectMaster().getName());
 			// 業務内容
 			form.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
-		}
-		if (holidayAtendanceInfo != null) {
-			// 代休期限
-			form.setTurnedHolidayEndDate(getShowDate(holidayAtendanceInfo.getDaikyuGetShimekiriDate()));
 		}
 		
 		// 超勤振替申請承認画面情報戻る
@@ -113,83 +122,59 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 	}
 
 	/**
-	 * 申請状況更新
+	 * 承認処理を実行
 	 * 
 	 * @param applyNo
 	 *               申請番号
-	 * @param proStatus
-	 *                 申請状況
 	 */
 	@Override
-	public void updateProStatus(String applyNo, String proStatus) {
+	public void approvalOverWork(String applyNo) {
 
 		// 申請番号による、承認情報を取得
 		ApprovalManage approvalInfo = baseDao.findById(applyNo, ApprovalManage.class);
 		
-		// 申請状況を設定
+		// 申請状況に「承認」を設定
 		StatusMaster statusMaster = new StatusMaster();
-		statusMaster.setCode(proStatus);
+		statusMaster.setCode(CommonConstant.STATUS_SYOUNIN);
 		approvalInfo.setStatusMaster(statusMaster);
 
 		// 更新実行
 		baseDao.update(approvalInfo);
 		
+		//TODO勤怠情報テーブルの控除／支払年月を更新
+	}
+
+	/**
+	 * 差戻処理実行
+	 * 
+	 * @param applyNo
+	 *               申請番号
+	 */
+	@Override
+	public void remandOverWork(String applyNo) {
+		
+		// 申請番号による、承認情報を取得
+		ApprovalManage approvalInfo = baseDao.findById(applyNo, ApprovalManage.class);
+
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", approvalInfo.getUser().getId());
-		// 年度
-		condition.addConditionEqual("fuyuYear", approvalInfo.getAppYmd().substring(0, 4));
-		// 有給休暇付与情報取得
-		YukyuKyukaFuyu yukyuKyukaFuyuInfo = baseDao.findSingleResult(condition, YukyuKyukaFuyu.class);
-		
-		// 検索条件
-		condition = new BaseCondition();
-		// ユーザＩＤ
-		condition.addConditionEqual("users.id", approvalInfo.getUser().getId());
 		// 日付
-		condition.addConditionEqual("kyukaDate", approvalInfo.getAppYmd());
-		// 休暇欠勤区分に「有給休暇」をセット
-		String[] vals = {CommonConstant.KK_KBN_ZENKYU, CommonConstant.KK_KBN_HANKYU, CommonConstant.KK_KBN_JIKANKYU};
-		condition.addConditionIn("kyukaKekinKbnMaster.code", vals);
-		// 有給休暇情報取得
-		KyukaKekin kyukaInfo = baseDao.findSingleResult(condition, KyukaKekin.class);
+		condition.addConditionEqual("atendanceDate", approvalInfo.getItemDate());
+		// 勤怠情報取得
+		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 		
-		if (yukyuKyukaFuyuInfo != null) {
-			
-			// 付与日数
-			yukyuKyukaFuyuInfo.setHuyuDays(Integer.valueOf(yukyuKyukaFuyuInfo.getHuyuDays()) + 1);
-			if (kyukaInfo !=null) {
+		// 代休日に空白を設定
+		kintaiInfo.setDaikyuDate(null);
+		// 超勤振替申請日に空白を設定
+		kintaiInfo.setFurikaeShinseiDate(null);
 
-				// 付与時間数合計
-				yukyuKyukaFuyuInfo.setFuyuAllHours(yukyuKyukaFuyuInfo.getFuyuAllHours().add(kyukaInfo.getKyukaJikansu()));
-			} else {
-
-				// 付与時間数合計
-				yukyuKyukaFuyuInfo.setFuyuAllHours(yukyuKyukaFuyuInfo.getFuyuAllHours());
-			}
-			
-			// 有給休暇付与情報更新実行
-			baseDao.update(yukyuKyukaFuyuInfo);
-		} else {
-			
-			yukyuKyukaFuyuInfo = new YukyuKyukaFuyu();
-			// ユーザID
-			Users users = new Users();
-			users.setId(approvalInfo.getUser().getId());
-			yukyuKyukaFuyuInfo.setUsers(users );
-			// 年度
-			yukyuKyukaFuyuInfo.setFuyuYear(approvalInfo.getAppYmd().substring(0, 4));
-			// 付与日数
-			yukyuKyukaFuyuInfo.setHuyuDays(1);
-			if (kyukaInfo !=null) {
-				// 付与時間数合計
-				yukyuKyukaFuyuInfo.setFuyuAllHours(kyukaInfo.getKyukaJikansu());
-			}
-			
-			// 有給休暇付与情報作成実行
-			baseDao.insert(yukyuKyukaFuyuInfo);
-		}
+		// 勤怠情報テーブルを更新
+		baseDao.update(kintaiInfo);
+		
+		// 申請番号による、承認情報を削除
+		baseDao.deleteById(applyNo, ApprovalManage.class);
 	}
 
 	/**

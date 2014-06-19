@@ -13,8 +13,7 @@ import argo.cost.attendanceOnHolidayRecord.model.HolidayWorkVO;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.entity.HolidayAtendance;
-import argo.cost.common.entity.HolidayAtendanceYotei;
+import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.utils.CostDateUtils;
 
 /**
@@ -48,11 +47,11 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", form.getUserName());
 		// 日付
-		condition.addConditionLike("atendanceBookDate", form.getYearPeriod() + "%");
+		condition.addConditionLike("atendanceDate", form.getYearPeriod() + "%");
 		// 勤務日区分「休日振替勤務」をセット
 		condition.addConditionEqual("workDayKbnMaster.code", CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE);
 		// 休日振替勤務情報を取得
-		List<HolidayAtendanceYotei> kyukafurikaeList = baseDao.findResultList(condition, HolidayAtendanceYotei.class);
+		List<KintaiInfo> kyukafurikaeList = baseDao.findResultList(condition, KintaiInfo.class);
 
 		// 休日振替勤務リスト
 		List<HolidayExchangeWorkVO> holidayExchangeWorkList = new ArrayList<HolidayExchangeWorkVO>();
@@ -61,12 +60,12 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		// 休日振替勤務情報あり
 		if (kyukafurikaeList.size() > 0) {
 			
-			for (HolidayAtendanceYotei kyukafurikaeInfo : kyukafurikaeList) {
+			for (KintaiInfo kyukafurikaeInfo : kyukafurikaeList) {
 				
 				holidayExchangeWork = new HolidayExchangeWorkVO();
 				
 				//　休日振替勤務日付
-				holidayExchangeWork.setHolidayTurnedWorkingDate(CostDateUtils.formatDate(kyukafurikaeInfo.getAtendanceBookDate(), CommonConstant.YYYY_MM_DD));
+				holidayExchangeWork.setHolidayTurnedWorkingDate(CostDateUtils.formatDate(kyukafurikaeInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 				// 振替休日
 				holidayExchangeWork.setWorkingDayTurnedHolidayDate(CostDateUtils.formatDate(kyukafurikaeInfo.getFurikaeDate(), CommonConstant.YYYY_MM_DD));
 				
@@ -76,15 +75,18 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		// 休日振替勤務情報をセット
 		form.setHolidayExchangeWorkList(holidayExchangeWorkList);
 		
-		
 		// 検索条件
 		condition = new BaseCondition();
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", form.getUserName());
 		// 日付
-		condition.addConditionLike("holidaySyukinDate", form.getYearPeriod() + "%");
+		condition.addConditionLike("atendanceDate", form.getYearPeriod() + "%");
+		// 勤務日区分「休日」をセット
+		condition.addConditionEqual("workDayKbnMaster.code", CommonConstant.WORKDAY_KBN_KYUJITU);
+		// 勤務開始時間
+		condition.addConditionIsNotNull("kinmuStartTime");
 		// 休日勤務情報取得
-		List<HolidayAtendance> kyukaSyukinList = baseDao.findResultList(condition, HolidayAtendance.class);
+		List<KintaiInfo> kyukaSyukinList = baseDao.findResultList(condition, KintaiInfo.class);
 
 		// 休日勤務リスト
 		List<HolidayWorkVO> holidayWorkList = new ArrayList<HolidayWorkVO>();
@@ -93,12 +95,12 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		// 休日勤務情報あり
 		if (kyukaSyukinList.size() > 0) {
 			
-			for (HolidayAtendance kyukaSyukinInfo : kyukaSyukinList) {
+			for (KintaiInfo kyukaSyukinInfo : kyukaSyukinList) {
 
 				holidayWork = new HolidayWorkVO();
 
 				//　休日勤務日付
-				holidayWork.setHolidayOverWorkDate(CostDateUtils.formatDate(kyukaSyukinInfo.getHolidaySyukinDate(), CommonConstant.YYYY_MM_DD));
+				holidayWork.setHolidayOverWorkDate(CostDateUtils.formatDate(kyukaSyukinInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 				// 代休期限
 				holidayWork.setTurnedHolidayEndDate(CostDateUtils.formatDate(kyukaSyukinInfo.getDaikyuGetShimekiriDate(), CommonConstant.YYYY_MM_DD));
 				// 代休日
@@ -108,7 +110,7 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 					holidayWork.setTurnedHolidayDate(kyukaSyukinInfo.getDaikyuDate());
 				}
 				// 超勤振替申請日
-				holidayWork.setOverWorkTurnedReqDate(CostDateUtils.formatDate(kyukaSyukinInfo.getFirikaeShiseiDate(), CommonConstant.YYYY_MM_DD));
+				holidayWork.setOverWorkTurnedReqDate(CostDateUtils.formatDate(kyukaSyukinInfo.getFurikaeShinseiDate(), CommonConstant.YYYY_MM_DD));
 				
 				holidayWorkList.add(holidayWork);
 			}
