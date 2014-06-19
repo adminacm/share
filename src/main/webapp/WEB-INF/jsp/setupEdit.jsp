@@ -45,6 +45,14 @@ function submitAction(action) {
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
+						<td>1日の勤務時間数</td>
+						<td>
+							<form:select path="oneDayKinmuHours" style="width:145px;border:2px solid #333333;" id="oneDayKinmuHours">
+								<form:options items="${setupForm.oneDayMayKinmuHoursList}" />
+							</form:select>
+						</td>
+					</tr>
+					<tr>
 						<td>標準ｼﾌﾄ</td>
 						<td>
 							<form:select path="standardShift" style="width:145px;border:2px solid #333333;" id="standardShift" onchange="submitAction('/setup/shiftChange');">

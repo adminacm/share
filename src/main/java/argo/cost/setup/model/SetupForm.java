@@ -73,6 +73,16 @@ public class SetupForm extends AbstractForm implements Serializable {
 	 * 退職日
 	 */
 	private String outDate;
+	
+	/**
+	 * 1日の勤務時間数
+	 */
+	private String oneDayKinmuHours;
+	
+	/**
+	 * 1日の勤務可能時間数リスト
+	 */
+	private List<Double> oneDayMayKinmuHoursList;
 
 	public String getAgentCd() {
 		return agentCd;
@@ -161,6 +171,21 @@ public class SetupForm extends AbstractForm implements Serializable {
 	public void setOutDate(String outDate) {
 		this.outDate = outDate;
 	}
-	
+
+	public String getOneDayKinmuHours() {
+		return oneDayKinmuHours;
+	}
+
+	public void setOneDayKinmuHours(String oneDayKinmuHours) {
+		this.oneDayKinmuHours = oneDayKinmuHours;
+	}
+
+	public List<Double> getOneDayMayKinmuHoursList() {
+		return oneDayMayKinmuHoursList;
+	}
+
+	public void setOneDayMayKinmuHoursList(List<Double> oneDayMayKinmuHoursList) {
+		this.oneDayMayKinmuHoursList = oneDayMayKinmuHoursList;
+	}
 	
 }

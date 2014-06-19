@@ -51,6 +51,11 @@ function submitAction(action) {
 					</tr>
 					<tr>
 						<td></td>
+						<td>1日の勤務時間数ﾄ</td>
+						<td colspan="2">${setupForm.oneDayKinmuHours}</td>
+					</tr>
+					<tr>
+						<td></td>
 						<td>標準ｼﾌﾄ</td>
 						<td colspan="2">${setupForm.standardShift}</td>
 					</tr>
