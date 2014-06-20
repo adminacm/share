@@ -189,9 +189,15 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		// 休日勤務予定情報がありの場合
 		if (holidayAtendanceYoteiInfo != null) {
 			// プロジェクト名
-			detailForm.setProjectName(holidayAtendanceYoteiInfo.getProjectMaster().getName());
+ 			detailForm.setProjectName(holidayAtendanceYoteiInfo.getProjectMaster().getName());
 			// 業務内容
 			detailForm.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
+		}
+		// 代休未取得
+		if (!CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE.equals(workDayKbn) && detailForm.getTurnedHolidayDate() == null && detailForm.getOverWorkTurnedReqDate().isEmpty()) {
+			
+			// 超勤振替フラグ
+			detailForm.setOverWorkFlg(true);
 		}
 
 		// 画面情報を戻り
