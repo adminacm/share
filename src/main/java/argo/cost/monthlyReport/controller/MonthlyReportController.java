@@ -18,7 +18,6 @@ import argo.cost.common.controller.AbstractController;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
-import argo.cost.monthlyReport.checker.MonthlyReportChecker;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.service.MonthlyReportService;
 
@@ -88,26 +87,30 @@ public class MonthlyReportController extends AbstractController {
     	// 氏名の初期値設定
     	monthlyReportForm.setUserCode(userId);
     	// 最後の提出年月取得
-    	String date = monthlyReportService.getUserLatestShinseiMonth(userId);
+    	String strLatestShinseiDate = monthlyReportService.getUserLatestShinseiMonth(userId);
     	// 初期以外の場合
     	if (StringUtils.isNotEmpty(newMonth)) {
-    		date = newMonth.substring(0,6).concat("01");
+    		strLatestShinseiDate = newMonth.substring(0,6).concat("01");
     	}
-    	monthlyReportForm.setYearMonth(date.substring(0,6).concat("01"));
-    	Date formatDate = CostDateUtils.toDate(date.substring(0,6).concat("01"));
+    	monthlyReportForm.setYearMonth(strLatestShinseiDate);
+    	Date formatDate = CostDateUtils.toDate(strLatestShinseiDate);
     	monthlyReportForm.setYearMonthHyoji(monthlyReportService.getDateFormat(formatDate));
     	// 提出状態取得
-    	String status = comService.getMonthReportStatus(userId, date);
+    	String status = comService.getMonthReportStatus(userId, strLatestShinseiDate);
     	monthlyReportForm.setProStatus(status);
     	
-    	// 勤怠内容チェック
-    	MonthlyReportChecker.chkKintaiInfoInput(monthlyReportForm);
     	
     	List<MonthlyReportDispVO> monthlyReportDispVOList = monthlyReportService.getMonthyReportList(formatDate);
     	
     	monthlyReportForm.setmRList(monthlyReportDispVOList);
     	// 月報情報の設定
-    	monthlyReportService.setUserMonthReport(userId, date, monthlyReportForm);
+    	monthlyReportService.setUserMonthReport(userId, strLatestShinseiDate, monthlyReportForm);
+    	
+//		// 【PJ別作業時間集計】を取得
+//		List<Project> projectList = monthlyReportService.getProjectList(loginId, date);
+//		
+//		// プロジェクト情報設定
+//		form.setProjectList(projectList);
 		
         return MONTHLYREPORT;
     }
@@ -173,10 +176,10 @@ public class MonthlyReportController extends AbstractController {
 
     
     /**
-	 * 月報提出処理
+	 * 来月を取得
 	 *
-	 * @param monthlyReportForm
-	 *            月報提出画面フォーム情報
+	 * @param form
+	 *            画面フォーム情報
 	 * @return 月報画面
 	 * @throws Exception
 	 *             Exception

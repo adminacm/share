@@ -239,7 +239,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 検索条件：ユーザーID
 		monthReportInfoSelectCondition.addConditionEqual("users.id", userId);
 		// 検索条件：年月
-		monthReportInfoSelectCondition.addConditionLike("atendanceBookDate",  date.substring(0, 6) + "%");
+		monthReportInfoSelectCondition.addConditionLike("atendanceDate",  date.substring(0, 6) + "%");
 		        
 		ArrayList<KintaiInfo> monthlyKintaiInfoList = (ArrayList<KintaiInfo>) baseDao.findResultList(monthReportInfoSelectCondition, KintaiInfo.class);
 		List<ProjWorkTimeManage> projWorkTimeManageList = new ArrayList<ProjWorkTimeManage>();

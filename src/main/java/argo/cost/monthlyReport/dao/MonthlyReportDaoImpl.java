@@ -47,7 +47,7 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		StringBuilder stbLatestShinseiDateSql = new StringBuilder();
 
 		stbLatestShinseiDateSql.append("SELECT ");
-		stbLatestShinseiDateSql.append("		max(APP_YM)");
+		stbLatestShinseiDateSql.append("		max(APP_YMD)");
 		stbLatestShinseiDateSql.append("	FROM");
 		stbLatestShinseiDateSql.append("		APPROVAL_MANAGE");
 		stbLatestShinseiDateSql.append("	WHERE");
