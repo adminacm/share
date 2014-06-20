@@ -274,33 +274,16 @@ public class ComServiceImpl implements ComService {
 	 * @return 氏名プルダウンリスト
 	 */
 	@Override
-	public List<ListItemVO> getUserNameList(String userId) {
+	public List<Users> getUserNameList(String userId) {
 		
-		Users userInfo = baseDao.findById(userId, Users.class);
+		BaseCondition condition = new BaseCondition();
+		condition.addConditionOr(new String[] { "id", "dairishaId" },
+				new String[] { userId, userId }, new BaseCondition.Joken[] {
+						BaseCondition.Joken.EQUAL, BaseCondition.Joken.EQUAL });
+
+		List<Users> result = baseDao.findResultList(condition, Users.class);
 		
-		// ドロップダウンリスト
-		List<ListItemVO> resultList = new ArrayList<ListItemVO>();
-		
-		// ドロップダウン項目
-		// 自分データを設定する
-		ListItemVO item = new ListItemVO();
-		item.setValue(userId);
-		item.setName(userInfo.getUserName());
-		resultList.add(item);
-		
-		// 代理人があり
-		if (!userInfo.getDairishaId().isEmpty()) {
-			
-			Users dairiInfo = baseDao.findById(userInfo.getDairishaId(), Users.class);
-			
-			// 代理入力データを設定する
-			item = new ListItemVO();
-			item.setValue(userInfo.getDairishaId());
-			item.setName(dairiInfo.getUserName());
-			resultList.add(item);
-		}
-		
-		return resultList;
+		return result;
 	}
 
 }

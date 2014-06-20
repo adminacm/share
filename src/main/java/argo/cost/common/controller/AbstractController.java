@@ -124,6 +124,8 @@ public abstract class AbstractController {
 
 		// ユーザIDを設定する
 		form.setUserId(session.getUserInfo().getUserId());
+		// 対象ユーザID
+		form.setTaishoUserId(session.getUserInfo().getTaishoUserId());
 
 		return form;
 	}
