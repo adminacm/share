@@ -6,6 +6,7 @@
 
 <html>
 <head>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <meta charset="utf-8">
 <title>勤怠入力</title>
 
@@ -18,6 +19,14 @@ function submitAction(action) {
 
 	document.forms[0].action = action;
 	document.forms[0].submit();
+}
+function changeSelect() {
+	$.ajax({
+		type:'get',
+		url:"/attendanceInput/change",
+		data:$('#attendanceInputForm').serialize()});
+	alert(${attendanceInputForm.workSMinute});
+	$("#shiftCode").attr("value", "123");
 }
 
 </script>
@@ -65,7 +74,7 @@ function submitAction(action) {
 </style>
 </head>
 <body>
-	<form:form modelAttribute="attendanceInputForm">
+	<form:form modelAttribute="attendanceInputForm" >
 	<%@ include file="includes/header.jsp"%>
 	<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:600px;">
 		<div style="padding:2px;">
@@ -75,6 +84,15 @@ function submitAction(action) {
 			<c:forEach var="message" items="${attendanceInputForm.confirmMsgList }">
 				<span style="color:red">${message }</span><br/>
 			</c:forEach>
+		</div>
+		<div style="margin-top: 20px;" >
+			${attendanceInputForm.taishoUserId}
+		</div>
+		<div style="margin-top: 20px;" >
+			<!-- 月報承認状況は「作成中」以外の場合 -->
+			<c:if test="${ !empty attendanceInputForm.appStatusCode && attendanceInputForm.appStatusCode != '01'}">
+				${attendanceInputForm.appStatusName}
+			</c:if>
 		</div>
 		<div style="margin-top: 20px;margin-bottom:10px;" >
 			<table style="margin:auto; width:300px;">
@@ -106,7 +124,7 @@ function submitAction(action) {
 					</tr>
 				</table>
 			</c:if>
-			<c:if test="${attendanceInputForm.workDayKbn == '03'}">
+			<c:if test="${attendanceInputForm.holidayAttendance != null}">
 				<table style="margin:auto;width:300px;border: 1px solid #333;">
 					<tr>
 						<td colspan="2" align="center"><b>［休日勤務］</b></td>
@@ -133,12 +151,12 @@ function submitAction(action) {
 					</tr>
 				</table>
 			</c:if>
-			<c:if test="${attendanceInputForm.workDayKbn == '01' || attendanceInputForm.workDayKbn == '03'}">
+			<c:if test="${attendanceInputForm.workDayKbn == '01' || attendanceInputForm.holidayAttendance != null}">
 				<table style="margin:auto;width:300px;">
 					<tr>
 						<td align="left" width="120px">シフトコード</td>
 						<td align="left" width="180px" colspan="2">
-							<form:input path="shiftCd" style="width: 60px; " />
+							<form:input path="shiftCd" style="width: 60px; " maxlength="4" id="shiftCode"/>
 						</td>
 					</tr>
 					<tr>
@@ -152,7 +170,7 @@ function submitAction(action) {
 					<tr>
 						<td align="left" width="120px">休暇欠勤区分</td>
 						<td align="left" width="180px" colspan="2">
-							<form:select path="kyukaKb" style="width:100%;" >
+							<form:select path="kyukaKb" style="width:100%;" onchange="changeSelect();" >
 								<form:option value=""></form:option>
 								<form:options items="${attendanceInputForm.kyukakbList}" itemValue="code" itemLabel="name"/>
 							</form:select>
@@ -274,7 +292,12 @@ function submitAction(action) {
 				</table>
 				<table style="margin:auto; width:200px;">
 					<tr>
-						<td align="left" width="100px"><input type="button" value="保存" onclick="submitAction('/attendanceInput/save');" /></td>
+						<c:if test="${ empty attendanceInputForm.appStatusCode || attendanceInputForm.appStatusCode == '01'}">
+							<td align="left" width="100px"><input type="button" value="保存" onclick="submitAction('/attendanceInput/save');" /></td>
+						</c:if>
+						<c:if test="${ !empty attendanceInputForm.appStatusCode && attendanceInputForm.appStatusCode != '01'}">
+							<td align="left" width="100px"><input type="button" value="保存" onclick="submitAction('/attendanceInput/save');" disabled="disabled"/></td>
+						</c:if>
 						<td align="right" width="100px"><input type="button" value="戻る" onclick="submitAction('/attendanceInput/back');" /></td>
 					</tr>
 				</table>

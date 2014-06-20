@@ -142,8 +142,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public void setAttForm(AttendanceInputForm form, String newDate) throws ParseException {
 		
-		// 社員番号
-		String userId = form.getUserId();
+//		// ログイン社員番号
+//		String loginId = form.getUserId();
+		// 対象社員番号
+		String taishoUserId = form.getTaishoUserId();
 		// システム日付を取得
 		String date = CostDateUtils.getNowDate();
 		// 勤怠操作日は存在する場合
@@ -157,6 +159,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 		// 勤怠日付を設定
 		form.setAttDate(date);
+
 		// 勤怠日付のフォーマット（yyyy年MM月dd日）
 		String attDate = CostDateUtils.formatDate(date, CommonConstant.YYYYMMDD_KANJI);
 		// 曜日名
@@ -174,8 +177,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		
 		// 検索条件
 		condition = new BaseCondition();
-		condition.addConditionEqual("users.id", userId);  // 社員番号
-		condition.addConditionEqual("atendanceDate", date);  // 勤務休日
+		condition.addConditionEqual("users.id", taishoUserId);  // 社員番号
+		condition.addConditionEqual("atendanceDate", date);     // 勤務休日
 		
 		// 勤怠情報を取得
 		KintaiInfo kintaiEntity = baseDao.findSingleResult(condition, KintaiInfo.class);
@@ -275,8 +278,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 当日勤怠情報が存在しない場合
 		} else {
 			// シフトコード
-			Users userEntity = baseDao.findById(userId, Users.class);
-			form.setShiftCd(userEntity.getStandardShiftCd());
+			Users userEntity = baseDao.findById(taishoUserId, Users.class);
+			form.setShiftCd(userEntity.getStandardShiftCd().substring(0, 4));
 			
 			// 社休日の判定
 			// 日付より、カレンダー情報を取得
@@ -288,8 +291,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				if (StringUtils.equals(CommonConstant.WORKDAY_FLAG_SHUKIN, calender.getOnDutyFlg())) {
 					// 検索条件
 					condition = new BaseCondition();
-					condition.addConditionEqual("users.id", userId);  // 社員番号
-					condition.addConditionEqual("furikaeDate", date);  // 振替日
+					condition.addConditionEqual("users.id", taishoUserId);  // 社員番号
+					condition.addConditionEqual("furikaeDate", date);       // 振替日
 					attYoteEntity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 					
 					// 休日予定勤務情報が存在する場合
@@ -364,11 +367,14 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			return 0;
 		}
 
-		String userId = form.getUserId();
+		// ログイン社員番号
+		String loginId = form.getUserId();
+		// 対象社員番号
+		String taishoUserId = form.getTaishoUserId();
 		String date = form.getAttDate();
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
-		condition.addConditionEqual("users.id", userId);  // 社員番号
+		condition.addConditionEqual("users.id", taishoUserId);  // 社員番号
 		condition.addConditionEqual("atendanceDate", date);  // 勤務休日
 		
 		// 勤怠情報を取得 TODO
@@ -380,7 +386,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (StringUtils.equals(form.getKyukaKb(), CommonConstant.KK_KBN_TAIKYU)) {
 			// 休日勤務情報を取得
 			condition = new BaseCondition();
-			condition.addConditionEqual("users.id", userId);          // 社員番号
+			condition.addConditionEqual("users.id", taishoUserId);          // 社員番号
 			// 代休日の存在判定
 			condition.addConditionEqual("daikyuDate", form.getAttDate());
 			
@@ -392,7 +398,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				// 休日勤務情報を取得
 				condition = new BaseCondition();
 				// 社員番号
-				condition.addConditionEqual("users.id", userId);        
+				condition.addConditionEqual("users.id", taishoUserId);        
 		        // 勤務日区分
 				condition.addConditionIn("workDayKbnMaster.code", new String[] {CommonConstant.WORKDAY_KBN_SHUKIN, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU});
 				// 代休取得期限
@@ -408,12 +414,14 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				KintaiInfo holidayInfo = entityList.get(0);
 				// 代休日を設定する
 				holidayInfo.setDaikyuDate(form.getAttDate());
+				holidayInfo.setUpdatedUserId(loginId);               // 更新者
+				holidayInfo.setUpdateDate(new Timestamp(System.currentTimeMillis()));  // 更新時刻
 				// 休日勤務情報を更新する
 				baseDao.update(holidayInfo);
 			}
 		}
 		// プロジェクト情報を更新する
-		saveProjectInfo(userId, date, form.getProjectList());
+		saveProjectInfo(loginId, taishoUserId, date, form.getProjectList());
 		// 勤怠情報テーブルの更新
 		return 1;
 	}
@@ -634,55 +642,58 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				// シフト超勤開始時刻→勤務終了時刻
 				wChokinHours = countRestTime(shift.getCode(), shift.getChokinSTime(), wETime, 1);
 			}
-			
-			// １時間未満の超勤は切り捨て
-			if (wChokinHours < 1) {
-				form.setChoSTime(StringUtils.EMPTY);
-				form.setChoETime(StringUtils.EMPTY);
-				form.setChoHoliday(0.0);
+
+			// 超勤開始時刻＝シフト超勤開始時刻
+			form.setChoSTime(shift.getChokinSTime());
+			// 超勤終了時刻＝勤務終了時刻
+			form.setChoETime(wETime);
+			// 休日か平日の判断
+			if (StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU, form.getWorkDayKbn())
+					|| StringUtils.equals(CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU, form.getWorkDayKbn())) {
+				// 超勤平日（割増）
 				form.setChoWeekday(0.0);
+				// 超勤平日（通常）
 				form.setChoWeekdayNomal(0.0);
+				// 超勤休日を設定する
+				form.setChoHoliday(wChokinHours);
+			
 			} else {
-				// 超勤開始時刻＝シフト超勤開始時刻
-				form.setChoSTime(shift.getChokinSTime());
-				// 超勤終了時刻＝勤務終了時刻
-				form.setChoETime(wETime);
-				// 休日か平日の判断
-				// 休日振替勤務の場合
-				if (StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU, form.getWorkDayKbn())
-						|| StringUtils.equals(CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU, form.getWorkDayKbn())) {
-					// 超勤平日（割増）
-					form.setChoWeekday(0.0);
-					// 超勤平日（通常）
-					form.setChoWeekdayNomal(0.0);
-					// 超勤休日を設定する
-					form.setChoHoliday(wChokinHours);
 				// 超勤時間から割増部分と通常部分の切り分けを実施
-				} else if (StringUtils.isEmpty(form.getKyukaKb())) {
-					// 超勤平日（割増）
-					form.setChoWeekday(wChokinHours);
-					// 超勤平日（通常）
-					form.setChoWeekdayNomal(0.0);
-					// 超勤休日を設定
-					form.setChoHoliday(0.0);
-				// 休暇欠勤区分＝半休(有給休暇)
-				} else if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, form.getKyukaKb())) {
-					// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
-					if (form.getWorkHours() <= 7.5) {
+				if (StringUtils.isEmpty(form.getKyukaKb())) {
+					// 勤怠時間数は
+					if (form.getWorkHours() <= 8.0) {
 						// 超勤平日（割増）
 						form.setChoWeekday(0.0);
 						// 超勤平日（通常）
 						form.setChoWeekdayNomal(wChokinHours);
 					} else {
 						// 超勤平日（割増）
-						form.setChoWeekday(form.getWorkHours() - 7.5);
+						form.setChoWeekday(wChokinHours);
+						// 超勤平日（通常）
+						form.setChoWeekdayNomal(0.0);
+					}
+					// 超勤休日を設定
+					form.setChoHoliday(0.0);
+				// 休暇欠勤区分＝半休(有給休暇)
+				} else if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, form.getKyukaKb())) {
+					// 勤務時間が8.0時間以下だった場合はすべて通常として扱う
+					if (form.getWorkHours() <= 8.0) {
+						// 超勤平日（割増）
+						form.setChoWeekday(0.0);
+						// 超勤平日（通常）
+						form.setChoWeekdayNomal(wChokinHours);
+					} else {
+						// 超勤平日（割増）
+						form.setChoWeekday(form.getWorkHours() - 8.0);
 						// 超勤平日（通常）
 						form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
 					}
+					// 超勤休日を設定
+					form.setChoHoliday(0.0);
 				// 休暇欠勤区分＝時間休(有給休暇)、時間休の場合、使用した時間数があるのでそこから算出
 				} else if (StringUtils.equals(CommonConstant.KK_KBN_JIKANKYU, form.getKyukaKb())) {
 					// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
-					if (form.getWorkHours() <= 7.5) {
+					if (form.getWorkHours() <= 8.0) {
 						// 超勤平日（割増）
 						form.setChoWeekday(0.0);
 						// 超勤平日（通常）
@@ -693,6 +704,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 						// 超勤平日（通常）：超勤時間 - 通常として扱った時間を割増時間として扱う
 						form.setChoWeekdayNomal(wChokinHours - form.getKyukaHours());
 					}
+					// 超勤休日を設定
+					form.setChoHoliday(0.0);
 				}
 			}
 		} else {
@@ -1138,7 +1151,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	private void saveKintaiInfo(AttendanceInputForm form, KintaiInfo kintaiEntity) throws Exception {
 		
-		String userId = form.getUserId();
+		// ログイン社員番号
+		String loginId = form.getUserId();
+		// 対象社員番号
+		String taishoUserId = form.getTaishoUserId();
 		String date = form.getAttDate();
 		// 更新フラグ
 		boolean flag = true;  
@@ -1147,13 +1163,13 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			flag = false;
 			// 勤怠情報を登録する
 			kintaiEntity = new KintaiInfo();
-			kintaiEntity.setCreatedUserId(userId);               // 登録者
+			kintaiEntity.setCreatedUserId(loginId);                                 // 登録者
 			kintaiEntity.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
 		}
 		// 社員番号より、社員情報を取得
-		Users userEntity = baseDao.findById(userId, Users.class);
+		Users userEntity = baseDao.findById(taishoUserId, Users.class);
 		kintaiEntity.setUsers(userEntity);                   // ユーザー情報
-		kintaiEntity.setAtendanceDate(date);             // 勤務日
+		kintaiEntity.setAtendanceDate(date);                 // 勤務日
 		
 		// 勤務日区分情報を取得
 		WorkDayKbnMaster workDayEntity = baseDao.findById(form.getWorkDayKbn(), WorkDayKbnMaster.class);
@@ -1183,7 +1199,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// ロケーション情報を取得
 		Locations location = baseDao.findById(form.getLocationId(), Locations.class);
 		kintaiEntity.setLocation(location);                  // ロケーション情報
-		kintaiEntity.setUpdatedUserId(userId);               // 更新者
+		kintaiEntity.setUpdatedUserId(loginId);               // 更新者
 		kintaiEntity.setUpdateDate(new Timestamp(System.currentTimeMillis())); // 更新時刻
 		
 		// 更新の場合
@@ -1199,8 +1215,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	/**
 	 * プロジェクト情報を更新する
 	 * 
-	 * @param userId 
-	 * 				社員番号
+	 * @param loginId 
+	 * 				ログイン社員番号
+	 * @param taishoUserId 
+	 * 				対象社員番号
 	 * @param date 
 	 * 				勤怠日付
 	 * @param projectList 
@@ -1209,12 +1227,12 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @throws Exception 
 	 * 
 	 */
-	private void saveProjectInfo(String userId, String date, List<AttendanceProjectVO> projectList) {
+	private void saveProjectInfo(String loginId, String taishoUserId, String date, List<AttendanceProjectVO> projectList) {
 		// プロジェクト情報を更新する
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
-		condition.addConditionEqual("users.id", userId);  // 社員番号
-		condition.addConditionEqual("atendanceDate", date);  // 勤務休日
+		condition.addConditionEqual("users.id", taishoUserId);  // 社員番号
+		condition.addConditionEqual("atendanceDate", date);     // 勤務休日
 		KintaiInfo kintaiEntity = baseDao.findSingleResult(condition, KintaiInfo.class);
 		// プロジェクト情報を初期化
 		condition = new BaseCondition();
@@ -1235,9 +1253,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				ProjWorkMaster projWorkMaster = baseDao.findById(projectInfo.getWorkId(), ProjWorkMaster.class);
 				projectEntity.setProjWorkMaster(projWorkMaster);
 				
-				projectEntity.setCreatedUserId(userId);               // 登録者
+				projectEntity.setCreatedUserId(loginId);               // 登録者
 				projectEntity.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
-				projectEntity.setUpdatedUserId(userId);               // 更新者
+				projectEntity.setUpdatedUserId(loginId);               // 更新者
 				projectEntity.setUpdateDate(new Timestamp(System.currentTimeMillis()));  // 更新時刻
 				
 			    // プロジェクト情報を追加する

@@ -210,7 +210,6 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	@Override
 	public void setUserMonthReport(String userId, String date, MonthlyReportForm monthlyReportForm) throws ParseException {
 		
-		
 		MonthlyReportChecker.chkKintaiInfoInput(monthlyReportForm);
 		// 合計休暇時間数
 		Double totleRestHours = 0.0;
@@ -227,12 +226,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 合計情報
 		MonthlyReportDispVO totleInfo = new MonthlyReportDispVO();
 		
-        List<MonthlyReportDispVO> monthlyReportList = new ArrayList<MonthlyReportDispVO>();
-		
-		// 最新の申請日付を取得
-		String strLatestShinseiDate = monthlyReportDao.getUserLatestShinseiMonth(userId);
-		monthlyReportList = getMonthyReportList(CostDateUtils.toDate(strLatestShinseiDate.substring(0,6).concat("01")));
-		
+        List<MonthlyReportDispVO> monthlyReportList = monthlyReportForm.getmRList();
 		
 		// 月報情報を取得
 		BaseCondition monthReportInfoSelectCondition = new BaseCondition();
