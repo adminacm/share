@@ -3,8 +3,8 @@ package argo.cost.monthlyReport.model;
 import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.AbstractForm;
-import argo.cost.common.model.ListItemVO;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.model.ProjWorkTimeCountVO;
 
@@ -32,7 +32,7 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	/**
 	 * 氏名リスト
 	 */
-	private List<ListItemVO> userList;
+	private List<Users> userList;
 
 	/**
 	 * 処理状況
@@ -168,11 +168,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 		this.paperwork = paperwork;
 	}
 	
-	public List<ListItemVO> getUserList() {
+	public List<Users> getUserList() {
 		return userList;
 	}
 
-	public void setUserList(List<ListItemVO> userList) {
+	public void setUserList(List<Users> userList) {
 		this.userList = userList;
 	}
 	
