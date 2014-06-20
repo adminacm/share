@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
-import argo.cost.common.model.ListItemVO;
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
@@ -81,7 +81,7 @@ public class MonthlyReportController extends AbstractController {
 		getSession().setUrl("monthlyReport");
     	
     	// 氏名リストを取得 
-    	List<ListItemVO> userList = comService.getUserNameList(userId);
+    	List<Users> userList = comService.getUserNameList(userId);
     	monthlyReportForm.setUserList(userList);
     	
     	// 氏名の初期値設定
@@ -98,7 +98,6 @@ public class MonthlyReportController extends AbstractController {
     	// 提出状態取得
     	String status = comService.getMonthReportStatus(userId, strLatestShinseiDate);
     	monthlyReportForm.setProStatus(status);
-    	
     	
     	List<MonthlyReportDispVO> monthlyReportDispVOList = monthlyReportService.getMonthyReportList(formatDate);
     	
@@ -128,8 +127,9 @@ public class MonthlyReportController extends AbstractController {
     public String searchMonthlyReportList(MonthlyReportForm form) throws Exception {
     	
     	String userId = form.getUserCode();
+    	getSession().getUserInfo().setTaishoUserId(form.getUserCode());
     	List<MonthlyReportDispVO> resultList = monthlyReportService.getMonthyReportList(CostDateUtils.toDate(form.getYearMonth()));
-    	
+
     	form.setmRList(resultList);
     	
     	// 月報情報の設定

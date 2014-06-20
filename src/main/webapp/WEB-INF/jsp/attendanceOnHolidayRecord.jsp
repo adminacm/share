@@ -87,7 +87,7 @@ function submitAction(action) {
 								<td style="padding-left:25px;width:30px">氏名</td>
 								<td style="width:130px">
 									<form:select path="userName" style="width:100%;border:2px solid #333333;" id="userName">
-										<form:options items="${attendanceOnHolidayRecordForm.userNameList}" itemValue="value" itemLabel="name"/>
+										<form:options items="${attendanceOnHolidayRecordForm.userNameList}" itemValue="id" itemLabel="userName"/>
 									</form:select>
 								</td>
 								<td style="width:100px;padding-left:100px;">

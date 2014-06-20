@@ -56,6 +56,10 @@ public class ShiftVO {
 	 * シフト超勤開始時刻(hhnn)
 	 */
 	private String chokinSTimeStr;
+	/**
+	 * 一日の勤務時間数
+	 */
+	private Double workHours;
 	
 	public String getCode() {
 		return code;
@@ -143,6 +147,14 @@ public class ShiftVO {
 
 	public void setChokinSTimeStr(String chokinSTimeStr) {
 		this.chokinSTimeStr = chokinSTimeStr;
+	}
+
+	public Double getWorkHours() {
+		return workHours;
+	}
+
+	public void setWorkHours(Double workHours) {
+		this.workHours = workHours;
 	}
 	
 	

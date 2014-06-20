@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import argo.cost.common.dao.BaseDao;
+import argo.cost.common.utils.CostDateUtils;
 
 /**
  * 月報画面DaoImpl
@@ -59,7 +60,8 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 		// クエリー取得
 		Query query = this.entityManager.createNativeQuery(stbLatestShinseiDateSql.toString());
 		query.setParameter(1, userId);
-		String strLatestShinseiYearMonth = "";
+		// 今のシステム日付を取得
+		String strLatestShinseiYearMonth = CostDateUtils.getNowDate();
 		// 出力対象一覧情報取得
 		Object res = query.getSingleResult();
 		if (res != null) {

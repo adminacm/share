@@ -359,7 +359,7 @@ public class AttendanceInputChecker {
 					// は休暇が入力されているか
 					if (StringUtils.isEmpty(kyukaKbn)) {
 						// 定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください
-						form.putConfirmMsg(MessageConstants.COSE_E_011);
+						form.putConfirmMsg(MessageConstants.COSE_E_011, new String[] {String.valueOf(shift.getWorkHours())});
 					}
 				}
 			}

@@ -65,7 +65,7 @@ function submitAction(action) {
 						<td style="padding-left:40px;">氏名</td>
 						<td>
 							<form:select path="userCode" style="width:100%;border:2px solid #333333;" id="usCode">
-								<form:options items="${monthlyReportForm.userList}" itemValue="value" itemLabel="name"/>
+								<form:options items="${monthlyReportForm.userList}" itemValue="id" itemLabel="userName"/>
 							</form:select>
 						</td>
 						<td style="padding-left:520px;"><input type="button" value="表示切替" onclick="submitAction('/monthlyReport/search');"/></td>
