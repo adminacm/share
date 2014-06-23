@@ -56,6 +56,11 @@ function submitAction(action) {
 			<div style="padding:2px;">
 				<b>月報</b>
 			</div>
+			<div style="margin-left: 10px;margin-top: 10px;">
+			<c:forEach var="message" items="${monthlyReportForm.confirmMsgList }">
+				<span style="color:red">${message }</span><br/>
+			</c:forEach>
+		</div>
 			<div>
 				<table style="width:800px;margin-left:40px;margin-right:40px;margin-bottom:30px;border:1px solid #ccc;">
 					<tr>
@@ -75,14 +80,17 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
 				<table style="width:800px;margin-left:40px;margin-right:40px;">
 					<tr>
-						<td style="border:1px solid #333333;" align="center">${monthlyReportForm.proStatus}</td>
+						<td style="border:1px solid #333333;" align="center" width="180px">${monthlyReportForm.proStatus}</td>
 						<td align="right" width="130px"><input type="button" value="←" onclick="submitAction('/monthlyReport/lastMonth');" /></td>
 						<td align="center" width="100px;">
 							<form:label path="yearMonthHyoji" id="yearMonthHyoji">${monthlyReportForm.yearMonthHyoji}</form:label>
 							<form:hidden path="yearMonth"/>
 						</td>
 						<td align="left"><input type="button" value="→" onclick="submitAction('/monthlyReport/nextMonth');" /></td>
-						<td align="right"><input type="button" value="月報提出" onclick="submitAction('/monthlyReport/monthlyReportCommit');" /></td>
+						<!-- 提出状況：作成中 -->
+						<c:if test="${monthlyReportForm.proStatus == '作成中'}">
+							<td align="right"><input type="button" value="月報提出" onclick="submitAction('/monthlyReport/monthlyReportCommit');" /></td>
+						</c:if>
 					</tr>
 				</table>
 			</div>
@@ -188,9 +196,9 @@ function submitAction(action) {
 						</c:if>
 						<c:if test="${not empty projWorkTimeCountInfo.workContentName}">
 							<tr>
-								<td style="width:40px">&nbsp;</td>
-								<td>${projWorkTimeCountInfo.workContentName}</td>
-								<td>
+								<td width="30px" align="left">&nbsp;</td>
+								<td width="170xp" align="left">${projWorkTimeCountInfo.workContentName}</td>
+								<td align="left">
 									${projWorkTimeCountInfo.workHoursNum}
 								</td>
 							</tr>

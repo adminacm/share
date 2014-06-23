@@ -33,13 +33,12 @@ public class MonthlyReportDaoImpl implements MonthlyReportDao{
 	BaseDao baseDao;
 
 	/**
+	 * ユーザ最後の月報提出日付を取得
 	 * 
-	 * ユーザの最後の月報提出年月を取得処理
-	 * 
-	 * @param userId 
-	 * 				ユーザID
-	 * 
-	 * @return 最後の月報提出年月
+	 * @param userId
+	 *               社員番号
+	 * @return
+	 *        ユーザ最後の月報提出日付
 	 */
 	@Override
 	public String getUserLatestShinseiMonth(String userId) {
