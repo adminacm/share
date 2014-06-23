@@ -24,7 +24,8 @@ import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
  *
  * @author COST argo Corporation.
  */
-@RequestMapping(UrlConstant.URL_MONTHLYREPORT_STATUS_LIST)
+@Controller
+@RequestMapping(UrlConstant.URL_MAKEKYUYOFILE)
 @SessionAttributes(types = { MonthlyReportStatusListForm.class })
 public class MakeKyuyoFileController extends AbstractController  {
 	
@@ -37,12 +38,18 @@ public class MakeKyuyoFileController extends AbstractController  {
 	/**
 	 * 月報状況一覧画面ID
 	 */
-	private static final String MONTHLYREPORT_STATUS_LIST = "monthlyReportStatusList";
+	private static final String MAKEKYUYOFILE = "makeKyuyoFile";
 	
 	/**
 	 * 作成した給与ファイル名前リンクをクリックするアクション
 	 */
 	private static final String MADEKYUYOFILENAMECLICK = "/madeKyuyoFileNameClick";
+	
+	
+	/**
+	 * 検索
+	 */
+	public static final String MAKEFILE = "/makeFile";
 
 	/**
 	 *  給与システム用ファイル出力画面初期化
@@ -73,7 +80,7 @@ public class MakeKyuyoFileController extends AbstractController  {
     	
     	
     	//  給与システム用ファイル出力画面を戻る
-        return MONTHLYREPORT_STATUS_LIST;
+        return MAKEKYUYOFILE;
     }
 
     /**
@@ -84,14 +91,14 @@ public class MakeKyuyoFileController extends AbstractController  {
      * @return 給与システム用ファイル出力画面
      * @throws Exception 
      */
-    @RequestMapping(value = SEARCH, method = RequestMethod.POST)
+    @RequestMapping(value = MAKEFILE, method = RequestMethod.POST)
     public String searchMonthlyReportStatusList(MakeKyuyoFileForm makeKyuyoFileForm) throws Exception {
     	
     	// 給与システム用ファイルを作成し、画面情報でファイル情報を設定する
     	makeKyuyoFileService.createCSVFile(makeKyuyoFileForm);
 
     	// 給与システム用ファイル出力画面を戻り
-        return MONTHLYREPORT_STATUS_LIST;
+        return MAKEKYUYOFILE;
     }
 
     /**

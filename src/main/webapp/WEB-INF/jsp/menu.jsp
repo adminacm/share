@@ -34,6 +34,7 @@
 	            		<li style="margin-left:20px;"><a href="/setup/init">個人設定</a></li>
 	            		<li style="margin-left:20px;"><a href="/approvalList/init">承認一覧</a></li>
 	            		<li style="margin-left:20px;"><a href="/monthlyReportStatusList/init">月報提出状況一覧</a></li>
+	            		<li style="margin-left:20px;"><a href="/makeKyuyoFile/init">給与システム用ファイル出力</a></li>
 	            	</ul>
 	            </div>
 	        </div>

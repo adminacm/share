@@ -67,6 +67,10 @@ public class UrlConstant {
 	/**
 	  * 個人設定画面
 	  */
-	 public static final String URL_PERSONAL_SETUP = "/setup";
+	public static final String URL_PERSONAL_SETUP = "/setup"; 
 	
+	/**
+      * 給与システム用ファイル出力画面
+	  */
+    public static final String URL_MAKEKYUYOFILE = "/makeKyuyoFile";
 }
