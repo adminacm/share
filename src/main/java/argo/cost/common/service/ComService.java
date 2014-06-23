@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import argo.cost.common.entity.AffiliationMaster;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.Users;
@@ -73,6 +74,12 @@ public interface ComService {
 	 */
 	List<ProjWorkMaster> getWorkItemList();
 	
+	/**
+	 * 所属プルダウンリスト取得
+	 * 
+	 * @return 所属リスト
+	 */
+	List<AffiliationMaster> getAffiliationList();
 	
 	/**
 	 * 氏名プルダウンリスト取得
@@ -82,4 +89,13 @@ public interface ComService {
 	 * @return 氏名プルダウンリスト
 	 */
 	List<Users> getUserNameList(String userId);
+
+	/**
+	 * 氏名取得
+	 * 
+	 * @param userId
+	 *              ユーザＩＤ
+	 * @return 氏名
+	 */
+	String getUserName(String userId);
 }

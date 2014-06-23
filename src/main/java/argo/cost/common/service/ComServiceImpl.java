@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
+import argo.cost.common.entity.AffiliationMaster;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.Users;
@@ -165,6 +166,61 @@ public class ComServiceImpl implements ComService {
 		
 		return resultList;
 	}
+	
+	/**
+	 * 所属プルダウンリスト取得
+	 * 
+	 * @return 所属リスト
+	 */
+	@Override
+	public List<AffiliationMaster> getAffiliationList() {
+		
+		// 作業内容リストを取得
+		List<AffiliationMaster> resultList = baseDao.findAll(AffiliationMaster.class);
+		
+		return resultList;
+	}
+	
+	/**
+	 * 氏名プルダウンリスト取得
+	 * 
+	 * @param userId
+	 *              ユーザＩＤ
+	 * @return 氏名プルダウンリスト
+	 */
+	@Override
+	public List<Users> getUserNameList(String userId) {
+		
+		BaseCondition condition = new BaseCondition();
+		condition.addConditionOr(new String[] { "id", "dairishaId" },
+				new String[] { userId, userId }, new BaseCondition.Joken[] {
+						BaseCondition.Joken.EQUAL, BaseCondition.Joken.EQUAL });
+
+		List<Users> result = baseDao.findResultList(condition, Users.class);
+		
+		return result;
+	}
+	
+	/**
+	 * 氏名取得
+	 * 
+	 * @param userId
+	 *              ユーザＩＤ
+	 * @return 氏名
+	 */
+	@Override
+	public String getUserName(String userId) {
+		
+		// 氏名
+		String userName = "";
+		// ユーザ情報
+		Users userInfo = baseDao.findById(userId, Users.class);
+		if (userInfo != null) {
+			userName = userInfo.getUserName();
+		}
+		
+		return userName;
+	}
 	///////////////////////////////////
 	///////////////////////////////////
 
@@ -264,26 +320,6 @@ public class ComServiceImpl implements ComService {
         
 		session.setUserInfo(userinfo);
 
-	}
-	
-	/**
-	 * 氏名プルダウンリスト取得
-	 * 
-	 * @param userId
-	 *              ユーザＩＤ
-	 * @return 氏名プルダウンリスト
-	 */
-	@Override
-	public List<Users> getUserNameList(String userId) {
-		
-		BaseCondition condition = new BaseCondition();
-		condition.addConditionOr(new String[] { "id", "dairishaId" },
-				new String[] { userId, userId }, new BaseCondition.Joken[] {
-						BaseCondition.Joken.EQUAL, BaseCondition.Joken.EQUAL });
-
-		List<Users> result = baseDao.findResultList(condition, Users.class);
-		
-		return result;
 	}
 
 }
