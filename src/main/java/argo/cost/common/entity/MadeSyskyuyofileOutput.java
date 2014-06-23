@@ -1,0 +1,102 @@
+package argo.cost.common.entity;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.sql.Timestamp;
+
+
+/**
+ * The persistent class for the made_syskyuyofile_output database table.
+ * 
+ */
+@Entity
+@Table(name="made_syskyuyofile_output")
+@NamedQuery(name="MadeSyskyuyofileOutput.findAll", query="SELECT m FROM MadeSyskyuyofileOutput m")
+public class MadeSyskyuyofileOutput implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="made_kyuyofile_name", unique=true, nullable=false, length=40)
+	private String madeKyuyofileName;
+
+	@Column(name="apply_deal_year_month", nullable=false, length=6)
+	private String applyDealYearMonth;
+
+	@Column(name="file_craeted_timestamp", nullable=false)
+	private Timestamp fileCraetedTimestamp;
+
+	@Column(name="kyuyofile_naiyo")
+	private byte[] kyuyofileNaiyo;
+
+	@Column(name="update_date")
+	private Timestamp updateDate;
+
+	@Column(name="updated_user_id", length=20)
+	private String updatedUserId;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="file_created_user_id", nullable=false)
+	private Users user;
+
+	public MadeSyskyuyofileOutput() {
+	}
+
+	public String getMadeKyuyofileName() {
+		return this.madeKyuyofileName;
+	}
+
+	public void setMadeKyuyofileName(String madeKyuyofileName) {
+		this.madeKyuyofileName = madeKyuyofileName;
+	}
+
+	public String getApplyDealYearMonth() {
+		return this.applyDealYearMonth;
+	}
+
+	public void setApplyDealYearMonth(String applyDealYearMonth) {
+		this.applyDealYearMonth = applyDealYearMonth;
+	}
+
+	public Timestamp getFileCraetedTimestamp() {
+		return this.fileCraetedTimestamp;
+	}
+
+	public void setFileCraetedTimestamp(Timestamp fileCraetedTimestamp) {
+		this.fileCraetedTimestamp = fileCraetedTimestamp;
+	}
+
+	public byte[] getKyuyofileNaiyo() {
+		return this.kyuyofileNaiyo;
+	}
+
+	public void setKyuyofileNaiyo(byte[] kyuyofileNaiyo) {
+		this.kyuyofileNaiyo = kyuyofileNaiyo;
+	}
+
+	public Timestamp getUpdateDate() {
+		return this.updateDate;
+	}
+
+	public void setUpdateDate(Timestamp updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public String getUpdatedUserId() {
+		return this.updatedUserId;
+	}
+
+	public void setUpdatedUserId(String updatedUserId) {
+		this.updatedUserId = updatedUserId;
+	}
+
+	public Users getUser() {
+		return this.user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+}
