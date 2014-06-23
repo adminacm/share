@@ -35,22 +35,6 @@ public interface MonthlyReportStatusListService {
 	List<ListItemVO> getMonthList();
 
 	/**
-	 * 所属プルダウンリストを取得
-	 * 
-	 * @return 
-	 *        所属プルダウンリスト
-	 */
-	List<ListItemVO> getAffiliationList();
-
-	/**
-	 * 状況プルダウンリストを取得
-	 * 
-	 * @return 
-	 *        状況プルダウンリスト
-	 */
-	List<ListItemVO> getStatusList();
-
-	/**
 	 * 月報状況一覧リストを取得
 	 * 
 	 * @param form
@@ -60,15 +44,4 @@ public interface MonthlyReportStatusListService {
 	 */
 	List<MonthlyReportStatusListVo> getMonthlyReportStatusList(MonthlyReportStatusListForm form);
 
-	/**
-	 * CSVファイルを作成
-	 * 
-	 * @param form
-	 *            月報状況一覧情報
-     * @param response
-     *                レスポンス
-	 * @throws Exception 
-	 *                  異常
-	 */
-	void createCSVFile(MonthlyReportStatusListForm form) throws Exception;
 }

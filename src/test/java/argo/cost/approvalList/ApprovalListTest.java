@@ -69,7 +69,7 @@ public class ApprovalListTest {
 		List<ApprovalListVO> approvalList = serviceImpl.getApprovalList(status);
 		
 		// 承認一覧リストのサイズ
-		assertEquals(approvalList.size(), 5);
+		assertEquals(approvalList.size(), 6);
 		
 		assertEquals(approvalList.get(0).getApplyNo(), "4001120140500");
 		assertEquals(approvalList.get(0).getApplyKbnName(), "月報");
@@ -92,19 +92,26 @@ public class ApprovalListTest {
 		assertEquals(approvalList.get(2).getAffiliationName(), "総務部");
 		assertEquals(approvalList.get(2).getUserName(), "０３ＰＴＳ");
 		
-		assertEquals(approvalList.get(3).getApplyNo(), "4001220140518");
+		assertEquals(approvalList.get(3).getApplyNo(), "4001220140504");
 		assertEquals(approvalList.get(3).getApplyKbnName(), "超勤振替申請");
-		assertEquals(approvalList.get(3).getApplyDetail(), "休日勤務日：2014/5/18");
+		assertEquals(approvalList.get(3).getApplyDetail(), "休日勤務日：2014/5/4");
 		assertEquals(approvalList.get(3).getStatusName(), "提出");
 		assertEquals(approvalList.get(3).getAffiliationName(), "BS3");
 		assertEquals(approvalList.get(3).getUserName(), "０１ＰＴＳ");
 		
-		assertEquals(approvalList.get(4).getApplyNo(), "4012220140505");
+		assertEquals(approvalList.get(4).getApplyNo(), "4001220140518");
 		assertEquals(approvalList.get(4).getApplyKbnName(), "超勤振替申請");
-		assertEquals(approvalList.get(4).getApplyDetail(), "休日勤務日：2014/5/5");
+		assertEquals(approvalList.get(4).getApplyDetail(), "休日勤務日：2014/5/18");
 		assertEquals(approvalList.get(4).getStatusName(), "提出");
-		assertEquals(approvalList.get(4).getAffiliationName(), "SA2-1");
-		assertEquals(approvalList.get(4).getUserName(), "１２ＰＴＳ");
+		assertEquals(approvalList.get(4).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(4).getUserName(), "０１ＰＴＳ");
+		
+		assertEquals(approvalList.get(5).getApplyNo(), "4001220140510");
+		assertEquals(approvalList.get(5).getApplyKbnName(), "超勤振替申請");
+		assertEquals(approvalList.get(5).getApplyDetail(), "休日勤務日：2014/5/10");
+		assertEquals(approvalList.get(5).getStatusName(), "提出");
+		assertEquals(approvalList.get(5).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(5).getUserName(), "０１ＰＴＳ");
 	}
 	
 	/**
@@ -119,7 +126,7 @@ public class ApprovalListTest {
 		List<ApprovalListVO> approvalList = serviceImpl.getApprovalList(status);
 		
 		// 承認一覧リストのサイズ
-		assertEquals(approvalList.size(), 3);
+		assertEquals(approvalList.size(), 4);
 		
 		assertEquals(approvalList.get(0).getApplyNo(), "4002120140500");
 		assertEquals(approvalList.get(0).getApplyKbnName(), "月報");
@@ -128,18 +135,25 @@ public class ApprovalListTest {
 		assertEquals(approvalList.get(0).getAffiliationName(), "BS3");
 		assertEquals(approvalList.get(0).getUserName(), "０２ＰＴＳ");
 		
-		assertEquals(approvalList.get(1).getApplyNo(), "4001220140518");
+		assertEquals(approvalList.get(1).getApplyNo(), "4001220140504");
 		assertEquals(approvalList.get(1).getApplyKbnName(), "超勤振替申請");
-		assertEquals(approvalList.get(1).getApplyDetail(), "休日勤務日：2014/5/18");
+		assertEquals(approvalList.get(1).getApplyDetail(), "休日勤務日：2014/5/4");
 		assertEquals(approvalList.get(1).getStatusName(), "提出");
-		assertEquals(approvalList.get(1).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(1).getAffiliationName(),  "BS3");
 		assertEquals(approvalList.get(1).getUserName(), "０１ＰＴＳ");
 		
-		assertEquals(approvalList.get(2).getApplyNo(), "4012220140505");
+		assertEquals(approvalList.get(2).getApplyNo(), "4001220140518");
 		assertEquals(approvalList.get(2).getApplyKbnName(), "超勤振替申請");
-		assertEquals(approvalList.get(2).getApplyDetail(), "休日勤務日：2014/5/5");
+		assertEquals(approvalList.get(2).getApplyDetail(), "休日勤務日：2014/5/18");
 		assertEquals(approvalList.get(2).getStatusName(), "提出");
-		assertEquals(approvalList.get(2).getAffiliationName(), "SA2-1");
-		assertEquals(approvalList.get(2).getUserName(), "１２ＰＴＳ");
+		assertEquals(approvalList.get(2).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(2).getUserName(), "０１ＰＴＳ");
+		
+		assertEquals(approvalList.get(3).getApplyNo(), "4001220140510");
+		assertEquals(approvalList.get(3).getApplyKbnName(), "超勤振替申請");
+		assertEquals(approvalList.get(3).getApplyDetail(), "休日勤務日：2014/5/10");
+		assertEquals(approvalList.get(3).getStatusName(), "提出");
+		assertEquals(approvalList.get(3).getAffiliationName(), "BS3");
+		assertEquals(approvalList.get(3).getUserName(), "０１ＰＴＳ");
 	}
 }

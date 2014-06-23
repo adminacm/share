@@ -65,8 +65,12 @@ public class ApprovalManage implements Serializable {
 	private Users users;
 
 	//bi-directional many-to-one association to KintaiInfo
-	@OneToMany(mappedBy="approvalManage")
-	private List<KintaiInfo> kintaiInfos;
+	@OneToMany(mappedBy="approvalManage1")
+	private List<KintaiInfo> kintaiInfos1;
+
+	//bi-directional many-to-one association to KintaiInfo
+	@OneToMany(mappedBy="approvalManage2")
+	private List<KintaiInfo> kintaiInfos2;
 
 	public ApprovalManage() {
 	}
@@ -159,26 +163,47 @@ public class ApprovalManage implements Serializable {
 		this.users = users;
 	}
 
-	public List<KintaiInfo> getKintaiInfos() {
-		return this.kintaiInfos;
+	public List<KintaiInfo> getKintaiInfos1() {
+		return this.kintaiInfos1;
 	}
 
-	public void setKintaiInfos(List<KintaiInfo> kintaiInfos) {
-		this.kintaiInfos = kintaiInfos;
+	public void setKintaiInfos1(List<KintaiInfo> kintaiInfos1) {
+		this.kintaiInfos1 = kintaiInfos1;
 	}
 
-	public KintaiInfo addKintaiInfo(KintaiInfo kintaiInfo) {
-		getKintaiInfos().add(kintaiInfo);
-		kintaiInfo.setApprovalManage(this);
+	public KintaiInfo addKintaiInfos1(KintaiInfo kintaiInfos1) {
+		getKintaiInfos1().add(kintaiInfos1);
+		kintaiInfos1.setApprovalManage1(this);
 
-		return kintaiInfo;
+		return kintaiInfos1;
 	}
 
-	public KintaiInfo removeKintaiInfo(KintaiInfo kintaiInfo) {
-		getKintaiInfos().remove(kintaiInfo);
-		kintaiInfo.setApprovalManage(null);
+	public KintaiInfo removeKintaiInfos1(KintaiInfo kintaiInfos1) {
+		getKintaiInfos1().remove(kintaiInfos1);
+		kintaiInfos1.setApprovalManage1(null);
 
-		return kintaiInfo;
+		return kintaiInfos1;
 	}
 
+	public List<KintaiInfo> getKintaiInfos2() {
+		return this.kintaiInfos2;
+	}
+
+	public void setKintaiInfos2(List<KintaiInfo> kintaiInfos2) {
+		this.kintaiInfos2 = kintaiInfos2;
+	}
+
+	public KintaiInfo addKintaiInfos2(KintaiInfo kintaiInfos2) {
+		getKintaiInfos2().add(kintaiInfos2);
+		kintaiInfos2.setApprovalManage2(this);
+
+		return kintaiInfos2;
+	}
+
+	public KintaiInfo removeKintaiInfos2(KintaiInfo kintaiInfos2) {
+		getKintaiInfos2().remove(kintaiInfos2);
+		kintaiInfos2.setApprovalManage2(null);
+
+		return kintaiInfos2;
+	}
 }

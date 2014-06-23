@@ -3,6 +3,7 @@ package argo.cost.monthlyReportStatusList.model;
 import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.entity.AffiliationMaster;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 
@@ -46,16 +47,7 @@ public class MonthlyReportStatusListForm  extends AbstractForm implements Serial
 	/**
 	 * 所属リスト
 	 */
-	private List<ListItemVO> affiliationList;
-	/**
-	 * 状況
-	 */
-	private String status;
-	
-	/**
-	 * 状況リスト
-	 */
-	private List<ListItemVO> statusList;
+	private List<AffiliationMaster> affiliationList;
 	
 	/**
 	 * 月報状況一覧リスト
@@ -105,28 +97,12 @@ public class MonthlyReportStatusListForm  extends AbstractForm implements Serial
 		this.affiliation = affiliation;
 	}
 
-	public List<ListItemVO> getAffiliationList() {
+	public List<AffiliationMaster> getAffiliationList() {
 		return affiliationList;
 	}
 
-	public void setAffiliationList(List<ListItemVO> affiliationList) {
+	public void setAffiliationList(List<AffiliationMaster> affiliationList) {
 		this.affiliationList = affiliationList;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public List<ListItemVO> getStatusList() {
-		return statusList;
-	}
-
-	public void setStatusList(List<ListItemVO> statusList) {
-		this.statusList = statusList;
 	}
 
 	public List<MonthlyReportStatusListVo> getMonthlyReportStatusList() {

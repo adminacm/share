@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
+import argo.cost.common.entity.AffiliationMaster;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
@@ -75,16 +76,10 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	form.setMonthList(monthList);
 
     	// 所属リストを取得
-    	List<ListItemVO> affiliationList = sevice.getAffiliationList();
+		List<AffiliationMaster> affiliationList = comService.getAffiliationList();
     	
     	// 所属リストを設定
     	form.setAffiliationList(affiliationList);
-    	
-    	// 状況リストを取得
-    	List<ListItemVO> statusList = sevice.getStatusList();
-    	
-    	// 状況リストを設定
-    	form.setStatusList(statusList);
 
     	// 初期値設定
 		Calendar cal = Calendar.getInstance();
@@ -101,11 +96,6 @@ public class MonthlyReportStatusListController extends AbstractController  {
 
         	form.setMonth(String.valueOf(month));
     	}
-    	
-    	// 所属
-    	form.setAffiliation("");
-    	// 状況
-    	form.setStatus("01");
     	
     	// 月報状況一覧リストを取得
     	List<MonthlyReportStatusListVo> monthlyReportStatusList = sevice.getMonthlyReportStatusList(form);
@@ -173,26 +163,5 @@ public class MonthlyReportStatusListController extends AbstractController  {
     	
     	// 承認詳細画面へ遷移する
     	return strApprovalDisplay;
-    }
-
-    /**
-     * 給与奉行向けCSV出力ボタンを押下
-     * 
-     * @param form
-     *            月報状況一覧画面情報
-     * @param response
-     *                レスポンス
-     * @return 月報状況一覧画面
-     * @throws Exception 
-     *                  異常
-     */
-    @RequestMapping(value = "/csvOutput", method = RequestMethod.POST)
-    public String doCSV(MonthlyReportStatusListForm form) throws Exception {
-    	
-		// CSVファイルデータ作成
-    	sevice.createCSVFile(form);
-
-    	// 月報状況一覧画面を戻り
-        return MONTHLYREPORT_STATUS_LIST;
     }
 }

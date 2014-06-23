@@ -101,7 +101,12 @@ public class KintaiInfo implements Serializable {
 	//bi-directional many-to-one association to ApprovalManage
 	@ManyToOne
 	@JoinColumn(name="apply_no")
-	private ApprovalManage approvalManage;
+	private ApprovalManage approvalManage1;
+
+	//bi-directional many-to-one association to ApprovalManage
+	@ManyToOne
+	@JoinColumn(name="apply_no_cho")
+	private ApprovalManage approvalManage2;
 
 	//bi-directional many-to-one association to KyukaKekinKbnMaster
 	@ManyToOne
@@ -320,12 +325,20 @@ public class KintaiInfo implements Serializable {
 		this.updatedUserId = updatedUserId;
 	}
 
-	public ApprovalManage getApprovalManage() {
-		return this.approvalManage;
+	public ApprovalManage getApprovalManage1() {
+		return this.approvalManage1;
 	}
 
-	public void setApprovalManage(ApprovalManage approvalManage) {
-		this.approvalManage = approvalManage;
+	public void setApprovalManage1(ApprovalManage approvalManage1) {
+		this.approvalManage1 = approvalManage1;
+	}
+
+	public ApprovalManage getApprovalManage2() {
+		return this.approvalManage2;
+	}
+
+	public void setApprovalManage2(ApprovalManage approvalManage2) {
+		this.approvalManage2 = approvalManage2;
 	}
 
 	public KyukaKekinKbnMaster getKyukaKekinKbnMaster() {

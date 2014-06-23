@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import argo.cost.approvalList.model.ApprovalListVO;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.dao.ComDao;
 import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.StatusMaster;
 import argo.cost.common.model.ListItemVO;
@@ -23,12 +22,6 @@ import argo.cost.common.model.ListItemVO;
  */
 @Service
 public class ApprovalListServiceImpl implements ApprovalListService {
-
-	/**
-	 * 共通DAO
-	 */	
-	@Autowired
-	private ComDao comDao;
 	
 	/**
 	 * 単一テーブル操作DAO

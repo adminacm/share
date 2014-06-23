@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -84,45 +83,6 @@ public class MonthlyReportStatusListTest {
 		assertEquals(yearMonthList.get(2).getName(), "03月");
 		
 	}
-
-	/**
-	 * 所属プルダウンリスト取得をテスト
-	 */
-	@Test
-	public void testGetAffiliationList(){
-		
-		// 所属プルダウンリスト取得
-		List<ListItemVO> affiliationList = serviceImpl.getAffiliationList();
-		
-		// 所属プルダウンリストのサイズ
-		assertEquals(affiliationList.size(), 18);
-		assertEquals(affiliationList.get(1).getValue(), "10");
-		assertEquals(affiliationList.get(1).getName(), "総務部");
-		assertEquals(affiliationList.get(2).getValue(), "11");
-		assertEquals(affiliationList.get(2).getName(), "総務課");
-		assertEquals(affiliationList.get(3).getValue(), "12");
-		assertEquals(affiliationList.get(3).getName(), "経理課");
-		
-	}
-
-	/**
-	 * 状況プルダウンリスト取得テスト
-	 */
-	@Test
-	public void testGetStatusList(){
-		
-		// 状況プルダウンリスト取得
-		List<ListItemVO> affiliationList = serviceImpl.getStatusList();
-		
-		// 状況プルダウンリストのサイズ
-		assertEquals(affiliationList.size(), 6);
-		assertEquals(affiliationList.get(1).getValue(), "01");
-		assertEquals(affiliationList.get(1).getName(), "作成中");
-		assertEquals(affiliationList.get(2).getValue(), "02");
-		assertEquals(affiliationList.get(2).getName(), "提出");
-		
-	}
-	
 	/**
 	 * 月報状況一覧リスト取得をテスト
 	 */
@@ -135,8 +95,6 @@ public class MonthlyReportStatusListTest {
 
 		// 所属
 		form.setAffiliation("");
-		// 状況
-		form.setStatus("01");
 		// 年
 		form.setYear("2014");
 		// 月
@@ -146,7 +104,7 @@ public class MonthlyReportStatusListTest {
 		List<MonthlyReportStatusListVo> monList = serviceImpl.getMonthlyReportStatusList(form);
 		
 		// 月報状況一覧リストのサイズ
-		assertEquals(monList.size(), 4);
+		assertEquals(monList.size(), 6);
 		assertEquals(monList.get(0).getApplyNo(), "4001120140500");
 		assertEquals(monList.get(0).getAffiliationName(), "BS3");
 		assertEquals(monList.get(0).getUserId(), "4001");
@@ -154,33 +112,27 @@ public class MonthlyReportStatusListTest {
 		assertEquals(monList.get(0).getApplyKbnName(), "月報");
 		assertEquals(monList.get(0).getApplyDetail(), "2014年5月分");
 		assertEquals(monList.get(0).getStatusName(), "作成中");
+		assertEquals(monList.get(1).getApplyNo(), "4002120140500");
+		assertEquals(monList.get(1).getAffiliationName(), "BS3");
+		assertEquals(monList.get(1).getUserId(), "4002");
+		assertEquals(monList.get(1).getUserName(), "０２ＰＴＳ");
+		assertEquals(monList.get(1).getApplyKbnName(), "月報");
+		assertEquals(monList.get(1).getApplyDetail(), "2014年5月分");
+		assertEquals(monList.get(1).getStatusName(), "提出");
+		assertEquals(monList.get(2).getApplyNo(), "4003120140500");
+		assertEquals(monList.get(2).getAffiliationName(), "総務部");
+		assertEquals(monList.get(2).getUserId(), "4003");
+		assertEquals(monList.get(2).getUserName(), "０３ＰＴＳ");
+		assertEquals(monList.get(2).getApplyKbnName(), "月報");
+		assertEquals(monList.get(2).getApplyDetail(), "2014年5月分");
+		assertEquals(monList.get(2).getStatusName(), "承認");
+		assertEquals(monList.get(3).getApplyNo(), "4001220140504");
+		assertEquals(monList.get(3).getAffiliationName(), "BS3");
+		assertEquals(monList.get(3).getUserId(), "4001");
+		assertEquals(monList.get(3).getUserName(), "０１ＰＴＳ");
+		assertEquals(monList.get(3).getApplyKbnName(), "超勤振替申請");
+		assertEquals(monList.get(3).getApplyDetail(), "休日勤務日：2014/5/4");
+		assertEquals(monList.get(3).getStatusName(), "提出");
 		
-	}
-	
-	/**
-	 * CSVファイル作成をテスト
-	 */
-	@Test
-	public void testCreateCSVFile(){
-		
-		// 月報状況一覧画面入力情報
-		MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
-		
-		List<MonthlyReportStatusListVo> monthlyReportStatusList = new ArrayList<MonthlyReportStatusListVo>();
-		MonthlyReportStatusListVo monthlyReportStatusInfo = new MonthlyReportStatusListVo();
-		monthlyReportStatusInfo.setUserId("4001");
-		monthlyReportStatusInfo.setApplyYm("201405");
-		monthlyReportStatusList.add(monthlyReportStatusInfo);
-		monthlyReportStatusInfo = new MonthlyReportStatusListVo();
-		monthlyReportStatusInfo.setUserId("4002");
-		monthlyReportStatusInfo.setApplyYm("201405");
-		monthlyReportStatusList.add(monthlyReportStatusInfo);
-		form.setMonthlyReportStatusList(monthlyReportStatusList );
-		
-		try {
-			serviceImpl.createCSVFile(form);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
