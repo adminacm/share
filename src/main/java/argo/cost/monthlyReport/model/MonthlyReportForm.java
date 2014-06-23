@@ -1,6 +1,7 @@
 package argo.cost.monthlyReport.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import argo.cost.common.entity.Users;
@@ -82,7 +83,7 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	/**
 	 * プロジェクト別作業時間集計情報
 	 */
-	private List<ProjWorkTimeCountVO> projWorkTimeCountVOList;
+	private List<ProjWorkTimeCountVO> projWorkTimeCountVOList = new ArrayList<ProjWorkTimeCountVO>();
 //	/**
 //	 * プロジェクト情報
 //	 */
@@ -192,5 +193,11 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 			List<ProjWorkTimeCountVO> projWorkTimeCountVOList) {
 		this.projWorkTimeCountVOList = projWorkTimeCountVOList;
 	}
-
+	
+	public void addProjWorkTimeCountVO(ProjWorkTimeCountVO projectVO) {
+		this.projWorkTimeCountVOList.add(projectVO);
+	}
+	public void addProjWorkTimeCountVOList(List<ProjWorkTimeCountVO> projectList) {
+		this.projWorkTimeCountVOList.addAll(projectList);
+	}
 }

@@ -74,20 +74,22 @@ public class MonthlyReportController extends AbstractController {
     	MonthlyReportForm monthlyReportForm = initForm(MonthlyReportForm.class);
     	// 画面へ設定します。
     	model.addAttribute(monthlyReportForm);
-    	
-    	String userId = monthlyReportForm.getUserId();
+    	// 登録者ID
+    	String loginId = monthlyReportForm.getUserId();
+    	// 対象者ID
+    	String taishoUserId = monthlyReportForm.getTaishoUserId();
     	
 		// セッション情報設定
 		getSession().setUrl("monthlyReport");
     	
     	// 氏名リストを取得 
-    	List<Users> userList = comService.getUserNameList(userId);
+    	List<Users> userList = comService.getUserNameList(loginId);
     	monthlyReportForm.setUserList(userList);
     	
     	// 氏名の初期値設定
-    	monthlyReportForm.setUserCode(userId);
+    	monthlyReportForm.setUserCode(taishoUserId);
     	// 最後の提出年月取得
-    	String strLatestShinseiDate = monthlyReportService.getUserLatestShinseiMonth(userId);
+    	String strLatestShinseiDate = monthlyReportService.getUserLatestShinseiMonth(taishoUserId);
     	// 初期以外の場合
     	if (StringUtils.isNotEmpty(newMonth)) {
     		strLatestShinseiDate = newMonth.substring(0,6).concat("01");
@@ -95,22 +97,14 @@ public class MonthlyReportController extends AbstractController {
     	monthlyReportForm.setYearMonth(strLatestShinseiDate);
     	Date formatDate = CostDateUtils.toDate(strLatestShinseiDate);
     	monthlyReportForm.setYearMonthHyoji(monthlyReportService.getDateFormat(formatDate));
-    	// 提出状態取得
-    	String status = comService.getMonthReportStatus(userId, strLatestShinseiDate);
-    	monthlyReportForm.setProStatus(status);
     	
+    	// 当月のリストを作成
     	List<MonthlyReportDispVO> monthlyReportDispVOList = monthlyReportService.getMonthyReportList(formatDate);
     	
     	monthlyReportForm.setmRList(monthlyReportDispVOList);
     	// 月報情報の設定
-    	monthlyReportService.setUserMonthReport(userId, strLatestShinseiDate, monthlyReportForm);
+    	monthlyReportService.setUserMonthReport(taishoUserId, strLatestShinseiDate, monthlyReportForm);
     	
-//		// 【PJ別作業時間集計】を取得
-//		List<Project> projectList = monthlyReportService.getProjectList(loginId, date);
-//		
-//		// プロジェクト情報設定
-//		form.setProjectList(projectList);
-		
         return MONTHLYREPORT;
     }
 
@@ -127,7 +121,10 @@ public class MonthlyReportController extends AbstractController {
     public String searchMonthlyReportList(MonthlyReportForm form) throws Exception {
     	
     	String userId = form.getUserCode();
+    	// 対象者IDを設定する
     	getSession().getUserInfo().setTaishoUserId(form.getUserCode());
+    	// 対象者氏名を設定する
+    	getSession().getUserInfo().setTaishoUserName(comService.getNameById(userId));
     	List<MonthlyReportDispVO> resultList = monthlyReportService.getMonthyReportList(CostDateUtils.toDate(form.getYearMonth()));
 
     	form.setmRList(resultList);
@@ -185,11 +182,12 @@ public class MonthlyReportController extends AbstractController {
 	 *             Exception
 	 */
     @RequestMapping(value = MONTHLYREPORTCOMMIT, method = RequestMethod.POST)
-    public String monthlyReportCommit(MonthlyReportForm monthlyReportForm) throws Exception {
+    public String monthlyReportCommit(MonthlyReportForm form) throws Exception {
     	
-    	String strMonthyReportCommitFlg = monthlyReportService.monthyReportCommit(monthlyReportForm);
+    	String strMonthyReportCommitFlg = monthlyReportService.monthyReportCommit(form);
     	if ("1".equals(strMonthyReportCommitFlg)) {
-    		return MONTHLYREPORT;
+    		String date = form.getYearMonth();
+    		return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + date;
     	} else {
     		
     		// TODO

@@ -11,14 +11,12 @@ public interface MonthlyReportDao {
 	
 	
 	/**
-	 * 申請状況更新
+	 * ユーザ最後の月報提出日付を取得
 	 * 
-	 * @param applyNo
-	 *               申請番号
-	 * @param proStatus
-	 *                 申請状況
+	 * @param userId
+	 *               社員番号
 	 * @return
-	 *        更新フラグ
+	 *        ユーザ最後の月報提出日付
 	 */
 	String getUserLatestShinseiMonth(String userId);
 }
