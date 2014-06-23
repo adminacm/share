@@ -105,6 +105,9 @@ public class Users implements Serializable {
 	@OneToMany(mappedBy="users")
 	private List<YukyuKyukaFuyu> yukyuKyukaFuyus;
 
+	//bi-directional many-to-one association to MadeSyskyuyofileOutput
+	@OneToMany(mappedBy="user")
+	private List<MadeSyskyuyofileOutput> madeSyskyuyofileOutputs;
 	public Users() {
 	}
 

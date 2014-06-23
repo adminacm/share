@@ -62,7 +62,7 @@ function submitAction(action) {
 </script>
 </head>
 <body>
-	<form:form modelAttribute="monthlyReportStatusListForm">
+	<form:form modelAttribute="makeKyuyoFileForm">
 	<%@ include file="includes/header.jsp"%>
 		<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:850px;">
 			<div style="padding:2px;">
@@ -80,7 +80,7 @@ function submitAction(action) {
 							　　　　	<form:input style="width: 80px;" path="dealYearMonth" maxlength="10"></form:input>
 						　　　　　　　</td>
 								
-								<td><input type="button" value="ファイル作成" onclick="submitAction('/monthlyReportStatusList/search');"/></td>
+								<td><input type="button" value="ファイル作成" onclick="submitAction('/makeKyuyoFile/makeFile');"/></td>
 							</tr>
 						</table>
 					</td>
@@ -101,10 +101,7 @@ function submitAction(action) {
 								<c:forEach var="makeKyuyoFileIchiraninfo" items="${makeKyuyoFileForm.makeKyuyoFileIchiranList}">
 									<tr>
 										<td align="center">
-											<a href="/monthlyReportStatusList/applyNoClick?applyNo=${mRS.madeKyuyoFileName}&applyKbnCd=${mRS.applyKbnCd}">${mRS.applyNo}</a>
-										</td>
-										<td>
-											${makeKyuyoFileIchiraninfo.madeKyuyoFileName}
+											<a href="/makeKyuyoFile/madeKyuyoFileNameClick?madeKyuyoFileName=${mRS.madeKyuyoFileName}">${makeKyuyoFileIchiraninfo.madeKyuyoFileName}</a>
 										</td>
 										<td>
 											${makeKyuyoFileIchiraninfo.dealYearMonth}
@@ -125,9 +122,6 @@ function submitAction(action) {
 					</td>
 				</tr>
 			</table>
-			<div align="right" style="width:818px; height:50px">
-				<input type="button" value="給与奉行向けCSV出力" onclick="submitAction('/monthlyReportStatusList/csvOutput');"/>
-			</div>
 		</div>	
 	</form:form>
 </body>

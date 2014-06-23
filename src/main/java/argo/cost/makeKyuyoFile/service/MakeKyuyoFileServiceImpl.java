@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
@@ -21,7 +22,7 @@ import argo.cost.common.utils.CostDateUtils;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileForm;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileIchiranVO;
 import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
-
+@Service
 public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	
 	/**
