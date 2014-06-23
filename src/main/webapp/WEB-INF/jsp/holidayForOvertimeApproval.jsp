@@ -65,10 +65,12 @@ function submitAction(action) {
 						<td>勤務時間</td>
 						<td>${holidayForOvertimeApprovalForm.workStartTime} ～　${holidayForOvertimeApprovalForm.workEndTime}</td>
 					</tr>
-					<tr>
-						<td>代休期限</td>
-						<td>${holidayForOvertimeApprovalForm.turnedHolidayEndDate}</td>
-					</tr>
+					<c:if test="${not empty holidayForOvertimeApprovalForm.turnedHolidayEndDate}">
+						<tr>
+							<td>代休期限</td>
+							<td>${holidayForOvertimeApprovalForm.turnedHolidayEndDate}</td>
+						</tr>
+					</c:if>
 					<tr>
 						<td>PJ</td>
 						<td>${holidayForOvertimeApprovalForm.projectName}</td>

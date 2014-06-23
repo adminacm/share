@@ -61,34 +61,24 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		// 超勤振替申請承認画面情報
 		HolidayForOvertimeApprovalForm form = new HolidayForOvertimeApprovalForm();
 		
-		// 申請番号による、承認情報を取得
-		ApprovalManage approvalInfo = baseDao.findById(applyNo, ApprovalManage.class);
-		
-		// ユーザID
-		String userId = approvalInfo.getUser().getId();
-		// 超勤振替申請時間
-		String chokinDate = approvalInfo.getItemDate();
-		
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
-		// ユーザＩＤ
-		condition.addConditionEqual("users.id", userId);
-		// 日付
-		condition.addConditionLike("atendanceDate", chokinDate);
+		// 申請番号
+		condition.addConditionLike("approvalManage2.applyNo", applyNo);
 		// 勤怠情報取得
 		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 
 		// 検索条件
 		condition = new BaseCondition();
 		// ユーザＩＤ
-		condition.addConditionEqual("users.id", userId);
+		condition.addConditionEqual("users.id", kintaiInfo.getUsers().getId());
 		// 日付
-		condition.addConditionEqual("atendanceDate", chokinDate);
+		condition.addConditionEqual("atendanceDate", kintaiInfo.getAtendanceDate());
 		// 休日勤務予定情報を取得
 		HolidayAtendanceYotei holidayAtendanceYoteiInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		
 		// 休日名を取得
-		MCalendar kyujituInfo = baseDao.findById(chokinDate, MCalendar.class);
+		MCalendar kyujituInfo = baseDao.findById(kintaiInfo.getAtendanceDate(), MCalendar.class);
 		String kyujisuName = "";
 		if (kyujituInfo != null) {
 			
@@ -186,11 +176,16 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 	 */
 	private String getShowDate(String date) throws ParseException {
 		
-		String showDate = CostDateUtils.formatDate(date,
-				CommonConstant.YYYYMMDD_KANJI);
-		// 曜日名
-		String week = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
+		String showDate = "";
+		String week = "";
+		if (date != null) {
+			String formatDate = CostDateUtils.formatDate(date, CommonConstant.YYYYMMDD_KANJI);
+			// 曜日名
+			week = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
+			
+			showDate = formatDate.concat("（").concat(week).concat("）");
+		}
 
-		return showDate.concat("（").concat(week).concat("）");
+		return showDate;
 	}
 }

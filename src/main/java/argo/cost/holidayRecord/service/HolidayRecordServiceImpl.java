@@ -78,7 +78,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		// 合計日数
 		Double totleDayQuantity = 0.0;
 		// 合計時間数
-		Double totleTimeQuantity = 0.0;
+		Integer totleTimeQuantity = 0;
 		
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
@@ -112,7 +112,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 				if (CommonConstant.KK_KBN_ZENKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
 	
 					// 日数
-					payHolidayInfo.setDayQuantity("1.0");
+					payHolidayInfo.setDayQuantity("1");
 					// 時間数
 					payHolidayInfo.setHourQuantity(null);
 				} else if (CommonConstant.KK_KBN_HANKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
@@ -133,7 +133,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 				// 時間数がnull以外の場合
 				if (payHolidayInfo.getHourQuantity() != null) {
 					// 時間数合計
-					totleTimeQuantity += Double.valueOf(payHolidayInfo.getHourQuantity());
+					totleTimeQuantity += Integer.valueOf(payHolidayInfo.getHourQuantity());
 				}
 			}
 			
@@ -172,7 +172,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		// 合計日数
 		Double totleDayQuantity = 0.0;
 		// 合計時間数
-		Double totleTimeQuantity = 0.0;
+		Integer totleTimeQuantity = 0;
 		
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
@@ -201,7 +201,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 				if (kekinInfo.getKyukaJikansu().compareTo(new BigDecimal("7.5")) >= 0) {
 
 					//　日数
-					absenceInfo.setDayQuantity("1.0");
+					absenceInfo.setDayQuantity("1");
 					//　時間数
 					absenceInfo.setHourQuantity(null);
 				}
@@ -216,7 +216,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 				// 時間数がnull以外の場合
 				if (absenceInfo.getHourQuantity() != null) {
 					// 時間数合計
-					totleTimeQuantity += Double.valueOf(absenceInfo.getHourQuantity());
+					totleTimeQuantity += Integer.valueOf(absenceInfo.getHourQuantity());
 				}
 			}
 			// 合計行
@@ -253,7 +253,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// 合計日数
-		Double totleDayQuantity = 0.0;
+		Integer totleDayQuantity = 0;
 		
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
@@ -276,14 +276,14 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 				// 日付
 				specialHolidayInfo.setSpecialHolidayDate(CostDateUtils.formatDate(kintaiInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 				//　日数
-				specialHolidayInfo.setDayQuantity("1.0");
+				specialHolidayInfo.setDayQuantity("1");
 				// 特別休暇一覧リストを追加
 				specialHolidayList.add(specialHolidayInfo);
 				
 				// 日数がnull以外の場合
 				if (specialHolidayInfo.getDayQuantity() != null) {
 					// 日数合計
-					totleDayQuantity += Double.valueOf(specialHolidayInfo.getDayQuantity());
+					totleDayQuantity += Integer.valueOf(specialHolidayInfo.getDayQuantity());
 				}
 			}
 			

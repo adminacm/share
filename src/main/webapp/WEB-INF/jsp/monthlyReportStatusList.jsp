@@ -90,15 +90,10 @@ function submitAction(action) {
 									</form:select>
 								</td>
 								<td style="width:40px;">所属</td>
-								<td style="width:120px;">
+								<td style="width:320px;">
 									<form:select path="affiliation" style="width:100px;border:2px solid #333333;" id="affiliation">
-										<form:options items="${monthlyReportStatusListForm.affiliationList}" itemValue="value" itemLabel="name"/>
-									</form:select>
-								</td>
-								<td style="width:40px;">状況</td>
-								<td style="width:150px;">
-									<form:select path="status" style="width:100px;border:2px solid #333333;" id="status">
-										<form:options items="${monthlyReportStatusListForm.statusList}" itemValue="value" itemLabel="name"/>
+										<form:option value=""></form:option>
+										<form:options items="${monthlyReportStatusListForm.affiliationList}" itemValue="code" itemLabel="name"/>
 									</form:select>
 								</td>
 								<td><input type="button" value="表示切替" onclick="submitAction('/monthlyReportStatusList/search');"/></td>
@@ -152,9 +147,6 @@ function submitAction(action) {
 					</td>
 				</tr>
 			</table>
-			<div align="right" style="width:818px; height:50px">
-				<input type="button" value="給与奉行向けCSV出力" onclick="submitAction('/monthlyReportStatusList/csvOutput');"/>
-			</div>
 		</div>	
 	</form:form>
 </body>

@@ -52,7 +52,7 @@ public class HolidayRecordTest {
 		assertEquals(form.getPayHolidayList().size(), 4);
 		assertEquals(form.getPayHolidayList().get(0).getPayHolidayDate(), "2014/02/01");
 		assertEquals(form.getPayHolidayList().get(0).getHolidayKbnName(), "全休");
-		assertEquals(form.getPayHolidayList().get(0).getDayQuantity(), "1.0");
+		assertEquals(form.getPayHolidayList().get(0).getDayQuantity(), "1");
 		assertEquals(form.getPayHolidayList().get(0).getHourQuantity(), null);
 		
 		assertEquals(form.getPayHolidayList().get(1).getPayHolidayDate(), "2014/02/07");
@@ -63,28 +63,28 @@ public class HolidayRecordTest {
 		assertEquals(form.getPayHolidayList().get(2).getPayHolidayDate(), "2014/03/05");
 		assertEquals(form.getPayHolidayList().get(2).getHolidayKbnName(), "時間休");
 		assertEquals(form.getPayHolidayList().get(2).getDayQuantity(), null);
-		assertEquals(form.getPayHolidayList().get(2).getHourQuantity(), "2.0");
+		assertEquals(form.getPayHolidayList().get(2).getHourQuantity(), "2");
 		
 		assertEquals(form.getPayHolidayList().get(3).getPayHolidayDate(), "累計");
 		assertEquals(form.getPayHolidayList().get(3).getHolidayKbnName(), null);
 		assertEquals(form.getPayHolidayList().get(3).getDayQuantity(), "1.5日");
-		assertEquals(form.getPayHolidayList().get(3).getHourQuantity(), "2.0時間");
+		assertEquals(form.getPayHolidayList().get(3).getHourQuantity(), "2時間");
 
 		assertEquals(form.getAbsenceList().size(), 2);
 		assertEquals(form.getAbsenceList().get(0).getAbsentDate(), "2014/03/10");
 		assertEquals(form.getAbsenceList().get(0).getDayQuantity(), null);
-		assertEquals(form.getAbsenceList().get(0).getHourQuantity(), "2.5");
+		assertEquals(form.getAbsenceList().get(0).getHourQuantity(), "2");
 		
 		assertEquals(form.getAbsenceList().get(1).getAbsentDate(), "累計");
 		assertEquals(form.getAbsenceList().get(1).getDayQuantity(), null);
-		assertEquals(form.getAbsenceList().get(1).getHourQuantity(), "2.5時間");
+		assertEquals(form.getAbsenceList().get(1).getHourQuantity(), "2時間");
 
 		assertEquals(form.getSpecialHolidayList().size(), 2);
 		assertEquals(form.getSpecialHolidayList().get(0).getSpecialHolidayDate(), "2014/03/07");
-		assertEquals(form.getSpecialHolidayList().get(0).getDayQuantity(), "1.0");
+		assertEquals(form.getSpecialHolidayList().get(0).getDayQuantity(), "1");
 		
 		assertEquals(form.getSpecialHolidayList().get(1).getSpecialHolidayDate(), "累計");
-		assertEquals(form.getSpecialHolidayList().get(1).getDayQuantity(), "1.0日");
+		assertEquals(form.getSpecialHolidayList().get(1).getDayQuantity(), "1日");
 		
 	}
 }
