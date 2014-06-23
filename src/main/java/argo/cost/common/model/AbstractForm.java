@@ -31,6 +31,10 @@ public class AbstractForm implements Serializable {
 	 */
 	private String taishoUserId;
 	/**
+	 * 対象社員氏名です。
+	 */
+	private String taishoUserName;
+	/**
 	 * カンパニーコードです。
 	 */
 	private String cmpCd;
@@ -87,6 +91,22 @@ public class AbstractForm implements Serializable {
 	 */
 	public void setTaishoUserId(String taishoUserId) {
 		this.taishoUserId = taishoUserId;
+	}
+	/**
+	 * 対象ユーザ氏名を取得します。
+	 *
+	 * @return 対象ユーザ氏名
+	 */
+	public String getTaishoUserName() {
+		return taishoUserName;
+	}
+	/**
+	 * 対象ユーザ氏名を設定します。
+	 *
+	 * @param 対象ユーザ氏名
+	 */
+	public void setTaishoUserName(String taishoUserName) {
+		this.taishoUserName = taishoUserName;
 	}
 
 	/**

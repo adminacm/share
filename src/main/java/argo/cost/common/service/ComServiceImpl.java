@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -192,9 +193,11 @@ public class ComServiceImpl implements ComService {
 	public List<Users> getUserNameList(String userId) {
 		
 		BaseCondition condition = new BaseCondition();
+		// ユーザーID＝ログインID、代理者ID＝ログインID
 		condition.addConditionOr(new String[] { "id", "dairishaId" },
 				new String[] { userId, userId }, new BaseCondition.Joken[] {
 						BaseCondition.Joken.EQUAL, BaseCondition.Joken.EQUAL });
+		condition.addOrderAsc("id");
 
 		List<Users> result = baseDao.findResultList(condition, Users.class);
 		
@@ -212,7 +215,7 @@ public class ComServiceImpl implements ComService {
 	public String getUserName(String userId) {
 		
 		// 氏名
-		String userName = "";
+		String userName = StringUtils.EMPTY;
 		// ユーザ情報
 		Users userInfo = baseDao.findById(userId, Users.class);
 		if (userInfo != null) {

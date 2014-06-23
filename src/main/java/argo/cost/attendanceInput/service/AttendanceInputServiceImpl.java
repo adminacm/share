@@ -186,11 +186,11 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 勤怠情報が存在する場合
 		if (kintaiEntity != null) {
 			// 月報申請情報は存在する場合
-			if (kintaiEntity.getApprovalManage() != null) {
+			if (kintaiEntity.getApprovalManage1() != null) {
 				// 月報申請状況コード
-				form.setAppStatusCode(kintaiEntity.getApprovalManage().getStatusMaster().getCode());
+				form.setAppStatusCode(kintaiEntity.getApprovalManage1().getStatusMaster().getCode());
 				// 月報申請状況名
-				form.setAppStatusName(kintaiEntity.getApprovalManage().getStatusMaster().getName());
+				form.setAppStatusName(kintaiEntity.getApprovalManage1().getStatusMaster().getName());
 			}
 			// 勤務日区分
 			String workDayKbn = kintaiEntity.getWorkDayKbnMaster().getCode();

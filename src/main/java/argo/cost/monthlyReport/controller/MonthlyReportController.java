@@ -124,7 +124,7 @@ public class MonthlyReportController extends AbstractController {
     	// 対象者IDを設定する
     	getSession().getUserInfo().setTaishoUserId(form.getUserCode());
     	// 対象者氏名を設定する
-    	getSession().getUserInfo().setTaishoUserName(comService.getNameById(userId));
+    	getSession().getUserInfo().setTaishoUserName(comService.getUserName(userId));
     	List<MonthlyReportDispVO> resultList = monthlyReportService.getMonthyReportList(CostDateUtils.toDate(form.getYearMonth()));
 
     	form.setmRList(resultList);

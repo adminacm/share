@@ -458,7 +458,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 			
 			for (KintaiInfo kintaiInfo : monthyKintaiInfoList) {
 				// 申請番号を勤怠テーブルに更新される
-				kintaiInfo.setApprovalManage(approvalManage);
+				kintaiInfo.setApprovalManage1(approvalManage);
 				baseDao.update(kintaiInfo);
 			}
 		} catch (Exception e) {
@@ -484,8 +484,8 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		
 		if (kintaiList != null && kintaiList.size() != 0) {
 			for (KintaiInfo info : kintaiList) {
-				if (info != null && info.getApprovalManage() != null) {
-					form.setProStatus(info.getApprovalManage().getStatusMaster().getName());
+				if (info != null && info.getApprovalManage1() != null) {
+					form.setProStatus(info.getApprovalManage1().getStatusMaster().getName());
 				} else {
 					form.setProStatus("作成中");
 				}
