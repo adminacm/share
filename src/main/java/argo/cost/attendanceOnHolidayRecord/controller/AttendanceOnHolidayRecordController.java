@@ -60,10 +60,15 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		// 初期選択は当年度
 		form.setYearPeriod(CostDateUtils.getNowDate().substring(0, 4));
 
-		// 氏名をセット
-		form.setUserNameList(comService.getUserNameList(form.getUserId()));
+		// 氏名リストをセット
+		form.setNameList(comService.getUserNameList(form.getUserId()));
 		// 初期選択値に自分をセット
-		form.setUserName(form.getUserId());
+		form.setName(form.getUserId());
+		
+		// 社員番号
+		form.setUserId(form.getUserId());
+		// 氏名（表示用）
+		form.setUserName(comService.getUserName(form.getUserId()));
 		
 		// 画面情報を設定する。
 		service.setAttendanceOnHolidayRecordInfo(form);

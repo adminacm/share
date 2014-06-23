@@ -45,7 +45,7 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// ユーザＩＤ
-		condition.addConditionEqual("users.id", form.getUserName());
+		condition.addConditionEqual("users.id", form.getName());
 		// 日付
 		condition.addConditionLike("atendanceDate", form.getYearPeriod() + "%");
 		// 勤務日区分「休日振替勤務」をセット
@@ -78,7 +78,7 @@ public class AttendanceOnHolidayRecordServiceImpl implements AttendanceOnHoliday
 		// 検索条件
 		condition = new BaseCondition();
 		// ユーザＩＤ
-		condition.addConditionEqual("users.id", form.getUserName());
+		condition.addConditionEqual("users.id", form.getName());
 		// 日付
 		condition.addConditionLike("atendanceDate", form.getYearPeriod() + "%");
 		// 勤務日区分「休日」をセット

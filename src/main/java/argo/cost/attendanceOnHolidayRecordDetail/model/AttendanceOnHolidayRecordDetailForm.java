@@ -19,6 +19,16 @@ public class AttendanceOnHolidayRecordDetailForm extends AbstractForm implements
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * 社員番号
+	 */
+	private String userId;
+	
+	/**
+	 * 氏名
+	 */
+	private String userName;
+	
+	/**
 	 * 日付
 	 */
 	private String holidayWorkDate;
@@ -72,6 +82,22 @@ public class AttendanceOnHolidayRecordDetailForm extends AbstractForm implements
 	 * 超勤振替フラグ
 	 */
 	private Boolean overWorkFlg;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	public String getHolidayWorkDate() {
 		return holidayWorkDate;

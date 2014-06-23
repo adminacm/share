@@ -41,14 +41,14 @@ public class AttendanceOnHolidayRecordTest {
 		// 年度
 		form.setYearPeriod("2014");
 		// 氏名
-		form.setUserName("4001");
+		form.setName("4001");
 		
 		try {
 			serviceImpl.setAttendanceOnHolidayRecordInfo(form);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+		
 		// 休日振替勤務情報
 		assertEquals(form.getHolidayExchangeWorkList().size(), 1);
 		//　休日振替勤務日付
@@ -56,7 +56,7 @@ public class AttendanceOnHolidayRecordTest {
 		assertEquals(form.getHolidayExchangeWorkList().get(0).getWorkingDayTurnedHolidayDate(), "2014/05/08");
 
 		// 休日勤務情報
-		assertEquals(form.getHolidayOverWorkList().size(), 3);
+		assertEquals(form.getHolidayOverWorkList().size(), 4);
 		//　休日勤務日付
 		assertEquals(form.getHolidayOverWorkList().get(0).getHolidayOverWorkDate(), "2014/04/13");
 		// 代休期限
@@ -72,5 +72,8 @@ public class AttendanceOnHolidayRecordTest {
 		
 		assertEquals(form.getHolidayOverWorkList().get(2).getHolidayOverWorkDate(), "2014/05/18");
 		assertEquals(form.getHolidayOverWorkList().get(2).getTurnedHolidayEndDate(), "2014/07/31");
+		
+		assertEquals(form.getHolidayOverWorkList().get(3).getHolidayOverWorkDate(), "2014/05/24");
+		assertEquals(form.getHolidayOverWorkList().get(3).getTurnedHolidayEndDate(), "2014/07/31");
 	}
 }

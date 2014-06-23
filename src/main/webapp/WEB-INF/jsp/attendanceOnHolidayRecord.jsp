@@ -86,8 +86,8 @@ function submitAction(action) {
 								</td>
 								<td style="padding-left:25px;width:30px">氏名</td>
 								<td style="width:130px">
-									<form:select path="userName" style="width:100%;border:2px solid #333333;" id="userName">
-										<form:options items="${attendanceOnHolidayRecordForm.userNameList}" itemValue="id" itemLabel="userName"/>
+									<form:select path="name" style="width:100%;border:2px solid #333333;" id="name">
+										<form:options items="${attendanceOnHolidayRecordForm.nameList}" itemValue="id" itemLabel="userName"/>
 									</form:select>
 								</td>
 								<td style="width:100px;padding-left:100px;">
@@ -97,6 +97,19 @@ function submitAction(action) {
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 10px">&nbsp;</td>
+					<td>
+						<table class="resultStyle" style="margin-left:2px;width: 300px">
+							<tr>
+								<td style="width: 80px">社員番号</td>
+								<td style="width: 50px">${attendanceOnHolidayRecordForm.userId}</td>
+								<td style="width: 50px">氏名</td>
+								<td>${attendanceOnHolidayRecordForm.userName}</td>
 							</tr>
 						</table>
 					</td>

@@ -77,8 +77,6 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 	@Override
 	public void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form) throws ParseException {
 
-		// 勤怠情報
-		KintaiInfo detailInfo = new KintaiInfo();
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// ユーザＩＤ
@@ -86,24 +84,16 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		// 日付
 		condition.addConditionEqual("atendanceDate", form.getHolidayWorkDate().replaceAll("/", ""));
 		// 勤怠情報を取得
-		detailInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
-		
-		// 代休日
-		detailInfo.setDaikyuDate("超勤振替");
-		// 振替申請日がシステム日付になる
-		detailInfo.setFurikaeShinseiDate(CostDateUtils.getNowDate());
-		
-		// 休日出勤テーブルを更新
-		baseDao.update(detailInfo);
+		KintaiInfo detailInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 		
 		// 承認管理データを作成
 		ApprovalManage applyInfo = new ApprovalManage();
 		// 申請番号
-		applyInfo.setApplyNo(form.getUserId() + CommonConstant.APPLY_KBN_CHOKIN_FURIKAE + form.getHolidayWorkDate());
+		applyInfo.setApplyNo(form.getUserId() + CommonConstant.APPLY_KBN_CHOKIN_FURIKAE + form.getHolidayWorkDate().replaceAll("/", ""));
 		// 申請区分
 		ApplyKbnMaster applyKbnMaster = new ApplyKbnMaster();
 		applyKbnMaster.setCode(CommonConstant.APPLY_KBN_CHOKIN_FURIKAE);
-		applyInfo.setApplyKbnMaster(applyKbnMaster );
+		applyInfo.setApplyKbnMaster(applyKbnMaster);
 		// 申請内容
 		applyInfo.setApplyDetail("休日勤務日：" + form.getHolidayWorkDate());
 		// 状況
@@ -116,11 +106,22 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		applyInfo.setUser(users);
 		// 申請時間
 		applyInfo.setAppYmd(CostDateUtils.getNowDate());
-		// 休日勤務日
-		applyInfo.setItemDate(form.getHolidayWorkDate().replaceAll("/", ""));
+		// 処理日
+		applyInfo.setItemDate(CostDateUtils.getDealDate(CostDateUtils.getNowDate(),CommonConstant.APPLY_KBN_CHOKIN_FURIKAE));
 		
 		// 承認管理データを作成
 		baseDao.insert(applyInfo);
+		
+		// 代休日
+		detailInfo.setDaikyuDate("超勤振替");
+		// 振替申請日がシステム日付になる
+		detailInfo.setFurikaeShinseiDate(CostDateUtils.getNowDate());
+		ApprovalManage approvalManage2 = new ApprovalManage();
+		approvalManage2.setApplyNo(form.getUserId() + CommonConstant.APPLY_KBN_CHOKIN_FURIKAE + form.getHolidayWorkDate().replaceAll("/", ""));
+		// 申請番号
+		detailInfo.setApprovalManage2(approvalManage2);;
+		// 休日出勤テーブルを更新
+		baseDao.update(detailInfo);
 	}
 
 	/**
@@ -167,6 +168,10 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 
 		// 勤怠情報がありの場合
 		if (kintaiInfo != null) {
+			// 社員番号
+			detailForm.setUserId(userId);
+			// 氏名
+			detailForm.setUserName(baseDao.findById(userId, Users.class).getUserName());
 			//　日付
 			detailForm.setHolidayWorkDate(CostDateUtils.formatDate(kintaiInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 			// 勤務区分名

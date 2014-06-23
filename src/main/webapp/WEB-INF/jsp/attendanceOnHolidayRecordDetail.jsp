@@ -33,6 +33,14 @@ function submitAction(action) {
 			</div>
 			<table style="margin-left:100px;margin-top:30px;">
 				<tr>
+					<td>社員番号</td>
+					<td>${attendanceOnHolidayRecordForm.userId}</td>
+				</tr>
+				<tr>
+					<td>氏名</td>
+					<td>${attendanceOnHolidayRecordForm.userName}</td>
+				</tr>
+				<tr>
 					<td style="width:150px">日付</td>
 					<td>${attendanceOnHolidayRecordDetailForm.holidayWorkDate}</td>
 				</tr>

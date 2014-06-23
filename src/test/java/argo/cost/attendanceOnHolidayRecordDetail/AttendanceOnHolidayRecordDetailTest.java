@@ -49,7 +49,11 @@ public class AttendanceOnHolidayRecordDetailTest {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
+		// 社員番号
+		assertEquals(form.getUserId(), "4001");
+		// 氏名
+		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/05/04");
 		// 勤務区分
@@ -85,7 +89,11 @@ public class AttendanceOnHolidayRecordDetailTest {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
+		// 社員番号
+		assertEquals(form.getUserId(), "4001");
+		// 氏名
+		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/05/18");
 		// 勤務区分
@@ -122,7 +130,11 @@ public class AttendanceOnHolidayRecordDetailTest {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
+		// 社員番号
+		assertEquals(form.getUserId(), "4001");
+		// 氏名
+		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/04/13");
 		// 勤務区分
@@ -161,7 +173,11 @@ public class AttendanceOnHolidayRecordDetailTest {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
+		// 社員番号
+		assertEquals(form.getUserId(), "4001");
+		// 氏名
+		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/05/10");
 		// 勤務区分
@@ -191,7 +207,7 @@ public class AttendanceOnHolidayRecordDetailTest {
 		// ユーザID
 		form.setUserId("4001");
 		// 日付
-		form.setHolidayWorkDate("2014/05/18");
+		form.setHolidayWorkDate("2014/05/24");
 		
 		try {
 			serviceImpl.overWorkPayRequest(form);
