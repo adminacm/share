@@ -24,7 +24,6 @@ import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
  *
  * @author COST argo Corporation.
  */
-@Controller
 @RequestMapping(UrlConstant.URL_MONTHLYREPORT_STATUS_LIST)
 @SessionAttributes(types = { MonthlyReportStatusListForm.class })
 public class MakeKyuyoFileController extends AbstractController  {
