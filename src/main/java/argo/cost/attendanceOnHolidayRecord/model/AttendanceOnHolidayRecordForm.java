@@ -3,6 +3,7 @@ package argo.cost.attendanceOnHolidayRecord.model;
 import java.io.Serializable;
 import java.util.List;
 
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.ListItemVO;
 
@@ -38,7 +39,7 @@ public class AttendanceOnHolidayRecordForm extends AbstractForm implements Seria
 	/**
 	 * 氏名リスト
 	 */
-	private List<ListItemVO> userNameList;
+	private List<Users> userNameList;
 	
 	/**
 	 * 休日振替勤務リスト
@@ -69,10 +70,10 @@ public class AttendanceOnHolidayRecordForm extends AbstractForm implements Seria
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public List<ListItemVO> getUserNameList() {
+	public List<Users> getUserNameList() {
 		return userNameList;
 	}
-	public void setUserNameList(List<ListItemVO> userNameList) {
+	public void setUserNameList(List<Users> userNameList) {
 		this.userNameList = userNameList;
 	}
 	public List<HolidayExchangeWorkVO> getHolidayExchangeWorkList() {

@@ -210,7 +210,6 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	@Override
 	public void setUserMonthReport(String userId, String date, MonthlyReportForm monthlyReportForm) throws ParseException {
 		
-		
 		MonthlyReportChecker.chkKintaiInfoInput(monthlyReportForm);
 		// 合計休暇時間数
 		Double totleRestHours = 0.0;
@@ -227,19 +226,14 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 合計情報
 		MonthlyReportDispVO totleInfo = new MonthlyReportDispVO();
 		
-        List<MonthlyReportDispVO> monthlyReportList = new ArrayList<MonthlyReportDispVO>();
-		
-		// 最新の申請日付を取得
-		String strLatestShinseiDate = monthlyReportDao.getUserLatestShinseiMonth(userId);
-		monthlyReportList = getMonthyReportList(CostDateUtils.toDate(strLatestShinseiDate.substring(0,6).concat("01")));
-		
+        List<MonthlyReportDispVO> monthlyReportList = monthlyReportForm.getmRList();
 		
 		// 月報情報を取得
 		BaseCondition monthReportInfoSelectCondition = new BaseCondition();
 		// 検索条件：ユーザーID
 		monthReportInfoSelectCondition.addConditionEqual("users.id", userId);
 		// 検索条件：年月
-		monthReportInfoSelectCondition.addConditionLike("atendanceBookDate",  date.substring(0, 6) + "%");
+		monthReportInfoSelectCondition.addConditionLike("atendanceDate",  date.substring(0, 6) + "%");
 		        
 		ArrayList<KintaiInfo> monthlyKintaiInfoList = (ArrayList<KintaiInfo>) baseDao.findResultList(monthReportInfoSelectCondition, KintaiInfo.class);
 		List<ProjWorkTimeManage> projWorkTimeManageList = new ArrayList<ProjWorkTimeManage>();

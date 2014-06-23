@@ -54,7 +54,7 @@ public class MessageConstants {
 	/**
 	 *　定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください
 	 */
-	public static final String COSE_E_011 = "定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください";
+	public static final String COSE_E_011 = "定時時間帯の勤務時間数が｛0｝未満です。休暇区分も入力してください";
 	/**
 	 *　正しい｛0｝を入力してください
 	 */

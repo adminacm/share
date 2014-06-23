@@ -6,6 +6,7 @@ import java.util.List;
 
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
 
@@ -80,5 +81,5 @@ public interface ComService {
 	 *              ユーザＩＤ
 	 * @return 氏名プルダウンリスト
 	 */
-	List<ListItemVO> getUserNameList(String userId);
+	List<Users> getUserNameList(String userId);
 }

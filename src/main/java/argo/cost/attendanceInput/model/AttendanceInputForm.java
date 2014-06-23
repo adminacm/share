@@ -41,7 +41,10 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	 * シフトコード
 	 */
 	private String shiftCd;
-    
+	/**
+	 * 標準シフトコード
+	 */
+	private String standardShiftCd;
 	/**
 	 * 勤務開始時刻(hhnn)
 	 */
@@ -194,6 +197,14 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.shiftCd = shiftCd;
 	}
     
+	public String getStandardShiftCd() {
+		return standardShiftCd;
+	}
+
+	public void setStandardShiftCd(String standardShiftCd) {
+		this.standardShiftCd = standardShiftCd;
+	}
+
 	/**
 	 * 勤務開始時刻(hhnn)を取得する
 	 */
