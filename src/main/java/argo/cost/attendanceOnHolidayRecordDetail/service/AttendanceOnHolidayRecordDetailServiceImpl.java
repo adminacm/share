@@ -107,7 +107,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		// 申請時間
 		applyInfo.setAppYmd(CostDateUtils.getNowDate());
 		// 処理日
-		applyInfo.setItemDate(CostDateUtils.getDealDate(CostDateUtils.getNowDate(),CommonConstant.APPLY_KBN_CHOKIN_FURIKAE));
+		applyInfo.setSyoriYm(CostDateUtils.getDealDate(CostDateUtils.getNowDate(),CommonConstant.APPLY_KBN_CHOKIN_FURIKAE));
 		
 		// 承認管理データを作成
 		baseDao.insert(applyInfo);
@@ -120,7 +120,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		approvalManage2.setApplyNo(form.getUserId() + CommonConstant.APPLY_KBN_CHOKIN_FURIKAE + form.getHolidayWorkDate().replaceAll("/", ""));
 		// 申請番号
 		detailInfo.setApprovalManage2(approvalManage2);;
-		// 休日出勤テーブルを更新
+		// 勤怠情報テーブルを更新
 		baseDao.update(detailInfo);
 	}
 

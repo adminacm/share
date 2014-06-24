@@ -185,7 +185,7 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// 処理年月
-		condition.addConditionEqual("itemDate", form.getYear() + form.getMonth());
+		condition.addConditionEqual("syoriYm", form.getYear() + form.getMonth());
 		// 所属がnull以外の場合
 		if (StringUtils.isNotEmpty(form.getAffiliation())) { 
 			condition.addConditionEqual("users.affiliationMaster.code", form.getAffiliation());

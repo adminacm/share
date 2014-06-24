@@ -130,8 +130,6 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 
 		// 更新実行
 		baseDao.update(approvalInfo);
-		
-		//TODO勤怠情報テーブルの控除／支払年月を更新
 	}
 
 	/**
@@ -143,15 +141,10 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 	@Override
 	public void remandOverWork(String applyNo) {
 		
-		// 申請番号による、承認情報を取得
-		ApprovalManage approvalInfo = baseDao.findById(applyNo, ApprovalManage.class);
-
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
-		// ユーザＩＤ
-		condition.addConditionEqual("users.id", approvalInfo.getUser().getId());
-		// 日付
-		condition.addConditionEqual("atendanceDate", approvalInfo.getItemDate());
+		// 申請番号
+		condition.addConditionLike("approvalManage2.applyNo", applyNo);
 		// 勤怠情報取得
 		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 		
