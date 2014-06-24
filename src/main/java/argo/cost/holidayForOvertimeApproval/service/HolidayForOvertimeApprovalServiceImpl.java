@@ -1,5 +1,6 @@
 package argo.cost.holidayForOvertimeApproval.service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// 申請番号
-		condition.addConditionLike("approvalManage2.applyNo", applyNo);
+		condition.addConditionEqual("approvalManage2.applyNo", applyNo);
 		// 勤怠情報取得
 		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 
@@ -124,9 +125,12 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		ApprovalManage approvalInfo = baseDao.findById(applyNo, ApprovalManage.class);
 		
 		// 申請状況に「承認」を設定
-		StatusMaster statusMaster = new StatusMaster();
-		statusMaster.setCode(CommonConstant.STATUS_SYOUNIN);
+		StatusMaster statusMaster = baseDao.findById(CommonConstant.STATUS_SYOUNIN, StatusMaster.class);
 		approvalInfo.setStatusMaster(statusMaster);
+        // 更新者
+		approvalInfo.setUpdatedUserId(approvalInfo.getUser().getId());
+		// 更新時刻
+		approvalInfo.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 
 		// 更新実行
 		baseDao.update(approvalInfo);
@@ -144,7 +148,7 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// 申請番号
-		condition.addConditionLike("approvalManage2.applyNo", applyNo);
+		condition.addConditionEqual("approvalManage2.applyNo", applyNo);
 		// 勤怠情報取得
 		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 		
@@ -152,6 +156,10 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		kintaiInfo.setDaikyuDate(null);
 		// 超勤振替申請日に空白を設定
 		kintaiInfo.setFurikaeShinseiDate(null);
+        // 更新者
+		kintaiInfo.setUpdatedUserId(kintaiInfo.getUsers().getId());
+		// 更新時刻
+		kintaiInfo.setUpdateDate(new Timestamp(System.currentTimeMillis()));
 
 		// 勤怠情報テーブルを更新
 		baseDao.update(kintaiInfo);
