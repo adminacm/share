@@ -1,20 +1,11 @@
 package argo.cost.common.entity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.io.Serializable;
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -23,7 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="users")
-@NamedQuery(name="Users.findAll", query="SELECT u FROM Users u")
+@NamedQuery(name="User.findAll", query="SELECT u FROM Users u")
 public class Users implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -79,7 +70,7 @@ public class Users implements Serializable {
 
 	@Column(name="user_name", nullable=false, length=30)
 	private String userName;
-	
+
 	//bi-directional many-to-one association to ApprovalManage
 	@OneToMany(mappedBy="users")
 	private List<ApprovalManage> approvalManages;
@@ -87,10 +78,14 @@ public class Users implements Serializable {
 	//bi-directional many-to-one association to HolidayAtendanceYotei
 	@OneToMany(mappedBy="users")
 	private List<HolidayAtendanceYotei> holidayAtendanceYoteis;
-	
+
 	//bi-directional many-to-one association to KintaiInfo
 	@OneToMany(mappedBy="users")
 	private List<KintaiInfo> kintaiInfos;
+
+	//bi-directional many-to-one association to MadeSyskyuyofileOutput
+	@OneToMany(mappedBy="users")
+	private List<MadeSyskyuyofileOutput> madeSyskyuyofileOutputs;
 
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="users")
@@ -98,16 +93,13 @@ public class Users implements Serializable {
 
 	//bi-directional many-to-one association to AffiliationMaster
 	@ManyToOne
-	@JoinColumn(name="shozoku_id")
+	@JoinColumn(name="shozoku_id", nullable=false)
 	private AffiliationMaster affiliationMaster;
 
 	//bi-directional many-to-one association to YukyuKyukaFuyu
 	@OneToMany(mappedBy="users")
 	private List<YukyuKyukaFuyu> yukyuKyukaFuyus;
 
-	//bi-directional many-to-one association to MadeSyskyuyofileOutput
-	@OneToMany(mappedBy="user")
-	private List<MadeSyskyuyofileOutput> madeSyskyuyofileOutputs;
 	public Users() {
 	}
 
@@ -290,6 +282,7 @@ public class Users implements Serializable {
 
 		return holidayAtendanceYotei;
 	}
+
 	public List<KintaiInfo> getKintaiInfos() {
 		return this.kintaiInfos;
 	}
@@ -310,6 +303,28 @@ public class Users implements Serializable {
 		kintaiInfo.setUsers(null);
 
 		return kintaiInfo;
+	}
+
+	public List<MadeSyskyuyofileOutput> getMadeSyskyuyofileOutputs() {
+		return this.madeSyskyuyofileOutputs;
+	}
+
+	public void setMadeSyskyuyofileOutputs(List<MadeSyskyuyofileOutput> madeSyskyuyofileOutputs) {
+		this.madeSyskyuyofileOutputs = madeSyskyuyofileOutputs;
+	}
+
+	public MadeSyskyuyofileOutput addMadeSyskyuyofileOutput(MadeSyskyuyofileOutput madeSyskyuyofileOutput) {
+		getMadeSyskyuyofileOutputs().add(madeSyskyuyofileOutput);
+		madeSyskyuyofileOutput.setUsers(this);
+
+		return madeSyskyuyofileOutput;
+	}
+
+	public MadeSyskyuyofileOutput removeMadeSyskyuyofileOutput(MadeSyskyuyofileOutput madeSyskyuyofileOutput) {
+		getMadeSyskyuyofileOutputs().remove(madeSyskyuyofileOutput);
+		madeSyskyuyofileOutput.setUsers(null);
+
+		return madeSyskyuyofileOutput;
 	}
 
 	public List<UserRole> getUserRoles() {

@@ -84,6 +84,10 @@
         <bean id="baseDao" class="argo.cost.common.dao.BaseDaoImpl" autowire="byName"></bean>
         <bean id="attendanceInputDao" class="argo.cost.attendanceInput.dao.AttendanceInputDaoImpl" autowire="byName"></bean>
         <bean id="atendanceOnHolidayDao" class="argo.cost.attendanceOnHoliday.dao.AtendanceOnHolidayDaoImpl" autowire="byName"></bean>
+        <bean id="makeKyuyoFileChecker" class="argo.cost.makeKyuyoFile.checker.MakeKyuyoFileChecker">
+        	<property name="baseDao" ref="baseDao"></property>
+        </bean>
+    
     </beans>
     
 

@@ -1,14 +1,19 @@
 package argo.cost.makeKyuyoFile.service;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +23,12 @@ import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.KintaiInfo;
+import argo.cost.common.entity.MadeSyskyuyofileOutput;
+import argo.cost.common.entity.Users;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileForm;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileIchiranVO;
-import argo.cost.monthlyReportStatusList.model.PayMagistrateCsvInfo;
+import argo.cost.makeKyuyoFile.model.PayMagistrateCsvInfo;
 @Service
 public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	
@@ -37,14 +44,45 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 		
 		// 給与奉行向けCSVファイル情報を取得
 		List<PayMagistrateCsvInfo> csvDetailList = getPayMagistrateCsvList(makeKyuyoFileForm);
-		String path = "D:\\";
+		MadeSyskyuyofileOutput madeSyskyuyofileOutputEntity = new MadeSyskyuyofileOutput();
 		
-		SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyyMMddHHmmss");
-		// 日付設定
-		String filaName = sdfYearM.format(new Date());
-	 	// CSV ダウンロード
-    	exportCsvfiles(path, filaName, getTitleList(), csvDetailList);
-    	
+		// 当前の時間を設定する
+		Timestamp timestampSystemTime = new Timestamp(System.currentTimeMillis()); 
+		madeSyskyuyofileOutputEntity.setFileCreatedTimestamp(timestampSystemTime);
+		// 処理年月を設定する
+		madeSyskyuyofileOutputEntity.setApplyDealYearMonth(makeKyuyoFileForm.getDealYearMonth());
+		// 作成者ユーザーIDを設定する
+		Users userInfo = baseDao.findById(makeKyuyoFileForm.getUserId(), Users.class);
+		madeSyskyuyofileOutputEntity.setUsers(userInfo);
+		
+		String strCsvData = "";
+		for (int i = 0 ;i < csvDetailList.size() ;i ++) {
+			String strNo = csvDetailList.get(i).getUserId().concat(",");
+			String strOverWeekdayHours = csvDetailList.get(i).getOverWeekdayHours().concat(",");
+			String strOverNightHours = csvDetailList.get(i).getOverNightHours().concat(",");
+			String strOverHolidayChangeWorkHours = csvDetailList.get(i).getOverHolidayChangeWorkHours().concat(",");
+			String strAbsenceHours = csvDetailList.get(i).getAbsenceHours().concat(",");
+			String strOverWeekdayNomalHours = csvDetailList.get(i).getOverWeekdayNomalHours().concat(",").concat("\r\n");
+			
+			strCsvData += strNo.concat(strOverWeekdayHours).concat(strOverNightHours).concat(strOverHolidayChangeWorkHours).concat(strAbsenceHours).concat(strOverWeekdayNomalHours);
+		}
+		
+		byte[] sbyte = strCsvData.getBytes();
+		// ファイル内容を設定する
+		madeSyskyuyofileOutputEntity.setKyuyofileNaiyo(sbyte);
+		SimpleDateFormat sysTimeFirst = new SimpleDateFormat("yyyyMM");
+	    SimpleDateFormat sysTimeSecond = new SimpleDateFormat("yyyyMMddHHmmss");
+	    String filaName = sysTimeFirst.format(new Date()).toString().concat(" ").concat(sysTimeSecond.format(new Date()).toString());
+		madeSyskyuyofileOutputEntity.setMadeKyuyofileName(filaName);
+		
+		String strFileInsertFlg ="0";
+		try {
+			baseDao.insert(madeSyskyuyofileOutputEntity);
+			strFileInsertFlg = "1";
+		} catch (Exception e) {
+			System.out.println("給与システム用ファイル作成失敗しました");
+		}
+		
     	// 勤怠情報を取得
 		List<KintaiInfo> kintaiList = getKintaiList(makeKyuyoFileForm.getUserId(), makeKyuyoFileForm.getDealYearMonth());
 
@@ -67,6 +105,8 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 
 		//給与奉行向けCSVファイル情報
 		List<PayMagistrateCsvInfo> payMagistrateCsvList = new ArrayList<PayMagistrateCsvInfo>();
+		// タイトルの設定
+		this.addTitle(payMagistrateCsvList);
 		// CSV詳細情報
 		PayMagistrateCsvInfo csvInfo = null;
 		
@@ -143,21 +183,16 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 			MakeKyuyoFileForm makeKyuyoFileForm) {
 		
 		// 検索条件
-		BaseCondition condition = new BaseCondition();
-		// 年月
-		condition.addConditionLike("appYmd", makeKyuyoFileForm.getDealYearMonth() + "%");
-//		// 状況
-//		condition.addConditionLike("statusMaster.code", makeKyuyoFileForm.getStatus());
-//		if (!makeKyuyoFileForm.getStatus().isEmpty()) { 
-//			
-//		}
-//		// 所属がnull以外の場合
-//		if (!makeKyuyoFileForm.getAffiliation().isEmpty()) { 
-//			condition.addConditionLike("users.affiliationMaster.code", makeKyuyoFileForm.getAffiliation());
-//		}
+		BaseCondition selectApprovalManageInfoCondition = new BaseCondition();
+		// 処理年月
+		selectApprovalManageInfoCondition.addConditionEqual("syoriYm", makeKyuyoFileForm.getDealYearMonth());
+		// ユーザーID
+		selectApprovalManageInfoCondition.addConditionEqual("users.id", makeKyuyoFileForm.getUserId());
+		// 申請区分（"1" 月報）
+		selectApprovalManageInfoCondition.addConditionEqual("applyKbnMaster.code", CommonConstant.APPLY_KBN_GETUHOU);
 		
 		// 月報状況一覧リスト
-		List<ApprovalManage> approvalList = baseDao.findResultList(condition, ApprovalManage.class);
+		List<ApprovalManage> approvalList = baseDao.findResultList(selectApprovalManageInfoCondition, ApprovalManage.class);
 		
 		return approvalList;
 	}
@@ -167,99 +202,27 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	 * 
 	 * @return ヘッダ部データ
 	 */
-	private List<String> getTitleList(){
-        List<String> list = new ArrayList<String>();
-        list.add("MK01");
-        list.add("KN09");
-        list.add("KN10");
-        list.add("KN11");
-        list.add("KN12");
-        list.add("KN08");
-        list.add("KN13");
-        return list;
+	private void addTitle(List<PayMagistrateCsvInfo> payMagistrateCsvList) {
+		
+		PayMagistrateCsvInfo csvInfo = new PayMagistrateCsvInfo();
+		// MK01
+		csvInfo.setUserId("MK01");
+		// KN09
+		csvInfo.setOverWeekdayHours("KN09");
+		// KN10
+		csvInfo.setOverHolidayHours("KN10");
+		// KN11
+		csvInfo.setOverNightHours("KN11");
+		// KN12
+		csvInfo.setOverHolidayChangeWorkHours("KN12");
+		// KN08
+		csvInfo.setAbsenceHours("KN08");
+		// KN13
+		csvInfo.setOverWeekdayNomalHours("KN13");
+		
+		payMagistrateCsvList.add(0, csvInfo);
     }
 	
-	
-	/**
-	 *  ダウンロード実行
-	 *  
-	 * @param path
-	 *            ＣＳＶファイルが保存されたパス
-	 * @param fileName
-	 *                ＣＳＶファイルの名前    
-	 * @param titleList
-	 * 			               ヘッダ部表示するタイトルリスト
-	 * @param csvDetailList
-	 * 	     	                          ＣＳＶファイル詳細データリスト
-	 * @param response
-	 *                レスポンス
-	 * @throws Exception
-	 *                  異常
-	 */
-	 private void exportCsvfiles(String path, String fileName, List<String> titleList, List<PayMagistrateCsvInfo> csvDetailList) throws Exception {
-		 
-		OutputStream out = null;
-		PrintWriter pw = null;
-
-		// 社員番号
-		String employeeNo = "";
-		// 超過勤務時間数（平日_割増）
-		String overWeekdayHours = "";
-		// 超過勤務時間数（休日）
-		String overHolidayHours = "";
-		// 超過勤務時間数（深夜）
-		String overNightHours = "";
-		// 超過勤務時間数（休日出勤振替分）
-		String overHolidayChangeWorkHours = "";
-		// 欠勤時間数
-		String absenceHours = "";
-		// 超過勤務時間数（平日_通常）
-		String overWeekdayNomalHours = "";
-		
-		try {
-			File file = new File(path + fileName + ".csv");
-			out = new FileOutputStream(file);
-			pw = new PrintWriter(out);
-			for (int j = 0; j < titleList.size(); j++) {
-				pw.append(titleList.get(j) + ",");
-			}
-			for (int i = 0; i < csvDetailList.size(); i++) {
-
-				// 社員番号
-				employeeNo = (csvDetailList.get(i).getUserId());
-				// 超過勤務時間数（平日_割増）
-				overWeekdayHours = (csvDetailList.get(i).getOverWeekdayHours());
-				// 超過勤務時間数（休日）
-				overHolidayHours = (csvDetailList.get(i).getOverHolidayHours());
-				// 超過勤務時間数（深夜）
-				overNightHours = (csvDetailList.get(i).getOverNightHours());
-				// 超過勤務時間数（休日出勤振替分）
-				overHolidayChangeWorkHours = (csvDetailList.get(i).getOverHolidayChangeWorkHours());
-				// 欠勤時間数
-				absenceHours = (csvDetailList.get(i).getAbsenceHours());
-				// 超過勤務時間数（平日_通常）
-				overWeekdayNomalHours = (csvDetailList.get(i).getOverWeekdayNomalHours());
-				
-				pw.append("\n");
-				pw.append(employeeNo + ",");
-				pw.append(overWeekdayHours + ",");
-				pw.append(overWeekdayNomalHours + ",");
-				pw.append(overHolidayChangeWorkHours + ",");
-				pw.append(overHolidayHours + ",");
-				pw.append(overNightHours + ",");
-				pw.append(absenceHours + ",");
-			}
-		} catch (Exception e) {
-
-			System.out.println(fileName + ".csv生成失敗");
-		} finally {
-			pw.flush();
-			pw.close();
-			out.flush();
-			out.close();
-		}
-	}
-
 	 /**
 	  * データ型変換(BigDecimal→String)
 	  * 
@@ -357,16 +320,125 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	 * 
 	 * @param userId
 	 *            ユーザーID
-     * @param response
-     *                レスポンス
-	 * @throws Exception 
-	 *                  異常
 	 */
 	@Override
 	public List<MakeKyuyoFileIchiranVO> getMadeFileNameList(String userId) {
 		
+		List<MakeKyuyoFileIchiranVO> makeKyuyoFileIchiranVOList = new ArrayList<MakeKyuyoFileIchiranVO>();
+		BaseCondition selectMadeSyskyuyofileOutputList = new BaseCondition();
+		selectMadeSyskyuyofileOutputList.addConditionEqual("users.id", userId);
+		List<MadeSyskyuyofileOutput> madeSyskyuyofileOutputList = baseDao.findResultList(selectMadeSyskyuyofileOutputList,MadeSyskyuyofileOutput.class);
+		for (int i = 0 ; i < madeSyskyuyofileOutputList.size() ;i++) {
+			
+			MakeKyuyoFileIchiranVO makeKyuyoFileIchiranVO = new MakeKyuyoFileIchiranVO();
+			
+			// ファイル名
+			makeKyuyoFileIchiranVO.setMadeKyuyoFileName(madeSyskyuyofileOutputList.get(i).getMadeKyuyofileName());
+			// 処理年月
+			makeKyuyoFileIchiranVO.setDealYearMonth(madeSyskyuyofileOutputList.get(i).getApplyDealYearMonth());
+			// 作成者
+			makeKyuyoFileIchiranVO.setCreatedUserName(madeSyskyuyofileOutputList.get(i).getUsers().getUserName());
+			// 作成日時
+			makeKyuyoFileIchiranVO.setCreatedDateTime(madeSyskyuyofileOutputList.get(i).getFileCreatedTimestamp().toString().replaceAll("-", "/"));
 		
-		return null;
+			makeKyuyoFileIchiranVOList.add(makeKyuyoFileIchiranVO);
+		}
+		
+		return makeKyuyoFileIchiranVOList;
 	}
 
+	/**
+	 * 作成した給与システム用ファイル一覧リストの項目クリック処理
+	 * 
+	 * @param clickedKyuyoFileName
+	 *            給与システム用ファイル名前
+	 * @throws Exception 
+	 *                  異常
+	 */
+	@Override
+	public void createFileNameClick(String clickedKyuyoFileName,HttpServletResponse response)
+			throws Exception {
+		
+		BaseCondition selectedKyuyoFileCondition = new BaseCondition();
+		// 検索条件：クリックした給与システム用ファイル名前
+		selectedKyuyoFileCondition.addConditionEqual("madeKyuyofileName", clickedKyuyoFileName);
+		// クリックしたファイルを取得する
+		MadeSyskyuyofileOutput createdSyskyuyofileOutputInfo = baseDao.findSingleResult(selectedKyuyoFileCondition, MadeSyskyuyofileOutput.class);
+		 // CSV ダウンロード
+        String csvData = new String(createdSyskyuyofileOutputInfo.getKyuyofileNaiyo());
+        OutputStream outStream = response.getOutputStream();
+        byte[] byteArray = csvData.getBytes("Windows-31J");
+        SimpleDateFormat sysTimeFirst = new SimpleDateFormat("yyyyMM");
+        SimpleDateFormat sysTimeSecond = new SimpleDateFormat("yyyyMMddHHmmss");
+        String fileName = sysTimeFirst.format(new Date()).concat(" ").concat(sysTimeSecond.format(new Date()));
+        setResponseHeader(response, fileName, byteArray.length);
+        outStream.write(byteArray);
+        outStream.flush();
+        outStream.close();
+	}
+	
+	/**
+	 * 給与システム用ファイルの配列によって、ファイルを作成処理
+	 * 
+	 * @param bKyuyofileNaiyo
+	 *            ファイル内容配列
+     * @param filePath
+     *            ファイル保存されるパース
+     * @param fileName
+     *            ファイル名前
+	 */
+    public static void getFile(byte[] bKyuyofileNaiyo, String filePath,String fileName) {  
+        BufferedOutputStream bos = null;  
+        FileOutputStream fos = null;  
+        File file = null;  
+        try {  
+            File dir = new File(filePath);  
+            if(!dir.exists()&&dir.isDirectory()){
+                dir.mkdirs();  
+            }  
+            file = new File(filePath+"\\"+fileName+".csv");  
+            fos = new FileOutputStream(file);  
+            bos = new BufferedOutputStream(fos);  
+            bos.write(bKyuyofileNaiyo);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        } finally {  
+            if (bos != null) {  
+                try {  
+                    bos.close();  
+                } catch (IOException e1) {  
+                    e1.printStackTrace();  
+                }  
+            }  
+            if (fos != null) {  
+                try {  
+                    fos.close();  
+                } catch (IOException e1) {  
+                    e1.printStackTrace();  
+                }  
+            }  
+        }  
+    }
+    
+    
+	/**
+	 * ファイルをダウンロード処理
+	 * 
+	 * @param response
+	 *            レスポンス
+     * @param fileName
+     *            ファイル名
+     * @param fileLength
+     *            ファイル長さ
+	 */  
+  private void setResponseHeader(HttpServletResponse response, String fileName, int fileLength) throws Exception {
+	  
+      response.setContentType("application/octet-stream");              
+      response.setHeader("Content-disposition", "attachment;filename=".concat(URLEncoder.encode(fileName, "UTF-8")) + ".csv");
+      response.setHeader("Content-Type", "text/plain; charset=Shift_JIS");
+      response.setDateHeader("Expires", 0);
+      if (fileLength > 0) {
+          response.setContentLength(fileLength);
+      }
+  }
 }

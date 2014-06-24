@@ -2,6 +2,8 @@ package argo.cost.makeKyuyoFile.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +14,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
+import argo.cost.makeKyuyoFile.checker.MakeKyuyoFileChecker;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileForm;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileIchiranVO;
 import argo.cost.makeKyuyoFile.service.MakeKyuyoFileService;
-import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
 
 /**
  * <p>
@@ -26,7 +28,7 @@ import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
  */
 @Controller
 @RequestMapping(UrlConstant.URL_MAKEKYUYOFILE)
-@SessionAttributes(types = { MonthlyReportStatusListForm.class })
+@SessionAttributes(types = { MakeKyuyoFileForm.class })
 public class MakeKyuyoFileController extends AbstractController  {
 	
 	/**
@@ -44,7 +46,6 @@ public class MakeKyuyoFileController extends AbstractController  {
 	 * 作成した給与ファイル名前リンクをクリックするアクション
 	 */
 	private static final String MADEKYUYOFILENAMECLICK = "/madeKyuyoFileNameClick";
-	
 	
 	/**
 	 * 検索
@@ -94,9 +95,19 @@ public class MakeKyuyoFileController extends AbstractController  {
     @RequestMapping(value = MAKEFILE, method = RequestMethod.POST)
     public String searchMonthlyReportStatusList(MakeKyuyoFileForm makeKyuyoFileForm) throws Exception {
     	
-    	// 給与システム用ファイルを作成し、画面情報でファイル情報を設定する
-    	makeKyuyoFileService.createCSVFile(makeKyuyoFileForm);
-
+    	// 処理年月対応の月報申請ステータスチェック
+    	int intUserOPtion = MakeKyuyoFileChecker.chkStartTimeInput(makeKyuyoFileForm);
+    	
+    	if (intUserOPtion == 0) {
+    		// 給与システム用ファイルを作成し、画面情報でファイル情報を設定する
+        	makeKyuyoFileService.createCSVFile(makeKyuyoFileForm);
+    	} 
+    	// 画面の作成した給与ファイルリストを再取得する
+    	List<MakeKyuyoFileIchiranVO>  makeKyuyoFileIchiranList = makeKyuyoFileService.getMadeFileNameList(makeKyuyoFileForm.getUserId());
+    	
+    	// 作成した給与ファイル一覧リストを設定する
+    	makeKyuyoFileForm.setMakeKyuyoFileIchiranList(makeKyuyoFileIchiranList);
+    	
     	// 給与システム用ファイル出力画面を戻り
         return MAKEKYUYOFILE;
     }
@@ -107,13 +118,15 @@ public class MakeKyuyoFileController extends AbstractController  {
      * @param madeKyuyoFileName
      *               作成した給与ファイル名前
      * @return　給与システム用ファイル出力画面情報
+     * @throws Exception 
      */
     @RequestMapping(value = MADEKYUYOFILENAMECLICK)
-    public String approvalNoClick(@RequestParam("madeKyuyoFileName") String madeKyuyoFileName) {
+    public String approvalNoClick(@RequestParam("madeKyuyoFileName") String madeKyuyoFileName,HttpServletResponse response) throws Exception {
     	
     	// 給与システム用ファイルを作成し、画面情報でファイル情報を設定する
-    	
-    	return "1";
+    	makeKyuyoFileService.createFileNameClick(madeKyuyoFileName,response);
+    	return MAKEKYUYOFILE;
     }
+    
     	
 }
