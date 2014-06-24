@@ -20,19 +20,19 @@ public class HolidayForOvertimeApprovalTest {
 
 	// 超勤振替申請承認
 	@Resource
-	HolidayForOvertimeApprovalServiceImpl holidayForOvertimeApprovalServiceImpl;
+	HolidayForOvertimeApprovalServiceImpl serviceImpl;
 	
 	/**
 	 * 処理状況取得をテスト
 	 */
 	@Test
-	public void testGetStatus() {
+	public void testGetStatusName() {
 
 		// 申請番号
-		String applyNo = "user01120140300";
+		String applyNo = "4001220140504";
 		
 		// 処理状況表示名
-		String status = holidayForOvertimeApprovalServiceImpl.getStatusName(applyNo);
+		String status = serviceImpl.getStatusName(applyNo);
 		
 		assertEquals(status, "提出");
 	}
@@ -41,32 +41,58 @@ public class HolidayForOvertimeApprovalTest {
 	 * 超勤振替申請承認情報取得をテスト
 	 */
 	@Test
-	public void testgetHolidayForOvertimeApproval() {
+	public void testGetHolidayForOvertimeApproval() {
 
 		// 申請番号
-		String applyNo = "user01120140300";
+		String applyNo = "4001220140504";
 		
 		HolidayForOvertimeApprovalForm form = null;
 		try {
-			form = holidayForOvertimeApprovalServiceImpl.getHolidayForOvertimeApproval(applyNo);
+			form = serviceImpl.getHolidayForOvertimeApproval(applyNo);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
 		// 日付
-		assertEquals(form.getDate(), "2014年05月06日（火）");
+		assertEquals(form.getDate(), "2014年05月18日（日）");
 		// 勤務区分
-		assertEquals(form.getWorkKbnName(), "出勤");
+		assertEquals(form.getWorkKbnName(), "休日");
 		// 勤務開始時間
-		assertEquals(form.getWorkStartTime(), "10:00");
+		assertEquals(form.getWorkStartTime(), "09:00");
 		// 勤務終了時間
-		assertEquals(form.getWorkEndTime(), "19:00");
+		assertEquals(form.getWorkEndTime(), "17:30");
 		// 代休期限
 		assertEquals(form.getTurnedHolidayEndDate(), "2014年07月31日（木）");
 		// プロジェクト名
-		assertEquals(form.getProjectName(), "プロジェクト名");
+		assertEquals(form.getProjectName(), "KKF基幹システム再構築");
 		// 業務内容
-		assertEquals(form.getWorkDetail(), "システム復旧作業のため");
+		assertEquals(form.getWorkDetail(), "トラブル対応");
+		
+	}
+	
+	/**
+	 * 承認処理をテスト
+	 */
+	@Test
+	public void testApprovalOverWork() {
+
+		// 申請番号
+		String applyNo = "4001220140504";
+		
+		serviceImpl.approvalOverWork(applyNo);
+		
+	}
+	
+	/**
+	 * 差戻処理をテスト
+	 */
+	@Test
+	public void testRemandOverWork() {
+
+		// 申請番号
+		String applyNo = "4001220140504";
+		
+		serviceImpl.remandOverWork(applyNo);
 		
 	}
 }
