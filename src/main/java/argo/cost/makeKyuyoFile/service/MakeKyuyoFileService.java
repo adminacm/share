@@ -2,6 +2,8 @@ package argo.cost.makeKyuyoFile.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileForm;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileIchiranVO;
 
@@ -30,5 +32,18 @@ public interface MakeKyuyoFileService {
 	 *                  異常
 	 */
 	void createCSVFile(MakeKyuyoFileForm makeKyuyoFileForm) throws Exception;
+	
+	/**
+	 * 給与システム用ファイルを作成
+	 * 
+	 * @param makeKyuyoFileForm
+	 *            給与システム用ファイル出力画面情報
+     * @param response
+     *                レスポンス
+	 * @throws Exception 
+	 *                  異常
+	 */
+	void createFileNameClick(String clickedKyuyoFileName,HttpServletResponse response) throws Exception;
+
 
 }

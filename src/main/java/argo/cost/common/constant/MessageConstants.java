@@ -112,4 +112,9 @@ public class MessageConstants {
 	 *　｛0｝の{1}勤怠情報を入力ください！
 	 */
 	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力ください";
+	
+	/**
+	 *　未承認の月報が存在します。処理を続けますか？
+	 */
+	public static final String COSE_E_1104 = "未承認の月報が存在します。処理を続けますか";
 }

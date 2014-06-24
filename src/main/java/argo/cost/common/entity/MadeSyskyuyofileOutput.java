@@ -1,5 +1,6 @@
 package argo.cost.common.entity;
 
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -16,15 +17,14 @@ public class MadeSyskyuyofileOutput implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="made_kyuyofile_name", unique=true, nullable=false, length=40)
 	private String madeKyuyofileName;
 
 	@Column(name="apply_deal_year_month", nullable=false, length=6)
 	private String applyDealYearMonth;
 
-	@Column(name="file_craeted_timestamp", nullable=false)
-	private Timestamp fileCraetedTimestamp;
+	@Column(name="file_created_timestamp", nullable=false)
+	private Timestamp fileCreatedTimestamp;
 
 	@Column(name="kyuyofile_naiyo")
 	private byte[] kyuyofileNaiyo;
@@ -38,7 +38,7 @@ public class MadeSyskyuyofileOutput implements Serializable {
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="file_created_user_id", nullable=false)
-	private Users user;
+	private Users users;
 
 	public MadeSyskyuyofileOutput() {
 	}
@@ -59,12 +59,12 @@ public class MadeSyskyuyofileOutput implements Serializable {
 		this.applyDealYearMonth = applyDealYearMonth;
 	}
 
-	public Timestamp getFileCraetedTimestamp() {
-		return this.fileCraetedTimestamp;
+	public Timestamp getFileCreatedTimestamp() {
+		return this.fileCreatedTimestamp;
 	}
 
-	public void setFileCraetedTimestamp(Timestamp fileCraetedTimestamp) {
-		this.fileCraetedTimestamp = fileCraetedTimestamp;
+	public void setFileCreatedTimestamp(Timestamp fileCreatedTimestamp) {
+		this.fileCreatedTimestamp = fileCreatedTimestamp;
 	}
 
 	public byte[] getKyuyofileNaiyo() {
@@ -91,12 +91,12 @@ public class MadeSyskyuyofileOutput implements Serializable {
 		this.updatedUserId = updatedUserId;
 	}
 
-	public Users getUser() {
-		return this.user;
+	public Users getUsers() {
+		return this.users;
 	}
 
-	public void setUser(Users user) {
-		this.user = user;
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 
 }

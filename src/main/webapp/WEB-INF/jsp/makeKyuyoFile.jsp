@@ -68,6 +68,11 @@ function submitAction(action) {
 			<div style="padding:2px;">
 				<b>給与システム用ファイル出力</b>
 			</div>
+			<div style="margin-left: 10px;margin-top: 10px;">
+				<c:forEach var="message" items="${makeKyuyoFileForm.confirmMsgList}">
+					<span style="color:red">${message }</span><br/>
+				</c:forEach>
+			</div>
 			<table>
 				<tr>
 					<td style="width: 10px">&nbsp;</td>
@@ -101,7 +106,7 @@ function submitAction(action) {
 								<c:forEach var="makeKyuyoFileIchiraninfo" items="${makeKyuyoFileForm.makeKyuyoFileIchiranList}">
 									<tr>
 										<td align="center">
-											<a href="/makeKyuyoFile/madeKyuyoFileNameClick?madeKyuyoFileName=${mRS.madeKyuyoFileName}">${makeKyuyoFileIchiraninfo.madeKyuyoFileName}</a>
+											<a href="/makeKyuyoFile/madeKyuyoFileNameClick?madeKyuyoFileName=${makeKyuyoFileIchiraninfo.madeKyuyoFileName}">${makeKyuyoFileIchiraninfo.madeKyuyoFileName}</a>
 										</td>
 										<td>
 											${makeKyuyoFileIchiraninfo.dealYearMonth}
@@ -111,9 +116,6 @@ function submitAction(action) {
 										</td>
 										<td>
 											${makeKyuyoFileIchiraninfo.createdDateTime}
-										</td>
-										<td>
-											${makeKyuyoFileIchiraninfo.applyDetail}
 										</td>
 									</tr>
 								</c:forEach>
