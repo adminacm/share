@@ -36,24 +36,24 @@ public class AttendanceOnHolidayRecordDetailTest {
 	@Test
 	public void testGetAttendanceOnHolidayRecordDetail1() {
 
-		// ユーザＩＤ
-		String userId = "4001";
 		// 日付
 		String date = "2014/05/04";
 		// 勤務区分
 		String workKbn = "03";
 		
-		AttendanceOnHolidayRecordDetailForm form = null;
+		AttendanceOnHolidayRecordDetailForm form = new AttendanceOnHolidayRecordDetailForm();
+		// ユーザIDを設定する
+		form.setUserId("4001");
+		// 対象ユーザID
+		form.setTaishoUserId("4001");
+		// 対象ユーザ氏名
+		form.setTaishoUserName("０１ＰＴＳ");
 		try {
-			form = serviceImpl.getAttendanceOnHolidayRecordDetail(userId, date, workKbn);
+			serviceImpl.getAttendanceOnHolidayRecordDetail(form, date, workKbn);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
-		// 社員番号
-		assertEquals(form.getUserId(), "4001");
-		// 氏名
-		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/05/04");
 		// 勤務区分
@@ -76,24 +76,24 @@ public class AttendanceOnHolidayRecordDetailTest {
 	@Test
 	public void testGetAttendanceOnHolidayRecordDetail2() {
 
-		// ユーザＩＤ
-		String userId = "4001";
 		// 日付
 		String date = "2014/05/18";
 		// 勤務区分
 		String workKbn = "02";
-		
-		AttendanceOnHolidayRecordDetailForm form = null;
+
+		AttendanceOnHolidayRecordDetailForm form = new AttendanceOnHolidayRecordDetailForm();
+		// ユーザIDを設定する
+		form.setUserId("4001");
+		// 対象ユーザID
+		form.setTaishoUserId("4001");
+		// 対象ユーザ氏名
+		form.setTaishoUserName("０１ＰＴＳ");
 		try {
-			form = serviceImpl.getAttendanceOnHolidayRecordDetail(userId, date, workKbn);
+			serviceImpl.getAttendanceOnHolidayRecordDetail(form, date, workKbn);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
-		// 社員番号
-		assertEquals(form.getUserId(), "4001");
-		// 氏名
-		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/05/18");
 		// 勤務区分
@@ -117,24 +117,24 @@ public class AttendanceOnHolidayRecordDetailTest {
 	@Test
 	public void testGetAttendanceOnHolidayRecordDetail3() {
 		
-		// ユーザＩＤ
-		String userId = "4001";
 		// 日付
 		String date = "2014/04/13";
 		// 勤務区分
 		String workKbn = "02";
-		
-		AttendanceOnHolidayRecordDetailForm form = null;
+
+		AttendanceOnHolidayRecordDetailForm form = new AttendanceOnHolidayRecordDetailForm();
+
+		// ユーザIDを設定する
+		form.setUserId("4001");
+		// 対象ユーザID
+		form.setTaishoUserId("4001");
+		// 対象ユーザ氏名
+		form.setTaishoUserName("０１ＰＴＳ");
 		try {
-			form = serviceImpl.getAttendanceOnHolidayRecordDetail(userId, date, workKbn);
+			serviceImpl.getAttendanceOnHolidayRecordDetail(form, date, workKbn);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
-		// 社員番号
-		assertEquals(form.getUserId(), "4001");
-		// 氏名
-		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/04/13");
 		// 勤務区分
@@ -160,24 +160,24 @@ public class AttendanceOnHolidayRecordDetailTest {
 	@Test
 	public void testGetAttendanceOnHolidayRecordDetail4() {
 
-		// ユーザＩＤ
-		String userId = "4001";
 		// 日付
 		String date = "2014/05/10";
 		// 勤務区分
 		String workKbn = "02";
-		
-		AttendanceOnHolidayRecordDetailForm form = null;
+
+		AttendanceOnHolidayRecordDetailForm form = new AttendanceOnHolidayRecordDetailForm();
+		// ユーザIDを設定する
+		form.setUserId("4001");
+		// 対象ユーザID
+		form.setTaishoUserId("4001");
+		// 対象ユーザ氏名
+		form.setTaishoUserName("０１ＰＴＳ");
 		try {
-			form = serviceImpl.getAttendanceOnHolidayRecordDetail(userId, date, workKbn);
+			serviceImpl.getAttendanceOnHolidayRecordDetail(form, date, workKbn);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
-		// 社員番号
-		assertEquals(form.getUserId(), "4001");
-		// 氏名
-		assertEquals(form.getUserName(), "０１ＰＴＳ");
 		// 日付
 		assertEquals(form.getHolidayWorkDate(), "2014/05/10");
 		// 勤務区分
