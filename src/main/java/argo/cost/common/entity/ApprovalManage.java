@@ -40,8 +40,8 @@ public class ApprovalManage implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="item_date", length=8)
-	private String itemDate;
+	@Column(name="syori_ym", length=6)
+	private String syoriYm;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
@@ -91,12 +91,12 @@ public class ApprovalManage implements Serializable {
 		this.appYmd = appYmd;
 	}
 	
-	public String getItemDate() {
-		return this.itemDate;
+	public String getSyoriYm() {
+		return syoriYm;
 	}
 
-	public void setItemDate(String itemDate) {
-		this.itemDate = itemDate;
+	public void setSyoriYm(String syoriYm) {
+		this.syoriYm = syoriYm;
 	}
 
 	public String getApplyDetail() {
