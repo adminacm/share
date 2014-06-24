@@ -6,7 +6,6 @@
 
 <html>
 <head>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <meta charset="utf-8">
 <title>勤怠入力</title>
 
@@ -19,14 +18,6 @@ function submitAction(action) {
 
 	document.forms[0].action = action;
 	document.forms[0].submit();
-}
-function changeSelect() {
-	$.ajax({
-		type:'get',
-		url:"/attendanceInput/change",
-		data:$('#attendanceInputForm').serialize()});
-	alert(${attendanceInputForm.workSMinute});
-	$("#shiftCode").attr("value", "123");
 }
 
 </script>
@@ -85,8 +76,15 @@ function changeSelect() {
 				<span style="color:red">${message }</span><br/>
 			</c:forEach>
 		</div>
-		<div style="margin-top: 20px;" >
-			${attendanceInputForm.taishoUserId}
+		<div style="margin-top: 20px; margin-bottom: -20px;" >
+			<table style="margin:auto; width:300px;">
+				<tr>
+					<td align="left" width="80">社員番号</td>
+					<td align="left" width="50">${attendanceInputForm.taishoUserId}</td>
+					<td align="left" width="50">氏名</td>
+					<td align="left" width="150">${attendanceInputForm.taishoUserName}</td>
+				</tr>
+			</table>
 		</div>
 		<div style="margin-top: 20px;" >
 			<!-- 月報承認状況は「作成中」以外の場合 -->
@@ -118,11 +116,14 @@ function changeSelect() {
 			</table>
 			<!-- 社休日 -->
 			<c:if test="${attendanceInputForm.workDayKbn != '01'}">
-				<table style="margin:auto; width:300px;">
-					<tr>
-						<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attendanceOnHoliday');" /></td>
-					</tr>
-				</table>
+			<!-- 作成中 -->
+				<c:if test="${ empty attendanceInputForm.appStatusCode || attendanceInputForm.appStatusCode == '01'}">
+					<table style="margin:auto; width:300px;">
+						<tr>
+							<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attendanceOnHoliday');" /></td>
+						</tr>
+					</table>
+				</c:if>
 			</c:if>
 			<c:if test="${attendanceInputForm.holidayAttendance != null}">
 				<table style="margin:auto;width:300px;border: 1px solid #333;">
@@ -156,7 +157,7 @@ function changeSelect() {
 					<tr>
 						<td align="left" width="120px">シフトコード</td>
 						<td align="left" width="180px" colspan="2">
-							<form:input path="shiftCd" style="width: 60px; " maxlength="4" id="shiftCode"/>
+							<form:input path="shiftCdShow" style="width: 60px; " maxlength="4" id="shiftCode"/>
 						</td>
 					</tr>
 					<tr>

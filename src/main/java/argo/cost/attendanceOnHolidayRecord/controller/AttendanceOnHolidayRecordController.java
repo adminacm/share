@@ -63,12 +63,7 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 		// 氏名リストをセット
 		form.setNameList(comService.getUserNameList(form.getUserId()));
 		// 初期選択値に自分をセット
-		form.setName(form.getUserId());
-		
-		// 社員番号
-		form.setUserId(form.getUserId());
-		// 氏名（表示用）
-		form.setUserName(comService.getUserName(form.getUserId()));
+		form.setName(form.getTaishoUserId());
 		
 		// 画面情報を設定する。
 		service.setAttendanceOnHolidayRecordInfo(form);
@@ -92,6 +87,11 @@ public class AttendanceOnHolidayRecordController extends AbstractController {
 	@RequestMapping(value = SEARCH, method = RequestMethod.POST)
 	public String searchAttendanceOnHolidayRecord(AttendanceOnHolidayRecordForm form) throws ParseException {
 		
+    	// 対象者IDを設定する
+    	getSession().getUserInfo().setTaishoUserId(form.getName());
+    	form.setTaishoUserId(form.getName());
+    	form.setTaishoUserName(comService.getUserName(form.getName()));
+
 		// 画面情報を設定する。
 		service.setAttendanceOnHolidayRecordInfo(form);
 

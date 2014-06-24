@@ -1,7 +1,5 @@
 package argo.cost.attendanceOnHolidayRecordDetail.controller;
 
-import java.text.ParseException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,10 +62,10 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 		AttendanceOnHolidayRecordDetailForm form = initForm(AttendanceOnHolidayRecordDetailForm.class);
 
 		// 休日出勤管理詳細画面情報取得
-		AttendanceOnHolidayRecordDetailForm detailForm = service.getAttendanceOnHolidayRecordDetail(form.getUserId(), date, workKbn);
+		service.getAttendanceOnHolidayRecordDetail(form, date, workKbn);
 		
 		// 休日出勤管理詳細画面情報設定
-		model.addAttribute(detailForm);
+		model.addAttribute(form);
 
 		// 休日出勤管理詳細画面を戻り
 		return ATTENDANCE_ONHOLIDAY_RECORD_DETAIL;
@@ -87,8 +85,10 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 		// 超勤振替申請を提出
 		try {
 			service.overWorkPayRequest(form);
-		} catch (ParseException e) {
+		} catch (Exception e) {
+			form.putConfirmMsg(e.getMessage());
 			e.printStackTrace();
+			return ATTENDANCE_ONHOLIDAY_RECORD_DETAIL;
 		}
 		
 		// 超勤振替申請が提出、休日出勤管理画面へ戻る

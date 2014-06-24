@@ -63,7 +63,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 検索条件：休日勤務の日付
 		condition.addConditionEqual("atendanceDate", currentDate);
 		// 検索条件：社員ID
-		condition.addConditionEqual("users.id", atendanceOnHolidayForm.getUserId());
+		condition.addConditionEqual("users.id", atendanceOnHolidayForm.getTaishoUserId());
 			
 		HolidayAtendanceYotei holidayAtendanceYoteiResultinfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		// 勤務日区分リストの設定
@@ -112,12 +112,13 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		
 		// 当前の日付を検索条件として、DBの休日勤務情報有無をチェックする		
 		BaseCondition condition = new BaseCondition();
-		String userId = atendanceOnHoliday.getUserId();
+		String loginId = atendanceOnHoliday.getUserId();
+		String taishoId = atendanceOnHoliday.getTaishoUserId();
 			
 		// 検索条件：休日勤務の日付
 		condition.addConditionEqual("atendanceDate", atendanceOnHoliday.getStrAtendanceDate().replaceAll("/", ""));
 		// 検索条件：社員ID
-		condition.addConditionEqual("users.id", userId);
+		condition.addConditionEqual("users.id", taishoId);
 			
 		HolidayAtendanceYotei entity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		
@@ -128,14 +129,14 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			flag = false;
 			// 休日勤務情報を追加する
 			entity = new HolidayAtendanceYotei();
-			entity.setCreatedUserId(userId);               // 登録者
+			entity.setCreatedUserId(loginId);               // 登録者
 			entity.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
 		}
 		// 勤務日の区分
 		WorkDayKbnMaster workDayKbnMaster = baseDao.findById(atendanceOnHoliday.getSelectedAtendanceDayKbn(), WorkDayKbnMaster.class);
 		entity.setWorkDayKbnMaster(workDayKbnMaster);
 		// 社員番号:ユーザーIDを設定される
-		entity.setUser(baseDao.findById(userId, Users.class));
+		entity.setUser(baseDao.findById(taishoId, Users.class));
 		// プロジェクト名
 		ProjectMaster projMaster = baseDao.findById(atendanceOnHoliday.getSelectedProjCd(), ProjectMaster.class);
 		entity.setProjectMaster(projMaster);
@@ -149,7 +150,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		entity.setFurikaeDate(atendanceOnHoliday.getStrHurikaeDate().replace("/", ""));
 		// 業務内容
 		entity.setCommont(atendanceOnHoliday.getStrCommont());
-		entity.setUpdatedUserId(userId);               // 更新者
+		entity.setUpdatedUserId(loginId);               // 更新者
 		entity.setUpdateDate(new Timestamp(System.currentTimeMillis())); // 更新時刻
 		
 		String strHolidayAtendanceSaveFlg = "1";

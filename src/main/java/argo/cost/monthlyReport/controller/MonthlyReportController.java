@@ -18,6 +18,7 @@ import argo.cost.common.controller.AbstractController;
 import argo.cost.common.entity.Users;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
+import argo.cost.monthlyReport.checker.MonthlyReportChecker;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.service.MonthlyReportService;
 
@@ -123,8 +124,6 @@ public class MonthlyReportController extends AbstractController {
     	String userId = form.getUserCode();
     	// 対象者IDを設定する
     	getSession().getUserInfo().setTaishoUserId(form.getUserCode());
-    	// 対象者氏名を設定する
-    	getSession().getUserInfo().setTaishoUserName(comService.getUserName(userId));
     	List<MonthlyReportDispVO> resultList = monthlyReportService.getMonthyReportList(CostDateUtils.toDate(form.getYearMonth()));
 
     	form.setmRList(resultList);
@@ -183,14 +182,18 @@ public class MonthlyReportController extends AbstractController {
 	 */
     @RequestMapping(value = MONTHLYREPORTCOMMIT, method = RequestMethod.POST)
     public String monthlyReportCommit(MonthlyReportForm form) throws Exception {
-    	
+    	// 入力チェック
+    	MonthlyReportChecker.chkKintaiInfoInput(form);
+    	if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
+    		return MONTHLYREPORT;
+    	}
     	String strMonthyReportCommitFlg = monthlyReportService.monthyReportCommit(form);
     	if ("1".equals(strMonthyReportCommitFlg)) {
     		String date = form.getYearMonth();
     		return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + date;
     	} else {
     		
-    		// TODO
+    		// メッセージを表示する
     		return MONTHLYREPORT;
     	}
     	

@@ -185,14 +185,14 @@ function submitAction(action) {
 				<table style="width:400px">
 					<c:forEach var="projWorkTimeCountInfo" items="${monthlyReportForm.projWorkTimeCountVOList}">
 						<c:if test="${not empty projWorkTimeCountInfo.projName}">
-						<tr>
-							<td style="width:200px" colspan="2">
-								${projWorkTimeCountInfo.projName}
-							</td>
-							<td>
-								${projWorkTimeCountInfo.prpjectWorkTotalHours}
-							</td>
-						</tr>
+							<tr>
+								<td style="width:200px" colspan="2">
+									${projWorkTimeCountInfo.projName}
+								</td>
+								<td>
+									${projWorkTimeCountInfo.prpjectWorkTotalHours}
+								</td>
+							</tr>
 						</c:if>
 						<c:if test="${not empty projWorkTimeCountInfo.workContentName}">
 							<tr>
@@ -207,7 +207,6 @@ function submitAction(action) {
 				</table>
 			</div>
 		</div>
-	
 	</form:form>
 </body>
 </html>

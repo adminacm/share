@@ -38,6 +38,7 @@ import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
+import argo.cost.common.utils.CostStringUtils;
 
 /**
  * 勤怠入力サービス実現するクラス
@@ -203,6 +204,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			}
 			// シフトコード
 			form.setShiftCd(kintaiEntity.getShiftJikoku().getShiftCode());
+			form.setShiftCdShow(kintaiEntity.getShiftJikoku().getShiftCode().substring(0, 4));
 			// 休日予定勤務情報設定
 			this.setHolidayAttendanceInfo(form);
 
@@ -279,7 +281,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		} else {
 			// シフトコード
 			Users userEntity = baseDao.findById(taishoUserId, Users.class);
-			form.setShiftCd(userEntity.getStandardShiftCd().substring(0, 4));
+			form.setShiftCd(userEntity.getStandardShiftCd());
+			form.setShiftCdShow(userEntity.getStandardShiftCd().substring(0, 4));
 			
 			// 社休日の判定
 			// 日付より、カレンダー情報を取得
@@ -501,7 +504,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 勤務時間取得
 		Double hours = 0.0;
 		// シフトコード
-		String shiftCode = form.getShiftCd();
+		String shiftCode = form.getShiftCdShow();
 		// 勤務開始時刻
 		String wStime = form.getWorkSTime();
 		// 勤務終了時刻
@@ -548,7 +551,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 早退時刻
 		Double wSotai = 0.0;
 		// シフトコード
-		String shiftCode = form.getShiftCd();
+		String shiftCode = form.getShiftCdShow();
 		// 定時出勤時刻(hhnn)
 		String standSTimeStr = shiftinfo.getStartTimeStr();
 		// 定時退勤時刻(hhnn)
@@ -615,7 +618,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @throws ParseException 
 	 */
 	private void getChokin(AttendanceInputForm form) throws ParseException {
-
+		
+		// シフトコード
+		String shiftCode = form.getShiftCdShow();
 		// 超勤時間
 		Double wChokinHours = 0.0;
 		// シフト情報
@@ -635,12 +640,12 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			if (shift.getChokinSTimeStr().compareTo(STR_REIJI) < 0
 					&& STR_REIJI.compareTo(wETimeStr) < 0) {
 				// シフト超勤開始時刻→23:30＋"0000"→勤務終了時刻
-				wChokinHours = countRestTime(shift.getCode(), shift.getChokinSTime(), DAY_OVER_TIME, 0)
+				wChokinHours = countRestTime(shiftCode, shift.getChokinSTime(), DAY_OVER_TIME, 0)
 						+ countRestTime(shift.getCode(), DAY_START_TIME, wETime, 1);
 				
 			} else {
 				// シフト超勤開始時刻→勤務終了時刻
-				wChokinHours = countRestTime(shift.getCode(), shift.getChokinSTime(), wETime, 1);
+				wChokinHours = countRestTime(shiftCode, shift.getChokinSTime(), wETime, 1);
 			}
 
 			// 超勤開始時刻＝シフト超勤開始時刻
@@ -668,9 +673,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 						form.setChoWeekdayNomal(wChokinHours);
 					} else {
 						// 超勤平日（割増）
-						form.setChoWeekday(wChokinHours);
+						form.setChoWeekday(form.getWorkHours() - 8.0);
 						// 超勤平日（通常）
-						form.setChoWeekdayNomal(0.0);
+						form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
 					}
 					// 超勤休日を設定
 					form.setChoHoliday(0.0);
@@ -728,7 +733,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	private void getMidnight(AttendanceInputForm form) throws ParseException {
 
-		ShiftVO shift = form.getShiftInfo();
+		// シフトコード
+		String shiftCode = form.getShiftCdShow();
 		// 深夜勤務時間
 		Double wMNHours = 0.0;
 		if (StringUtils.isEmpty(form.getWorkSTimeStr())
@@ -739,11 +745,11 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (form.getWorkSTimeStr().compareTo(STR_REIJI) < 0 
 				&& STR_REIJI.compareTo(form.getWorkETimeStr()) < 0) {
 			// 勤務開始時刻→23:30＋"0000"→勤務終了時刻
-			wMNHours = getMNHours(shift.getCode(), form.getWorkSTime(), DAY_OVER_TIME, 0)
-					+ getMNHours(shift.getCode(), DAY_START_TIME, form.getWorkETime(), 1);
+			wMNHours = getMNHours(shiftCode, form.getWorkSTime(), DAY_OVER_TIME, 0)
+					+ getMNHours(shiftCode, DAY_START_TIME, form.getWorkETime(), 1);
 		} else {
 			// 勤務開始時刻→勤務終了時刻
-			wMNHours = getMNHours(shift.getCode(), form.getWorkSTime(), form.getWorkETime(), 1);
+			wMNHours = getMNHours(shiftCode, form.getWorkSTime(), form.getWorkETime(), 1);
 		}
 		
 		// 深夜を設定する
@@ -764,14 +770,17 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 *            シフトコード
 	 * @return シフト情報
 	 */
-	private ShiftVO getShiftInfo(AttendanceInputForm form, String shiftCode) {
+	private ShiftVO getShiftInfo(AttendanceInputForm form) {
 
+		String shiftCode = form.getShiftCd();
+		String shiftCodeShow = form.getShiftCdShow();
+		
 		// ｼﾌﾄｺｰﾄﾞが未入力なら"0900"を使用する
-		if (StringUtils.isEmpty(shiftCode)) {
-			shiftCode = "0900";
+		if (StringUtils.isEmpty(shiftCodeShow)) {
+			shiftCodeShow = "0900";
 		}
 		BaseCondition condition = new BaseCondition();
-		condition.addConditionEqual("shiftCode", shiftCode);
+		condition.addConditionEqual("shiftCode", shiftCodeShow);
 		List<ShiftInfo> shiftList = baseDao.findResultList(condition, ShiftInfo.class);
 		if (shiftList == null || shiftList.isEmpty()) {
 			// ｼﾌﾄｺｰﾄﾞを正しく入力してください
@@ -985,7 +994,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
-		condition.addConditionEqual("users.id", form.getUserId());  // 社員番号
+		condition.addConditionEqual("users.id", form.getTaishoUserId());  // 社員番号
 		condition.addConditionEqual("atendanceDate", form.getAttDate());  // 勤務休日
 		HolidayAtendanceYotei attYoteEntity = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		
@@ -994,7 +1003,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (attYoteEntity != null) {
 			attendanceVO = new HolidayAttendanceVO();
 			// 社員番号
-			attendanceVO.setUserId(form.getUserId());
+			attendanceVO.setUserId(form.getTaishoUserId());
 			// 休日勤務日
 			attendanceVO.setAttendanceDate(form.getAttDate());
 			// 振替日
@@ -1029,7 +1038,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 */
 	private void doInputCheck(AttendanceInputForm form) {
 		// シフトコードより、シフト情報を取得
-		ShiftVO shiftinfo = getShiftInfo(form, form.getShiftCd());
+		ShiftVO shiftinfo = getShiftInfo(form);
 		// エラーを発生した時
 		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
 			return;
@@ -1131,7 +1140,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 年
 		String year = String.valueOf(c.get(Calendar.YEAR));
 		// 月
-		String month = String.valueOf(c.get(Calendar.MONTH) + 1);
+		String month = CostStringUtils.addZeroForNum(String.valueOf(c.get(Calendar.MONTH) + 1), 2);
 		// 日
 		String date = String.valueOf(c.get(Calendar.DATE));
 	
@@ -1180,6 +1189,11 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		kintaiEntity.setShiftJikoku(shiftEntity);            // シフト時刻情報
 		kintaiEntity.setKinmuStartTime(form.getWorkSTime()); // 勤務開始時刻
 		kintaiEntity.setKinmuEndTime(form.getWorkETime());   // 勤務終了時刻
+		// 休日振替勤務の場合
+		if (StringUtils.equals(form.getWorkDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE)) {
+			// 振替日
+			kintaiEntity.setFurikaeDate(form.getHolidayAttendance().getFurikaeDate());
+		}
 		
 		// 休暇欠勤マスタ情報を取得
 		KyukaKekinKbnMaster kyukaEntity = baseDao.findById(form.getKyukaKb(), KyukaKekinKbnMaster.class);

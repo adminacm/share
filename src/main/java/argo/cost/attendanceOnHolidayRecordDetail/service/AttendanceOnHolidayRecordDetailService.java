@@ -24,7 +24,7 @@ public interface AttendanceOnHolidayRecordDetailService {
 	 *               勤務区分
 	 * @return 休日出勤管理詳細画面情報取得
 	 */
-	AttendanceOnHolidayRecordDetailForm getAttendanceOnHolidayRecordDetail(String userId, String date, String workKbn) throws ParseException;
+	void getAttendanceOnHolidayRecordDetail(AttendanceOnHolidayRecordDetailForm form, String date, String workKbn) throws ParseException;
 
 	/**
 	 * 超勤振替申請を提出
@@ -33,5 +33,5 @@ public interface AttendanceOnHolidayRecordDetailService {
 	 *            休日出勤管理詳細画面情報
 	 *            
 	 */
-	void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form) throws ParseException;
+	void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form) throws Exception;
 }

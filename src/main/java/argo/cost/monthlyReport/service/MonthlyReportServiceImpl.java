@@ -29,7 +29,6 @@ import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.model.ProjWorkTimeCountVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
-import argo.cost.monthlyReport.checker.MonthlyReportChecker;
 import argo.cost.monthlyReport.dao.MonthlyReportDao;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 
@@ -311,7 +310,6 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		}
 		monthlyReportForm.setProjWorkTimeCountVOList(projWorkTimeCountList);
 		
-		MonthlyReportChecker.chkKintaiInfoInput(monthlyReportForm);
 	}
 
 	/**
@@ -438,7 +436,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		approvalManage.setAppYmd(CostDateUtils.getNowDate());
 		
 		// 月報の日付
-		approvalManage.setItemDate(form.getYearMonth());
+		approvalManage.setSyoriYm(CostDateUtils.getDealDate(form.getYearMonth(), CommonConstant.APPLY_KBN_GETUHOU));;
 		String strMonthyReportCommitFlg = "0";
 		
 		// 勤怠情報の対応した申請番号を更新される

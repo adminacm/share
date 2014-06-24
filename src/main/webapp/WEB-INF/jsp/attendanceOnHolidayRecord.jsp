@@ -107,9 +107,9 @@ function submitAction(action) {
 						<table class="resultStyle" style="margin-left:2px;width: 300px">
 							<tr>
 								<td style="width: 80px">社員番号</td>
-								<td style="width: 50px">${attendanceOnHolidayRecordForm.userId}</td>
+								<td style="width: 50px">${attendanceOnHolidayRecordForm.taishoUserId}</td>
 								<td style="width: 50px">氏名</td>
-								<td>${attendanceOnHolidayRecordForm.userName}</td>
+								<td>${attendanceOnHolidayRecordForm.taishoUserName}</td>
 							</tr>
 						</table>
 					</td>
@@ -163,7 +163,7 @@ function submitAction(action) {
 								<c:forEach var="holidayOverWork" items="${attendanceOnHolidayRecordForm.holidayOverWorkList}">
 									<tr align="center">
 										<td style="width:100px">
-											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayOverWork.holidayOverWorkDate}&workKbn=01">${holidayOverWork.holidayOverWorkDate}</a>
+											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayOverWork.holidayOverWorkDate}&workKbn=02">${holidayOverWork.holidayOverWorkDate}</a>
 										</td>
 										<td style="width:100px">
 											${holidayOverWork.turnedHolidayEndDate}

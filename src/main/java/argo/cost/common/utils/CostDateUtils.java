@@ -102,7 +102,7 @@ public class CostDateUtils extends DateUtils {
 		String formatDate = "";
 
 		// 日付が空白以外の場合
-		if (yyyymmdd != null && !yyyymmdd.isEmpty()) {
+		if (StringUtils.isNotEmpty(yyyymmdd)) {
 			
 			Date date = toDate(yyyymmdd);
 

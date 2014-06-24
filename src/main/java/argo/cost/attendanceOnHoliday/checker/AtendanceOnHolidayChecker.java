@@ -221,7 +221,7 @@ public class AtendanceOnHolidayChecker {
 		
 		// 勤務日区分が「休日」「休日振替勤務」以外
 		if ((!StringUtils.equals(form.getSelectedAtendanceDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU))
-				&& (!StringUtils.equals(form.getSelectedAtendanceDayKbn(), CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU))) {
+				&& (!StringUtils.equals(form.getSelectedAtendanceDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE))) {
 			// 勤務区分の値が不正です
 			form.putConfirmMsg(MessageConstants.COSE_E_022, new String[] {WORK_DAY_KBN});
 		}
