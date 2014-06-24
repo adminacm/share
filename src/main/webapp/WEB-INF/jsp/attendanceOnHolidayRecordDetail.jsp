@@ -3,7 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ page import="argo.cost.common.constant.*"%>
 <html>
 <head>
 <meta charset="utf-8">
@@ -34,11 +34,11 @@ function submitAction(action) {
 			<table style="margin-left:100px;margin-top:30px;">
 				<tr>
 					<td>社員番号</td>
-					<td>${attendanceOnHolidayRecordForm.userId}</td>
+					<td>${attendanceOnHolidayRecordForm.taishoUserId}</td>
 				</tr>
 				<tr>
 					<td>氏名</td>
-					<td>${attendanceOnHolidayRecordForm.userName}</td>
+					<td>${attendanceOnHolidayRecordForm.taishoUserName}</td>
 				</tr>
 				<tr>
 					<td style="width:150px">日付</td>
@@ -58,23 +58,26 @@ function submitAction(action) {
 						<td>${attendanceOnHolidayRecordDetailForm.exchangeDate}</td>
 					</tr>
 				</c:if>
-				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.turnedHolidayEndDate}">
-					<tr>
-						<td>代休期限</td>
-						<td>${attendanceOnHolidayRecordDetailForm.turnedHolidayEndDate}</td>
-					</tr>
-				</c:if>
-				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.turnedHolidayDate}">
-					<tr>
-						<td>代休日</td>
-						<td>${attendanceOnHolidayRecordDetailForm.turnedHolidayDate}</td>
-					</tr>
-				</c:if>
-				<c:if test="${not empty attendanceOnHolidayRecordDetailForm.overWorkTurnedReqDate}">
-					<tr>
-						<td>超勤振替申請日</td>
-						<td>${attendanceOnHolidayRecordDetailForm.overWorkTurnedReqDate}</td>
-					</tr>
+				<!-- 休日勤務 -->
+				<c:if test="${attendanceOnHolidayRecordDetailForm.workKbn == '02'}">
+					<c:if test="${not empty attendanceOnHolidayRecordDetailForm.turnedHolidayEndDate}">
+						<tr>
+							<td>代休期限</td>
+							<td>${attendanceOnHolidayRecordDetailForm.turnedHolidayEndDate}</td>
+						</tr>
+					</c:if>
+					<c:if test="${not empty attendanceOnHolidayRecordDetailForm.turnedHolidayDate}">
+						<tr>
+							<td>代休日</td>
+							<td>${attendanceOnHolidayRecordDetailForm.turnedHolidayDate}</td>
+						</tr>
+					</c:if>
+					<c:if test="${not empty attendanceOnHolidayRecordDetailForm.overWorkTurnedReqDate}">
+						<tr>
+							<td>超勤振替申請日</td>
+							<td>${attendanceOnHolidayRecordDetailForm.overWorkTurnedReqDate}</td>
+						</tr>
+					</c:if>
 				</c:if>
 				<tr>
 					<td>プロジェクト名</td>

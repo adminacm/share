@@ -15,7 +15,6 @@ public class MonthlyReportDispVO {
 	 */
 	private String date;
 	
-
 	/**
 	 * 曜日
 	 */
@@ -30,7 +29,10 @@ public class MonthlyReportDispVO {
 	 * 勤務区分名
 	 */
 	private String workKbnName;
-	
+	/**
+	 * 休暇欠勤区分
+	 */
+	private String kyukaKb;
 	/**
 	 * ｼﾌﾄ
 	 */
@@ -100,7 +102,6 @@ public class MonthlyReportDispVO {
 	 * 合計行フラグ
 	 */
 	private Boolean totleFlg;
-	
 	
 	
 	//#################################
@@ -256,6 +257,14 @@ public class MonthlyReportDispVO {
 
 	public void setTotleFlg(Boolean totleFlg) {
 		this.totleFlg = totleFlg;
+	}
+
+	public String getKyukaKb() {
+		return kyukaKb;
+	}
+
+	public void setKyukaKb(String kyukaKb) {
+		this.kyukaKb = kyukaKb;
 	}
 	
 }

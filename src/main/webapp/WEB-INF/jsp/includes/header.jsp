@@ -8,7 +8,12 @@
 			<tr>
 				<td>ようこそ：</td>
 				<td>${ userName }</td>
-				<td><input id="loginLink" type="button" onClick="window.location.href('/login')" value="ログイン"></td>
+				<c:if test="${ not empty userName }">
+					<td><input id="loginLink" type="button" onClick="window.location.href('/login')" value="メニュー"></td>
+				</c:if>
+				<c:if test="${ empty userName }">
+					<td><input id="loginLink" type="button" onClick="window.location.href('/login')" value="ログイン"></td>
+				</c:if>
 				<td><input id="logoutLink" type="button" onClick="window.location.href('/logout')" value="ログアウト"></td>
 			</tr>
 		</table>

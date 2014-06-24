@@ -32,16 +32,6 @@ public class AttendanceOnHolidayRecordForm extends AbstractForm implements Seria
 	private List<ListItemVO> yearPeriodList;
 	
 	/**
-	 * 社員番号
-	 */
-	private String userId;
-	
-	/**
-	 * 氏名（表示用）
-	 */
-	private String userName;
-	
-	/**
 	 * 氏名（リスト用）
 	 */
 	private String name;
@@ -75,22 +65,6 @@ public class AttendanceOnHolidayRecordForm extends AbstractForm implements Seria
 
 	public void setYearPeriodList(List<ListItemVO> yearPeriodList) {
 		this.yearPeriodList = yearPeriodList;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getName() {

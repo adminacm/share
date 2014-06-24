@@ -123,13 +123,12 @@ public class AtendanceOnHolidayController extends AbstractController {
 		String strAtendanceDate = form.getStrAtendanceDate();
 
 		// 削除失敗する場合
-		if (atendanceOnHolidayService.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getUserId()) == 0) {
+		if (atendanceOnHolidayService.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getTaishoUserId()) == 0) {
 			
 			return ATTENDANCE_HOLIDAY;
 		}
 		// 削除成功する場合、勤怠入力画面に遷移する
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + ATTDENDANCE_DATE + "=" + strAtendanceDate.replace("/", "");
-		
 
 	}
 
