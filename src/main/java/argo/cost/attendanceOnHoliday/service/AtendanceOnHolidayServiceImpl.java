@@ -13,7 +13,6 @@ import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.HolidayAtendanceYotei;
 import argo.cost.common.entity.ProjectBasic;
-import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.utils.CostDateUtils;
@@ -70,7 +69,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 勤務日区分リストの設定
 		atendanceOnHolidayForm.setAtendanceDayKbnList(baseDao.findAll(WorkDayKbnMaster.class));
 		// プロジェクトリストの設定
-		atendanceOnHolidayForm.setProjCdList(baseDao.findAll(ProjectMaster.class));
+		atendanceOnHolidayForm.setProjCdList(baseDao.findAll(ProjectBasic.class));
 		
 		// 当前の日付の休日勤務情報が存在の場合
 		if (holidayAtendanceYoteiResultinfo != null) {

@@ -50,7 +50,6 @@
 
 </STYLE>
 
-<link href="../css/common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 /* アクション提出 */
 function submitAction(action) {

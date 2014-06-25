@@ -76,9 +76,9 @@ function submitAction(action) {
 						<td width="120px">プロジェクト名</td>
 						<td width="180px">
 						
-							<form:select path="selectedProjCd" style="width:80%;" >
+							<form:select path="selectedProjCd" style="width:99%;" >
 								<form:option value=""></form:option>
-								<form:options items="${atendanceOnHolidayForm.projCdList}" itemValue="code" itemLabel="name"/>
+								<form:options items="${atendanceOnHolidayForm.projCdList}" itemValue="projectCode" itemLabel="projectName"/>
 							</form:select>
 						</td>
 					</tr>

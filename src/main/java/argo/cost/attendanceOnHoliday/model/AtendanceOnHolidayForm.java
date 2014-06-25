@@ -3,7 +3,7 @@ package argo.cost.attendanceOnHoliday.model;
 import java.io.Serializable;
 import java.util.List;
 
-import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.ProjectBasic;
 import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.model.AbstractForm;
 
@@ -51,7 +51,7 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 	/**
 	 *　プロジェクト名リスト
 	 */
-	private List<ProjectMaster> projCdList;
+	private List<ProjectBasic> projCdList;
 	/**
 	 *　プロジェクト名区分
 	 */
@@ -133,11 +133,11 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 		this.atendanceDayKbnList = atendanceDayKbnList;
 	}
 
-	public List<ProjectMaster> getProjCdList() {
+	public List<ProjectBasic> getProjCdList() {
 		return projCdList;
 	}
 
-	public void setProjCdList(List<ProjectMaster> projCdList) {
+	public void setProjCdList(List<ProjectBasic> projCdList) {
 		this.projCdList = projCdList;
 	}
 

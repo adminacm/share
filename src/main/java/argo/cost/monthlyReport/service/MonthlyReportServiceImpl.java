@@ -268,7 +268,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 			for (ProjWorkTimeManage entity : entityList) {
 				ProjWorkTimeCountVO projWorkTimeCountVO = null;
 				// プロジェクトコード
-				String code = entity.getProjectMaster().getCode();
+				String code = entity.getProjectBasic().getProjectCode();
 				// プロジェクト名が存在する場合
 				if (projectMap.containsKey(code)) {
 					projWorkTimeCountList = projectMap.get(code);
@@ -286,7 +286,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 					projWorkTimeCountList = new ArrayList<ProjWorkTimeCountVO>();
 					projWorkTimeCountVO = new ProjWorkTimeCountVO();
 					// プロジェクト名を設定する
-					projWorkTimeCountVO.setProjName(entity.getProjectMaster().getName());
+					projWorkTimeCountVO.setProjName(entity.getProjectBasic().getProjectName());
 					projWorkTimeCountVO.setPrpjectWorkTotalHours(entity.getWorkTimes().doubleValue());
 					projWorkTimeCountList.add(projWorkTimeCountVO);
 					projectMap.put(code, projWorkTimeCountList);

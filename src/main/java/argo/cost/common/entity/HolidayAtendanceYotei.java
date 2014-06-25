@@ -68,7 +68,7 @@ public class HolidayAtendanceYotei implements Serializable {
 
 	//bi-directional many-to-one association to ProjectBasic
 	@ManyToOne
-	@JoinColumn(name="project_code", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="project_code", nullable=false, insertable=true, updatable=true)
 	private ProjectBasic projectBasic;
 
 	public HolidayAtendanceYotei() {
