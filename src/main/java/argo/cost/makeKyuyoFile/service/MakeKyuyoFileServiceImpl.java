@@ -1,6 +1,7 @@
 package argo.cost.makeKyuyoFile.service;
 
 import java.io.BufferedOutputStream;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,6 +30,12 @@ import argo.cost.common.utils.CostDateUtils;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileForm;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileIchiranVO;
 import argo.cost.makeKyuyoFile.model.PayMagistrateCsvInfo;
+
+/**
+ * 給与システム用ファイル出力画面サービス
+ *
+ * @author COST argo Corporation.
+ */
 @Service
 public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	
@@ -378,50 +385,6 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	}
 	
 	/**
-	 * 給与システム用ファイルの配列によって、ファイルを作成処理
-	 * 
-	 * @param bKyuyofileNaiyo
-	 *            ファイル内容配列
-     * @param filePath
-     *            ファイル保存されるパース
-     * @param fileName
-     *            ファイル名前
-	 */
-    public static void getFile(byte[] bKyuyofileNaiyo, String filePath,String fileName) {  
-        BufferedOutputStream bos = null;  
-        FileOutputStream fos = null;  
-        File file = null;  
-        try {  
-            File dir = new File(filePath);  
-            if(!dir.exists()&&dir.isDirectory()){
-                dir.mkdirs();  
-            }  
-            file = new File(filePath+"\\"+fileName+".csv");  
-            fos = new FileOutputStream(file);  
-            bos = new BufferedOutputStream(fos);  
-            bos.write(bKyuyofileNaiyo);  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        } finally {  
-            if (bos != null) {  
-                try {  
-                    bos.close();  
-                } catch (IOException e1) {  
-                    e1.printStackTrace();  
-                }  
-            }  
-            if (fos != null) {  
-                try {  
-                    fos.close();  
-                } catch (IOException e1) {  
-                    e1.printStackTrace();  
-                }  
-            }  
-        }  
-    }
-    
-    
-	/**
 	 * ファイルをダウンロード処理
 	 * 
 	 * @param response
@@ -433,7 +396,8 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	 */  
   private void setResponseHeader(HttpServletResponse response, String fileName, int fileLength) throws Exception {
 	  
-      response.setContentType("application/octet-stream");              
+      response.setContentType("application/octet-stream");   
+      response.reset();
       response.setHeader("Content-disposition", "attachment;filename=".concat(URLEncoder.encode(fileName, "UTF-8")) + ".csv");
       response.setHeader("Content-Type", "text/plain; charset=Shift_JIS");
       response.setDateHeader("Expires", 0);

@@ -6,7 +6,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileForm;
 import argo.cost.makeKyuyoFile.model.MakeKyuyoFileIchiranVO;
-
+/**
+ * 給与システム用ファイル出力画面サービス
+ *
+ * @author COST argo Corporation.
+ */
 public interface MakeKyuyoFileService {
 	
 	/**
