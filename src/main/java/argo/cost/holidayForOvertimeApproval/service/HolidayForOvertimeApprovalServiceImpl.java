@@ -103,7 +103,7 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		}
 		if (holidayAtendanceYoteiInfo != null) {
 			// プロジェクト名
-			form.setProjectName(holidayAtendanceYoteiInfo.getProjectMaster().getName());
+			form.setProjectName(holidayAtendanceYoteiInfo.getProjectBasic().getProjectName());
 			// 業務内容
 			form.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
 		}

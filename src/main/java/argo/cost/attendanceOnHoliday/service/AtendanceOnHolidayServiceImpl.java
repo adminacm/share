@@ -12,6 +12,7 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.HolidayAtendanceYotei;
+import argo.cost.common.entity.ProjectBasic;
 import argo.cost.common.entity.ProjectMaster;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
@@ -85,7 +86,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			// 振替日
 			atendanceOnHolidayForm.setStrHurikaeDate(holidayAtendanceYoteiResultinfo.getFurikaeDate());
 			// プロジェクト名
-			atendanceOnHolidayForm.setSelectedProjCd(holidayAtendanceYoteiResultinfo.getProjectMaster().getCode());
+			atendanceOnHolidayForm.setSelectedProjCd(holidayAtendanceYoteiResultinfo.getProjectBasic().getProjectCode());
 			// 業務内容
 			atendanceOnHolidayForm.setStrCommont(holidayAtendanceYoteiResultinfo.getCommont());
 		}
@@ -138,8 +139,8 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 社員番号:ユーザーIDを設定される
 		entity.setUser(baseDao.findById(taishoId, Users.class));
 		// プロジェクト名
-		ProjectMaster projMaster = baseDao.findById(atendanceOnHoliday.getSelectedProjCd(), ProjectMaster.class);
-		entity.setProjectMaster(projMaster);
+		ProjectBasic projectBasic = baseDao.findById(atendanceOnHoliday.getSelectedProjCd(), ProjectBasic.class);
+		entity.setProjectBasic(projectBasic);
 		// 休日勤務予定日格式を変更して、設定される
 		entity.setAtendanceDate(atendanceOnHoliday.getStrAtendanceDate().replace("/", ""));
 		// 勤務開始時間

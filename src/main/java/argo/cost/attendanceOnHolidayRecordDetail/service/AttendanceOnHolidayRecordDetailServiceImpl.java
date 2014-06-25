@@ -103,7 +103,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		// 休日勤務予定情報がありの場合
 		if (holidayAtendanceYoteiInfo != null) {
 			// プロジェクト名
-			form.setProjectName(holidayAtendanceYoteiInfo.getProjectMaster().getName());
+			form.setProjectName(holidayAtendanceYoteiInfo.getProjectBasic().getProjectName());
 			// 業務内容
 			form.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
 		}
