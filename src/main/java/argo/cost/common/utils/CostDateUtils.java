@@ -368,7 +368,7 @@ public class CostDateUtils extends DateUtils {
 			}
 		}
 		
-		return strInputDate;
+		return strInputDate.substring(0, 6);
 
 	}
 

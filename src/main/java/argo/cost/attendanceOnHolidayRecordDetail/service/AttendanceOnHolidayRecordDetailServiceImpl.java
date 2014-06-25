@@ -82,6 +82,8 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 			//　日付
 			form.setHolidayWorkDate(CostDateUtils.formatDate(kintaiInfo.getAtendanceDate(), CommonConstant.YYYY_MM_DD));
 			// 勤務区分名
+			form.setWorkKbn(kintaiInfo.getWorkDayKbnMaster().getCode());
+			// 勤務区分名
 			form.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
 			// 勤務開始時間
 			form.setWorkStartTime(CostDateUtils.formatTime(kintaiInfo.getKinmuStartTime()));
@@ -155,6 +157,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		applyInfo.setAppYmd(CostDateUtils.getNowDate());
 		// 処理日
 		applyInfo.setSyoriYm(CostDateUtils.getDealDate(CostDateUtils.getNowDate(),CommonConstant.APPLY_KBN_CHOKIN_FURIKAE));
+		
 		applyInfo.setCreatedUserId(form.getUserId());               // 登録者
 		applyInfo.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
 		applyInfo.setUpdatedUserId(form.getUserId());               // 更新者
