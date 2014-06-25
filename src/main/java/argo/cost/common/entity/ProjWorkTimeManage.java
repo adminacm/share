@@ -6,8 +6,6 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,7 +24,6 @@ public class ProjWorkTimeManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(unique=true, nullable=false)
 	private Integer id;
 
@@ -47,18 +44,18 @@ public class ProjWorkTimeManage implements Serializable {
 
 	//bi-directional many-to-one association to KintaiInfo
 	@ManyToOne
-	@JoinColumn(name="kinmu_id")
+	@JoinColumn(name="kinmu_id", nullable=false)
 	private KintaiInfo kintaiInfo;
 
 	//bi-directional many-to-one association to ProjWorkMaster
 	@ManyToOne
-	@JoinColumn(name="work_code")
+	@JoinColumn(name="work_code", nullable=false)
 	private ProjWorkMaster projWorkMaster;
 
-	//bi-directional many-to-one association to ProjectMaster
+	//bi-directional many-to-one association to ProjectBasic
 	@ManyToOne
-	@JoinColumn(name="project_code_id")
-	private ProjectMaster projectMaster;
+	@JoinColumn(name="project_code_id", nullable=false)
+	private ProjectBasic projectBasic;
 
 	public ProjWorkTimeManage() {
 	}
@@ -127,12 +124,12 @@ public class ProjWorkTimeManage implements Serializable {
 		this.projWorkMaster = projWorkMaster;
 	}
 
-	public ProjectMaster getProjectMaster() {
-		return this.projectMaster;
+	public ProjectBasic getProjectBasic() {
+		return this.projectBasic;
 	}
 
-	public void setProjectMaster(ProjectMaster projectMaster) {
-		this.projectMaster = projectMaster;
+	public void setProjectBasic(ProjectBasic projectBasic) {
+		this.projectBasic = projectBasic;
 	}
 
 }
