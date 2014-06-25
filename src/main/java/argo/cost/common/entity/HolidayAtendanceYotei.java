@@ -56,20 +56,25 @@ public class HolidayAtendanceYotei implements Serializable {
 	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
-	//bi-directional many-to-one association to ProjectMaster
+	//bi-directional many-to-one association to ProjWorkMaster
 	@ManyToOne
-	@JoinColumn(name="project_code")
-	private ProjectMaster projectMaster;
+	@JoinColumn(name="project_code", nullable=false)
+	private ProjWorkMaster projWorkMaster;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", nullable=false)
 	private Users users;
 
 	//bi-directional many-to-one association to WorkDayKbnMaster
 	@ManyToOne
-	@JoinColumn(name="atendance_date_kbn_cd")
+	@JoinColumn(name="atendance_date_kbn_cd", nullable=false)
 	private WorkDayKbnMaster workDayKbnMaster;
+
+	//bi-directional many-to-one association to ProjectBasic
+	@ManyToOne
+	@JoinColumn(name="project_code", nullable=false, insertable=false, updatable=false)
+	private ProjectBasic projectBasic;
 
 	public HolidayAtendanceYotei() {
 	}
@@ -154,15 +159,6 @@ public class HolidayAtendanceYotei implements Serializable {
 		this.updatedUserId = updatedUserId;
 	}
 
-
-	public ProjectMaster getProjectMaster() {
-		return this.projectMaster;
-	}
-
-	public void setProjectMaster(ProjectMaster projectMaster) {
-		this.projectMaster = projectMaster;
-	}
-
 	public Users getUser() {
 		return this.users;
 	}
@@ -177,6 +173,14 @@ public class HolidayAtendanceYotei implements Serializable {
 
 	public void setWorkDayKbnMaster(WorkDayKbnMaster workDayKbnMaster) {
 		this.workDayKbnMaster = workDayKbnMaster;
+	}
+	
+	public ProjectBasic getProjectBasic() {
+		return this.projectBasic;
+	}
+
+	public void setProjectBasic(ProjectBasic projectBasic) {
+		this.projectBasic = projectBasic;
 	}
 
 }

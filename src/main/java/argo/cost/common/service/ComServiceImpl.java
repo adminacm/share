@@ -18,7 +18,7 @@ import argo.cost.common.dao.BaseDao;
 import argo.cost.common.dao.ComDao;
 import argo.cost.common.entity.AffiliationMaster;
 import argo.cost.common.entity.ProjWorkMaster;
-import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.ProjectBasic;
 import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
@@ -146,10 +146,10 @@ public class ComServiceImpl implements ComService {
 	 * @return  プロジェクトリスト
 	 */
 	@Override
-	public List<ProjectMaster> getProjectNameList() {
+	public List<ProjectBasic> getProjectNameList() {
 		
 		// 全てのプロジェクト情報を取得
-		List<ProjectMaster> resultList = baseDao.findAll(ProjectMaster.class);
+		List<ProjectBasic> resultList = baseDao.findAll(ProjectBasic.class);
 		
 		return resultList;
 	}

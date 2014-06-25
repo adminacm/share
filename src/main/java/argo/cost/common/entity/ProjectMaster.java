@@ -2,15 +2,13 @@ package argo.cost.common.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -25,9 +23,8 @@ public class ProjectMaster implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false, length=14)
-	private String code;
+	@Column(name="project_code", unique=true, nullable=false, length=8)
+	private String projectCode;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
@@ -35,14 +32,23 @@ public class ProjectMaster implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="item_no", nullable=false, length=4)
-	private String itemNo;
+	@Column(name="eigyo_tanto_id", nullable=false, length=255)
+	private String eigyoTantoId;
 
-	@Column(name="kigyo_code", nullable=false, length=10)
-	private String kigyoCode;
+	@Column(name="end_date", nullable=false, length=8)
+	private String endDate;
 
-	@Column(nullable=false, length=255)
-	private String name;
+	@Column(name="phase_code", nullable=false, length=6)
+	private String phaseCode;
+
+	@Column(name="phase_name", nullable=false, length=255)
+	private String phaseName;
+
+	@Column(name="start_date", nullable=false, length=8)
+	private String startDate;
+
+	@Column(nullable=false, length=2)
+	private String syukanka;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
@@ -50,23 +56,23 @@ public class ProjectMaster implements Serializable {
 	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
-	//bi-directional many-to-one association to HolidayAtendanceYotei
-	@OneToMany(mappedBy="projectMaster")
-	private List<HolidayAtendanceYotei> holidayAtendanceYoteis;
+	@Column(name="user_id", nullable=false, length=20)
+	private String userId;
 
-	//bi-directional many-to-one association to ProjWorkTimeManage
-	@OneToMany(mappedBy="projectMaster")
-	private List<ProjWorkTimeManage> projWorkTimeManages;
+	//bi-directional one-to-one association to ProjectBasic
+	@OneToOne
+	@JoinColumn(name="project_code", nullable=false, insertable=false, updatable=false)
+	private ProjectBasic projectBasic;
 
 	public ProjectMaster() {
 	}
 
-	public String getCode() {
-		return this.code;
+	public String getProjectCode() {
+		return this.projectCode;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
 	}
 
 	public Timestamp getCreatedDate() {
@@ -85,28 +91,52 @@ public class ProjectMaster implements Serializable {
 		this.createdUserId = createdUserId;
 	}
 
-	public String getItemNo() {
-		return this.itemNo;
+	public String getEigyoTantoId() {
+		return this.eigyoTantoId;
 	}
 
-	public void setItemNo(String itemNo) {
-		this.itemNo = itemNo;
+	public void setEigyoTantoId(String eigyoTantoId) {
+		this.eigyoTantoId = eigyoTantoId;
 	}
 
-	public String getKigyoCode() {
-		return this.kigyoCode;
+	public String getEndDate() {
+		return this.endDate;
 	}
 
-	public void setKigyoCode(String kigyoCode) {
-		this.kigyoCode = kigyoCode;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getPhaseCode() {
+		return this.phaseCode;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPhaseCode(String phaseCode) {
+		this.phaseCode = phaseCode;
+	}
+
+	public String getPhaseName() {
+		return this.phaseName;
+	}
+
+	public void setPhaseName(String phaseName) {
+		this.phaseName = phaseName;
+	}
+
+	public String getStartDate() {
+		return this.startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getSyukanka() {
+		return this.syukanka;
+	}
+
+	public void setSyukanka(String syukanka) {
+		this.syukanka = syukanka;
 	}
 
 	public Timestamp getUpdateDate() {
@@ -125,48 +155,20 @@ public class ProjectMaster implements Serializable {
 		this.updatedUserId = updatedUserId;
 	}
 
-	public List<HolidayAtendanceYotei> getHolidayAtendanceYoteis() {
-		return this.holidayAtendanceYoteis;
+	public String getUserId() {
+		return this.userId;
 	}
 
-	public void setHolidayAtendanceYoteis(List<HolidayAtendanceYotei> holidayAtendanceYoteis) {
-		this.holidayAtendanceYoteis = holidayAtendanceYoteis;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public HolidayAtendanceYotei addHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
-		getHolidayAtendanceYoteis().add(holidayAtendanceYotei);
-		holidayAtendanceYotei.setProjectMaster(this);
-
-		return holidayAtendanceYotei;
+	public ProjectBasic getProjectBasic() {
+		return this.projectBasic;
 	}
 
-	public HolidayAtendanceYotei removeHolidayAtendanceYotei(HolidayAtendanceYotei holidayAtendanceYotei) {
-		getHolidayAtendanceYoteis().remove(holidayAtendanceYotei);
-		holidayAtendanceYotei.setProjectMaster(null);
-
-		return holidayAtendanceYotei;
-	}
-
-	public List<ProjWorkTimeManage> getProjWorkTimeManages() {
-		return this.projWorkTimeManages;
-	}
-
-	public void setProjWorkTimeManages(List<ProjWorkTimeManage> projWorkTimeManages) {
-		this.projWorkTimeManages = projWorkTimeManages;
-	}
-
-	public ProjWorkTimeManage addProjWorkTimeManage(ProjWorkTimeManage projWorkTimeManage) {
-		getProjWorkTimeManages().add(projWorkTimeManage);
-		projWorkTimeManage.setProjectMaster(this);
-
-		return projWorkTimeManage;
-	}
-
-	public ProjWorkTimeManage removeProjWorkTimeManage(ProjWorkTimeManage projWorkTimeManage) {
-		getProjWorkTimeManages().remove(projWorkTimeManage);
-		projWorkTimeManage.setProjectMaster(null);
-
-		return projWorkTimeManage;
+	public void setProjectBasic(ProjectBasic projectBasic) {
+		this.projectBasic = projectBasic;
 	}
 
 }

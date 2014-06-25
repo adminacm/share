@@ -3,7 +3,7 @@ package argo.cost.attendanceInput.model;
 import java.util.List;
 
 import argo.cost.common.entity.ProjWorkMaster;
-import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.ProjectBasic;
 
 /**
  * 個人倦怠プロジェクト情報
@@ -17,7 +17,7 @@ public class AttendanceProjectVO {
 	/**
 	 * プロジェクトリスト
 	 */
-	private List<ProjectMaster> projectItemList;
+	private List<ProjectBasic> projectItemList;
 	/**
 	 * 作業ID
 	 */
@@ -39,11 +39,11 @@ public class AttendanceProjectVO {
 		this.projectId = projectId;
 	}
 
-	public List<ProjectMaster> getProjectItemList() {
+	public List<ProjectBasic> getProjectItemList() {
 		return projectItemList;
 	}
 
-	public void setProjectItemList(List<ProjectMaster> projectItemList) {
+	public void setProjectItemList(List<ProjectBasic> projectItemList) {
 		this.projectItemList = projectItemList;
 	}
 
