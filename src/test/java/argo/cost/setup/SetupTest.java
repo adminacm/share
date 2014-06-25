@@ -2,6 +2,8 @@ package argo.cost.setup;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.ParseException;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -18,40 +20,44 @@ public class SetupTest {
 
 	// 個人設定サビース
 	@Resource
-	SetupServiceImpl setupS;
+	SetupServiceImpl setupServiceImpl;
 	
 	/**
 	 * 個人設定情報取得をテスト
+	 * @throws ParseException 
 	 */
 	@Test
-	public void testGetSetupInfo(){
+	public void testGetSetupInfo() throws ParseException{
+		
+		SetupForm setupForm = new SetupForm();
+		setupForm.setUserId("4001");
 		
 		// 個人設定情報取得
-		SetupForm setupInfo = setupS.getSetupInfo("caowy");
-		
-		// 代理入力者
-		assertEquals(setupInfo.getAgentName(), "熊燕玲");
+		setupServiceImpl.getSetupInfo(setupForm);
 		
 		// 標準ｼﾌﾄ
-		assertEquals(setupInfo.getStandardShift(), "0900");
+		assertEquals(setupForm.getStandardShift(), "0900");
+		
+		// ユーザー名
+		assertEquals(setupForm.getTaishoUserName(), "０１ＰＴＳ");
 		
 		// 勤務開始時刻
-		assertEquals(setupInfo.getWorkStart(), "09:00");
+		assertEquals(setupForm.getWorkStartTime(), "09:00");
 		
 		// 勤務終了時刻
-		assertEquals(setupInfo.getWorkEnd(), "17:30");
+		assertEquals(setupForm.getWorkEndTime(), "17:30");
 		
 		// 入社日
-		assertEquals(setupInfo.getJoinDate(), "1997/4/1");
+		assertEquals(setupForm.getJoinDate(), "1997/4/1");
 		
 		// 休業開始日
-		assertEquals(setupInfo.getHolidayStart(), "2012/5/9");
+		assertEquals(setupForm.getHolidayStart(), "2012/5/9");
 		
 		// 休業終了日
-		assertEquals(setupInfo.getHolidayEnd(), "2013/4/30");
+		assertEquals(setupForm.getHolidayEnd(), "2013/4/30");
 		
 		// 退職日
-		assertEquals(setupInfo.getOutDate(), "2013/8/30");
+		assertEquals(setupForm.getOutDate(), "2013/8/30");
 		
 	}
 	
@@ -71,10 +77,10 @@ public class SetupTest {
 		setupInfo.setStandardShift("0900");
 		
 		// 勤務開始時刻
-		setupInfo.setWorkStart("09:00");
+		setupInfo.setWorkStartTime("09:00");
 		
 		// 勤務終了時刻
-		setupInfo.setWorkEnd("17:30");
+		setupInfo.setWorkEndTime("17:30");
 		
 		// 入社日
 		setupInfo.setJoinDate("1997/4/1");
@@ -89,16 +95,8 @@ public class SetupTest {
 		setupInfo.setOutDate("2013/8/30");
 		
 		// 個人設定変更情報取得
-		setupS.getSetupEditInfo(setupInfo);
+		setupServiceImpl.getSetupEditInfo(setupInfo);
 		
-		// 勤務開始時刻（時）
-		assertEquals(setupInfo.getWorkStartH(), "09");
-		// 勤務開始時刻（分）
-		assertEquals(setupInfo.getWorkStartM(),"00");
-		// 勤務終了時刻（時）
-		assertEquals(setupInfo.getWorkEndH(), "17");
-		// 勤務終了時刻（分）
-		assertEquals(setupInfo.getWorkEndM(),"30");
 		// 代理入力者リスト取得
 		assertEquals(setupInfo.getAgentList().size(), 3);
 		// 標準ｼﾌﾄリスト取得
@@ -119,16 +117,12 @@ public class SetupTest {
 		setupInfo.setStandardShift("0930");
 		
 		// 個人設定変更情報取得
-		setupS.changeShift(setupInfo);
+		setupServiceImpl.changeShift(setupInfo);
 		
-		// 勤務開始時刻（時）
-		assertEquals(setupInfo.getWorkStartH(), "09");
-		// 勤務開始時刻（分）
-		assertEquals(setupInfo.getWorkStartM(),"30");
-		// 勤務終了時刻（時）
-		assertEquals(setupInfo.getWorkEndH(), "18");
-		// 勤務終了時刻（分）
-		assertEquals(setupInfo.getWorkEndM(),"00");
+		// 勤務開始時刻
+		assertEquals(setupInfo.getWorkStartTime(), "0930");
+		// 勤務開始時刻
+		assertEquals(setupInfo.getWorkEndTime(),"1800");
 		
 	}
 
