@@ -56,11 +56,6 @@ public class HolidayAtendanceYotei implements Serializable {
 	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
-	//bi-directional many-to-one association to ProjWorkMaster
-	@ManyToOne
-	@JoinColumn(name="project_code", nullable=false)
-	private ProjWorkMaster projWorkMaster;
-
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="user_id", nullable=false)
