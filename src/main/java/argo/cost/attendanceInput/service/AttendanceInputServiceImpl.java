@@ -31,7 +31,7 @@ import argo.cost.common.entity.Locations;
 import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjWorkTimeManage;
-import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.ProjectBasic;
 import argo.cost.common.entity.ShiftInfo;
 import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
@@ -172,7 +172,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		List<AttendanceProjectVO> attendanceProjectList = new ArrayList<AttendanceProjectVO>();
 		AttendanceProjectVO attPorject = null;
 		// プロジェクトリストを取得
-		List<ProjectMaster> projectItemList = baseDao.findAll(ProjectMaster.class);
+		List<ProjectBasic> projectItemList = baseDao.findAll(ProjectBasic.class);
 		// プロジェクト作業リストを取得
 		List<ProjWorkMaster> workItemList = baseDao.findAll(ProjWorkMaster.class);
 		
@@ -259,7 +259,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 					ProjWorkTimeManage proEntity = prjList.get(i);
 					attPorject = new AttendanceProjectVO();
 					// プロジェクトID
-					attPorject.setProjectId(proEntity.getProjectMaster().getCode());
+					attPorject.setProjectId(proEntity.getProjectBasic().getProjectCode());
 					attPorject.setProjectItemList(projectItemList);
 					//　作業ID
 					attPorject.setWorkId(proEntity.getProjWorkMaster().getCode());
@@ -1017,9 +1017,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			// 勤務終了時間
 			attendanceVO.setKinmuEndTime(attYoteEntity.getKinmuEndTime());
 			// プロジェクトID
-			attendanceVO.setProjectId(attYoteEntity.getProjectMaster().getCode());
+			attendanceVO.setProjectId(attYoteEntity.getProjectBasic().getProjectCode());
 			// プロジェクト名称
-			attendanceVO.setProjectName(attYoteEntity.getProjectMaster().getName());
+			attendanceVO.setProjectName(attYoteEntity.getProjectBasic().getProjectName());
 			//　作業内容
 			attendanceVO.setWorkDetail(attYoteEntity.getCommont());
 		}
@@ -1261,8 +1261,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				projectEntity = new ProjWorkTimeManage();
 				projectEntity.setKintaiInfo(kintaiEntity);
 				// プロジェクトマスタ情報を取得
-				ProjectMaster projectMaster = baseDao.findById(projectInfo.getProjectId(), ProjectMaster.class);
-				projectEntity.setProjectMaster(projectMaster);
+				ProjectBasic projectBasic = baseDao.findById(projectInfo.getProjectId(), ProjectBasic.class);
+				projectEntity.setProjectBasic(projectBasic);
 				// 作業マスタ情報を取得
 				ProjWorkMaster projWorkMaster = baseDao.findById(projectInfo.getWorkId(), ProjWorkMaster.class);
 				projectEntity.setProjWorkMaster(projWorkMaster);

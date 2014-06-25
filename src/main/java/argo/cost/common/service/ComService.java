@@ -6,7 +6,7 @@ import java.util.List;
 
 import argo.cost.common.entity.AffiliationMaster;
 import argo.cost.common.entity.ProjWorkMaster;
-import argo.cost.common.entity.ProjectMaster;
+import argo.cost.common.entity.ProjectBasic;
 import argo.cost.common.entity.Users;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
@@ -65,7 +65,7 @@ public interface ComService {
 	 * 
 	 * @return  プロジェクトリスト
 	 */
-	List<ProjectMaster> getProjectNameList();
+	List<ProjectBasic> getProjectNameList();
 	
 	/**
 	 * プロジェクトの作業情報を取得
