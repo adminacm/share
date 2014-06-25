@@ -1,10 +1,5 @@
 package argo.cost.makeKyuyoFile.service;
 
-import java.io.BufferedOutputStream;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -346,7 +341,8 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 			// 作成者
 			makeKyuyoFileIchiranVO.setCreatedUserName(madeSyskyuyofileOutputList.get(i).getUsers().getUserName());
 			// 作成日時
-			makeKyuyoFileIchiranVO.setCreatedDateTime(madeSyskyuyofileOutputList.get(i).getFileCreatedTimestamp().toString().replaceAll("-", "/"));
+			String strFileCreatedTimestamp = madeSyskyuyofileOutputList.get(i).getFileCreatedTimestamp().toString().replaceAll("-", "/");
+			makeKyuyoFileIchiranVO.setCreatedDateTime(strFileCreatedTimestamp.substring(0, strFileCreatedTimestamp.indexOf(".")));
 		
 			makeKyuyoFileIchiranVOList.add(makeKyuyoFileIchiranVO);
 		}
