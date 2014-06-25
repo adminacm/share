@@ -265,7 +265,7 @@ function submitAction(action) {
 									<td align="center" >
 										<form:select path="projectList[${st.index}].projectId" style="width:100%;" >
 											<form:option value=""></form:option>
-											<form:options items="${projectInfo.projectItemList}" itemValue="code" itemLabel="name"/>
+											<form:options items="${projectInfo.projectItemList}" itemValue="projectCode" itemLabel="projectName"/>
 										</form:select>
 									</td>
 									<td align="center">

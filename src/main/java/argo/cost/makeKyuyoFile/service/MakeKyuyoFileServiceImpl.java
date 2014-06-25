@@ -77,10 +77,8 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	    String filaName = sysTimeFirst.format(new Date()).toString().concat(" ").concat(sysTimeSecond.format(new Date()).toString());
 		madeSyskyuyofileOutputEntity.setMadeKyuyofileName(filaName);
 		
-		String strFileInsertFlg ="0";
 		try {
 			baseDao.insert(madeSyskyuyofileOutputEntity);
-			strFileInsertFlg = "1";
 		} catch (Exception e) {
 			System.out.println("給与システム用ファイル作成失敗しました");
 		}

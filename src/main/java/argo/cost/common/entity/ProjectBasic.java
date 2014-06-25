@@ -17,7 +17,6 @@ public class ProjectBasic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="project_code", unique=true, nullable=false, length=8)
 	private String projectCode;
 
