@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.dao.ComDao;
 import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
 import argo.cost.common.utils.CostDateUtils;
@@ -29,12 +28,6 @@ public class SetupServiceImpl implements SetupService {
 	 */
 	@Autowired
 	BaseDao baseDao;
-
-	/**
-	 * 共通処理のDAO
-	 */
-	@Autowired
-	ComDao comDao;
 	
 	/**
 	 * 個人設定情報を取得

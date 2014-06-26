@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.dao.ComDao;
 import argo.cost.common.entity.AffiliationMaster;
 import argo.cost.common.entity.ProjWorkMaster;
 import argo.cost.common.entity.ProjectBasic;
@@ -42,12 +41,6 @@ public class ComServiceImpl implements ComService {
 	 * 検索条件：名
 	 */
 	private static final String LOGIN_MAIL = "loginMailAddress";
-	
-	/**
-	 * 共通DAO
-	 */
-	@Autowired
-	private ComDao comDao;
 	
 	/**
 	 * 単一テーブル操作DAO
@@ -118,26 +111,6 @@ public class ComServiceImpl implements ComService {
 
 		// 年度ドロップダウンリストを返却する。
 		return resultList;
-	}
-
-	/**
-	 * 月報の提出状態を取得
-	 * 
-	 * @param userId
-	 *              ユーザID
-	 * @param date 
-	 *            日付
-	 * @return 月報の提出状態
-	 */
-	@Override
-	public String getMonthReportStatus(String userId, String date) {
-		
-		String status = "";
-		// 月報の提出状態を取得
-		status = comDao.getMonthReportStatus(userId, date);
-		
-		// 月報の提出状態を戻り
-		return status;
 	}
 	
 	/**
