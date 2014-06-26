@@ -23,12 +23,12 @@ public interface ComService {
 	/**
 	 * セッション情報初期化
 	 *
-	 * @param userName
-	 *                ユーザ名
+	 * @param loginMail
+	 *                ユーザログインメールアドレス
 	 *
 	 * @return セッション情報
 	 */
-	AppSession initSession(String userName);
+	AppSession initSession(String loginMail);
 
 	/**
 	 * セッション情報リフレッシュ

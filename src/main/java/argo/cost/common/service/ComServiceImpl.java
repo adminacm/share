@@ -275,7 +275,7 @@ public class ComServiceImpl implements ComService {
             // パスワード
             userinfo.setPassword(user.getPassword());
             // 登録名
-            userinfo.setLoginMailAdress(user.getAffiliationMaster().getCode());
+            userinfo.setLoginMailAdress(loginMail);
             // 代理入力者ID
             userinfo.setDairishaId(user.getDairishaId());
             // 標準ｼﾌﾄ
