@@ -557,9 +557,11 @@ public class AttendanceInputChecker {
 			BaseCondition condition = new BaseCondition();
 			condition.addConditionEqual("users.id", form.getUserId());          // 社員番号
 	        // 勤務日区分
-			condition.addConditionIn("workDayKbnMaster.code", new String[] {CommonConstant.WORKDAY_KBN_SHUKIN, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU});
+			condition.addConditionEqual("workDayKbnMaster.code", CommonConstant.WORKDAY_KBN_KYUJITU);
 			// 代休取得期限
 			condition.addConditionGreaterEqualThan("daikyuGetShimekiriDate", form.getAttDate());
+			// 休日勤務日
+			condition.addConditionLessThan("atendanceDate", form.getAttDate());
 			// 勤務時間数＞＝7.5
 			condition.addConditionGreaterEqualThan("kinmuJikansu", new BigDecimal(7.5));
 			// 代休日がNULL
@@ -686,7 +688,7 @@ public class AttendanceInputChecker {
 	public static void chkKyuKaKbnAndKinmuKbn(AttendanceInputForm form) {
 		
 		// 勤務区分が「休日」か「振替休日」の場合
-		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, form.getWorkDayKbn())
+		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU, form.getWorkDayKbn())
 				|| StringUtils.equals(CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU, form.getWorkDayKbn())) {
 			// 休暇欠勤区分が空欄以外はエラー
 			if (StringUtils.isNotEmpty(form.getKyukaKb())) {
