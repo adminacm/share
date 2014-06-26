@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.dao.ComDao;
 import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.model.ListItemVO;
 import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListForm;
@@ -22,12 +21,6 @@ import argo.cost.monthlyReportStatusList.model.MonthlyReportStatusListVo;
  */
 @Service
 public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusListService {
-	
-	/**
-	 * 共通DAO
-	 */
-	@Autowired
-	ComDao comDao;
 	
 	/**
 	 * 単一テーブル操作DAO

@@ -49,18 +49,6 @@ public interface ComService {
 	List<ListItemVO> getYearList(Date date) throws ParseException;
 	
 	/**
-	 * 
-	 * 月報の提出状態を取得
-	 * 
-	 * @param userId 
-	 *              ユーザID
-	 * @param date 
-	 *            日付
-	 * @return 月報の提出状態
-	 */
-	String getMonthReportStatus(String userId, String date);
-	
-	/**
 	 * プロジェクト情報を取得
 	 * 
 	 * @return  プロジェクトリスト

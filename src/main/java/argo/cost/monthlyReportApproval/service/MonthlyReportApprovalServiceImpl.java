@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.dao.ComDao;
 import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.ProjWorkTimeManage;
@@ -33,12 +32,6 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 */
 	@Autowired
 	private MonthlyReportApprovalDao monthlyReportApprovalDao;
-	
-	/**
-	 * 共通DAO
-	 */	
-	@Autowired
-	private ComDao comDao;
 	
 	/** 定数 */
 	// YYYYMMDD形式を表す文字列
