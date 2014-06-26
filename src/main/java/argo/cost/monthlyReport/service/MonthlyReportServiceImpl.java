@@ -164,58 +164,65 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		
 		for(int j = 0; j < monthlyReportList.size(); j++) {
 			for (int i = 0; i < monthlyKintaiInfoList.size(); i++) {
+				// 月報情報
+				MonthlyReportDispVO monthInfo = monthlyReportList.get(j);
+				// 勤怠情報
+				KintaiInfo kintaiInfo = monthlyKintaiInfoList.get(i);
+				
 				// 対応した日付で、勤務情報を設定する
-				if (StringUtils.equals(monthlyReportList.get(j).getDate(), monthlyKintaiInfoList.get(i).getAtendanceDate())) {
+				if (StringUtils.equals(monthInfo.getDate(), kintaiInfo.getAtendanceDate())) {
 					
 					// 区分
-					if (monthlyKintaiInfoList.get(i).getKyukaKekinKbnMaster() != null ) {
-						monthlyReportList.get(j).setWorkKbn(monthlyKintaiInfoList.get(i).getKyukaKekinKbnMaster().getCode());
+					if (kintaiInfo.getKyukaKekinKbnMaster() != null ) {
+						monthInfo.setWorkKbn(kintaiInfo.getKyukaKekinKbnMaster().getCode());
 					}
-					if (monthlyKintaiInfoList.get(i).getShiftJikoku() != null ) {
+					if (kintaiInfo.getShiftJikoku() != null ) {
 						// ｼﾌﾄ
-						monthlyReportList.get(j).setShift(monthlyKintaiInfoList.get(i).getShiftJikoku().getShiftCode());
+						monthInfo.setShift(kintaiInfo.getShiftJikoku().getShiftCode());
 					}
 					// 出勤
-					monthlyReportList.get(j).setWorkSTime(monthlyKintaiInfoList.get(i).getKinmuStartTime());
+					monthInfo.setWorkSTime(kintaiInfo.getKinmuStartTime());
 					// 退勤
-					monthlyReportList.get(j).setWorkETime(monthlyKintaiInfoList.get(i).getKinmuEndTime());
+					monthInfo.setWorkETime(kintaiInfo.getKinmuEndTime());
 					// 休暇
-					if (monthlyKintaiInfoList.get(i).getKyukaJikansu() != null ) {
-						monthlyReportList.get(j).setRestHours(monthlyKintaiInfoList.get(i).getKyukaJikansu().doubleValue());
+					if (kintaiInfo.getKyukaJikansu() != null ) {
+						monthInfo.setRestHours(kintaiInfo.getKyukaJikansu().doubleValue());
 					}
-					
 					// 勤務時間数
-					if (monthlyKintaiInfoList.get(i).getKinmuJikansu() != null ) {
-						monthlyReportList.get(j).setWorkHours(monthlyKintaiInfoList.get(i).getKinmuJikansu().doubleValue());
+					if (kintaiInfo.getKinmuJikansu() != null ) {
+						monthInfo.setWorkHours(kintaiInfo.getKinmuJikansu().doubleValue());
 					}
 					// 超勤開始
-					monthlyReportList.get(j).setChoSTime(monthlyKintaiInfoList.get(i).getChokinStartTime());
+					monthInfo.setChoSTime(kintaiInfo.getChokinStartTime());
 					// 超勤終了
-					monthlyReportList.get(j).setChoETime(monthlyKintaiInfoList.get(i).getChokinEndTime());
+					monthInfo.setChoETime(kintaiInfo.getChokinEndTime());
 					// 超勤平増
-					if (monthlyKintaiInfoList.get(i).getChokinHeijituJikansu() != null ) {
-						monthlyReportList.get(j).setChoWeekday(monthlyKintaiInfoList.get(i).getChokinHeijituJikansu().doubleValue());
+					if (kintaiInfo.getChokinHeijituJikansu() != null ) {
+						monthInfo.setChoWeekday(kintaiInfo.getChokinHeijituJikansu().doubleValue());
 					}
-					
 					// 超勤平常
-					if (monthlyKintaiInfoList.get(i).getChokinHeijituTujyoJikansu() != null ) {
-						monthlyReportList.get(j).setChoWeekdayNomal(monthlyKintaiInfoList.get(i).getChokinHeijituTujyoJikansu().doubleValue());
+					if (kintaiInfo.getChokinHeijituTujyoJikansu() != null ) {
+						monthInfo.setChoWeekdayNomal(kintaiInfo.getChokinHeijituTujyoJikansu().doubleValue());
 					}
-					
 					// 超勤休日
-					if (monthlyKintaiInfoList.get(i).getChokinKyujituJikansu() != null ) {
-						monthlyReportList.get(j).setChoHoliday(monthlyKintaiInfoList.get(i).getChokinKyujituJikansu().doubleValue());
+					if (kintaiInfo.getChokinKyujituJikansu() != null ) {
+						monthInfo.setChoHoliday(kintaiInfo.getChokinKyujituJikansu().doubleValue());
 					}
-					
 					// 超勤深夜
-					if (monthlyKintaiInfoList.get(i).getSinyaKinmuJikansu() != null ) {
-						monthlyReportList.get(j).setmNHours(monthlyKintaiInfoList.get(i).getSinyaKinmuJikansu().doubleValue());
+					if (kintaiInfo.getSinyaKinmuJikansu() != null ) {
+						monthInfo.setmNHours(kintaiInfo.getSinyaKinmuJikansu().doubleValue());
 					}
-					
 					// ﾛｹｰｼｮﾝコード
-					monthlyReportList.get(j).setLocationCode(monthlyKintaiInfoList.get(i).getLocation().getCode());
+					monthInfo.setLocationCode(kintaiInfo.getLocation().getCode());
 					// ﾛｹｰｼｮﾝ名前
-					monthlyReportList.get(j).setLocationName(monthlyKintaiInfoList.get(i).getLocation().getName());
+					monthInfo.setLocationName(kintaiInfo.getLocation().getName());
+					// 勤務日区分
+					if (kintaiInfo.getWorkDayKbnMaster() != null) {
+						// 勤務日区分
+						monthInfo.setWorkKbn(kintaiInfo.getWorkDayKbnMaster().getCode());
+						// 勤務日区分名
+						monthInfo.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
+					}
 				}
 			}
 		}
