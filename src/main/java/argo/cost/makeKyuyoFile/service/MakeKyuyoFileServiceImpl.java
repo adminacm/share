@@ -339,7 +339,8 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 			// 作成者
 			makeKyuyoFileIchiranVO.setCreatedUserName(madeSyskyuyofileOutputList.get(i).getUsers().getUserName());
 			// 作成日時
-			makeKyuyoFileIchiranVO.setCreatedDateTime(madeSyskyuyofileOutputList.get(i).getFileCreatedTimestamp().toString().replaceAll("-", "/"));
+			String strFileCreatedTimestamp = madeSyskyuyofileOutputList.get(i).getFileCreatedTimestamp().toString().replaceAll("-", "/");
+			makeKyuyoFileIchiranVO.setCreatedDateTime(strFileCreatedTimestamp.substring(0, strFileCreatedTimestamp.indexOf(".")));
 		
 			makeKyuyoFileIchiranVOList.add(makeKyuyoFileIchiranVO);
 		}

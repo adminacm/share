@@ -69,27 +69,27 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		// 勤怠情報取得
 		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 
-		// 検索条件
-		condition = new BaseCondition();
-		// ユーザＩＤ
-		condition.addConditionEqual("users.id", kintaiInfo.getUsers().getId());
-		// 日付
-		condition.addConditionEqual("atendanceDate", kintaiInfo.getAtendanceDate());
-		// 休日勤務予定情報を取得
-		HolidayAtendanceYotei holidayAtendanceYoteiInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
-		
-		// 休日名を取得
-		MCalendar kyujituInfo = baseDao.findById(kintaiInfo.getAtendanceDate(), MCalendar.class);
-		String kyujisuName = "";
-		if (kyujituInfo != null) {
-			
-			if (!kyujituInfo.getKyujisuName().isEmpty()) {
-
-				kyujisuName = "祝日（" + kyujituInfo.getKyujisuName() + "）";
-			}
-		}
-		
 		if (kintaiInfo != null) {
+			// 検索条件
+			condition = new BaseCondition();
+			// ユーザＩＤ
+			condition.addConditionEqual("users.id", kintaiInfo.getUsers().getId());
+			// 日付
+			condition.addConditionEqual("atendanceDate", kintaiInfo.getAtendanceDate());
+			// 休日勤務予定情報を取得
+			HolidayAtendanceYotei holidayAtendanceYoteiInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
+			
+			// 休日名を取得
+			MCalendar kyujituInfo = baseDao.findById(kintaiInfo.getAtendanceDate(), MCalendar.class);
+			String kyujisuName = "";
+			if (kyujituInfo != null) {
+				
+				if (!kyujituInfo.getKyujisuName().isEmpty()) {
+	
+					kyujisuName = "祝日（" + kyujituInfo.getKyujisuName() + "）";
+				}
+			}
+		
 			// 日付
 			form.setDate(getShowDate(kintaiInfo.getAtendanceDate()) + kyujisuName);
 			// 勤務区分名
@@ -100,12 +100,12 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 			form.setWorkEndTime(CostDateUtils.formatTime(kintaiInfo.getKinmuEndTime()));
 			// 代休期限
 			form.setTurnedHolidayEndDate(getShowDate(kintaiInfo.getDaikyuGetShimekiriDate()));
-		}
-		if (holidayAtendanceYoteiInfo != null) {
-			// プロジェクト名
-			form.setProjectName(holidayAtendanceYoteiInfo.getProjectBasic().getProjectName());
-			// 業務内容
-			form.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
+			if (holidayAtendanceYoteiInfo != null) {
+				// プロジェクト名
+				form.setProjectName(holidayAtendanceYoteiInfo.getProjectBasic().getProjectName());
+				// 業務内容
+				form.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
+			}
 		}
 		
 		// 超勤振替申請承認画面情報戻る
@@ -156,6 +156,8 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		kintaiInfo.setDaikyuDate(null);
 		// 超勤振替申請日に空白を設定
 		kintaiInfo.setFurikaeShinseiDate(null);
+		// 申請番号
+		kintaiInfo.setApprovalManage2(null);
         // 更新者
 		kintaiInfo.setUpdatedUserId(kintaiInfo.getUsers().getId());
 		// 更新時刻

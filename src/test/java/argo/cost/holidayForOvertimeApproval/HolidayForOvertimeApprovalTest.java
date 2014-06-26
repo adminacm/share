@@ -15,7 +15,7 @@ import argo.cost.holidayForOvertimeApproval.model.HolidayForOvertimeApprovalForm
 import argo.cost.holidayForOvertimeApproval.service.HolidayForOvertimeApprovalServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
+@ContextConfiguration(locations = {"classpath:/applicationContextTest.xml"}) 
 public class HolidayForOvertimeApprovalTest {
 
 	// 超勤振替申請承認
@@ -54,17 +54,15 @@ public class HolidayForOvertimeApprovalTest {
 		}
 		
 		// 日付
-		assertEquals(form.getDate(), "2014年05月18日（日）");
+		assertEquals(form.getDate(), "2014年05月04日（日）祝日（祝日（みどりの日））");
 		// 勤務区分
-		assertEquals(form.getWorkKbnName(), "休日");
+		assertEquals(form.getWorkKbnName(), "休日振替勤務");
 		// 勤務開始時間
 		assertEquals(form.getWorkStartTime(), "09:00");
 		// 勤務終了時間
 		assertEquals(form.getWorkEndTime(), "17:30");
-		// 代休期限
-		assertEquals(form.getTurnedHolidayEndDate(), "2014年07月31日（木）");
 		// プロジェクト名
-		assertEquals(form.getProjectName(), "KKF基幹システム再構築");
+		assertEquals(form.getProjectName(), "BTMU人事");
 		// 業務内容
 		assertEquals(form.getWorkDetail(), "トラブル対応");
 		
@@ -77,7 +75,7 @@ public class HolidayForOvertimeApprovalTest {
 	public void testApprovalOverWork() {
 
 		// 申請番号
-		String applyNo = "4001220140504";
+		String applyNo = "4001220140510";
 		
 		serviceImpl.approvalOverWork(applyNo);
 		

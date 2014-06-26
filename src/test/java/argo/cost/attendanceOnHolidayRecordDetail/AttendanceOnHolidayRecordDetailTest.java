@@ -65,7 +65,7 @@ public class AttendanceOnHolidayRecordDetailTest {
 		// 振替日
 		assertEquals(form.getExchangeDate(), "2014/05/08");
 		// プロジェクト名
-		assertEquals(form.getProjectName(), "林大学留学生管理システム保守");
+		assertEquals(form.getProjectName(), "BTMU人事");
 		// 業務内容
 		assertEquals(form.getWorkDetail(), "トラブル対応");
 	}
@@ -105,7 +105,7 @@ public class AttendanceOnHolidayRecordDetailTest {
 		// 代休期限
 		assertEquals(form.getTurnedHolidayEndDate(), "2014/07/31");
 		// プロジェクト名
-		assertEquals(form.getProjectName(), "KKF基幹システム再構築");
+		assertEquals(form.getProjectName(), "【PRIME】共通マスタ管理機能");
 		// 業務内容
 		assertEquals(form.getWorkDetail(), "トラブル対応");
 		
@@ -148,7 +148,7 @@ public class AttendanceOnHolidayRecordDetailTest {
 		// 代休日
 		assertEquals(form.getTurnedHolidayDate(), "2014/04/18");
 		// プロジェクト名
-		assertEquals(form.getProjectName(), "林大学留学生管理システム保守");
+		assertEquals(form.getProjectName(), "MCDDMBプロジェクト支援");
 		// 業務内容
 		assertEquals(form.getWorkDetail(), "トラブル対応");
 		
@@ -191,7 +191,7 @@ public class AttendanceOnHolidayRecordDetailTest {
 		// 超勤振替申請日
 		assertEquals(form.getOverWorkTurnedReqDate(), "2014/05/20");
 		// プロジェクト名
-		assertEquals(form.getProjectName(), "SPA収益計画システム");
+		assertEquals(form.getProjectName(), "MUIT資産活用・口振");
 		// 業務内容
 		assertEquals(form.getWorkDetail(), "トラブル対応");
 	}
@@ -206,6 +206,8 @@ public class AttendanceOnHolidayRecordDetailTest {
 		
 		// ユーザID
 		form.setUserId("4001");
+		// 対象社員番号
+		form.setTaishoUserId("4001");
 		// 日付
 		form.setHolidayWorkDate("2014/05/24");
 		
