@@ -100,6 +100,23 @@ public class MessageConstants {
 	 */
 	public static final String COSE_E_022 = "｛0｝の値が不正です";
 	/**
+	 *　日付：｛0｝で取得できる代休はありません
+	 */
+	public static final String COSE_E_023 = "日付：｛0｝取得できる代休はありません";
+	/**
+	 *　休日：｛0｝で休日勤務予定が存在する、勤怠情報を入力ください
+	 */
+	public static final String COSE_E_024 = "休日：｛0｝で休日勤務予定が存在する、勤怠情報を入力ください";
+	/**
+	 *　｛0｝の勤怠情報を入力ください！
+	 */
+	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力ください";
+	
+	/**
+	 *　未承認の月報が存在します。処理を続けますか？
+	 */
+	public static final String COSE_E_1104 = "未承認の月報が存在します。処理を続けますか";
+	/**
 	 *　有給休暇が余分に取得されています
 	 */
 	public static final String COSE_W_1101 = "有給休暇が余分に取得されています";
@@ -108,13 +125,4 @@ public class MessageConstants {
 	 */
 	public static final String COSE_W_1102 = "勤務開始時刻が前日の勤務終了時刻と同時刻です";
 
-	/**
-	 *　｛0｝の{1}勤怠情報を入力ください！
-	 */
-	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力ください";
-	
-	/**
-	 *　未承認の月報が存在します。処理を続けますか？
-	 */
-	public static final String COSE_E_1104 = "未承認の月報が存在します。処理を続けますか";
 }

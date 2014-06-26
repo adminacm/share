@@ -182,11 +182,21 @@ public class MonthlyReportController extends AbstractController {
 	 */
     @RequestMapping(value = MONTHLYREPORTCOMMIT, method = RequestMethod.POST)
     public String monthlyReportCommit(MonthlyReportForm form) throws Exception {
-    	// 入力チェック
-    	MonthlyReportChecker.chkKintaiInfoInput(form);
-    	if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-    		return MONTHLYREPORT;
+    	
+    	// 月報一覧情報
+    	List<MonthlyReportDispVO> mRList = form.getmRList();
+    	for (MonthlyReportDispVO monthlyReport : mRList) {
+    		
+    		try {
+            	// 入力チェック
+    			MonthlyReportChecker.chkKintaiInfoNull(form, monthlyReport);
+            	MonthlyReportChecker.chkKintaiInfoInput(form, monthlyReport);
+            	MonthlyReportChecker.chkKintaiInfoDaikyu(form, monthlyReport);
+    		} catch (Exception e) {
+    			return MONTHLYREPORT;
+    		}
     	}
+
     	String strMonthyReportCommitFlg = monthlyReportService.monthyReportCommit(form);
     	if ("1".equals(strMonthyReportCommitFlg)) {
     		String date = form.getYearMonth();
@@ -196,7 +206,5 @@ public class MonthlyReportController extends AbstractController {
     		// メッセージを表示する
     		return MONTHLYREPORT;
     	}
-    	
-
     }
 }
