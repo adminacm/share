@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,7 @@ public class attendanceOnHolidayTest {
 	/**
 	 * 休日勤務入力画面のサビース	
 	 */
-	@Resource
+	@Autowired
 	AtendanceOnHolidayServiceImpl atendanceOnHolidayServiceImpl;
 	
 	/**
@@ -41,6 +40,8 @@ public class attendanceOnHolidayTest {
 		
 		// 勤務日区分のプルダウンリスト取得テスト
 		ArrayList<WorkDayKbnMaster> workDayKbnList = atendanceOnHolidayServiceImpl.getAtendanceDayKbnList();
+		
+		
 
 		assertEquals(workDayKbnList.size(), 4);
 		assertEquals(workDayKbnList.get(0).getCode(), "01");
@@ -77,8 +78,8 @@ public class attendanceOnHolidayTest {
 	 * 休日勤務入力画面の削除処理をテスト
 	 */
 	@Test
-	public void testGetApprovalList2(){
+	public void testGetApprovalList(){
 		
-		assertEquals(atendanceOnHolidayServiceImpl.deleteAtendanceOnHoliday("20140607", "4001"), "1");
+		assertEquals(atendanceOnHolidayServiceImpl.deleteAtendanceOnHoliday("20140607", "4001"), new Integer(0));
 	}
 }

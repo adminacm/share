@@ -4,23 +4,22 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.setup.model.SetupForm;
-import argo.cost.setup.service.SetupServiceImpl;
+import argo.cost.setup.service.SetupService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
 public class SetupTest {
 
 	// 個人設定サビース
-	@Resource
-	SetupServiceImpl setupServiceImpl;
+	@Autowired
+	SetupService setupServiceImpl;
 	
 	/**
 	 * 個人設定情報取得をテスト
