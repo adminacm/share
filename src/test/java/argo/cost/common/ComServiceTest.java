@@ -6,72 +6,96 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import argo.cost.common.entity.Users;
+import argo.cost.common.model.AppSession;
 import argo.cost.common.model.ListItemVO;
-import argo.cost.common.service.ComServiceImpl;
+import argo.cost.common.model.UserVO;
+import argo.cost.common.service.ComService;
 
 /**
  * プルダウンリスト取得テスト
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext.xml"}) 
+@ContextConfiguration(locations = {"classpath:/applicationContext_test.xml"}) 
 public class ComServiceTest {
 
 	// プルダウンリスト
-	@Resource
-	ComServiceImpl service;
+	@Autowired
+	ComService service;
 	
 	/**
 	 * 状況プルダウンリスト取得テスト
 	 */
 	@Test
-	public void testGetStatusList() {
+	public void testInitSession() {
 		
+		String loginMail = "user01";
 		//  状況プルダウンリスト取得
-		List<ListItemVO> statusList = service.getStatusList();
+		AppSession session = service.initSession(loginMail);
 		
-		assertEquals(statusList.size(), 7);
+		assertEquals(session.getErrorFilePath(), null);  // エラーファイルパース
+		assertEquals(session.getFileName(), null);  // ファイル名称
+		assertEquals(session.getForm(), null);  // 当画面フォーム名
+		assertEquals(session.getUrl(), null);  // 当画面URL
+		
+		// ユーザー情報
+		UserVO user = session.getUserInfo();
+		
+		assertEquals(user.getUserId(), "4001");               // 社員番号
+		assertEquals(user.getUserName(), "０１ＰＴＳ");           // 社員氏名
+		assertEquals(user.getDairishaId(), "");               // 代理者ID
+		assertEquals(user.getKinmuStartTime(), "0900");       // 勤務開始時刻
+		assertEquals(user.getKinmuEndTime(), "1730");         // 勤務終了時刻
+		assertEquals(user.getStandardShiftCd(), "090075");    // 標準シフトコード
+		assertEquals(user.getKyugyoStartDate(), "");          // 休職開始日付
+		assertEquals(user.getKyugyoEndDate(), "");            // 休職終了日付
+		assertEquals(user.getLoginMailAdress(), "user01");     // ログインメール
+		assertEquals(user.getNyushaDate(), "19970401");        // 入社日
+		assertEquals(user.getPassword(), "123456");            // パース
+		assertEquals(user.getTaishoUserId(), "4001");          // 対象者
+		assertEquals(user.getTaishoUserName(), null);          // 対象者氏名
+		assertEquals(user.getTaisyokuDate(), "");              // 対象日
 	}
 	
 	/**
 	 * 氏名プルダウンリスト取得テスト1
 	 * 
-	 * ユーザＩＤがnullの場合
+	 * ユーザＩＤが代理先の場合
 	 */
 	@Test
 	public void testGetUserNameList1() {
 		
 		// ユーザＩＤ
-		String userId = null;
+		String userId = "4001";
 		
 		// 氏名プルダウンリスト取得
-		List<ListItemVO> userNameList = service.getUserNameList(userId);
+		List<Users> userNameList = service.getUserNameList(userId);
 		
-		assertEquals(userNameList.size(), 2);
+		assertEquals(userNameList.size(), 3);
 	}
 	
 	/**
 	 * 氏名プルダウンリスト取得テスト2
 	 * 
-	 * ユーザＩＤがnull以外の場合
+	 * ユーザＩＤが代理先以外の場合
 	 */
 	@Test
 	public void testGetUserNameList2() {
 		
 		// ユーザＩＤ
-		String userId = "li";
+		String userId = "4002";
 		
 		// 氏名プルダウンリスト取得
-		List<ListItemVO> userNameList = service.getUserNameList(userId);
+		List<Users> userNameList = service.getUserNameList(userId);
 		
-		assertEquals(userNameList.size(), 4);
+		assertEquals(userNameList.size(), 1);
 	}
 	
 	/**
@@ -92,7 +116,7 @@ public class ComServiceTest {
 			e.printStackTrace();
 		}
 		
-		assertEquals(yearList.size(), 4);
+		assertEquals(yearList.size(), 3);
 	}
 
 }

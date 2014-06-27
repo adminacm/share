@@ -171,7 +171,7 @@ function submitAction(action) {
 					<tr>
 						<td align="left" width="120px">休暇欠勤区分</td>
 						<td align="left" width="180px" colspan="2">
-							<form:select path="kyukaKb" style="width:100%;" onchange="changeSelect();" >
+							<form:select path="kyukaKb" style="width:100%;" >
 								<form:option value=""></form:option>
 								<form:options items="${attendanceInputForm.kyukakbList}" itemValue="code" itemLabel="name"/>
 							</form:select>
