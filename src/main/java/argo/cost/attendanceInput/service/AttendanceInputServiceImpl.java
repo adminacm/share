@@ -1266,6 +1266,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				// 作業マスタ情報を取得
 				ProjWorkMaster projWorkMaster = baseDao.findById(projectInfo.getWorkId(), ProjWorkMaster.class);
 				projectEntity.setProjWorkMaster(projWorkMaster);
+				projectEntity.setWorkTimes(toBigDecimal(projectInfo.getHours()));
 				
 				projectEntity.setCreatedUserId(loginId);               // 登録者
 				projectEntity.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
