@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,11 +48,14 @@ public class SetupServiceImpl implements SetupService {
 		
 		// 代理入力者コード
 		String strDairishaId = setupInfo.getDairishaId();
-		setupForm.setAgentCd(strDairishaId);
+		// 代理入力者が存在する場合
+		if (StringUtils.isNotEmpty(strDairishaId)) {
+			setupForm.setAgentCd(strDairishaId);
 
-		// 代理入力者名
-		Users agentInfo = baseDao.findById(strDairishaId,Users.class);
-		setupForm.setAgentName(agentInfo.getUserName());
+			// 代理入力者名
+			Users agentInfo = baseDao.findById(strDairishaId,Users.class);
+			setupForm.setAgentName(agentInfo.getUserName());
+		}
 
 		// 1日の勤務時間数
 		int standardShiftCdSize = setupInfo.getStandardShiftCd().length();

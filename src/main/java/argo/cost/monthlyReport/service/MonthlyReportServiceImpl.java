@@ -75,7 +75,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 日付が空白以外の場合
 		if (date != null) {
 			// 日付フォーマット
-			SimpleDateFormat sdfYearM = new SimpleDateFormat("YYYY年MM月");
+			SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyy年MM月");
 			// 日付設定
 			formatDate = sdfYearM.format(date);
 		}
