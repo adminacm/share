@@ -80,16 +80,16 @@ public class SetupServiceImpl implements SetupService {
 		setupForm.setWorkEndTime(CostDateUtils.formatTime(setupInfo.getKinmuEndTime()));
 		
 		// 入社日
-		setupForm.setJoinDate(CostDateUtils.formatDate(setupInfo.getNyushaDate(),"YYYY/MM/DD"));
+		setupForm.setJoinDate(CostDateUtils.formatDate(setupInfo.getNyushaDate(), CommonConstant.YYYY_MM_DD));
 		
 		// 休業開始日
-		setupForm.setHolidayStart(CostDateUtils.formatDate(setupInfo.getKyugyoStartDate(),"YYYY/MM/DD"));
+		setupForm.setHolidayStart(CostDateUtils.formatDate(setupInfo.getKyugyoStartDate(), CommonConstant.YYYY_MM_DD));
 		
 		// 休業終了日
-		setupForm.setHolidayEnd(CostDateUtils.formatDate(setupInfo.getKyugyoEndDate(),"YYYY/MM/DD"));
+		setupForm.setHolidayEnd(CostDateUtils.formatDate(setupInfo.getKyugyoEndDate(), CommonConstant.YYYY_MM_DD));
 		
 		// 退職日
-		setupForm.setOutDate(CostDateUtils.formatDate(setupInfo.getTaisyokuDate(),"YYYY/MM/DD"));
+		setupForm.setOutDate(CostDateUtils.formatDate(setupInfo.getTaisyokuDate(), CommonConstant.YYYY_MM_DD));
 		
 	}
 
