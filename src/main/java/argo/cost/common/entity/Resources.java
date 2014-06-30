@@ -35,7 +35,7 @@ public class Resources implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(nullable=false, length=30)
+	@Column(nullable=false, length=30,unique=true)
 	private String name;
 
 	@Column(name="update_date")
@@ -44,7 +44,7 @@ public class Resources implements Serializable {
 	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
-	@Column(nullable=false, length=20)
+	@Column(nullable=false, length=20,unique=true)
 	private String url;
 
 	//bi-directional many-to-one association to RoleResource

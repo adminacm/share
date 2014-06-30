@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import argo.cost.common.entity.ProjWorkTimeManage;
-import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalVo;
 import argo.cost.monthlyReportApproval.service.MonthlyReportApprovalServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -172,11 +171,11 @@ public class MonthlyReportApprovalTest {
 		// 申請番号
 		String applyNo = "123";
 		// 申請状況
-		String proStatus = "03";
+		String proStatus = "01";
 		
 		String resultFlg = serviceImpl.updateProStatus(applyNo, proStatus);
 		
-		assertEquals(resultFlg, "1");
+		assertEquals(resultFlg, "0");
 	}
 
 }

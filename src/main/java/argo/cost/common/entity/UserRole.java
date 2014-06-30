@@ -43,12 +43,12 @@ public class UserRole implements Serializable {
 
 	//bi-directional many-to-one association to Role
 	@ManyToOne
-	@JoinColumn(name="role_id")
+	@JoinColumn(name="role_id", nullable=false)
 	private Roles roles;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", nullable=false)
 	private Users users;
 
 	public UserRole() {

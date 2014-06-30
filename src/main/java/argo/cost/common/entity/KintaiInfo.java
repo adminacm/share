@@ -120,17 +120,17 @@ public class KintaiInfo implements Serializable {
 
 	//bi-directional many-to-one association to ShiftJikoku
 	@ManyToOne
-	@JoinColumn(name="shift_cd")
+	@JoinColumn(name="shift_cd", nullable=false)
 	private ShiftJikoku shiftJikoku;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", nullable=false)
 	private Users users;
 
 	//bi-directional many-to-one association to WorkDayKbnMaster
 	@ManyToOne
-	@JoinColumn(name="kinmu_kbn_cd")
+	@JoinColumn(name="kinmu_kbn_cd", nullable=false)
 	private WorkDayKbnMaster workDayKbnMaster;
 
 	//bi-directional many-to-one association to ProjWorkTimeManage

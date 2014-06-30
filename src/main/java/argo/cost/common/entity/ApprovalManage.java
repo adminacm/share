@@ -40,7 +40,7 @@ public class ApprovalManage implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(name="syori_ym", length=6)
+	@Column(name="syori_ym", length=6, nullable=false)
 	private String syoriYm;
 
 	@Column(name="update_date")
@@ -51,12 +51,12 @@ public class ApprovalManage implements Serializable {
 
 	//bi-directional many-to-one association to ApplyKbnMaster
 	@ManyToOne
-	@JoinColumn(name="apply_kbn_code")
+	@JoinColumn(name="apply_kbn_code", nullable=false)
 	private ApplyKbnMaster applyKbnMaster;
 
 	//bi-directional many-to-one association to StatusMaster
 	@ManyToOne
-	@JoinColumn(name="apply_status_code")
+	@JoinColumn(name="apply_status_code", nullable=false)
 	private StatusMaster statusMaster;
 
 	//bi-directional many-to-one association to User

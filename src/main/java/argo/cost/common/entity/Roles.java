@@ -36,7 +36,7 @@ public class Roles implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(nullable=false, length=20)
+	@Column(nullable=false, length=20, unique=true)
 	private String name;
 
 	@Column(nullable=false, precision=1)

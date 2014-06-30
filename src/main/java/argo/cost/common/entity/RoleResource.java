@@ -43,12 +43,12 @@ public class RoleResource implements Serializable {
 
 	//bi-directional many-to-one association to Resource
 	@ManyToOne
-	@JoinColumn(name="resource_id")
+	@JoinColumn(name="resource_id", nullable=false)
 	private Resources resources;
 
 	//bi-directional many-to-one association to Role
 	@ManyToOne
-	@JoinColumn(name="role_id")
+	@JoinColumn(name="role_id", nullable=false)
 	private Roles roles;
 
 	public RoleResource() {

@@ -698,4 +698,36 @@ public class AttendanceInputChecker {
 		}
 	}
 
+	/**
+	 * 休日勤務データのチェック
+	 * 	休日勤務が存在する
+	 * 		勤怠情報が存在しない
+	 * 			☆休日勤務が存在する、勤怠実績を入力してください
+	 * @param form
+	 *            画面情報オブジェクト
+	 */
+	public static void chkHolidayYoteiInfo(AttendanceInputForm form) {
+		
+		// 休日勤務情報が存在する場合
+		if (form.getHolidayAttendance() != null) {
+			BaseCondition condition = new BaseCondition();
+			condition.addConditionEqual("users.id", form.getTaishoUserId());
+			condition.addConditionEqual("atendanceDate", form.getAttDate());
+			KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
+			// 勤怠情報が存在しない
+			if (kintaiInfo == null) {
+				
+				// 休日勤務が存在する、勤怠実績を入力してください
+				form.putConfirmMsg("休日勤務が存在する、勤怠実績を入力してください");
+			} else {
+				// 勤怠情報が存在しない
+				if (StringUtils.isEmpty(kintaiInfo.getKinmuStartTime())) {
+					// 休日勤務が存在する、勤怠実績を入力してください
+					form.putConfirmMsg("休日勤務が存在する、勤怠実績を入力してください");
+				}
+			}
+		}
+
+	}
+
 }

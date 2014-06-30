@@ -35,7 +35,7 @@ public class StatusMaster implements Serializable {
 	@Column(name="created_user_id", length=20)
 	private String createdUserId;
 
-	@Column(nullable=false, length=255)
+	@Column(nullable=false, length=255, unique=true)
 	private String name;
 
 	@Column(name="update_date")
