@@ -75,25 +75,25 @@ function submitAction(action) {
 					<tr>
 						<td>入社日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path="joinDate" maxlength="10"></form:input>
+							<form:input style="width:70px;border:2px solid #333333;" path="joinDate" maxlength="10"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>休業開始日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path="holidayStart" maxlength="10"></form:input>
+							<form:input style="width:70px;border:2px solid #333333;" path="holidayStart" maxlength="10"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>休業終了日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path="holidayEnd" maxlength="10"></form:input>
+							<form:input style="width:70px;border:2px solid #333333;" path="holidayEnd" maxlength="10"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>退職日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path ="outDate" maxlength="10"></form:input>
+							<form:input style="width:70px;border:2px solid #333333;" path ="outDate" maxlength="10"></form:input>
 						</td>
 					</tr>
 				</table>

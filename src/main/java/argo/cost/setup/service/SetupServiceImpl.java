@@ -1,5 +1,6 @@
 package argo.cost.setup.service;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -207,14 +208,23 @@ public class SetupServiceImpl implements SetupService {
 		// 勤務終了時間
 		user.setKinmuEndTime(setupForm.getWorkEndTime().replaceAll(":", ""));
 		// 入社日
-		user.setNyushaDate(setupForm.getJoinDate().replaceAll(":", ""));
+		user.setNyushaDate(setupForm.getJoinDate().replaceAll("/", ""));
 		// 休業開始日
 		user.setKyugyoStartDate(setupForm.getHolidayStart().replaceAll("/", ""));
 		// 休業終了日
 		user.setKyugyoEndDate(setupForm.getHolidayEnd().replaceAll("/", ""));
 		// 退職日
 		user.setTaisyokuDate(setupForm.getOutDate().replaceAll("/", ""));
-		baseDao.update(user);
+		user.setUpdatedUserId(setupForm.getUserId());               // 更新者
+		user.setUpdateDate(new Timestamp(System.currentTimeMillis()));  // 更新時刻
 		
+		try {
+			// ユーザー情報を更新する
+			baseDao.update(user);
+			
+		} catch (Exception ex) {
+			setupForm.putConfirmMsg("ユーザー情報の更新は失敗しました");
+			throw new Exception();
+		}
 	}
 }
