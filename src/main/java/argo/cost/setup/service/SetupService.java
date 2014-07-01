@@ -52,5 +52,5 @@ public interface SetupService {
 	 * @param setupInfo
 	 *        個人設定情報
 	 */
-	void doSave(SetupForm setupInfo);
+	void doSave(SetupForm setupInfo) throws Exception;
 }

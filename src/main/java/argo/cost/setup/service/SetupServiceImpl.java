@@ -194,7 +194,7 @@ public class SetupServiceImpl implements SetupService {
 	 *        個人設定情報
 	 */
 	@Override
-	public void doSave(SetupForm setupForm) {
+	public void doSave(SetupForm setupForm) throws Exception {
 		
 		Users user = baseDao.findById(setupForm.getUserId(), Users.class);
 		// 代理者ID
