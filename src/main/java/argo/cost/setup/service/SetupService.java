@@ -26,7 +26,7 @@ public interface SetupService {
 	 * @param UserId
 	 *           ユーザＩＤ
 	 */
-	void getSetupEditInfo(SetupForm setupInfo);
+	void getSetupEditInfo(SetupForm setupInfo) throws ParseException;
 
 	/**
 	 * 標準ｼﾌﾄ変更
@@ -41,10 +41,10 @@ public interface SetupService {
 	 * 
 	 * @param setupInfo
 	 *        個人設定情報
-	 * @return
-	 *        Booleanチェック結果(true:エラーがない； false:エラーがある)
+	 * @throws Exception 
+	 *            
 	 */
-	Boolean doSaveCheck(SetupForm setupInfo);
+	void doSaveCheck(SetupForm setupInfo) throws Exception;
 
 	/**
 	 * 保存処理を実行

@@ -35,7 +35,7 @@ public class CostDateUtils extends DateUtils {
 
 		String result = StringUtils.EMPTY;
 		
-		if (!time.isEmpty()) {
+		if (StringUtils.isNotEmpty(time)) {
 			// タイムのフォーマット
 			String hour = time.substring(0, 2);
 			String minute = time.substring(2);
@@ -48,19 +48,19 @@ public class CostDateUtils extends DateUtils {
 	/**
 	 * 日付チェック
 	 * 
-	 * @param date
+	 * @param str
 	 *            日付
 	 * @return チェック結果
 	 */
-	public static boolean isValidDate(String date, String format) {
+	public static boolean isValidDate(String str, String format) {
 
 		// 日付フォーマット
 		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		dateFormat.setLenient(false);
 		try {
 			// 日付変換
-			dateFormat.parse(date);
-			return true;
+			Date date = (Date) dateFormat.parse(str);
+			return StringUtils.equals(str, dateFormat.format(date));
 		} catch (Exception e) {
 			return false;
 		}

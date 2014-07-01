@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix='sec' uri='http://www.springframework.org/security/tags' %> 
 
 <html>
 <head>
@@ -27,14 +28,20 @@
 	            </ul>
 	            <span style="font-size:19px;">就業管理</span>
 	            	<ul>
-	            		<li style="margin-left:20px;"><a href="/menu/att">勤怠入力</a></li>
-	            		<li style="margin-left:20px;"><a href="/monthlyReport/init?newMonth=">月報</a></li>
-	            		<li style="margin-left:20px;"><a href="/holidayRecord/init">休暇管理</a></li>
-	            		<li style="margin-left:20px;"><a href="/attendanceOnHolidayRecord/init">休日出勤管理</a></li>
-	            		<li style="margin-left:20px;"><a href="/setup/init">個人設定</a></li>
-	            		<li style="margin-left:20px;"><a href="/approvalList/init">承認一覧</a></li>
-	            		<li style="margin-left:20px;"><a href="/monthlyReportStatusList/init">月報提出状況一覧</a></li>
-	            		<li style="margin-left:20px;"><a href="/makeKyuyoFile/init">給与システム用ファイル出力</a></li>
+	            		<sec:authorize ifAllGranted="ROLE_NORMAL">
+		            		<li style="margin-left:20px;"><a href="/menu/att">勤怠入力</a></li>
+		            		<li style="margin-left:20px;"><a href="/monthlyReport/init?newMonth=">月報</a></li>
+		            		<li style="margin-left:20px;"><a href="/holidayRecord/init">休暇管理</a></li>
+		            		<li style="margin-left:20px;"><a href="/attendanceOnHolidayRecord/init">休日出勤管理</a></li>
+		            		<li style="margin-left:20px;"><a href="/setup/init">個人設定</a></li>
+	            		</sec:authorize>
+	            		<sec:authorize ifAllGranted="ROLE_APPROVER">
+		            		<li style="margin-left:20px;"><a href="/approvalList/init">承認一覧</a></li>
+		            	</sec:authorize>
+		            	<sec:authorize ifAllGranted="ROLE_MANAGER">
+		            		<li style="margin-left:20px;"><a href="/monthlyReportStatusList/init">月報提出状況一覧</a></li>
+		            		<li style="margin-left:20px;"><a href="/makeKyuyoFile/init">給与システム用ファイル出力</a></li>
+	            		</sec:authorize>
 	            	</ul>
 	            </div>
 	        </div>

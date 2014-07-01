@@ -29,7 +29,7 @@ public class AttendanceProjectVO {
 	/**
 	 * 作業時間数
 	 */
-	private Double hours;
+	private String hours;
 
 	public String getProjectId() {
 		return projectId;
@@ -63,11 +63,11 @@ public class AttendanceProjectVO {
 		this.workItemList = workItemList;
 	}
 
-	public Double getHours() {
+	public String getHours() {
 		return hours;
 	}
 
-	public void setHours(Double hours) {
+	public void setHours(String hours) {
 		this.hours = hours;
 	}
 	

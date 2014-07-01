@@ -19,7 +19,6 @@ function submitAction(action) {
 	document.forms[0].action = action;
 	document.forms[0].submit();
 }
-
 </script>
 <style type="text/css">
 
@@ -204,16 +203,16 @@ function submitAction(action) {
 						<td width="30px" rowspan="6" align="center">超過勤務</td>
 						<td width="90">開始時刻</td>
 						<td>
-							<c:if test="${! empty attendanceInputForm.choSTime}">
-								${attendanceInputForm.choSTime}
+							<c:if test="${! empty attendanceInputForm.choSTimeShow}">
+								${attendanceInputForm.choSTimeShow}
 							</c:if>
 						</td>
 					</tr>
 					<tr>
 						<td width="90">終了時刻</td>
 						<td>
-							<c:if test="${! empty attendanceInputForm.choETime}">
-								${attendanceInputForm.choETime}
+							<c:if test="${! empty attendanceInputForm.choETimeShow}">
+								${attendanceInputForm.choETimeShow}
 							</c:if>
 						</td>
 					</tr>
@@ -274,7 +273,7 @@ function submitAction(action) {
 											<form:options items="${projectInfo.workItemList}" itemValue="code" itemLabel="name"/>
 										</form:select>
 									</td>
-									<td align="center" ><form:input path="projectList[${st.index}].hours" size="4"/></td>
+									<td align="center" ><form:input path="projectList[${st.index}].hours" size="4" maxlength="4" style="text-align: right;"/></td>
 								</tr>
 							</c:forEach>
 						</c:if>

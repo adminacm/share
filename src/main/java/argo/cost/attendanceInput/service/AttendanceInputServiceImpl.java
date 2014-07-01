@@ -143,8 +143,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public void setAttForm(AttendanceInputForm form, String newDate) throws ParseException {
 		
-//		// ログイン社員番号
-//		String loginId = form.getUserId();
 		// 対象社員番号
 		String taishoUserId = form.getTaishoUserId();
 		// システム日付を取得
@@ -235,6 +233,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				form.setChoSTime(kintaiEntity.getChokinStartTime());
 				// 超過勤務終了時刻
 				form.setChoETime(kintaiEntity.getChokinEndTime());
+				// 超過勤務開始時刻(表示)
+				form.setChoSTimeShow(CostDateUtils.formatTime(kintaiEntity.getChokinStartTime()));
+				// 超過勤務終了時刻(表示)
+				form.setChoETimeShow(CostDateUtils.formatTime(kintaiEntity.getChokinEndTime()));
 				// 平日割増
 				form.setChoWeekday(toDouble(kintaiEntity.getChokinHeijituJikansu()));
 				// 平日通常
@@ -265,7 +267,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 					attPorject.setWorkId(proEntity.getProjWorkMaster().getCode());
 					attPorject.setWorkItemList(workItemList);
 					// 作業時間数
-					attPorject.setHours(toDouble(proEntity.getWorkTimes()));
+					attPorject.setHours(String.valueOf(toDouble(proEntity.getWorkTimes())));
 					
 					attendanceProjectList.add(attPorject);
 				}
@@ -440,14 +442,16 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	public void calcWorkingRec(AttendanceInputForm form) throws ParseException {
 		
 		// 画面数字の初期化
-		form.setWorkHours(null);
-		form.setKyukaHours(null);
-		form.setChoHoliday(null);
-		form.setChoWeekday(null);
-		form.setChoWeekdayNomal(null);
-		form.setmNHours(null);
+		form.setWorkHours(0.0);
+		form.setKyukaHours(0.0);
+		form.setChoHoliday(0.0);
+		form.setChoWeekday(0.0);
+		form.setChoWeekdayNomal(0.0);
+		form.setmNHours(0.0);
 		form.setChoSTime(null);
 		form.setChoETime(null);
+		form.setChoSTimeShow(null);
+		form.setChoETimeShow(null);
 		// 入力チェック
 		doInputCheck(form);
 		// エラーが発生されているの場合
@@ -650,8 +654,11 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 			// 超勤開始時刻＝シフト超勤開始時刻
 			form.setChoSTime(shift.getChokinSTime());
+			form.setChoSTimeShow(CostDateUtils.formatTime(shift.getChokinSTime()));
 			// 超勤終了時刻＝勤務終了時刻
 			form.setChoETime(wETime);
+			// 超過勤務終了時刻(表示)
+			form.setChoETimeShow(CostDateUtils.formatTime(wETime));
 			// 休日か平日の判断
 			if (StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU, form.getWorkDayKbn())
 					|| StringUtils.equals(CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU, form.getWorkDayKbn())) {
@@ -675,7 +682,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 						// 超勤平日（割増）
 						form.setChoWeekday(form.getWorkHours() - 8.0);
 						// 超勤平日（通常）
-						form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
+						form.setChoWeekdayNomal(form.getWorkHours() - form.getChoWeekday());
 					}
 					// 超勤休日を設定
 					form.setChoHoliday(0.0);
@@ -1256,8 +1263,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		ProjWorkTimeManage projectEntity = null;
 		for (AttendanceProjectVO projectInfo : projectList) {
 			// 作業時間が存在する場合
-			if (projectInfo.getHours() != null
-					&& projectInfo.getHours() != 0.0) {
+			if (StringUtils.isNotEmpty(projectInfo.getHours())
+					&& !StringUtils.equals("0.0", projectInfo.getHours())) {
 				projectEntity = new ProjWorkTimeManage();
 				projectEntity.setKintaiInfo(kintaiEntity);
 				// プロジェクトマスタ情報を取得
@@ -1266,7 +1273,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				// 作業マスタ情報を取得
 				ProjWorkMaster projWorkMaster = baseDao.findById(projectInfo.getWorkId(), ProjWorkMaster.class);
 				projectEntity.setProjWorkMaster(projWorkMaster);
-				projectEntity.setWorkTimes(toBigDecimal(projectInfo.getHours()));
+				projectEntity.setWorkTimes(toBigDecimal(Double.parseDouble(projectInfo.getHours())));
 				
 				projectEntity.setCreatedUserId(loginId);               // 登録者
 				projectEntity.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻

@@ -12,8 +12,6 @@
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="../css/common.css" rel="stylesheet" type="text/css">
-
 <script type="text/javascript">
 /* アクション提出 */
 function submitAction(action) {
@@ -31,12 +29,18 @@ function submitAction(action) {
 			<div style="padding:2px;">
 				<b>個人設定変更</b>
 			</div>
+			<div style="margin-left: 10px;margin-top: 10px;">
+				<c:forEach var="message" items="${setupForm.confirmMsgList }">
+					<span style="color:red">${message }</span><br/>
+				</c:forEach>
+			</div>
 			<div style="margin-top: 20px;margin-bottom:10px;">
 				<table style="margin-left:40px;">
 					<tr>
 						<td style="width:120px;">代理入力者</td>
 						<td>
 							<form:select path="agentCd" style="width:145px;border:2px solid #333333;" id="agentCd">
+								<form:option value=""></form:option>
 								<form:options items="${setupForm.agentList}" itemValue="id" itemLabel="userName"/>
 							</form:select>
 						</td>
@@ -71,25 +75,25 @@ function submitAction(action) {
 					<tr>
 						<td>入社日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path="joinDate"></form:input>
+							<form:input style="width:124px;border:2px solid #333333;" path="joinDate" maxlength="10"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>休業開始日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path="holidayStart"></form:input>
+							<form:input style="width:124px;border:2px solid #333333;" path="holidayStart" maxlength="10"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>休業終了日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path="holidayEnd"></form:input>
+							<form:input style="width:124px;border:2px solid #333333;" path="holidayEnd" maxlength="10"></form:input>
 						</td>
 					</tr>
 					<tr>
 						<td>退職日</td>
 						<td>
-							<form:input style="width:124px;border:2px solid #333333;" path ="outDate"></form:input>
+							<form:input style="width:124px;border:2px solid #333333;" path ="outDate" maxlength="10"></form:input>
 						</td>
 					</tr>
 				</table>

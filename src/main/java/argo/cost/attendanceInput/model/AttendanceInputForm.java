@@ -108,6 +108,16 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	private String choETime;
 	
 	/**
+	 * 超勤開始時刻(表示)
+	 */
+	private String choSTimeShow;
+
+	/**
+	 * 超勤終了時刻(表示)
+	 */
+	private String choETimeShow;
+	
+	/**
 	 * 超勤平日（割増）
 	 */
 	private Double choWeekday;
@@ -495,6 +505,22 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 
 	public void setAppStatusName(String appStatusName) {
 		this.appStatusName = appStatusName;
+	}
+
+	public String getChoSTimeShow() {
+		return choSTimeShow;
+	}
+
+	public void setChoSTimeShow(String choSTimeShow) {
+		this.choSTimeShow = choSTimeShow;
+	}
+
+	public String getChoETimeShow() {
+		return choETimeShow;
+	}
+
+	public void setChoETimeShow(String choETimeShow) {
+		this.choETimeShow = choETimeShow;
 	}
 
 }

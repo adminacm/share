@@ -75,13 +75,16 @@ public class SetupController extends AbstractController {
 	 * @param setupInfo
 	 *            個人設定情報
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = EDIT, method = RequestMethod.POST)
-	public String editSetup(Model model,SetupForm setupForm) {
+	public String editSetup(Model model) throws Exception {
+		
+		SetupForm form = initForm(SetupForm.class);
 		// 画面情報を作成
-		setupService.getSetupEditInfo(setupForm);
+		setupService.getSetupEditInfo(form);
 		// 画面へ設定します。
-		model.addAttribute(setupForm);
+		model.addAttribute(form);
 		return SETUPEDIT_GAMENID;
 	}
 
@@ -113,18 +116,17 @@ public class SetupController extends AbstractController {
 	public String doSave(SetupForm setupInfo) {
 
 		// チェックを実行
-		Boolean chkFlg = setupService.doSaveCheck(setupInfo);
-
-		if (chkFlg) {
-
+		try {
+			setupService.doSaveCheck(setupInfo);
 			// 入力チェックOKの場合は入力された内容が保存されて、個人設定画面に遷移する
 			setupService.doSave(setupInfo);
-			return SETUP_GAMENID;
-		} else {
-
+			
+		} catch (Exception e) {
 			// エラーが発生した場合はエラーメッセージが表示され個人設定変更画面に戻る
 			return SETUPEDIT_GAMENID;
 		}
+
+		return REDIRECT + UrlConstant.URL_PERSONAL_SETUP + INIT;
 
 	}
 
@@ -136,6 +138,6 @@ public class SetupController extends AbstractController {
 	@RequestMapping(value = CANCEL, method = RequestMethod.POST)
 	public String doCancel() {
 
-		return SETUP_GAMENID;
+		return REDIRECT + UrlConstant.URL_PERSONAL_SETUP + INIT;
 	}
 }

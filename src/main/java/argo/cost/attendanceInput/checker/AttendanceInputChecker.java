@@ -96,6 +96,7 @@ public class AttendanceInputChecker {
 		// 勤務開始時刻
 		String kinmuSTime = hour.concat(minute);
 		form.setWorkSTime(kinmuSTime);
+		form.setWorkSTimeStr(kinmuSTime);
 		
 		// 勤務開始時刻が入力される場合
 		if (!StringUtils.isEmpty(kinmuSTime)) {
@@ -159,6 +160,7 @@ public class AttendanceInputChecker {
 		// 勤務終了時刻
 		String kinmuETime = hour.concat(minute);
 		form.setWorkETime(kinmuETime);
+		form.setWorkETimeStr(kinmuETime);
 		
 		// 勤務終了時刻が入力される場合
 		if (!StringUtils.isEmpty(kinmuETime)) {

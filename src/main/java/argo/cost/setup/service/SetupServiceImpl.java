@@ -14,6 +14,7 @@ import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
 import argo.cost.common.utils.CostDateUtils;
+import argo.cost.setup.checker.SetupChecker;
 import argo.cost.setup.model.SetupForm;
 
 /**
@@ -99,8 +100,9 @@ public class SetupServiceImpl implements SetupService {
 	 *           個人設定情報
 	 */
 	@Override
-	public void getSetupEditInfo(SetupForm setupForm) {
-				
+	public void getSetupEditInfo(SetupForm setupForm) throws ParseException {
+		
+		this.getSetupInfo(setupForm);
 		// 代理入力者リスト
 		String userId = setupForm.getUserId();
 		BaseCondition personalInfoSelectCondition = new BaseCondition();
@@ -152,24 +154,23 @@ public class SetupServiceImpl implements SetupService {
 	/**
 	 * 入力した個人設定情報をチェックする
 	 *
-	 * @param setupInfo
+	 * @param form
 	 *            個人設定情報
-	 * @return
-	 *        Booleanチェック結果(true:エラーがない； false:エラーがある)
+	 * @throws Exception 
 	 *            
 	 */  
 	@Override
-	public Boolean doSaveCheck(SetupForm setupInfo) {
+	public void doSaveCheck(SetupForm form) throws Exception {
 		
-		// 休業開始日、休業終了日、退職日は日付の値であること
-		if (!CostDateUtils.isValidDate(setupInfo.getHolidayStart(), CommonConstant.YYYY_MM_DD) && !CostDateUtils.isValidDate(setupInfo.getHolidayEnd(), CommonConstant.YYYY_MM_DD)
-				&& !CostDateUtils.isValidDate(setupInfo.getOutDate(), CommonConstant.YYYY_MM_DD)) {
-			System.out.print("休業開始日、休業終了日、退職日エラーがある");
-			// エラー
-			return false;
-		}
-		
-		return true;
+		form.clearMessages();
+		// 入社日のチェック
+		SetupChecker.chkNyushyaDate(form);
+		// 休業開始日のチェック
+		SetupChecker.chkKyukaKaishiDate(form);
+		// 休業終了日のチェック
+		SetupChecker.chkKyukaShyuryoDate(form);
+		// 退職日のチェック
+		SetupChecker.chkTaishokuDate(form);
 	}
 
 	/**
@@ -200,10 +201,13 @@ public class SetupServiceImpl implements SetupService {
 		user.setDairishaId(setupForm.getAgentCd());
 		// 標準シフト
 		user.setStandardShiftCd(setupForm.getStandardShift().concat(setupForm.getOneDayKinmuHours().toString().replaceAll(".", "")));
+		
 		// 勤務開始時間
 		user.setKinmuStartTime(setupForm.getWorkStartTime().replaceAll(":", ""));
 		// 勤務終了時間
 		user.setKinmuEndTime(setupForm.getWorkEndTime().replaceAll(":", ""));
+		// 入社日
+		user.setNyushaDate(setupForm.getJoinDate().replaceAll(":", ""));
 		// 休業開始日
 		user.setKyugyoStartDate(setupForm.getHolidayStart().replaceAll("/", ""));
 		// 休業終了日
@@ -211,7 +215,6 @@ public class SetupServiceImpl implements SetupService {
 		// 退職日
 		user.setTaisyokuDate(setupForm.getOutDate().replaceAll("/", ""));
 		baseDao.update(user);
-
 		
 	}
 }
