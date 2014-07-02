@@ -87,7 +87,7 @@ public class AtendanceOnHolidayChecker {
 			return;
 		}
 		// 勤務開始時刻のhhnn形式値が数値以外
-		if (!CostDateUtils.isTimeHHnn(wSTime)) {
+		if (!CostDateUtils.isTimeHHnn(wSTime.replace(":", StringUtils.EMPTY))) {
 			// 勤務終了時刻を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
 		}
@@ -118,7 +118,7 @@ public class AtendanceOnHolidayChecker {
 			return;
 		}
 		// 勤務終了時刻のhhnn形式値が数値以外
-		if (!CostDateUtils.isTimeHHnn(wETime)) {
+		if (!CostDateUtils.isTimeHHnn(wETime.replace(":", StringUtils.EMPTY))) {
 			// 勤務終了時刻を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
 		}

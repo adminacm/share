@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +66,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 検索条件：社員ID
 		condition.addConditionEqual("users.id", atendanceOnHolidayForm.getTaishoUserId());
 			
-		HolidayAtendanceYotei holidayAtendanceYoteiResultinfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
+		HolidayAtendanceYotei holidayInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		// 勤務日区分リストの設定
 		condition = new BaseCondition();
 		// 休日、休日振替勤務
@@ -75,22 +76,22 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		atendanceOnHolidayForm.setProjCdList(baseDao.findAll(ProjectBasic.class));
 		
 		// 当前の日付の休日勤務情報が存在の場合
-		if (holidayAtendanceYoteiResultinfo != null) {
+		if (holidayInfo != null) {
 					
 			// 勤務日付
 			atendanceOnHolidayForm.setStrAtendanceDate(currentDate);
 			// 勤務区分
-			atendanceOnHolidayForm.setSelectedAtendanceDayKbn(holidayAtendanceYoteiResultinfo.getWorkDayKbnMaster().getCode());
+			atendanceOnHolidayForm.setSelectedAtendanceDayKbn(holidayInfo.getWorkDayKbnMaster().getCode());
 			// 勤務開始時間
-			atendanceOnHolidayForm.setStrAtendanceTimeStat(holidayAtendanceYoteiResultinfo.getKinmuStartTime());
+			atendanceOnHolidayForm.setStrAtendanceTimeStat(CostDateUtils.formatTime(holidayInfo.getKinmuStartTime()));
 			// 勤務終了時間
-			atendanceOnHolidayForm.setStrAtendanceTimeEnd(holidayAtendanceYoteiResultinfo.getKinmuEndTime());
+			atendanceOnHolidayForm.setStrAtendanceTimeEnd(CostDateUtils.formatTime(holidayInfo.getKinmuEndTime()));
 			// 振替日
-			atendanceOnHolidayForm.setStrHurikaeDate(holidayAtendanceYoteiResultinfo.getFurikaeDate());
+			atendanceOnHolidayForm.setStrHurikaeDate(holidayInfo.getFurikaeDate());
 			// プロジェクト名
-			atendanceOnHolidayForm.setSelectedProjCd(holidayAtendanceYoteiResultinfo.getProjectBasic().getProjectCode());
+			atendanceOnHolidayForm.setSelectedProjCd(holidayInfo.getProjectBasic().getProjectCode());
 			// 業務内容
-			atendanceOnHolidayForm.setStrCommont(holidayAtendanceYoteiResultinfo.getCommont());
+			atendanceOnHolidayForm.setStrCommont(holidayInfo.getCommont());
 		}
 		// 休日勤務日付格式の設定
 		String attDate = CostDateUtils.formatDate(currentDate, CommonConstant.YYYYMMDD_KANJI);
@@ -146,9 +147,9 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		// 休日勤務予定日格式を変更して、設定される
 		entity.setAtendanceDate(atendanceOnHoliday.getStrAtendanceDate().replace("/", ""));
 		// 勤務開始時間
-		entity.setKinmuStartTime(atendanceOnHoliday.getStrAtendanceTimeStat());
+		entity.setKinmuStartTime(atendanceOnHoliday.getStrAtendanceTimeStat().replace(":", StringUtils.EMPTY));
 		// 勤務終了時間
-		entity.setKinmuEndTime(atendanceOnHoliday.getStrAtendanceTimeEnd());
+		entity.setKinmuEndTime(atendanceOnHoliday.getStrAtendanceTimeEnd().replace(":", StringUtils.EMPTY));
 		// 振替日
 		entity.setFurikaeDate(atendanceOnHoliday.getStrHurikaeDate().replace("/", ""));
 		// 業務内容

@@ -216,12 +216,15 @@ public class CostDateUtils extends DateUtils {
 	 */
 	public static String formatHHmm(String hhmm) throws ParseException {
 		
-		SimpleDateFormat format = new SimpleDateFormat("hh:mm");
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(format.parse(hhmm));
-		String str1 = String.valueOf(cal.get(Calendar.HOUR));
-		String str2 = String.valueOf(cal.get(Calendar.MINUTE));
-		return CostStringUtils.addZeroForNum(str1, 2).concat( CostStringUtils.addZeroForNum(str2, 2));
+		if (StringUtils.isNotEmpty(hhmm)) {
+			SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(format.parse(hhmm));
+			String str1 = String.valueOf(cal.get(Calendar.HOUR));
+			String str2 = String.valueOf(cal.get(Calendar.MINUTE));
+			return CostStringUtils.addZeroForNum(str1, 2).concat( CostStringUtils.addZeroForNum(str2, 2));
+		}
+		return StringUtils.EMPTY;
 	}
 	
 	/**

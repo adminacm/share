@@ -10,7 +10,6 @@
 	<title>登録</title>
 </head>
 <body>
-<%@ include file="includes/header.jsp"%>
 	<span style="color:red">${errorMessages} ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message }</span>
 	<form action="j_spring_security_check" method="POST">
 		<table>
@@ -27,12 +26,6 @@
 				<td><input type='submit'name='login'></td>
 			</tr>
 		</table>
-		<br><br><br><br><br><br><br>
-		※ 一般ユーザ「ID:user01」、「Pwd：user01」、「権限：ROLE_USER」<br>
-		※ 管理者「ID:admin」、「Pwd：admin」、「権限：ROLE_USER,ROLE_ADMIN」<br>
-		&nbsp;&nbsp;&nbsp;「Login画面」は権限のリミットなし。<br>
-		&nbsp;&nbsp;&nbsp;「Menu画面」の権限リミット：ROLE_USER<br>
-		&nbsp;&nbsp;&nbsp;「案件一覧画面」の権限リミット：ROLE_ADMIN<br>
 	</form>
 </body>
 </html>

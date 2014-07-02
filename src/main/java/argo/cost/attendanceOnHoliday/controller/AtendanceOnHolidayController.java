@@ -1,5 +1,10 @@
 package argo.cost.attendanceOnHoliday.controller;
 
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +17,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.attendanceOnHoliday.checker.AtendanceOnHolidayChecker;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.attendanceOnHoliday.service.AtendanceOnHolidayService;
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
+import argo.cost.common.utils.CostDateUtils;
 
 /**
  * 休日勤務画面のコントローラ
@@ -144,5 +151,28 @@ public class AtendanceOnHolidayController extends AbstractController {
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + ATTDENDANCE_DATE + "=" + form.getStrAtendanceDate().replace("/", "");
 
 	}
-
+	
+	/**
+	 * 振替日のフォーマットの戻る処理
+	 * 
+	 * @throws Exception
+	 */
+	@RequestMapping("/changeDate")
+	public void change(AtendanceOnHolidayForm form, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		// 振替日
+		String date = form.getStrHurikaeDate();
+		if (CostDateUtils.isValidDate(date, CommonConstant.YYYYMMDD)) {
+			// 曜日を取得
+			String week = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
+			// 振替日をしてされたフォーマットに変更する
+			date = CostDateUtils.formatDate(date, CommonConstant.YYYY_MM_DD).concat("（").concat(week).concat("）");
+			
+		}
+		PrintWriter out = response.getWriter();
+		out.write(date);
+		out.flush();
+		out.close();
+	}
 }

@@ -6,15 +6,18 @@
 <div id="userBar" style="height:30px; margin-top: 10px; background-color:#ddffdd;padding-right: 20px;" align="right">
 		<table>
 			<tr>
-				<td>ようこそ：</td>
-				<td>${ userName }</td>
+
 				<c:if test="${ not empty userName }">
-					<td><input id="loginLink" type="button" onClick="window.location.href('/login')" value="メニュー"></td>
+					<td>ようこそ：</td>
+					<td>${ userName }</td>
+					<td><a href="/login">メニュー</a></td>
 				</c:if>
 				<c:if test="${ empty userName }">
-					<td><input id="loginLink" type="button" onClick="window.location.href('/login')" value="ログイン"></td>
+					<td><a href="/login">ログイン</a></td>
 				</c:if>
-				<td><input id="logoutLink" type="button" onClick="window.location.href('/logout')" value="ログアウト"></td>
+				<c:if test="${ !empty userName }">
+					<td><a href="/logout">ログアウト</a></td>
+				</c:if>
 			</tr>
 		</table>
 </div>

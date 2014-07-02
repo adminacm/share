@@ -14,8 +14,6 @@
 		<remember-me />
 		<session-management invalid-session-url="/login"
 			session-fixation-protection="none">
-			<concurrency-control max-sessions="1"
-				error-if-maximum-exceeded="true"/>
 		</session-management>
 		<custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" />
 	</http>
