@@ -87,9 +87,12 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			// 勤務終了時間
 			atendanceOnHolidayForm.setStrAtendanceTimeEnd(CostDateUtils.formatTime(holidayInfo.getKinmuEndTime()));
 			// 振替日
-			atendanceOnHolidayForm.setStrHurikaeDate(CostDateUtils.formatDate(holidayInfo.getFurikaeDate(), CommonConstant.YYYY_MM_DD));
-			// 曜日
-			atendanceOnHolidayForm.setWeek(CostDateUtils.getWeekOfDate(CostDateUtils.toDate(holidayInfo.getFurikaeDate())));
+			if (StringUtils.isNotEmpty(holidayInfo.getFurikaeDate())) {
+				atendanceOnHolidayForm.setStrHurikaeDate(CostDateUtils.formatDate(holidayInfo.getFurikaeDate(), CommonConstant.YYYY_MM_DD));
+				// 曜日
+				atendanceOnHolidayForm.setWeek(CostDateUtils.getWeekOfDate(CostDateUtils.toDate(holidayInfo.getFurikaeDate())));
+			}
+			
 			// プロジェクト名
 			atendanceOnHolidayForm.setSelectedProjCd(holidayInfo.getProjectBasic().getProjectCode());
 			// 業務内容
