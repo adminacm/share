@@ -49,6 +49,10 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 	 */
 	private String strHurikaeDate;
 	/**
+	 *　曜日
+	 */
+	private String week;
+	/**
 	 *　プロジェクト名リスト
 	 */
 	private List<ProjectBasic> projCdList;
@@ -60,6 +64,10 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 	 *　業務内容
 	 */
 	private String strCommont;
+	/**
+	 *　振替日
+	 */
+	private String showFlag;
 
 	public String getStrAtendanceDate() {
 		return strAtendanceDate;
@@ -139,6 +147,22 @@ public class AtendanceOnHolidayForm extends AbstractForm implements Serializable
 
 	public void setProjCdList(List<ProjectBasic> projCdList) {
 		this.projCdList = projCdList;
+	}
+
+	public String getWeek() {
+		return week;
+	}
+
+	public void setWeek(String week) {
+		this.week = week;
+	}
+
+	public String getShowFlag() {
+		return showFlag;
+	}
+
+	public void setShowFlag(String showFlag) {
+		this.showFlag = showFlag;
 	}
 
 }

@@ -2,10 +2,10 @@ package argo.cost.attendanceOnHoliday.controller;
 
 import java.io.PrintWriter;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -158,20 +158,24 @@ public class AtendanceOnHolidayController extends AbstractController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/changeDate")
-	public void change(AtendanceOnHolidayForm form, HttpServletResponse response, HttpServletRequest request) throws Exception {
-		request.setCharacterEncoding("utf-8");
+	public void change(HttpServletResponse response, AtendanceOnHolidayForm form) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		// 振替日
 		String date = form.getStrHurikaeDate();
+		String week = "";
 		if (CostDateUtils.isValidDate(date, CommonConstant.YYYYMMDD)) {
 			// 曜日を取得
-			String week = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
-			// 振替日をしてされたフォーマットに変更する
-			date = CostDateUtils.formatDate(date, CommonConstant.YYYY_MM_DD).concat("（").concat(week).concat("）");
-			
+			week = CostDateUtils.getWeekOfDate(CostDateUtils.toDate(date));
+			// 振替日をしてされたフォーマットに変更する 
+			date = CostDateUtils.formatDate(date, CommonConstant.YYYY_MM_DD);
 		}
+		AtendanceOnHolidayForm newForm = new AtendanceOnHolidayForm();
+		newForm.setStrHurikaeDate(date);
+		newForm.setWeek(week);
+		
 		PrintWriter out = response.getWriter();
-		out.write(date);
+		JSONObject json = new JSONObject(newForm);
+		out.write(json.toString());
 		out.flush();
 		out.close();
 	}

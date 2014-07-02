@@ -8,8 +8,6 @@
 <head>
 <meta charset="utf-8">
 <title>休日勤務入力画面</title>
-<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
 /* アクション提出 */
@@ -28,15 +26,18 @@ function formatHHmm(e) {
 }
 /* 振替日のフォーマット */
 function formatDate(e) {
-	
-	$.ajax({
-		url : "/attendanceOnHoliday/changeDate",
-		data:$("#atendanceOnHolidayForm").serialize(),
-		dataType : 'text',
-		success : function(data) {
-			e.value = data;
-		}
-	});
+	var str = e.value;
+	if (!isNaN(str) && str.length == 8) {
+		$.ajax({
+			url : "/attendanceOnHoliday/changeDate",
+			data:$("#atendanceOnHolidayForm").serialize(),
+			dataType : 'json',
+			success : function(result) {
+				e.value = result.strHurikaeDate;
+				document.getElementById("week").innerHTML = result.week;
+			}
+		});
+	}
 }
 </script>
 </head>
@@ -88,7 +89,8 @@ function formatDate(e) {
 					<tr>
 						<td width="120px">振替日</td>
 						<td width="180px">
-							<form:input style="width: 100px;" path="strHurikaeDate" maxlength="8" onblur="formatDate(this)"></form:input>
+							<form:input id="furikae" style="width: 80px;" path="strHurikaeDate" maxlength="8" onblur="formatDate(this)"></form:input>
+							<form:label id="week" path="week">${ atendanceOnHolidayForm.week}</form:label>
 						</td>
 					</tr>
 					<tr>
@@ -113,7 +115,9 @@ function formatDate(e) {
 				<table style="margin-top: 40px;margin-bottom:10px;width: 300px;margin: auto">
 					<tr>
 						<td align="center" width="100px"><input type="button" value="保存" onclick="submitAction('/attendanceOnHoliday/save');" /></td>
-						<td align="center" width="100px"><input type="button" value="削除" onclick="submitAction('/attendanceOnHoliday/delete');" /></td>
+						<c:if test="${ atendanceOnHolidayForm.showFlag == '1' }">
+							<td align="center" width="100px"><input type="button" value="削除" onclick="submitAction('/attendanceOnHoliday/delete');" /></td>
+						</c:if>
 						<td align="center" width="100px"><input type="button" value="戻る" onclick="submitAction('/attendanceOnHoliday/back');" /></td>
 					</tr>
 				</table>
