@@ -682,7 +682,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 						// 超勤平日（割増）
 						form.setChoWeekday(form.getWorkHours() - 8.0);
 						// 超勤平日（通常）
-						form.setChoWeekdayNomal(form.getWorkHours() - form.getChoWeekday());
+						form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
 					}
 					// 超勤休日を設定
 					form.setChoHoliday(0.0);
