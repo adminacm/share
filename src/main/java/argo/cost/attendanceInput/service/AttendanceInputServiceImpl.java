@@ -1205,7 +1205,15 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 休暇欠勤マスタ情報を取得
 		KyukaKekinKbnMaster kyukaEntity = baseDao.findById(form.getKyukaKb(), KyukaKekinKbnMaster.class);
 		kintaiEntity.setKyukaKekinKbnMaster(kyukaEntity);    // 休暇欠勤マスタ情報
-		kintaiEntity.setKyukaJikansu(toBigDecimal(form.getKyukaHours()));    // 休暇時間数
+		// 半休の場合
+		if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, form.getKyukaKb())) {
+			kintaiEntity.setKyukaJikansu(new BigDecimal(4.0));    // 休暇時間数
+		// 全休の場合
+		} else if (StringUtils.equals(CommonConstant.KK_KBN_ZENKYU, form.getKyukaKb())) {
+			kintaiEntity.setKyukaJikansu(new BigDecimal(8.0));    // 休暇時間数
+		} else {
+			kintaiEntity.setKyukaJikansu(toBigDecimal(form.getKyukaHours()));    // 休暇時間数
+		}
 		kintaiEntity.setKinmuJikansu(toBigDecimal(form.getWorkHours()));     // 勤務時間数
 		kintaiEntity.setChokinStartTime(form.getChoSTime()); // 超勤開始時刻
 		kintaiEntity.setChokinEndTime(form.getChoETime());   // 超勤終了時刻

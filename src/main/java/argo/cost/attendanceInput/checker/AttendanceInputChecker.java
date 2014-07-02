@@ -667,7 +667,7 @@ public class AttendanceInputChecker {
 						// 勤務開始時刻が定時出勤時刻で勤務終了時刻が定時退勤時刻より前
 						// または勤務開始時刻が午前終了時刻より前かつ勤務終了時刻が定時退勤時刻以降
 						if ((StringUtils.equals(form.getWorkSTimeStr(), shift.getStartTimeStr())
-								|| form.getWorkETimeStr().compareTo(shift.getEndTimeStr()) < 0)
+								&& shift.getAmETimeStr().compareTo(form.getWorkETimeStr()) < 0)
 								|| (form.getWorkSTimeStr().compareTo(shift.getAmETimeStr()) < 0
 										&& shift.getEndTimeStr().compareTo(form.getWorkETimeStr()) <= 0)) {
 							// 有給休暇が余分に取得されています

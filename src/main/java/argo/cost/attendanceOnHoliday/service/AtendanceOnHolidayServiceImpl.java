@@ -67,7 +67,10 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			
 		HolidayAtendanceYotei holidayAtendanceYoteiResultinfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 		// 勤務日区分リストの設定
-		atendanceOnHolidayForm.setAtendanceDayKbnList(baseDao.findAll(WorkDayKbnMaster.class));
+		condition = new BaseCondition();
+		// 休日、休日振替勤務
+		condition.addConditionIn("code", new String[] {CommonConstant.WORKDAY_KBN_KYUJITU, CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE});
+		atendanceOnHolidayForm.setAtendanceDayKbnList(baseDao.findResultList(condition, WorkDayKbnMaster.class));
 		// プロジェクトリストの設定
 		atendanceOnHolidayForm.setProjCdList(baseDao.findAll(ProjectBasic.class));
 		
