@@ -54,18 +54,16 @@ function formatDate(e) {
 					<span style="color:red">${message }</span><br/>
 				</c:forEach>
 			</div>
-			<div style="margin-top: 20px;" >
-				<table style="margin:auto; width:300px;">
+			<div style="margin-top: 10px;margin-bottom:10px;" >
+				<table style="margin:auto; width:300px; border: 1px solid #333;">
 					<tr>
 						<td align="left" width="80">社員番号</td>
 						<td align="left" width="50">${atendanceOnHolidayForm.taishoUserId}</td>
+					</tr>
+					<tr>
 						<td align="left" width="50">氏名</td>
 						<td align="left" width="150">${atendanceOnHolidayForm.taishoUserName}</td>
 					</tr>
-				</table>
-			</div>
-			<div style="margin-top: 10px;margin-bottom:10px;" >
-				<table style="margin:auto; width:300px; border: 1px solid #333;">
 					<tr>
 						<td width="120px">日付</td>
 						<td width="180px">${atendanceOnHolidayForm.strAtendanceDateShow}</td>
