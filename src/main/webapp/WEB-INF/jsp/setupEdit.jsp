@@ -20,6 +20,11 @@ function submitAction(action) {
 	document.forms[0].submit();
 }
 
+function change(e) {
+	alert(e.value);
+	submitAction('/setup/shiftChange');
+}
+
 </script>
 </head>
 <body>
@@ -51,7 +56,7 @@ function submitAction(action) {
 					<tr>
 						<td>1日の勤務時間数</td>
 						<td>
-							<form:select path="oneDayKinmuHours" style="width:145px;border:2px solid #333333;" id="oneDayKinmuHours">
+							<form:select path="oneDayKinmuHours" style="width:145px;border:2px solid #333333;" id="oneDayKinmuHours" onchange="submitAction('/setup/shiftChange');">
 								<form:options items="${setupForm.oneDayMayKinmuHoursList}" />
 							</form:select>
 						</td>
@@ -59,7 +64,7 @@ function submitAction(action) {
 					<tr>
 						<td>標準ｼﾌﾄ</td>
 						<td>
-							<form:select path="standardShift" style="width:145px;border:2px solid #333333;" id="standardShift" onchange="submitAction('/setup/shiftChange');">
+							<form:select path="standardShift" style="width:145px;border:2px solid #333333;" id="standardShift" >
 								<form:options items="${setupForm.standardShiftList}" itemValue="shiftCode" itemLabel="shiftCode"/>
 							</form:select>
 						</td>

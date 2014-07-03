@@ -108,6 +108,10 @@ public class MessageConstants {
 	 */
 	public static final String COSE_E_024 = "休日：｛0｝で休日勤務予定が存在する、勤怠情報を入力ください";
 	/**
+	 *　作業時間数の合計が勤務時間数と一致していません
+	 */
+	public static final String COSE_E_025 = "作業時間数の合計が勤務時間数と一致していません";
+	/**
 	 *　｛0｝の勤怠情報を入力ください！
 	 */
 	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力ください";

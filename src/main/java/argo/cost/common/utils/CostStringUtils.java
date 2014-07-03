@@ -86,4 +86,23 @@ public class CostStringUtils extends StringUtils {
 			return trans.transliterate(str);
 
 		}
+		
+		/**
+		 * Double型に変換可能のチェック<BR>
+		 * 
+		 * @param str Doubleに変換する文字列
+		 * 
+		 * @return true:可能
+		 * 		   false:不可能
+		 */
+		public static boolean isToDouble(String str) {
+			
+			try {
+				Double.parseDouble(str);
+			} catch (Exception ex) {
+				return false;
+			}
+			
+			return true;
+		}
 }

@@ -479,7 +479,13 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		getChokin(form);
 		// 深夜勤務時間数を算出する
 		getMidnight(form);
-
+		
+		// プロジェクト情報のチェック
+		AttendanceInputChecker.chkProjectList(form);
+		// エラーが発生されているの場合
+		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
+			return;
+		}
 	}
 	
 	public String findNameByCode(String code) {
@@ -703,7 +709,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 					// 超勤休日を設定
 					form.setChoHoliday(0.0);
 				// 休暇欠勤区分＝時間休(有給休暇)、時間休の場合、使用した時間数があるのでそこから算出
-				} else if (StringUtils.equals(CommonConstant.KK_KBN_JIKANKYU, form.getKyukaKb())) {
+				} else if (StringUtils.equals(CommonConstant.KK_KBN_JIKANKYU, form.getKyukaKb())
+						|| StringUtils.equals(CommonConstant.KK_KBN_CHIKOKU, form.getKyukaKb())) {
 					// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
 					if (form.getWorkHours() <= 8.0) {
 						// 超勤平日（割増）
@@ -712,7 +719,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 						form.setChoWeekdayNomal(wChokinHours);
 					} else {
 						// 超勤平日（割増）
-						form.setChoWeekday(form.getWorkHours() - form.getKyukaHours());
+						form.setChoWeekday(form.getWorkHours() - 8.0);
 						// 超勤平日（通常）：超勤時間 - 通常として扱った時間を割増時間として扱う
 						form.setChoWeekdayNomal(wChokinHours - form.getKyukaHours());
 					}
@@ -796,7 +803,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		}
 		ShiftVO info = null;
 		// シフト時刻情報を取得
-		ShiftJikoku entity = baseDao.findById(shiftCode, ShiftJikoku.class);
+		ShiftJikoku entity = baseDao.findById(shiftCodeShow.concat(shiftCode.substring(4)), ShiftJikoku.class);
 		// シフト時刻からレコードが取得できない
 		if (entity == null) {
 			// ｼﾌﾄｺｰﾄﾞの時刻データが設定されていません

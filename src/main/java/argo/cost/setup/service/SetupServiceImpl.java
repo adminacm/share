@@ -44,12 +44,12 @@ public class SetupServiceImpl implements SetupService {
 	public void getSetupInfo(SetupForm setupForm) throws ParseException {
 		
 		// DBから、個人設定情報を取得
-		Users setupInfo = baseDao.findById(setupForm.getUserId(), Users.class);
+		Users userInfo = baseDao.findById(setupForm.getUserId(), Users.class);
 		
 		// 画面の個人設定情報を設定
 		
 		// 代理入力者コード
-		String strDairishaId = setupInfo.getDairishaId();
+		String strDairishaId = userInfo.getDairishaId();
 		// 代理入力者が存在する場合
 		if (StringUtils.isNotEmpty(strDairishaId)) {
 			setupForm.setAgentCd(strDairishaId);
@@ -60,38 +60,37 @@ public class SetupServiceImpl implements SetupService {
 		}
 
 		// 1日の勤務時間数
-		int standardShiftCdSize = setupInfo.getStandardShiftCd().length();
-		// シフトコードの最後2位を設定される
-		setupForm.setOneDayKinmuHours((Double.valueOf(setupInfo.getStandardShiftCd().substring(standardShiftCdSize-2, standardShiftCdSize))/10));
+		String oneDayKinmuHours = (StringUtils.endsWith(userInfo.getStandardShiftCd(), "75")) ? "7.5" : "6.0";
+		setupForm.setOneDayKinmuHours(oneDayKinmuHours);
 		
 		// 1日の勤務時間数リストを設定する
-		List<Double> oneDayKinmuHoursList = new ArrayList<Double>();
+		List<String> oneDayKinmuHoursList = new ArrayList<String>();
 		// パタン7.5
-		oneDayKinmuHoursList.add(7.5);
+		oneDayKinmuHoursList.add("7.5");
 		// パタン6
-		oneDayKinmuHoursList.add(6.0);
+		oneDayKinmuHoursList.add("6.0");
 		setupForm.setOneDayMayKinmuHoursList(oneDayKinmuHoursList);
 		
 		// 標準ｼﾌﾄ
-		setupForm.setStandardShift(setupInfo.getStandardShiftCd());
+		setupForm.setStandardShift(StringUtils.substring(userInfo.getStandardShiftCd(), 0, 4));
 		
 		// 勤務開始時刻
-		setupForm.setWorkStartTime(CostDateUtils.formatTime(setupInfo.getKinmuStartTime()));
+		setupForm.setWorkStartTime(CostDateUtils.formatTime(userInfo.getKinmuStartTime()));
 		
 		// 勤務終了時刻
-		setupForm.setWorkEndTime(CostDateUtils.formatTime(setupInfo.getKinmuEndTime()));
+		setupForm.setWorkEndTime(CostDateUtils.formatTime(userInfo.getKinmuEndTime()));
 		
 		// 入社日
-		setupForm.setJoinDate(CostDateUtils.formatDate(setupInfo.getNyushaDate(), CommonConstant.YYYY_MM_DD));
+		setupForm.setJoinDate(CostDateUtils.formatDate(userInfo.getNyushaDate(), CommonConstant.YYYY_MM_DD));
 		
 		// 休業開始日
-		setupForm.setHolidayStart(CostDateUtils.formatDate(setupInfo.getKyugyoStartDate(), CommonConstant.YYYY_MM_DD));
+		setupForm.setHolidayStart(CostDateUtils.formatDate(userInfo.getKyugyoStartDate(), CommonConstant.YYYY_MM_DD));
 		
 		// 休業終了日
-		setupForm.setHolidayEnd(CostDateUtils.formatDate(setupInfo.getKyugyoEndDate(), CommonConstant.YYYY_MM_DD));
+		setupForm.setHolidayEnd(CostDateUtils.formatDate(userInfo.getKyugyoEndDate(), CommonConstant.YYYY_MM_DD));
 		
 		// 退職日
-		setupForm.setOutDate(CostDateUtils.formatDate(setupInfo.getTaisyokuDate(), CommonConstant.YYYY_MM_DD));
+		setupForm.setOutDate(CostDateUtils.formatDate(userInfo.getTaisyokuDate(), CommonConstant.YYYY_MM_DD));
 		
 	}
 
@@ -101,19 +100,19 @@ public class SetupServiceImpl implements SetupService {
 	 *           個人設定情報
 	 */
 	@Override
-	public void getSetupEditInfo(SetupForm setupForm) throws ParseException {
+	public void getSetupEditInfo(SetupForm form) throws ParseException {
 		
-		this.getSetupInfo(setupForm);
+		this.getSetupInfo(form);
 		// 代理入力者リスト
-		String userId = setupForm.getUserId();
-		BaseCondition personalInfoSelectCondition = new BaseCondition();
-		personalInfoSelectCondition.addConditionNotEqual("id", userId);
+		String userId = form.getUserId();
+		BaseCondition condition = new BaseCondition();
+		condition.addConditionNotEqual("id", userId);
 		
-		List<Users> agentList = baseDao.findResultList(personalInfoSelectCondition, Users.class);
-		setupForm.setAgentList(agentList);
+		List<Users> agentList = baseDao.findResultList(condition, Users.class);
+		form.setAgentList(agentList);
     	
 		// 標準ｼﾌﾄリスト
-		setupForm.setStandardShiftList(getShiftList());
+		form.setStandardShiftList(this.getShiftList(form.getOneDayKinmuHours()));
     	
 	}
 
@@ -124,31 +123,21 @@ public class SetupServiceImpl implements SetupService {
 	 *            個人設定情報
 	 */  
 	@Override
-	public void changeShift(SetupForm setupForm) {
+	public void changeShift(SetupForm form) {
 		
-		// 標準ｼﾌﾄより、ｼﾌﾄ時刻情報を取得
-		BaseCondition shiftStandardJikokuSelectbaseCondition = new BaseCondition();
-		String strSelectedStandardShiftCode = setupForm.getStandardShift();
-		// 検索条件：選択されたシフト時刻コード
-		shiftStandardJikokuSelectbaseCondition.addConditionEqual("shiftCode", strSelectedStandardShiftCode);
-		ShiftJikoku shiftTime = baseDao.findSingleResult(shiftStandardJikokuSelectbaseCondition,ShiftJikoku.class);
+		// シフトコードリストを作成
+		List<ShiftJikoku> result = this.getShiftList(form.getOneDayKinmuHours());
 		
-    	// 勤務開始時刻
-    	if (shiftTime != null && !shiftTime.getTeijiKinmuTime().isEmpty()){
-
-        	// 勤務開始時刻
-    		setupForm.setWorkStartTime(CostDateUtils.formatTime(shiftTime.getTeijiKinmuTime()));
-    		
-    	}
-    	// 勤務終了時刻
-    	if (shiftTime != null && !shiftTime.getTeijiTaikinTime().isEmpty()) {
-    		
-        	// 勤務終了時刻
-    		setupForm.setWorkEndTime(CostDateUtils.formatTime(shiftTime.getTeijiTaikinTime()));
-    	}
-    	// 1日勤務時間数
-    	String oneDayKinmuHours = strSelectedStandardShiftCode.substring(strSelectedStandardShiftCode.length()-2,strSelectedStandardShiftCode.length());
-    	setupForm.setOneDayKinmuHours((Double.valueOf(oneDayKinmuHours)/10));
+		for (ShiftJikoku shift : result) {
+			if (StringUtils.equals(form.getStandardShift(), shift.getShiftCode())) {
+				// 定時出勤時刻
+				form.setWorkStartTime(CostDateUtils.formatTime(shift.getTeijiKinmuTime()));
+				// 定時退勤時刻
+				form.setWorkEndTime(CostDateUtils.formatTime(shift.getTeijiTaikinTime()));
+			}
+		}
+		
+		form.setStandardShiftList(result);
 		
 	}
 
@@ -180,12 +169,25 @@ public class SetupServiceImpl implements SetupService {
 	 * @return
 	 *        ｼﾌﾄリスト
 	 */
-	private List<ShiftJikoku> getShiftList() {
+	private List<ShiftJikoku> getShiftList(String hour) {
 
-		// ｼﾌﾄリストを取得
-		List<ShiftJikoku> shiftList = baseDao.findAll(ShiftJikoku.class);
+		// 一日標準出勤時間数
+		String strHour = hour.replace(".", StringUtils.EMPTY);
 		
-		return shiftList;
+		List<ShiftJikoku> shiftList = baseDao.findAll(ShiftJikoku.class);
+		List<ShiftJikoku> result = new ArrayList<ShiftJikoku>();
+		for (ShiftJikoku shift : shiftList) {
+			// シフトコード
+			String shiftCode = shift.getShiftCode();
+			// シフトコードを設定する
+			if (StringUtils.endsWith(shiftCode, strHour)) {
+				shift.setShiftCode(shiftCode.substring(0, 4));
+				result.add(shift);
+			}
+			
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -201,7 +203,7 @@ public class SetupServiceImpl implements SetupService {
 		// 代理者ID
 		user.setDairishaId(setupForm.getAgentCd());
 		// 標準シフト
-		user.setStandardShiftCd(setupForm.getStandardShift().concat(setupForm.getOneDayKinmuHours().toString().replaceAll(".", "")));
+		user.setStandardShiftCd(setupForm.getStandardShift().concat(setupForm.getOneDayKinmuHours().toString().replace(".", "")));
 		
 		// 勤務開始時間
 		user.setKinmuStartTime(setupForm.getWorkStartTime().replaceAll(":", ""));

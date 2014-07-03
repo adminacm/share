@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import argo.cost.attendanceInput.dao.AttendanceInputDao;
 import argo.cost.attendanceInput.model.AttendanceInputForm;
+import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.model.ShiftVO;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
@@ -19,6 +20,7 @@ import argo.cost.common.entity.KyukaKekinKbnMaster;
 import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.YukyuKyukaFuyu;
 import argo.cost.common.utils.CostDateUtils;
+import argo.cost.common.utils.CostStringUtils;
 
 /**
  * 勤怠入力画面入力チェッククラス
@@ -729,7 +731,40 @@ public class AttendanceInputChecker {
 				}
 			}
 		}
-
 	}
 
+	/**
+	 * プロジェクト情報のチェック
+	 * 	休日勤務が存在する
+	 * 		勤怠情報が存在しない
+	 * 			☆休日勤務が存在する、勤怠実績を入力してください
+	 * @param form
+	 *            画面情報オブジェクト
+	 */
+	public static void chkProjectList(AttendanceInputForm form) {
+		
+		// プロジェクト情報
+		List<AttendanceProjectVO> projectList = form.getProjectList();
+		Double sumHour = 0.0;
+		for (AttendanceProjectVO project : projectList) {
+			
+			// 作業時間数
+			String workHour = project.getHours();
+			// 入力の場合
+			if (StringUtils.isNotEmpty(workHour)) {
+				if (!CostStringUtils.isToDouble(workHour)) {
+					// 作業時間数を正しく入力してください
+					form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {"作業時間数"});
+					return;
+				}
+				sumHour += Double.parseDouble(workHour);
+			}
+		}
+		// 全ての時間数の合計値は勤務時間数と合わないの場合
+		if (sumHour != 0.0 && sumHour.compareTo(form.getWorkHours()) != 0) {
+			// 作業時間数の合計が勤務時間数と一致していません
+			form.putConfirmMsg(MessageConstants.COSE_E_025);
+			return;
+		}
+	}
 }
