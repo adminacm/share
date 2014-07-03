@@ -67,9 +67,9 @@ function submitAction(action) {
 						<td colspan="5" style="">検索条件</td>
 					</tr>
 					<tr>
-						<td style="padding-left:40px;">氏名</td>
-						<td>
-							<form:select path="userCode" style="width:180%;border:2px solid #333333;" id="usCode">
+						<td style="padding-left:30px;" width="60px" align="right">氏名</td>
+						<td align="left">
+							<form:select path="userCode" style="width:150%;border:2px solid #333333;" id="usCode">
 								<form:options items="${monthlyReportForm.userList}" itemValue="id" itemLabel="userName"/>
 							</form:select>
 						</td>

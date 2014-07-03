@@ -676,55 +676,17 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				form.setChoHoliday(wChokinHours);
 			
 			} else {
-				// 超勤時間から割増部分と通常部分の切り分けを実施
-				if (StringUtils.isEmpty(form.getKyukaKb())) {
-					// 勤怠時間数は
-					if (form.getWorkHours() <= 8.0) {
-						// 超勤平日（割増）
-						form.setChoWeekday(0.0);
-						// 超勤平日（通常）
-						form.setChoWeekdayNomal(wChokinHours);
-					} else {
-						// 超勤平日（割増）
-						form.setChoWeekday(form.getWorkHours() - 8.0);
-						// 超勤平日（通常）
-						form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
-					}
-					// 超勤休日を設定
-					form.setChoHoliday(0.0);
-				// 休暇欠勤区分＝半休(有給休暇)
-				} else if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, form.getKyukaKb())) {
-					// 勤務時間が8.0時間以下だった場合はすべて通常として扱う
-					if (form.getWorkHours() <= 8.0) {
-						// 超勤平日（割増）
-						form.setChoWeekday(0.0);
-						// 超勤平日（通常）
-						form.setChoWeekdayNomal(wChokinHours);
-					} else {
-						// 超勤平日（割増）
-						form.setChoWeekday(form.getWorkHours() - 8.0);
-						// 超勤平日（通常）
-						form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
-					}
-					// 超勤休日を設定
-					form.setChoHoliday(0.0);
-				// 休暇欠勤区分＝時間休(有給休暇)、時間休の場合、使用した時間数があるのでそこから算出
-				} else if (StringUtils.equals(CommonConstant.KK_KBN_JIKANKYU, form.getKyukaKb())
-						|| StringUtils.equals(CommonConstant.KK_KBN_CHIKOKU, form.getKyukaKb())) {
-					// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
-					if (form.getWorkHours() <= 8.0) {
-						// 超勤平日（割増）
-						form.setChoWeekday(0.0);
-						// 超勤平日（通常）
-						form.setChoWeekdayNomal(wChokinHours);
-					} else {
-						// 超勤平日（割増）
-						form.setChoWeekday(form.getWorkHours() - 8.0);
-						// 超勤平日（通常）：超勤時間 - 通常として扱った時間を割増時間として扱う
-						form.setChoWeekdayNomal(wChokinHours - form.getKyukaHours());
-					}
-					// 超勤休日を設定
-					form.setChoHoliday(0.0);
+				// 勤務時間が7.5時間以下だった場合はすべて通常として扱う
+				if (form.getWorkHours() <= 7.5) {
+					// 超勤平日（割増）
+					form.setChoWeekday(0.0);
+					// 超勤平日（通常）
+					form.setChoWeekdayNomal(wChokinHours);
+				} else {
+					// 超勤平日（割増）
+					form.setChoWeekday(form.getWorkHours() - 8.0);
+					// 超勤平日（通常）
+					form.setChoWeekdayNomal(wChokinHours - form.getChoWeekday());
 				}
 			}
 		} else {
@@ -846,6 +808,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			
 			// シフトコード
 			info.setCode(shiftCode);
+			// 一日勤務時間数
+			Double hours = (StringUtils.endsWith(shiftCode, "75")) ? 7.5 : 6.0;
+			info.setWorkHours(hours);
 			// 定時出勤時刻
 			info.setStartTime(standSTime);
 			// 定時出勤時刻
