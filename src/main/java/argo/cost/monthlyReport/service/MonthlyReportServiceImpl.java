@@ -178,7 +178,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 					}
 					if (kintaiInfo.getShiftJikoku() != null ) {
 						// ｼﾌﾄ
-						monthInfo.setShift(kintaiInfo.getShiftJikoku().getShiftCode());
+						monthInfo.setShift(kintaiInfo.getShiftJikoku().getShiftCode().substring(0, 4));
 					}
 					// 出勤
 					monthInfo.setWorkSTime(kintaiInfo.getKinmuStartTime());
