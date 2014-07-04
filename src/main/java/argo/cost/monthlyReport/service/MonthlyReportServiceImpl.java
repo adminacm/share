@@ -184,9 +184,14 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 					monthInfo.setWorkSTime(kintaiInfo.getKinmuStartTime());
 					// 退勤
 					monthInfo.setWorkETime(kintaiInfo.getKinmuEndTime());
-					// 休暇
+					// 休暇時間数
 					if (kintaiInfo.getKyukaJikansu() != null ) {
 						monthInfo.setRestHours(kintaiInfo.getKyukaJikansu().doubleValue());
+					}
+					// 休暇欠勤区分
+					if (kintaiInfo.getKyukaKekinKbnMaster() != null) {
+						monthInfo.setKyukaKb(kintaiInfo.getKyukaKekinKbnMaster().getCode());
+						monthInfo.setKyukaKbName(kintaiInfo.getKyukaKekinKbnMaster().getName());
 					}
 					// 勤務時間数
 					if (kintaiInfo.getKinmuJikansu() != null ) {

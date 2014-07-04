@@ -34,6 +34,10 @@ public class MonthlyReportDispVO {
 	 */
 	private String kyukaKb;
 	/**
+	 * 休暇欠勤区分名
+	 */
+	private String kyukaKbName;
+	/**
 	 * ｼﾌﾄ
 	 */
 	private String shift;
@@ -265,6 +269,14 @@ public class MonthlyReportDispVO {
 
 	public void setKyukaKb(String kyukaKb) {
 		this.kyukaKb = kyukaKb;
+	}
+
+	public String getKyukaKbName() {
+		return kyukaKbName;
+	}
+
+	public void setKyukaKbName(String kyukaKbName) {
+		this.kyukaKbName = kyukaKbName;
 	}
 	
 }

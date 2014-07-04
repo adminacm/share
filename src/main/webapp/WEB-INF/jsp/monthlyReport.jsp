@@ -95,12 +95,12 @@ function submitAction(action) {
 				</table>
 			</div>
 			<div>
-				<table class="table1" id="resultList">
+				<table class="table1" id="resultList" >
 					<thead>
 						<tr>
-							<th rowspan="2"colspan="2">日付</th>
-							<th rowspan="2">区分</th>
-							<th rowspan="2">ｼﾌﾄ</th>
+							<th rowspan="2"colspan="2" width="50">日付</th>
+							<th rowspan="2" width="100">区分</th>
+							<th rowspan="2" width="50">ｼﾌﾄ</th>
 							<th rowspan="2">出勤</th>
 							<th rowspan="2">退勤</th>
 							<th rowspan="2">休暇</th>
@@ -125,53 +125,25 @@ function submitAction(action) {
 									<td align="center" width="25PX;">
 										<a href="/attendanceInput/init?attendanceDate=${monthlyReport.date}">${monthlyReport.day}</a>
 									</td>
-									<td align="center" width="25PX;">
-										${monthlyReport.week}
-									</td>
-									<td align="center" width="110PX;">
-										${monthlyReport.workKbnName}
-									</td>
-									<td align="center" width="50PX;">
-										${monthlyReport.shift}
-									</td>
-									<td align="center" width="50PX;">
-										${monthlyReport.workSTime}
-									</td>
-									<td align="center" width="50PX;">
-										${monthlyReport.workETime}
-									</td>
+									<td align="center" width="25PX;">${monthlyReport.week}</td>
+									<td align="center">${monthlyReport.workKbnName}</td>
+									<td align="center">${monthlyReport.shift}</td>
+									<td align="center">${monthlyReport.workSTime}</td>
+									<td align="center">${monthlyReport.workETime}</td>
+									<td align="center">${monthlyReport.kyukaKbName}</td>
 								</c:if>
 								<c:if test="${monthlyReport.totleFlg}">
-									<td colspan="6" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
+									<td colspan="7" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
 								</c:if>
-								<td align="center" width="45PX;">
-									${monthlyReport.restHours}
-								</td>
-								<td align="center" width="45PX;">
-									${monthlyReport.workHours}
-								</td>
-								<td align="center" width="50PX;">
-									${monthlyReport.choSTime}
-								</td>
-								<td align="center" width="50PX;">
-									${monthlyReport.choETime}
-								</td>
-								<td align="center" width="45PX;">
-									${monthlyReport.choWeekday}
-								</td>
-								<td align="center" width="45PX;">
-									${monthlyReport.choWeekdayNomal}
-								</td>
-								<td align="center" width="45PX;">
-									${monthlyReport.choHoliday}
-								</td>
-								<td align="center" width="45PX;">
-									${monthlyReport.mNHours}
-								</td>
+								<td align="center">${monthlyReport.workHours}</td>
+								<td align="center">${monthlyReport.choSTime}</td>
+								<td align="center">${monthlyReport.choETime}</td>
+								<td align="center">${monthlyReport.choWeekday}</td>
+								<td align="center">${monthlyReport.choWeekdayNomal}</td>
+								<td align="center">${monthlyReport.choHoliday}</td>
+								<td align="center">${monthlyReport.mNHours}</td>
 								<c:if test="${not monthlyReport.totleFlg}">
-									<td align="center">
-										${monthlyReport.locationName}
-									</td>
+									<td align="center">${monthlyReport.locationName}</td>
 								</c:if>
 							</tr>
 						</c:forEach>
