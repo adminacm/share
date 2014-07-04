@@ -64,7 +64,7 @@ function change(e) {
 					<tr>
 						<td>標準ｼﾌﾄ</td>
 						<td>
-							<form:select path="standardShift" style="width:145px;border:2px solid #333333;" id="standardShift" >
+							<form:select path="standardShift" style="width:145px;border:2px solid #333333;" id="standardShift" onchange="submitAction('/setup/shiftChange');">
 								<form:options items="${setupForm.standardShiftList}" itemValue="shiftCode" itemLabel="shiftCode"/>
 							</form:select>
 						</td>
@@ -76,12 +76,6 @@ function change(e) {
 					<tr>
 						<td>勤務終了時刻</td>
 						<td colspan="2">${setupForm.workEndTime}</td>
-					</tr>
-					<tr>
-						<td>入社日</td>
-						<td>
-							<form:input style="width:70px;border:2px solid #333333;" path="joinDate" maxlength="10"></form:input>
-						</td>
 					</tr>
 					<tr>
 						<td>休業開始日</td>
