@@ -1,5 +1,9 @@
 package argo.cost.setup.checker;
 
+
+
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 
 import argo.cost.common.constant.CommonConstant;
@@ -38,22 +42,54 @@ public class SetupChecker {
 	 *            画面情報オブジェクト
 	 * @throws Exception 
 	 */
-	public static void chkNyushyaDate(SetupForm form) throws Exception {
+	@SuppressWarnings("deprecation")
+	public static void chkNyushyaDate(SetupForm setupForm) throws Exception {
 		
 		// 入社日
-		String date = form.getJoinDate();
+		String strNyushaDate = setupForm.getJoinDate();
 		// 未入力
-		if (StringUtils.isEmpty(date)) {
+		if (StringUtils.isEmpty(strNyushaDate)) {
 			// 入社日が未入力です
-			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {NYUSHYA_DATE});
+			setupForm.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {NYUSHYA_DATE});
 			throw new Exception();
 		}
 		// 入社日のyyyy/MM/dd形式値が数値以外
-		if (!CostDateUtils.isValidDate(date, CommonConstant.YYYY_MM_DD)) {
+		if (!CostDateUtils.isValidDate(strNyushaDate, CommonConstant.YYYY_MM_DD)) {
 			// 入社日を正しく入力してください
-			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {NYUSHYA_DATE});
+			setupForm.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {NYUSHYA_DATE});
 			throw new Exception();
 		}
+		
+		// 休業開始日、退職日は入社日より後の日付であること
+		Date syuGyoStartDate = new Date(setupForm.getHolidayStart());
+		Date syuGyoEndDate = new Date(setupForm.getHolidayEnd());
+		Date nyuShaDate = new Date(setupForm.getJoinDate());
+		Date taishokuDate = new Date(setupForm.getOutDate());
+		// 休業開始日は入社日より後の日付であること
+		if (syuGyoStartDate.before(nyuShaDate)) {
+			
+			setupForm.putConfirmMsg(MessageConstants.COSE_E_1105, new String[] {KYUGYO_START_DATE});
+			throw new Exception();
+	    
+		// 退職日は入社日より後の日付であること
+		} else if (taishokuDate.before(nyuShaDate)) {
+			setupForm.putConfirmMsg(MessageConstants.COSE_E_1105,new String[] {TAISHOKU_DATE});
+			throw new Exception();
+		}
+		
+		
+		// 休業終了日は休業開始日より後の日付であること
+		if (syuGyoEndDate.before(syuGyoStartDate)) {
+			setupForm.putConfirmMsg(MessageConstants.COSE_E_1106);
+			throw new Exception();
+			
+		}
+		
+		// 入力された休業期間や退職日の勤怠が提出以降の状況の場合
+		
+		
+		
+		
 	}
 	
 	/**

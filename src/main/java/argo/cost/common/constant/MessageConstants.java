@@ -128,5 +128,15 @@ public class MessageConstants {
 	 *　勤務開始時刻が前日の勤務終了時刻と同時刻です
 	 */
 	public static final String COSE_W_1102 = "勤務開始時刻が前日の勤務終了時刻と同時刻です";
+	
+	/**
+	 *　｛0｝は入社日よりあとの日付を入力してください
+	 */
+	public static final String COSE_E_1105 = "｛0｝は入社日よりあとの日付を入力してください";
+	
+	/**
+	 *　休業終了日は休業開始日よりあとの日付を入力してください
+	 */
+	public static final String COSE_E_1106 = "休業終了日は休業開始日よりあとの日付を入力してください";
 
 }
