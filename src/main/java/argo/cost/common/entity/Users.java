@@ -2,7 +2,10 @@ package argo.cost.common.entity;
 
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 import java.util.List;
@@ -61,6 +64,9 @@ public class Users implements Serializable {
 
 	@Column(name="taisyoku_date", length=8)
 	private String taisyokuDate;
+	
+	@Column(name="time_except_subsidy_flg")
+	private Integer timeExceptSubsidyFlg;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
@@ -215,6 +221,14 @@ public class Users implements Serializable {
 		this.taisyokuDate = taisyokuDate;
 	}
 
+	public Integer getTimeExceptSubsidyFlg() {
+		return this.timeExceptSubsidyFlg;
+	}
+
+	public void setTimeExceptSubsidyFlg(Integer timeExceptSubsidyFlg) {
+		this.timeExceptSubsidyFlg = timeExceptSubsidyFlg;
+	}
+	
 	public Timestamp getUpdateDate() {
 		return this.updateDate;
 	}
