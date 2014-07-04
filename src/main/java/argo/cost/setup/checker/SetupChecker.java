@@ -2,12 +2,16 @@ package argo.cost.setup.checker;
 
 
 
-import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
+import argo.cost.common.dao.BaseCondition;
+import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.model.SetupForm;
 
@@ -17,6 +21,20 @@ import argo.cost.setup.model.SetupForm;
  * @author COST argo Corporation.
  */
 public class SetupChecker {
+	
+	/**
+	 * 共通DAO
+	 */
+	@Autowired
+	static BaseDao baseDao;
+	
+	public static BaseDao getBaseDao() {
+		return baseDao;
+	}
+
+	public static void setBaseDao(BaseDao baseDao) {
+		SetupChecker.baseDao = baseDao;
+	}
 
 	/**
 	 * 入社日
@@ -42,7 +60,6 @@ public class SetupChecker {
 	 *            画面情報オブジェクト
 	 * @throws Exception 
 	 */
-	@SuppressWarnings("deprecation")
 	public static void chkNyushyaDate(SetupForm setupForm) throws Exception {
 		
 		// 入社日
@@ -61,35 +78,81 @@ public class SetupChecker {
 		}
 		
 		// 休業開始日、退職日は入社日より後の日付であること
-		Date syuGyoStartDate = new Date(setupForm.getHolidayStart());
-		Date syuGyoEndDate = new Date(setupForm.getHolidayEnd());
-		Date nyuShaDate = new Date(setupForm.getJoinDate());
-		Date taishokuDate = new Date(setupForm.getOutDate());
 		// 休業開始日は入社日より後の日付であること
-		if (syuGyoStartDate.before(nyuShaDate)) {
-			
+		if (!StringUtils.isEmpty(setupForm.getHolidayStart()) && setupForm.getHolidayStart().compareTo(setupForm.getJoinDate()) < 0) {
 			setupForm.putConfirmMsg(MessageConstants.COSE_E_1105, new String[] {KYUGYO_START_DATE});
 			throw new Exception();
 	    
 		// 退職日は入社日より後の日付であること
-		} else if (taishokuDate.before(nyuShaDate)) {
+		} else if (!StringUtils.isEmpty(setupForm.getOutDate()) && setupForm.getOutDate().compareTo(setupForm.getJoinDate()) < 0) {
 			setupForm.putConfirmMsg(MessageConstants.COSE_E_1105,new String[] {TAISHOKU_DATE});
 			throw new Exception();
 		}
 		
-		
 		// 休業終了日は休業開始日より後の日付であること
-		if (syuGyoEndDate.before(syuGyoStartDate)) {
+		if (!StringUtils.isEmpty(setupForm.getHolidayEnd()) && !StringUtils.isEmpty(setupForm.getHolidayStart()) 
+				&& setupForm.getHolidayEnd().compareTo(setupForm.getHolidayStart()) < 0) {
 			setupForm.putConfirmMsg(MessageConstants.COSE_E_1106);
 			throw new Exception();
-			
 		}
 		
 		// 入力された休業期間や退職日の勤怠が提出以降の状況の場合
+		// 休業開始と休業終了がnull以外の場合
+		if (!StringUtils.isEmpty(setupForm.getHolidayStart()) && !StringUtils.isEmpty(setupForm.getHolidayEnd())) {
+
+			// 休業開始日
+			String holidayStart = setupForm.getHolidayStart().replace("/", "").substring(0, 6);
+			// 休業終了日
+			String holidayEnd = setupForm.getHolidayEnd().replace("/", "").substring(0, 6);
+			
+			// 退職日の承認情報を取得
+			BaseCondition condition = new BaseCondition();
+			condition.addConditionBetween("syoriYm", holidayStart, holidayEnd);
+			// 先日の勤怠情報を取得
+			List<ApprovalManage> resultList = baseDao.findResultList(condition, ApprovalManage.class);
+			
+			if (resultList.size() > 0) {
+				
+				setupForm.putConfirmMsg(MessageConstants.COSE_E_1107);
+				throw new Exception();
+			}
+		}
+		// 休業開始がnull以外の場合
+		if (!StringUtils.isEmpty(setupForm.getHolidayStart()) && StringUtils.isEmpty(setupForm.getHolidayEnd())) {
+
+			// 休業開始日
+			String holidayStart = setupForm.getHolidayStart().replace("/", "").substring(0, 6);
 		
-		
-		
-		
+			// 退職日の承認情報を取得
+			BaseCondition condition = new BaseCondition();
+			condition.addConditionGreaterEqualThan("syoriYm", holidayStart);
+			// 先日の勤怠情報を取得
+			List<ApprovalManage> resultList = baseDao.findResultList(condition, ApprovalManage.class);
+			
+			if (resultList.size() > 0) {
+				
+				setupForm.putConfirmMsg(MessageConstants.COSE_E_1107);
+				throw new Exception();
+			}
+		}
+		// 退職日がnull以外の場合
+		if (!StringUtils.isEmpty(setupForm.getOutDate())) {
+
+			// 休業開始日
+			String outDate = setupForm.getOutDate().replace("/", "").substring(0, 6);
+			
+			// 退職日の承認情報を取得
+			BaseCondition condition = new BaseCondition();
+			condition.addConditionGreaterEqualThan("syoriYm", outDate);
+			// 先日の勤怠情報を取得
+			List<ApprovalManage> resultList = baseDao.findResultList(condition, ApprovalManage.class);
+			
+			if (resultList.size() > 0) {
+				
+				setupForm.putConfirmMsg(MessageConstants.COSE_E_1107);
+				throw new Exception();
+			}
+		}
 	}
 	
 	/**

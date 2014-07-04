@@ -138,5 +138,10 @@ public class MessageConstants {
 	 *　休業終了日は休業開始日よりあとの日付を入力してください
 	 */
 	public static final String COSE_E_1106 = "休業終了日は休業開始日よりあとの日付を入力してください";
+	
+	/**
+	 *　休業終了日は休業開始日よりあとの日付を入力してください
+	 */
+	public static final String COSE_E_1107 = "勤怠提出後の日付を休業期間や退職日には設定はできません。";
 
 }
