@@ -153,14 +153,14 @@ public class SetupServiceImpl implements SetupService {
 	public void doSaveCheck(SetupForm form) throws Exception {
 		
 		form.clearMessages();
-		// 入社日のチェック
-		SetupChecker.chkNyushyaDate(form);
 		// 休業開始日のチェック
 		SetupChecker.chkKyukaKaishiDate(form);
 		// 休業終了日のチェック
 		SetupChecker.chkKyukaShyuryoDate(form);
 		// 退職日のチェック
 		SetupChecker.chkTaishokuDate(form);
+		// 保存時の入力チェック
+		SetupChecker.chkSaveDate(form);
 	}
 
 	/**

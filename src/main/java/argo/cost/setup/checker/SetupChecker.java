@@ -35,11 +35,6 @@ public class SetupChecker {
 	public static void setBaseDao(BaseDao baseDao) {
 		SetupChecker.baseDao = baseDao;
 	}
-
-	/**
-	 * 入社日
-	 */
-	private final static String  NYUSHYA_DATE = "入社日";
 	/**
 	 * 休業開始日
 	 */
@@ -54,28 +49,13 @@ public class SetupChecker {
 	private final static String TAISHOKU_DATE = "退職日";
 	
 	/**
-	 * 入社日チェック
+	 * 保存時の入力チェック
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
 	 * @throws Exception 
 	 */
-	public static void chkNyushyaDate(SetupForm setupForm) throws Exception {
-		
-		// 入社日
-		String strNyushaDate = setupForm.getJoinDate();
-		// 未入力
-		if (StringUtils.isEmpty(strNyushaDate)) {
-			// 入社日が未入力です
-			setupForm.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {NYUSHYA_DATE});
-			throw new Exception();
-		}
-		// 入社日のyyyy/MM/dd形式値が数値以外
-		if (!CostDateUtils.isValidDate(strNyushaDate, CommonConstant.YYYY_MM_DD)) {
-			// 入社日を正しく入力してください
-			setupForm.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {NYUSHYA_DATE});
-			throw new Exception();
-		}
+	public static void chkSaveDate(SetupForm setupForm) throws Exception {
 		
 		// 休業開始日、退職日は入社日より後の日付であること
 		// 休業開始日は入社日より後の日付であること
