@@ -61,12 +61,14 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 		for (int i = 0 ;i < csvDetailList.size() ;i ++) {
 			String strNo = csvDetailList.get(i).getUserId().concat(",");
 			String strOverWeekdayHours = csvDetailList.get(i).getOverWeekdayHours().concat(",");
+			String strOverHolidayHours = csvDetailList.get(i).getOverHolidayHours().concat(",");
 			String strOverNightHours = csvDetailList.get(i).getOverNightHours().concat(",");
 			String strOverHolidayChangeWorkHours = csvDetailList.get(i).getOverHolidayChangeWorkHours().concat(",");
 			String strAbsenceHours = csvDetailList.get(i).getAbsenceHours().concat(",");
 			String strOverWeekdayNomalHours = csvDetailList.get(i).getOverWeekdayNomalHours().concat(",").concat("\r\n");
 			
-			strCsvData += strNo.concat(strOverWeekdayHours).concat(strOverNightHours).concat(strOverHolidayChangeWorkHours).concat(strAbsenceHours).concat(strOverWeekdayNomalHours);
+			strCsvData += strNo.concat(strOverWeekdayHours).concat(strOverHolidayHours).concat(strOverNightHours).concat(strOverHolidayChangeWorkHours)
+					.concat(strAbsenceHours).concat(strOverWeekdayNomalHours);
 		}
 		
 		byte[] sbyte = strCsvData.getBytes();
@@ -121,22 +123,22 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 			for (ApprovalManage approvalInfo : approvalList) {
 
 				//　超過勤務時間数（平日_割増）
-				BigDecimal hokinHeijituJikansu = new BigDecimal(0);
+				Double hokinHeijituJikansu = new Double(0.0);
 				//　超過勤務時間数（休日）
-				BigDecimal chokinKyujituJikansu = new BigDecimal(0);
+				Double chokinKyujituJikansu = new Double(0.0);
 				//　超過勤務時間数（深夜）
-				BigDecimal sinyaKinmuJikansu = new BigDecimal(0);
+				Double sinyaKinmuJikansu = new Double(0.0);
 				//　欠勤時間数
-				BigDecimal kyukaJikansu = new BigDecimal(0);
+				Double kyukaJikansu = new Double(0.0);
 				//　超過勤務時間数（平日_通常）
-				BigDecimal chokinHeijituTujyoJikansu = new BigDecimal(0);
+				Double chokinHeijituTujyoJikansu = new Double(0.0);
 				
 				csvInfo = new PayMagistrateCsvInfo();
 				//　社員番号
 				csvInfo.setUserId(approvalInfo.getUser().getId());
 				
 				// 勤怠情報を取得
-				List<KintaiInfo> kintaiList = getKintaiList(approvalInfo.getUser().getId(), approvalInfo.getAppYmd());
+				List<KintaiInfo> kintaiList = getKintaiList(approvalInfo.getUser().getId(), approvalInfo.getSyoriYm());
 				
 				if (kintaiList.size() > 0) {
 					
@@ -144,11 +146,11 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 						
 						//　超過勤務時間数（深夜）
 						if (kintaiInfo.getSinyaKinmuJikansu() != null) {
-							sinyaKinmuJikansu.add(kintaiInfo.getSinyaKinmuJikansu());
+							sinyaKinmuJikansu += kintaiInfo.getSinyaKinmuJikansu().doubleValue();
 						}
 						//　欠勤時間数
 						if (kintaiInfo.getKyukaJikansu() != null) {
-							kyukaJikansu.add(kintaiInfo.getKyukaJikansu());
+							kyukaJikansu += kintaiInfo.getKyukaJikansu().doubleValue();
 						}
 						
 						
@@ -156,18 +158,18 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 						if (intTimeExceptSubsidyFlg == 1) {
 							
 							//　超過勤務時間数（平日_割増）
-							if (kintaiInfo.getChokinHeijituTujyoJikansu() != null) {
-								hokinHeijituJikansu.add(kintaiInfo.getChokinHeijituTujyoJikansu());
+							if (kintaiInfo.getChokinHeijituJikansu() != null) {
+								hokinHeijituJikansu += kintaiInfo.getChokinHeijituJikansu().doubleValue();
 							}
 							
 							//　超過勤務時間数（休日）
 							if (kintaiInfo.getChokinKyujituJikansu() != null) {
-								chokinKyujituJikansu.add(kintaiInfo.getChokinKyujituJikansu());
+								chokinKyujituJikansu += kintaiInfo.getChokinKyujituJikansu().doubleValue();
 							}
 							
 							//　超過勤務時間数（平日_通常）
 							if (kintaiInfo.getChokinHeijituTujyoJikansu() != null) {
-								chokinHeijituTujyoJikansu.add(kintaiInfo.getChokinHeijituTujyoJikansu());
+								chokinHeijituTujyoJikansu += kintaiInfo.getChokinHeijituTujyoJikansu().doubleValue();
 							}
 							
 						}
@@ -176,11 +178,11 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 				}
 
 				//　超過勤務時間数（平日_割増）
-				csvInfo.setOverWeekdayHours(bigDecimalToString(hokinHeijituJikansu));
+				csvInfo.setOverWeekdayHours(hokinHeijituJikansu.toString());
 				//　超過勤務時間数（休日）
-				csvInfo.setOverHolidayHours(bigDecimalToString(chokinKyujituJikansu));
+				csvInfo.setOverHolidayHours(chokinKyujituJikansu.toString());
 				//　超過勤務時間数（深夜）
-				csvInfo.setOverNightHours(bigDecimalToString(sinyaKinmuJikansu));
+				csvInfo.setOverNightHours(sinyaKinmuJikansu.toString());
 				
 				// ユーザー定義の時間外手当フラグが１の場合、対象月の超過勤務時間数を合計した値を出力する
 				if (intTimeExceptSubsidyFlg == 1) {
@@ -191,9 +193,9 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 				}
 				
 				//　欠勤時間数
-				csvInfo.setAbsenceHours(bigDecimalToString(kyukaJikansu));
+				csvInfo.setAbsenceHours(kyukaJikansu.toString());
 				//　超過勤務時間数（平日_通常）
-				csvInfo.setOverWeekdayNomalHours(bigDecimalToString(chokinHeijituTujyoJikansu));
+				csvInfo.setOverWeekdayNomalHours(chokinHeijituTujyoJikansu.toString());
 				
 				payMagistrateCsvList.add(csvInfo);
 			}
@@ -298,18 +300,18 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 	 * 
 	 * @param userId
 	 *              ユーザＩＤ
-	 * @param applyYmd
-	 *               申請年月日
+	 * @param syoriYm
+	 *               処理年月
 	 * @return 勤怠管理データ
 	 */
-	private List<KintaiInfo> getKintaiList(String userId, String applyYmd) {
+	private List<KintaiInfo> getKintaiList(String userId, String syoriYm) {
 
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// ユーザＩＤ
 		condition.addConditionEqual("users.id", userId);
 		// 日付
-		condition.addConditionLike("atendanceDate", applyYmd.substring(0, 6) + "%");
+		condition.addConditionLike("atendanceDate", syoriYm + "%");
 		// 勤怠情報を取得
 		List<KintaiInfo> kintaiList = baseDao.findResultList(condition, KintaiInfo.class);
 		
