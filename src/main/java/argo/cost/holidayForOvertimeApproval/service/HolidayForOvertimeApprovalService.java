@@ -26,7 +26,7 @@ public interface HolidayForOvertimeApprovalService {
 	 * @return
 	 *        超勤振替申請承認画面情報
 	 */
-	HolidayForOvertimeApprovalForm getHolidayForOvertimeApproval(String applyNo) throws ParseException ;
+	HolidayForOvertimeApprovalForm getHolidayForOvertimeApproval(HolidayForOvertimeApprovalForm holidayForOvertimeApprovalForm, String applyNo) throws ParseException ;
 
 	/**
 	 * 承認処理を実行
