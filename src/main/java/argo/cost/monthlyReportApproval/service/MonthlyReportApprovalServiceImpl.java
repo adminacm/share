@@ -6,12 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.ApprovalManage;
@@ -19,24 +23,14 @@ import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.entity.StatusMaster;
 import argo.cost.common.model.MonthlyReportDispVO;
+import argo.cost.common.model.ProjWorkTimeCountVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
-import argo.cost.monthlyReportApproval.dao.MonthlyReportApprovalDao;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
 
 @Service
 public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalService {
 
-	/**
-	 * 月報承認DAO
-	 */
-	@Autowired
-	private MonthlyReportApprovalDao monthlyReportApprovalDao;
-	
-	/** 定数 */
-	// YYYYMMDD形式を表す文字列
-	private final String YYYYMMDD = "yyyyMMdd";
-	
 	/**
 	 * 共通DAO
 	 */
@@ -74,142 +68,141 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 * @throws ParseException 
 	 */
 	@Override
-	public MonthlyReportApprovalForm getMonReApprovalList(MonthlyReportApprovalForm monthlyReportApprovalForm, String applyNo) throws ParseException {
+	public void getMonReApprovalList(MonthlyReportApprovalForm form, String applyNo) throws ParseException {
 		
-		List<MonthlyReportDispVO> monthlyReportApprovalList = new ArrayList<MonthlyReportDispVO>();
-		
-		// 最新の申請日付を取得
-		String strLatestShinseiDate = monthlyReportApprovalDao.getLatestShinseiDate(monthlyReportApprovalForm.getUserId());
-		monthlyReportApprovalList = getMonReList(CostDateUtils.toDate(strLatestShinseiDate.concat("01")));
 		// 月報データを取得
-		BaseCondition kintaiInfoSelectCondition = new BaseCondition();
-		kintaiInfoSelectCondition.addConditionEqual("approvalManage.id", applyNo);
+		BaseCondition condition = new BaseCondition();
+		condition.addConditionEqual("approvalManage1.applyNo", applyNo);
+		condition.addOrderAsc("atendanceDate");
 		
-		ArrayList<KintaiInfo> kintaiInfoList = (ArrayList<KintaiInfo>) baseDao.findResultList(kintaiInfoSelectCondition, KintaiInfo.class);
+		List<KintaiInfo> kintaiInfoList = baseDao.findResultList(condition, KintaiInfo.class);
+		String strLatestShinseiDate = kintaiInfoList.get(0).getAtendanceDate();
 		
-		List<ProjWorkTimeManage> projWorkTimeManageList = new ArrayList<ProjWorkTimeManage>();
+		// 承認情報を取得
+		ApprovalManage approval = baseDao.findById(applyNo, ApprovalManage.class); 
+		form.setTaishoUserId(approval.getUser().getId());
+		form.setTaishoUserName(approval.getUser().getUserName());
+		
+		// 月報勤務年月
+		form.setReportMoth(this.getReportMonth(strLatestShinseiDate));
+		// 月報リストを作成
+		List<MonthlyReportDispVO> monthlyReportApprovalList = getMonReList(CostDateUtils.toDate(strLatestShinseiDate));
+		List<ProjWorkTimeCountVO> projWorkTimeManageList = new ArrayList<ProjWorkTimeCountVO>();
+		// 月報情報
+		MonthlyReportDispVO monthInfo = null;
+		// 勤怠情報
+		KintaiInfo kintaiInfo = null;
 		for(int j = 0 ;j < monthlyReportApprovalList.size();j++) {
-			
+			// 月報情報
+			monthInfo = monthlyReportApprovalList.get(j);
 			for (int i = 0;i < kintaiInfoList.size(); i++) {
+				// 勤怠情報
+				kintaiInfo = kintaiInfoList.get(i);
 				
 				// 対応した日付で、勤務情報を設定する
-				if (StringUtils.equals(monthlyReportApprovalList.get(j).getDate(), kintaiInfoList.get(i).getAtendanceDate())) {
+				if (StringUtils.equals(monthInfo.getDate(), kintaiInfo.getAtendanceDate())) {
 					
-					// 区分
-					if (kintaiInfoList.get(i).getKyukaKekinKbnMaster() != null ){
-						monthlyReportApprovalList.get(j).setWorkKbn(kintaiInfoList.get(i).getKyukaKekinKbnMaster().getCode());
+					// 勤務日区分
+					if (kintaiInfo.getWorkDayKbnMaster() != null) {
+						// 勤務日区分
+						monthInfo.setWorkKbn(kintaiInfo.getWorkDayKbnMaster().getCode());
+						// 勤務日区分名
+						monthInfo.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
 					}
-					if (kintaiInfoList.get(i).getShiftJikoku() != null ){
+					// 休暇欠勤区分
+					if (kintaiInfo.getKyukaKekinKbnMaster() != null ) {
+						monthInfo.setKyukaKb(kintaiInfo.getKyukaKekinKbnMaster().getCode());
+						monthInfo.setKyukaKbName(kintaiInfo.getKyukaKekinKbnMaster().getName());
+					}
+					if (kintaiInfo.getShiftJikoku() != null ) {
 						// ｼﾌﾄ
-						monthlyReportApprovalList.get(j).setShift(kintaiInfoList.get(i).getShiftJikoku().getShiftCode());
+						monthInfo.setShift(kintaiInfo.getShiftJikoku().getShiftCode().substring(0, 4));
 					}
 					// 出勤
-					monthlyReportApprovalList.get(j).setWorkSTime(kintaiInfoList.get(i).getKinmuStartTime());
+					monthInfo.setWorkSTime(kintaiInfo.getKinmuStartTime());
 					// 退勤
-					monthlyReportApprovalList.get(j).setWorkETime(kintaiInfoList.get(i).getKinmuEndTime());
-					// 休暇
-					if (kintaiInfoList.get(i).getKyukaJikansu() != null ) {
-						monthlyReportApprovalList.get(j).setRestHours(kintaiInfoList.get(i).getKyukaJikansu().doubleValue());
+					monthInfo.setWorkETime(kintaiInfo.getKinmuEndTime());
+					// 休暇時間数
+					if (kintaiInfo.getKyukaJikansu() != null ) {
+						monthInfo.setRestHours(kintaiInfo.getKyukaJikansu().doubleValue());
 					}
-					
+					// 休暇欠勤区分
+					if (kintaiInfo.getKyukaKekinKbnMaster() != null) {
+						monthInfo.setKyukaKb(kintaiInfo.getKyukaKekinKbnMaster().getCode());
+						monthInfo.setKyukaKbName(kintaiInfo.getKyukaKekinKbnMaster().getName());
+					}
 					// 勤務時間数
-					if (kintaiInfoList.get(i).getKinmuJikansu() != null ) {
-						monthlyReportApprovalList.get(j).setWorkHours(kintaiInfoList.get(i).getKinmuJikansu().doubleValue());
+					if (kintaiInfo.getKinmuJikansu() != null ) {
+						monthInfo.setWorkHours(kintaiInfo.getKinmuJikansu().doubleValue());
 					}
 					// 超勤開始
-					monthlyReportApprovalList.get(j).setChoSTime(kintaiInfoList.get(i).getChokinStartTime());
+					monthInfo.setChoSTime(kintaiInfo.getChokinStartTime());
 					// 超勤終了
-					monthlyReportApprovalList.get(j).setChoETime(kintaiInfoList.get(i).getChokinEndTime());
+					monthInfo.setChoETime(kintaiInfo.getChokinEndTime());
 					// 超勤平増
-					if (kintaiInfoList.get(i).getChokinHeijituJikansu() != null ) {
-						monthlyReportApprovalList.get(j).setChoWeekday(kintaiInfoList.get(i).getChokinHeijituJikansu().doubleValue());
+					if (kintaiInfo.getChokinHeijituJikansu() != null ) {
+						monthInfo.setChoWeekday(kintaiInfo.getChokinHeijituJikansu().doubleValue());
 					}
-					
 					// 超勤平常
-					if (kintaiInfoList.get(i).getChokinHeijituTujyoJikansu() != null ) {
-						monthlyReportApprovalList.get(j).setChoWeekdayNomal(kintaiInfoList.get(i).getChokinHeijituTujyoJikansu().doubleValue());
+					if (kintaiInfo.getChokinHeijituTujyoJikansu() != null ) {
+						monthInfo.setChoWeekdayNomal(kintaiInfo.getChokinHeijituTujyoJikansu().doubleValue());
 					}
-					
 					// 超勤休日
-					if (kintaiInfoList.get(i).getChokinKyujituJikansu() != null ) {
-						monthlyReportApprovalList.get(j).setChoHoliday(kintaiInfoList.get(i).getChokinKyujituJikansu().doubleValue());
+					if (kintaiInfo.getChokinKyujituJikansu() != null ) {
+						monthInfo.setChoHoliday(kintaiInfo.getChokinKyujituJikansu().doubleValue());
 					}
-					
 					// 超勤深夜
-					if (kintaiInfoList.get(i).getSinyaKinmuJikansu() != null ) {
-						monthlyReportApprovalList.get(j).setmNHours(kintaiInfoList.get(i).getSinyaKinmuJikansu().doubleValue());
+					if (kintaiInfo.getSinyaKinmuJikansu() != null ) {
+						monthInfo.setmNHours(kintaiInfo.getSinyaKinmuJikansu().doubleValue());
 					}
-					
 					// ﾛｹｰｼｮﾝコード
-					monthlyReportApprovalList.get(j).setLocationCode(kintaiInfoList.get(i).getLocation().getCode());
+					monthInfo.setLocationCode(kintaiInfo.getLocation().getCode());
 					// ﾛｹｰｼｮﾝ名前
-					monthlyReportApprovalList.get(j).setLocationName(kintaiInfoList.get(i).getLocation().getName());
+					monthInfo.setLocationName(kintaiInfo.getLocation().getName());
 					
+					break;
 				}
-				
-			    //  【PJ別作業時間集計】情報を取得
-				BaseCondition projectWorkTImeSelectCondition = new BaseCondition();
-				projectWorkTImeSelectCondition.addConditionEqual("kintaiInfo.id", kintaiInfoList.get(i).getId());
-				ProjWorkTimeManage projWorkTimeManageInfo = baseDao.findSingleResult(projectWorkTImeSelectCondition, ProjWorkTimeManage.class);
-				projWorkTimeManageList.add(projWorkTimeManageInfo);
-				
 			}
 		}
 		
 		// 合計休暇時間数
 		Double totleRestHours = 0.0;
-		
 		// 合計勤務時間数
 		Double totleWorkHours = 0.0;
-
 		// 合計超勤平増
 		Double totleChoWeekday = 0.0;
-
 		// 合計超勤平常
 		Double totleChoWeekdayNomal = 0.0;
-
 		// 合計超勤休日
 		Double totleChoHoliday = 0.0;
-
 		// 合計超勤深夜
 		Double totleMNHours = 0.0;
-		
+		// 合計情報
+		MonthlyReportDispVO totleInfo = new MonthlyReportDispVO();
+
 		// 月報承認明細情報合計行作成
 		for (MonthlyReportDispVO itemInfo : monthlyReportApprovalList) {
 			
 			if (itemInfo.getRestHours() != null) {
-
 				totleRestHours += itemInfo.getRestHours();
-				
 			}
 			if (itemInfo.getWorkHours() != null) {
-
 				totleWorkHours += itemInfo.getWorkHours();
-				
 			}
 			if (itemInfo.getChoWeekday() != null) {
-
 				totleChoWeekday += itemInfo.getChoWeekday();
-				
 			}
 			if (itemInfo.getChoWeekdayNomal() != null) {
-
 				totleChoWeekdayNomal += itemInfo.getChoWeekdayNomal();
-				
 			}
 			if (itemInfo.getChoHoliday() != null) {
-
 				totleChoHoliday += itemInfo.getChoHoliday();
-				
 			}
 			if (itemInfo.getmNHours() != null) {
-
 				totleMNHours += itemInfo.getmNHours();
-				
 			}
 		}
 		
-		MonthlyReportDispVO totleInfo = new MonthlyReportDispVO();
 		// 合計フラグ
 		totleInfo.setTotleFlg(true);
 		totleInfo.setRestHours(totleRestHours);
@@ -219,14 +212,67 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 		totleInfo.setChoHoliday(totleChoHoliday);
 		totleInfo.setmNHours(totleMNHours);
 		monthlyReportApprovalList.add(totleInfo);
+		
 		// 月報承認データリストの設定
-		monthlyReportApprovalForm.setMonthlyReportApprovalList(monthlyReportApprovalList);
+		form.setMonthlyReportApprovalList(monthlyReportApprovalList);
+		
+		// プロジェクトリスト
+		Map<String, List<ProjWorkTimeCountVO>> projectMap = new HashMap<String, List<ProjWorkTimeCountVO>>();
+		// プロジェクトリストを作成する
+		for (int k = 0; k < kintaiInfoList.size(); k++) {
+			
+			//  【PJ別作業時間集計】情報を取得
+			condition = new BaseCondition();
+			condition.addConditionEqual("kintaiInfo.id", kintaiInfoList.get(k).getId());
+			List<ProjWorkTimeManage> entityList = baseDao.findResultList(condition, ProjWorkTimeManage.class);
+			List<ProjWorkTimeCountVO> projWorkTimeCountList = null;
+			for (ProjWorkTimeManage entity : entityList) {
+				ProjWorkTimeCountVO projWorkTimeCountVO = null;
+				// プロジェクトコード
+				String code = entity.getProjectBasic().getProjectCode();
+				// プロジェクト名が存在する場合
+				if (projectMap.containsKey(code)) {
+					projWorkTimeCountList = projectMap.get(code);
+					// 合計値
+					Double sum = projWorkTimeCountList.get(0).getPrpjectWorkTotalHours();
+					sum += entity.getWorkTimes().doubleValue();
+					projWorkTimeCountList.get(0).setPrpjectWorkTotalHours(sum);
+					projWorkTimeCountVO = new ProjWorkTimeCountVO();
+					// 作業内容
+					projWorkTimeCountVO.setWorkContentName(entity.getProjWorkMaster().getName());
+					// 作業時間数
+					projWorkTimeCountVO.setWorkHoursNum(entity.getWorkTimes().doubleValue());
+					projWorkTimeCountList.add(projWorkTimeCountVO);
+				} else {
+					projWorkTimeCountList = new ArrayList<ProjWorkTimeCountVO>();
+					projWorkTimeCountVO = new ProjWorkTimeCountVO();
+					// プロジェクト名を設定する
+					projWorkTimeCountVO.setProjName(entity.getProjectBasic().getProjectName());
+					projWorkTimeCountVO.setPrpjectWorkTotalHours(entity.getWorkTimes().doubleValue());
+					projWorkTimeCountList.add(projWorkTimeCountVO);
+					projectMap.put(code, projWorkTimeCountList);
+					projWorkTimeCountVO = new ProjWorkTimeCountVO();
+					// 作業内容
+					projWorkTimeCountVO.setWorkContentName(entity.getProjWorkMaster().getName());
+					// 作業時間数
+					projWorkTimeCountVO.setWorkHoursNum(entity.getWorkTimes().doubleValue());
+					projWorkTimeCountList.add(projWorkTimeCountVO);
+				}
+			}
+		}
+
+		// プロジェクトリスト作成
+		List<ProjWorkTimeCountVO> projWorkTimeCountList = new ArrayList<ProjWorkTimeCountVO>();
+		Iterator<String> iter = projectMap.keySet().iterator();
+		
+		while (iter.hasNext()) {
+			// プロジェクトリストに追加する
+			projWorkTimeCountList.addAll(projectMap.get(iter.next()));
+		}
 		
 		// PJ別作業時間集計リストの設定
-		monthlyReportApprovalForm.setProjectList(projWorkTimeManageList);
+		form.setProjectList(projWorkTimeManageList);
 		
-		// TODO PJ別作業時間集計のプロジェクト作業時間総計
-		return monthlyReportApprovalForm;
 	}
 
 	
@@ -256,7 +302,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 			for (int i = 1; i <= size; i++) {
 				
 				// 日付フォーマット
-				SimpleDateFormat sdfYearM = new SimpleDateFormat(YYYYMMDD);
+				SimpleDateFormat sdfYearM = new SimpleDateFormat(CommonConstant.YYYYMMDD);
 				monReport = new MonthlyReportDispVO();
 				// 日付を設定
 				monReport.setDay(CostStringUtils.addZeroForNum(String.valueOf(calendar.get(Calendar.DATE)), 2));
@@ -311,27 +357,44 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 *        更新フラグ
 	 */
 	@Override
-	public String updateProStatus(String applyNo, String proStatusCode) {
+	public void updateProStatus(String applyNo, String proStatusCode) throws Exception {
 		
-		// 更新フラグ
-		String strUpdateFlg = "1";
-		// 申請番号によって、承認情報を取得する		
-		ApprovalManage approvalManageInfo = baseDao.findById(applyNo, ApprovalManage.class);
-		// 申請状況を設定する
-		StatusMaster statusMaster = baseDao.findById(proStatusCode, StatusMaster.class);
-		approvalManageInfo.setStatusMaster(statusMaster);
 
 		try {
+			// 申請番号によって、承認情報を取得する		
+			ApprovalManage approvalManageInfo = baseDao.findById(applyNo, ApprovalManage.class);
+			// 申請状況を設定する
+			StatusMaster statusMaster = baseDao.findById(proStatusCode, StatusMaster.class);
+			approvalManageInfo.setStatusMaster(statusMaster);
 
 			// 承認情報を更新する
 			baseDao.update(approvalManageInfo);
 		} catch (Exception e) {
 
-			strUpdateFlg = "0";
+			throw new Exception();
 		}
 				
-		return strUpdateFlg;
-
 	}
-
+	
+	/**
+	 * 年月取得処理
+	 * 
+	 * @param yyyyMMdd 日付
+	 * 
+	 * @return フォーマット日付
+	 */
+	private String getReportMonth (String yyyyMMdd) throws ParseException {
+		
+		Date date = CostDateUtils.toDate(yyyyMMdd);
+		
+		String formatDate = StringUtils.EMPTY;
+		// 日付が空白以外の場合
+		if (date != null) {
+			// 日付フォーマット
+			SimpleDateFormat sdfYearM = new SimpleDateFormat("yyyy年MM月");
+			// 日付設定
+			formatDate = sdfYearM.format(date);
+		}
+		return formatDate;
+	}
 }

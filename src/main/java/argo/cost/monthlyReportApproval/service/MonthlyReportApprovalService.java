@@ -26,18 +26,8 @@ public interface MonthlyReportApprovalService {
 	 *        月報承認データ一覧リスト
 	 * @throws ParseException 
 	 */
-	MonthlyReportApprovalForm getMonReApprovalList(MonthlyReportApprovalForm monthlyReportApprovalForm, String applyNo) throws ParseException;
+	void getMonReApprovalList(MonthlyReportApprovalForm monthlyReportApprovalForm, String applyNo) throws ParseException;
 	
-//	/**
-//	 * 【PJ別作業時間集計】情報を取得
-//	 * 
-//	 * @param applyNo
-//	 *               申請番号
-//	 * @return
-//	 *        プロジェクト情報
-//	 */
-//	List<ProjWorkTimeManage> getProjectList(String applyNo);
-
 	/**
 	 * 申請状況更新
 	 * 
@@ -48,5 +38,5 @@ public interface MonthlyReportApprovalService {
 	 * @return
 	 *        更新フラグ
 	 */
-	String updateProStatus(String applyNo, String proStatus);
+	void updateProStatus(String applyNo, String proStatus) throws Exception;
 }

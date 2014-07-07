@@ -84,10 +84,6 @@ public class MonthlyReportForm extends AbstractForm implements Serializable {
 	 * プロジェクト別作業時間集計情報
 	 */
 	private List<ProjWorkTimeCountVO> projWorkTimeCountVOList = new ArrayList<ProjWorkTimeCountVO>();
-//	/**
-//	 * プロジェクト情報
-//	 */
-//	private List<Project> projectList;
 
 	//#################################
 	//#################################

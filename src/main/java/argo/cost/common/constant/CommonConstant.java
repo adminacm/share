@@ -131,12 +131,7 @@ public class CommonConstant {
 	public static final String STATUS_SYOUNIN = "03";
 
 	/**
-	 *　状況：差戻「04」
+	 *　状況：処理済「04」
 	 */
-	public static final String STATUS_SASHIMODOSHI = "04";
-
-	/**
-	 *　状況：処理済「05」
-	 */
-	public static final String STATUS_SYORIZUMI = "05";
+	public static final String STATUS_SYORIZUMI = "04";
 }

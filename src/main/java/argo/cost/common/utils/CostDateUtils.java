@@ -356,22 +356,29 @@ public class CostDateUtils extends DateUtils {
 	　* @param applyKbnCode
 	 *            申請内容区分コード
 	 * @return 処理年月
+	 * @throws ParseException 
 	 */
-	public static String getDealDate(String strInputDate, String applyKbnCode) {
+	public static String getDealDate(String strInputDate, String applyKbnCode) throws ParseException {
 		
+		Date date = toDate(strInputDate);
+		
+		String result = StringUtils.EMPTY;
 		// 申請内容が"月報"の場合
 		if (StringUtils.equals(CommonConstant.APPLY_KBN_GETUHOU, applyKbnCode)) {
-			int intNewMonth = (strInputDate.charAt(6) - 0) + 1;
-			strInputDate.replace(strInputDate.charAt(6), (char)intNewMonth);
+			date = addMonths(date, 1);
 		// 申請内容が"超勤振替申請"の場合	
 		} else if (StringUtils.equals(CommonConstant.APPLY_KBN_CHOKIN_FURIKAE, applyKbnCode)) {
-			if((strInputDate.charAt(6) - 0) > 11 ) {
-				int intNewMonth = (strInputDate.charAt(6) - 0) + 1;
-				strInputDate.replace(strInputDate.charAt(6), (char)intNewMonth);
+			Calendar c = Calendar.getInstance();
+			c.setTime(date);
+			// 毎月の10以後の場合
+			if (10 <= c.get(Calendar.DAY_OF_MONTH)) {
+				date = addMonths(date, 1);
 			}
 		}
 		
-		return strInputDate.substring(0, 6);
+		SimpleDateFormat sf = new SimpleDateFormat(CommonConstant.YYYYMMDD);
+		result = sf.format(date);
+		return result;
 
 	}
 

@@ -12,8 +12,6 @@
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="../css/common.css" rel="stylesheet" type="text/css">
-
 <script type="text/javascript">
 /* アクション提出 */
 function submitAction(action) {
@@ -58,18 +56,37 @@ function submitAction(action) {
 				<b>月報承認</b>
 			</div>
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
-				<table style="width:800px;margin-left:40px;margin-right:40px;">
+				<table style="width:800px;margin-left:40px;">
 					<tr>
-						<td style="border:1px solid #333333;width:60px" align="center">${monthlyReportApprovalForm.proStatus}</td>
-						<td style="width:240px" align="center">
-							<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/monthlyReportApproval/approval');" />
-						</td>
-						<td style="width:185px">
-							<input type="button" style="width:120px; height:25px" value="差戻" onclick="submitAction('/monthlyReportApproval/remand');" />
-						</td>
-						<td>
+						<td style="border:1px solid #333333;width:80px" align="center">${monthlyReportApprovalForm.proStatusName}</td>
+						<!-- 提出の場合 -->
+						<c:if test="${ monthlyReportApprovalForm.proStatus == '02' }">
+							<td style="width:240px" align="right">
+								<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/monthlyReportApproval/approval');" />
+							</td>
+							<td style="width:240px" align="right">
+								<input type="button" style="width:120px; height:25px" value="差戻" onclick="submitAction('/monthlyReportApproval/remand');" />
+							</td>
+						</c:if>
+						<!-- 提出以外の場合 -->
+						<c:if test="${ monthlyReportApprovalForm.proStatus != '02' }">
+							<td style="width:240px" align="right"></td>
+							<td style="width:240px" align="right"></td>
+						</c:if>
+						<td style="width:240px" align="right">
 							<input type="button" style="width:120px; height:25px" value="戻る" onclick="submitAction('/monthlyReportApproval/back');" />
 						</td>
+					</tr>
+				</table>
+			</div>
+			<div style="margin-top: 20px;margin-bottom:10px;background:#ffdddd">
+				<table style="width:800px;margin-left:40px;">
+					<tr>
+						<td style="width:120px" align="left">${ monthlyReportApprovalForm.reportMoth }</td>
+						<td style="width:70px" align="left">社員番号</td>
+						<td style="width:60px" align="left">${monthlyReportApprovalForm.taishoUserId}</td>
+						<td style="width:60" align="left">氏名</td>
+						<td style="width:490px" align="left">${monthlyReportApprovalForm.taishoUserName}</td>
 					</tr>
 				</table>
 			</div>
@@ -77,9 +94,9 @@ function submitAction(action) {
 				<table class="table1" id="resultList">
 					<thead>
 						<tr>
-							<th rowspan="2"colspan="2">日付</th>
-							<th rowspan="2">区分</th>
-							<th rowspan="2">ｼﾌﾄ</th>
+							<th rowspan="2"colspan="2" width="50">日付</th>
+							<th rowspan="2" width="100">区分</th>
+							<th rowspan="2" width="50">ｼﾌﾄ</th>
 							<th rowspan="2">出勤</th>
 							<th rowspan="2">退勤</th>
 							<th rowspan="2">休暇</th>
@@ -101,56 +118,26 @@ function submitAction(action) {
 						<c:forEach var="approvalInfo" items="${monthlyReportApprovalForm.monthlyReportApprovalList}">
 							<tr>
 								<c:if test="${not approvalInfo.totleFlg}">
-									<td align="center" width="25PX;">
-										${approvalInfo.day}
-									</td>
-									<td align="center" width="25PX;">
-										${approvalInfo.week}
-									</td>
-									<td align="center" width="110PX;">
-										${approvalInfo.workKbnName}
-									</td>
-									<td align="center" width="50PX;">
-										${approvalInfo.shift}
-									</td>
-									<td align="center" width="50PX;">
-										${approvalInfo.workSTime}
-									</td>
-									<td align="center" width="50PX;">
-										${approvalInfo.workETime}
-									</td>
+									<td align="center">${approvalInfo.day}</td>
+									<td align="center">${approvalInfo.week}</td>
+									<td align="center">${approvalInfo.workKbnName}</td>
+									<td align="center">${approvalInfo.shift}</td>
+									<td align="center">${approvalInfo.workSTime}</td>
+									<td align="center">${approvalInfo.workETime}</td>
+									<td align="center">${approvalInfo.kyukaKbName}</td>
 								</c:if>
 								<c:if test="${approvalInfo.totleFlg}">
-									<td colspan="6" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
+									<td colspan="7" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
 								</c:if>
-								<td align="center" width="45PX;">
-									${approvalInfo.restHours}
-								</td>
-								<td align="center" width="45PX;">
-									${approvalInfo.workHours}
-								</td>
-								<td align="center" width="50PX;">
-									${approvalInfo.choSTime}
-								</td>
-								<td align="center" width="50PX;">
-									${approvalInfo.choETime}
-								</td>
-								<td align="center" width="45PX;">
-									${approvalInfo.choWeekday}
-								</td>
-								<td align="center" width="45PX;">
-									${approvalInfo.choWeekdayNomal}
-								</td>
-								<td align="center" width="45PX;">
-									${approvalInfo.choHoliday}
-								</td>
-								<td align="center" width="45PX;">
-									${approvalInfo.mNHours}
-								</td>
+								<td align="center">${approvalInfo.workHours}</td>
+								<td align="center">${approvalInfo.choSTime}</td>
+								<td align="center">${approvalInfo.choETime}</td>
+								<td align="center">${approvalInfo.choWeekday}</td>
+								<td align="center">${approvalInfo.choWeekdayNomal}</td>
+								<td align="center">${approvalInfo.choHoliday}</td>
+								<td align="center">${approvalInfo.mNHours}</td>
 								<c:if test="${not approvalInfo.totleFlg}">
-									<td align="center">
-										${approvalInfo.locationName}
-									</td>
+									<td align="center">${approvalInfo.locationName}</td>
 								</c:if>
 							</tr>
 						</c:forEach>

@@ -384,8 +384,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		
 		// 勤怠情報を取得 TODO
 		KintaiInfo kintaiEntity = baseDao.findSingleResult(condition, KintaiInfo.class);
-		// 勤怠データを更新
-		saveKintaiInfo(form, kintaiEntity);
 		// 休日勤務の代休情報を更新する
 		// 休暇欠勤区分は「代休」の場合
 		if (StringUtils.equals(form.getKyukaKb(), CommonConstant.KK_KBN_TAIKYU)) {
@@ -405,14 +403,14 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				// 社員番号
 				condition.addConditionEqual("users.id", taishoUserId);        
 		        // 勤務日区分
-				condition.addConditionIn("workDayKbnMaster.code", new String[] {CommonConstant.WORKDAY_KBN_SHUKIN, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU});
+				condition.addConditionIn("workDayKbnMaster.code", new String[] {CommonConstant.WORKDAY_KBN_KYUJITU, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU});
 				// 代休取得期限
 				condition.addConditionGreaterEqualThan("daikyuGetShimekiriDate", form.getAttDate());
 				// 勤務時間数＞＝7.5
 				condition.addConditionGreaterEqualThan("kinmuJikansu", new BigDecimal(7.5));
 				// 代休日がNULL
 				condition.addConditionIsNull("daikyuDate");
-				condition.addOrderAsc("holidaySyukinDate");
+				condition.addOrderAsc("atendanceDate");
 				// 休日勤務管理情報を取得
 				entityList = baseDao.findResultList(condition, KintaiInfo.class);
 				// 一番前の休日勤務情報を取得
@@ -425,6 +423,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				baseDao.update(holidayInfo);
 			}
 		}
+		// 勤怠データを更新
+		saveKintaiInfo(form, kintaiEntity);
 		// プロジェクト情報を更新する
 		saveProjectInfo(loginId, taishoUserId, date, form.getProjectList());
 		// 勤怠情報テーブルの更新

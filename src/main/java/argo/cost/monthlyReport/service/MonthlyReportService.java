@@ -53,7 +53,7 @@ public interface MonthlyReportService {
 	 * 			日付
 	 * @throws ParseException 
 	 */
-	void setUserMonthReport(String userId, String date, MonthlyReportForm monthlyReportForm) throws ParseException;
+	void setUserMonthReport(String userId, String date, MonthlyReportForm monthlyReportForm) throws Exception;
 	
 	/**
 	 * ユーザ最後の月報提出日付を取得
@@ -72,7 +72,7 @@ public interface MonthlyReportService {
 	 * 			ユーザID
 	 * @param date 
 	 * 			日付
-	 * @throws ParseException 
+	 * @throws Exception 
 	 */
-	String monthyReportCommit(MonthlyReportForm monthlyReportForm) throws ParseException;
+	void monthyReportCommit(MonthlyReportForm monthlyReportForm) throws Exception;
 }

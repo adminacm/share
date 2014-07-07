@@ -185,27 +185,23 @@ public class MonthlyReportController extends AbstractController {
     	
     	// 月報一覧情報
     	List<MonthlyReportDispVO> mRList = form.getmRList();
-    	for (int i = 0; i < mRList.size()-1; i++) {
-    		MonthlyReportDispVO monthlyReport = mRList.get(i);
-    		try {
-    			form.clearMessages();
-            	// 入力チェック
-    			MonthlyReportChecker.chkKintaiInfoNull(form, monthlyReport);
-            	MonthlyReportChecker.chkKintaiInfoInput(form, monthlyReport);
-            	MonthlyReportChecker.chkKintaiInfoDaikyu(form, monthlyReport);
-    		} catch (Exception e) {
-    			return MONTHLYREPORT;
-    		}
-    	}
+    	
+		try {
+			form.clearMessages();
+			for (int i = 0; i < mRList.size() - 1; i++) {
+				MonthlyReportDispVO monthlyReport = mRList.get(i);
+				// 入力チェック
+				MonthlyReportChecker.chkKintaiInfoNull(form, monthlyReport);
+				MonthlyReportChecker.chkKintaiInfoInput(form, monthlyReport);
+				MonthlyReportChecker.chkKintaiInfoDaikyu(form, monthlyReport);
+			}
+	    	// 月報を提出
+	    	monthlyReportService.monthyReportCommit(form);
+		} catch (Exception e) {
+			return MONTHLYREPORT;
+		}
 
-    	String strMonthyReportCommitFlg = monthlyReportService.monthyReportCommit(form);
-    	if ("1".equals(strMonthyReportCommitFlg)) {
-    		String date = form.getYearMonth();
-    		return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + date;
-    	} else {
-    		
-    		// メッセージを表示する
-    		return MONTHLYREPORT;
-    	}
+    	String date = form.getYearMonth();
+		return REDIRECT + UrlConstant.URL_MONTHLYREPORT + INIT + QUESTION_MARK + "newMonth=" + date;
     }
 }

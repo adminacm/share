@@ -79,14 +79,13 @@ public class MonthlyReportApprovalController extends AbstractController {
 	@RequestMapping(value = APPROVAL)
 	public String doApproval(MonthlyReportApprovalForm form) {
 		
-		// 申請状況「承認」
-		String proStatusCode = "03";
-		
 		// 申請状況が承認に更新
-		String updateFlg = monthlyReportApprovalService.updateProStatus(form.getApplyNo(), proStatusCode);
-		
-		if ("1".equals(updateFlg)) {
-			System.out.print("月報承認画面申請状況が承認に更新しました");
+		try {
+			monthlyReportApprovalService.updateProStatus(form.getApplyNo(), "03");
+		} catch (Exception ex) {
+			
+			form.putConfirmMsg("月報承認画面申請状況が差戻に更新しました");
+			return MONTHLYREPORT_APPROVAL;
 		}
 
 		// 承認一覧画面へ遷移する
@@ -102,14 +101,13 @@ public class MonthlyReportApprovalController extends AbstractController {
 	@RequestMapping(value = REMAND)
 	public String doRemand(MonthlyReportApprovalForm form) {
 
-		// 申請状況「差戻」
-		String proStatus = "04";
-		
-		// 申請状況が差戻しに更新
-		String updateFlg = monthlyReportApprovalService.updateProStatus(form.getApplyNo(), proStatus);
-		
-		if ("1".equals(updateFlg)) {
-			System.out.print("月報承認画面申請状況が差戻に更新しました");
+		// 月報申請を差戻し
+		try {
+			monthlyReportApprovalService.updateProStatus(form.getApplyNo(), "01");
+		} catch (Exception ex) {
+			
+			form.putConfirmMsg("月報承認の差戻し失敗しました");
+			return MONTHLYREPORT_APPROVAL;
 		}
 		
 		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する

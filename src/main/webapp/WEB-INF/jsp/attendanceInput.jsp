@@ -85,10 +85,13 @@ function submitAction(action) {
 				</tr>
 			</table>
 		</div>
-		<div style="margin-top: 20px;" >
+		<div style="margin-top: 20px;" align="center">
 			<!-- 月報承認状況は「作成中」以外の場合 -->
 			<c:if test="${ !empty attendanceInputForm.appStatusCode && attendanceInputForm.appStatusCode != '01'}">
-				${attendanceInputForm.appStatusName}
+				<table class="table2" style="width: 100px;">
+					<tr><td>${attendanceInputForm.appStatusName}</td></tr>
+				</table>
+				
 			</c:if>
 		</div>
 		<div style="margin-top: 20px;margin-bottom:10px;" >

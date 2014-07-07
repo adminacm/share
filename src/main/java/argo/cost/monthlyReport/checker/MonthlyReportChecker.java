@@ -63,10 +63,6 @@ public class MonthlyReportChecker {
 		condition.addConditionEqual("atendanceDate", attDate);           // 対象日
 		// 勤怠情報を取得
 		KintaiInfo kintai = baseDao.findSingleResult(condition, KintaiInfo.class);
-		// 対象日の勤怠情報は存在しない場合
-		if (kintai == null) {
-			
-		}
 		
 		// 出勤日の場合
 		if (StringUtils.equals(CommonConstant.WORKDAY_FLAG_SHUKIN, calendar.getOnDutyFlg())) {
@@ -103,8 +99,11 @@ public class MonthlyReportChecker {
 					throw new Exception();
 				}
 			} else {
-				// 勤怠情報を追加する(休日)
-				insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_KYUJITU);
+				// 勤怠情報が存在しない場合
+				if (kintai == null) {
+					// 勤怠情報を追加する(休日)
+					insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_KYUJITU);
+				}
 			}
 		}
 	}

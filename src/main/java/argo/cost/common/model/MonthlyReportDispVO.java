@@ -101,6 +101,10 @@ public class MonthlyReportDispVO {
 	 * ﾛｹｰｼｮﾝ名
 	 */
 	private String locationName;
+	/**
+	 * 申請番号
+	 */
+	private String appNo;
 
 	/**
 	 * 合計行フラグ
@@ -277,6 +281,14 @@ public class MonthlyReportDispVO {
 
 	public void setKyukaKbName(String kyukaKbName) {
 		this.kyukaKbName = kyukaKbName;
+	}
+
+	public String getAppNo() {
+		return appNo;
+	}
+
+	public void setAppNo(String appNo) {
+		this.appNo = appNo;
 	}
 	
 }

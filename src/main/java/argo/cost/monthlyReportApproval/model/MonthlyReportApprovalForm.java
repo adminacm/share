@@ -3,9 +3,9 @@ package argo.cost.monthlyReportApproval.model;
 import java.io.Serializable;
 import java.util.List;
 
-import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.MonthlyReportDispVO;
+import argo.cost.common.model.ProjWorkTimeCountVO;
 
 /**
  * <p>
@@ -24,6 +24,10 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	 * 申請番号
 	 */
 	private String applyNo;
+	/**
+	 * 月報年月
+	 */
+	private String reportMoth;
 	
 	/**
 	 * 処理状況
@@ -48,7 +52,7 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	/**
 	 * プロジェクト情報
 	 */
-	private List<ProjWorkTimeManage> projectList;
+	private List<ProjWorkTimeCountVO> projectList;
 
 	//#################################
 	//#################################
@@ -86,11 +90,11 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 		this.monthlyReportApprovalList = monthlyReportApprovalList;
 	}
 
-	public List<ProjWorkTimeManage> getProjectList() {
+	public List<ProjWorkTimeCountVO> getProjectList() {
 		return projectList;
 	}
 
-	public void setProjectList(List<ProjWorkTimeManage> projectList) {
+	public void setProjectList(List<ProjWorkTimeCountVO> projectList) {
 		this.projectList = projectList;
 	}
 
@@ -100,6 +104,14 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 
 	public void setProStatusName(String proStatusName) {
 		this.proStatusName = proStatusName;
+	}
+
+	public String getReportMoth() {
+		return reportMoth;
+	}
+
+	public void setReportMoth(String reportMoth) {
+		this.reportMoth = reportMoth;
 	}
 	
 }

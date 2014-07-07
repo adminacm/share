@@ -162,19 +162,32 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		        
 		List<KintaiInfo> monthlyKintaiInfoList = baseDao.findResultList(monthReportInfoSelectCondition, KintaiInfo.class);
 		
+		// 月報情報
+		MonthlyReportDispVO monthInfo = null;
+		// 勤怠情報
+		KintaiInfo kintaiInfo = null;
 		for(int j = 0; j < monthlyReportList.size(); j++) {
+			// 月報情報
+			monthInfo = monthlyReportList.get(j);
 			for (int i = 0; i < monthlyKintaiInfoList.size(); i++) {
-				// 月報情報
-				MonthlyReportDispVO monthInfo = monthlyReportList.get(j);
+
 				// 勤怠情報
-				KintaiInfo kintaiInfo = monthlyKintaiInfoList.get(i);
+				kintaiInfo = monthlyKintaiInfoList.get(i);
 				
 				// 対応した日付で、勤務情報を設定する
 				if (StringUtils.equals(monthInfo.getDate(), kintaiInfo.getAtendanceDate())) {
 					
-					// 区分
+					// 勤務日区分
+					if (kintaiInfo.getWorkDayKbnMaster() != null) {
+						// 勤務日区分
+						monthInfo.setWorkKbn(kintaiInfo.getWorkDayKbnMaster().getCode());
+						// 勤務日区分名
+						monthInfo.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
+					}
+					// 休暇欠勤区分
 					if (kintaiInfo.getKyukaKekinKbnMaster() != null ) {
-						monthInfo.setWorkKbn(kintaiInfo.getKyukaKekinKbnMaster().getCode());
+						monthInfo.setKyukaKb(kintaiInfo.getKyukaKekinKbnMaster().getCode());
+						monthInfo.setKyukaKbName(kintaiInfo.getKyukaKekinKbnMaster().getName());
 					}
 					if (kintaiInfo.getShiftJikoku() != null ) {
 						// ｼﾌﾄ
@@ -221,13 +234,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 					monthInfo.setLocationCode(kintaiInfo.getLocation().getCode());
 					// ﾛｹｰｼｮﾝ名前
 					monthInfo.setLocationName(kintaiInfo.getLocation().getName());
-					// 勤務日区分
-					if (kintaiInfo.getWorkDayKbnMaster() != null) {
-						// 勤務日区分
-						monthInfo.setWorkKbn(kintaiInfo.getWorkDayKbnMaster().getCode());
-						// 勤務日区分名
-						monthInfo.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
-					}
+					break;
 				}
 			}
 		}
@@ -417,54 +424,60 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	 * @param form
 	 * 			画面情報
 	 * 
-	 * @throws ParseException
+	 * @throws Exception
 	 */
 	@Override
-	public String monthyReportCommit(MonthlyReportForm form) throws ParseException {
+	public void monthyReportCommit(MonthlyReportForm form) throws Exception {
 		
 		// ログインID
 		String loginUserId = form.getUserId();
 		// 対象者ID
 		String taishoUserId = form.getTaishoUserId();
+		// 月報申請データを作成
 		ApprovalManage approvalManage = new ApprovalManage();
+
 		// 申請番号：ユーザーID+申請区分+申請日付
 		String strApplyNo = taishoUserId.concat(CommonConstant.APPLY_KBN_GETUHOU).concat(form.getYearMonth().substring(0, 6).concat("00"));
-	
 		// 申請番号
 		approvalManage.setApplyNo(strApplyNo);
 		// 申請状況コードを"02"(提出)更新される
 		approvalManage.setStatusMaster(baseDao.findById(CommonConstant.STATUS_TEISYUTU, StatusMaster.class));
-		
 		// 申請内容
 		approvalManage.setApplyDetail("月報申請：".concat(form.getYearMonthHyoji()));
-		
 		// 申請区分("1"(月報)を設定する)
 		approvalManage.setApplyKbnMaster(baseDao.findById(CommonConstant.APPLY_KBN_GETUHOU, ApplyKbnMaster.class));
-		
 		// 社員番号
 		approvalManage.setUser(baseDao.findById(taishoUserId, Users.class));
-		
 		// 申請日付
-		approvalManage.setAppYmd(CostDateUtils.getNowDate());
-		
+		approvalManage.setAppYmd(form.getYearMonth().concat("01"));
 		// 処理年月
-		approvalManage.setSyoriYm(CostDateUtils.getDealDate(form.getYearMonth(), CommonConstant.APPLY_KBN_GETUHOU));;
-		String strMonthyReportCommitFlg = "0";
-		
-		// 勤怠情報の対応した申請番号を更新される
-		BaseCondition condition = new BaseCondition();
-		condition.addConditionEqual("users.id", taishoUserId);
-		condition.addConditionLike("atendanceDate", form.getYearMonth().substring(0, 6) + "%");
-		List<KintaiInfo> monthyKintaiInfoList = baseDao.findResultList(condition, KintaiInfo.class);
-		approvalManage.setCreatedUserId(loginUserId);               // 登録者
-		approvalManage.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
+		approvalManage.setSyoriYm(CostDateUtils.getDealDate(form.getYearMonth(), CommonConstant.APPLY_KBN_GETUHOU));
 		approvalManage.setUpdatedUserId(loginUserId);               // 更新者
 		approvalManage.setUpdateDate(new Timestamp(System.currentTimeMillis()));  // 更新時刻
 		try {
-			// 申請一覧を登録する
-			baseDao.insert(approvalManage);
-			// 登録成功
-			strMonthyReportCommitFlg = "1";
+			// 承認情報を取得
+			ApprovalManage approval = baseDao.findById(strApplyNo, ApprovalManage.class); 
+			// 承認情報が存在しない場合
+			if (approval == null) {
+				approvalManage.setCreatedUserId(loginUserId);               // 登録者
+				approvalManage.setCreatedDate(new Timestamp(System.currentTimeMillis())); // 登録時刻
+				// 申請一覧を登録する
+				baseDao.insert(approvalManage);
+				
+			} else {
+				// 申請状況コードを"02"(提出)更新される
+				approval.setStatusMaster(baseDao.findById(CommonConstant.STATUS_TEISYUTU, StatusMaster.class));
+				approval.setUpdatedUserId(loginUserId);               // 更新者
+				approval.setUpdateDate(new Timestamp(System.currentTimeMillis()));  // 更新時刻
+				// 申請一覧を登録する
+				baseDao.update(approval);
+			}
+
+			// 勤怠情報の対応した申請番号を更新される
+			BaseCondition condition = new BaseCondition();
+			condition.addConditionEqual("users.id", taishoUserId);
+			condition.addConditionLike("atendanceDate", form.getYearMonth().substring(0, 6) + "%");
+			List<KintaiInfo> monthyKintaiInfoList = baseDao.findResultList(condition, KintaiInfo.class);
 			
 			for (KintaiInfo kintaiInfo : monthyKintaiInfoList) {
 				// 申請番号を勤怠テーブルに更新される
@@ -472,10 +485,8 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 				baseDao.update(kintaiInfo);
 			}
 		} catch (Exception e) {
-			form.putConfirmMsg(e.getMessage());
+			form.putConfirmMsg("月報申請提出失敗しました");
 		}
-		
-		return strMonthyReportCommitFlg;
 		
 	}
 	
