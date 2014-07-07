@@ -982,6 +982,11 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 休日予定勤務情報
 		HolidayAttendanceVO attendanceVO = null;
 		if (attYoteEntity != null) {
+			// 勤務日区分
+			form.setWorkDayKbn(attYoteEntity.getWorkDayKbnMaster().getCode());
+			// 勤務日区分名
+			form.setWorkDayKbnName(attYoteEntity.getWorkDayKbnMaster().getName());
+			
 			attendanceVO = new HolidayAttendanceVO();
 			// 社員番号
 			attendanceVO.setUserId(form.getTaishoUserId());
