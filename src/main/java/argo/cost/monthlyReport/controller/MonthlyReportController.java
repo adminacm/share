@@ -172,7 +172,7 @@ public class MonthlyReportController extends AbstractController {
 
     
     /**
-	 * 来月を取得
+	 * 月報を提出
 	 *
 	 * @param form
 	 *            画面フォーム情報
@@ -185,9 +185,10 @@ public class MonthlyReportController extends AbstractController {
     	
     	// 月報一覧情報
     	List<MonthlyReportDispVO> mRList = form.getmRList();
-    	for (MonthlyReportDispVO monthlyReport : mRList) {
-    		
+    	for (int i = 0; i < mRList.size()-1; i++) {
+    		MonthlyReportDispVO monthlyReport = mRList.get(i);
     		try {
+    			form.clearMessages();
             	// 入力チェック
     			MonthlyReportChecker.chkKintaiInfoNull(form, monthlyReport);
             	MonthlyReportChecker.chkKintaiInfoInput(form, monthlyReport);

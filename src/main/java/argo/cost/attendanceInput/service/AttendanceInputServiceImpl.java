@@ -750,6 +750,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 
 		String shiftCode = form.getShiftCd();
 		String shiftCodeShow = form.getShiftCdShow();
+		// シフトコードの更新
+		form.setShiftCd(form.getShiftCdShow().concat(shiftCode.substring(4)));
 		
 		// ｼﾌﾄｺｰﾄﾞが未入力なら"0900"を使用する
 		if (StringUtils.isEmpty(shiftCodeShow)) {
