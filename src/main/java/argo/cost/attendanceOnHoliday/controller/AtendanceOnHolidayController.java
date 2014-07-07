@@ -171,7 +171,7 @@ public class AtendanceOnHolidayController extends AbstractController {
 		}
 		AtendanceOnHolidayForm newForm = new AtendanceOnHolidayForm();
 		newForm.setStrHurikaeDate(date);
-		newForm.setWeek(week);
+		newForm.setWeek("（".concat(week).concat("）"));
 		
 		PrintWriter out = response.getWriter();
 		JSONObject json = new JSONObject(newForm);
