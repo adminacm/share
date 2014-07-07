@@ -447,7 +447,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 申請日付
 		approvalManage.setAppYmd(CostDateUtils.getNowDate());
 		
-		// 月報の日付
+		// 処理年月
 		approvalManage.setSyoriYm(CostDateUtils.getDealDate(form.getYearMonth(), CommonConstant.APPLY_KBN_GETUHOU));;
 		String strMonthyReportCommitFlg = "0";
 		
