@@ -49,22 +49,25 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	@RequestMapping(value = INIT)
 	public String initHolidayForOvertimeApproval(Model model, @RequestParam("applyNo") String applyNo, @RequestParam("backUrl") String backUrl) throws Exception {
 
+		
+		// 超勤振替申請承認情報初期化
+		HolidayForOvertimeApprovalForm holidayForOvertimeApprovalForm = initForm(HolidayForOvertimeApprovalForm.class);
 		// 超勤振替申請承認情報を取得
-		HolidayForOvertimeApprovalForm form = holidayForOvertimeApprovalService.getHolidayForOvertimeApproval(applyNo);
+		holidayForOvertimeApprovalForm= holidayForOvertimeApprovalService.getHolidayForOvertimeApproval(holidayForOvertimeApprovalForm, applyNo);
 		
 		//　申請番号を設定
-		form.setApplyNo(applyNo);
+		holidayForOvertimeApprovalForm.setApplyNo(applyNo);
 		
 		//　戻り用画面URL
-		form.setBackUrl(backUrl);
+		holidayForOvertimeApprovalForm.setBackUrl(backUrl);
 		
 		// 処理状況を取得
 		String status = holidayForOvertimeApprovalService.getStatusName(applyNo);
 		
 		// 処理状況設定
-		form.setProStatus(status);
+		holidayForOvertimeApprovalForm.setProStatus(status);
 		
-		model.addAttribute(form);
+		model.addAttribute(holidayForOvertimeApprovalForm);
 
 		return HOLIDAYFOROVERTIME_APPROVAL;
 	}

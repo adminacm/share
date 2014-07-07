@@ -14,6 +14,8 @@ import argo.cost.common.entity.HolidayAtendanceYotei;
 import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.StatusMaster;
+import argo.cost.common.entity.Users;
+import argo.cost.common.service.ComServiceImpl;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.holidayForOvertimeApproval.model.HolidayForOvertimeApprovalForm;
 
@@ -25,6 +27,9 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 	 */	
 	@Autowired
 	private BaseDao baseDao;
+	
+	@Autowired
+	private ComServiceImpl comServiceImpl;
 
 	/**
 	 * 処理状況名を取得
@@ -56,12 +61,9 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 	 * @throws ParseException 
 	 */
 	@Override
-	public HolidayForOvertimeApprovalForm getHolidayForOvertimeApproval(
+	public HolidayForOvertimeApprovalForm getHolidayForOvertimeApproval(HolidayForOvertimeApprovalForm holidayForOvertimeApprovalForm,
 			String applyNo) throws ParseException {
 
-		// 超勤振替申請承認画面情報
-		HolidayForOvertimeApprovalForm form = new HolidayForOvertimeApprovalForm();
-		
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		// 申請番号
@@ -90,26 +92,45 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 				}
 			}
 		
+			// 検索条件
+			BaseCondition approvalManagecondition = new BaseCondition();
+			// 超勤振替申請番号
+			approvalManagecondition.addConditionEqual("applyNo", applyNo);
+			// 申請区分＝超勤振替「2」
+			approvalManagecondition.addConditionEqual("applyKbnMaster.code", CommonConstant.APPLY_KBN_CHOKIN_FURIKAE);
+			
+			// 超勤振替申請情報取得
+			ApprovalManage approvalManageInfo = baseDao.findSingleResult(approvalManagecondition, ApprovalManage.class);
+			
+			Users taishoUser = new Users();
+			if (approvalManageInfo != null) {
+				taishoUser = approvalManageInfo.getUser();
+			}
+			
+			// 対象社員番号
+			holidayForOvertimeApprovalForm.setTaishoUserId(taishoUser.getId());
+			// 対象氏名
+			holidayForOvertimeApprovalForm.setTaishoUserName(taishoUser.getUserName());
 			// 日付
-			form.setDate(getShowDate(kintaiInfo.getAtendanceDate()) + kyujisuName);
+			holidayForOvertimeApprovalForm.setDate(getShowDate(kintaiInfo.getAtendanceDate()) + kyujisuName);
 			// 勤務区分名
-			form.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
+			holidayForOvertimeApprovalForm.setWorkKbnName(kintaiInfo.getWorkDayKbnMaster().getName());
 			// 勤務開始時間
-			form.setWorkStartTime(CostDateUtils.formatTime(kintaiInfo.getKinmuStartTime()));
+			holidayForOvertimeApprovalForm.setWorkStartTime(CostDateUtils.formatTime(kintaiInfo.getKinmuStartTime()));
 			// 勤務終了時間
-			form.setWorkEndTime(CostDateUtils.formatTime(kintaiInfo.getKinmuEndTime()));
+			holidayForOvertimeApprovalForm.setWorkEndTime(CostDateUtils.formatTime(kintaiInfo.getKinmuEndTime()));
 			// 代休期限
-			form.setTurnedHolidayEndDate(getShowDate(kintaiInfo.getDaikyuGetShimekiriDate()));
+			holidayForOvertimeApprovalForm.setTurnedHolidayEndDate(getShowDate(kintaiInfo.getDaikyuGetShimekiriDate()));
 			if (holidayAtendanceYoteiInfo != null) {
 				// プロジェクト名
-				form.setProjectName(holidayAtendanceYoteiInfo.getProjectBasic().getProjectName());
+				holidayForOvertimeApprovalForm.setProjectName(holidayAtendanceYoteiInfo.getProjectBasic().getProjectName());
 				// 業務内容
-				form.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
+				holidayForOvertimeApprovalForm.setWorkDetail(holidayAtendanceYoteiInfo.getCommont());
 			}
 		}
 		
 		// 超勤振替申請承認画面情報戻る
-		return form;
+		return holidayForOvertimeApprovalForm;
 	}
 
 	/**

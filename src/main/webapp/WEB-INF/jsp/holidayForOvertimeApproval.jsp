@@ -54,6 +54,14 @@ function submitAction(action) {
 			<div>
 				<table style="margin-left:70px;padding-bottom:20px">
 					<tr>
+						<td style="width:100px">社員番号</td>
+						<td>${holidayForOvertimeApprovalForm.taishoUserId}</td>
+					</tr>
+					<tr>
+						<td style="width:100px">氏名</td>
+						<td>${holidayForOvertimeApprovalForm.taishoUserName}</td>
+					</tr>
+					<tr>
 						<td style="width:100px">日付</td>
 						<td>${holidayForOvertimeApprovalForm.date}</td>
 					</tr>
