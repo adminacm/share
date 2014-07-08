@@ -1121,7 +1121,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 休日振替勤務の場合
 		if (StringUtils.equals(form.getWorkDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE)) {
 			// 振替日
-			kintaiEntity.setFurikaeDate(form.getHolidayAttendance().getFurikaeDate());
+			kintaiEntity.setFurikaeDate(form.getHolidayAttendance().getFurikaeDate().replace("/", StringUtils.EMPTY));
 		}
 		
 		// 休暇欠勤マスタ情報を取得
