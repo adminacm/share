@@ -183,6 +183,69 @@ public class MonthlyReportChecker {
 			}
 		}
 	}
+
+	/**
+	 * 休暇欠勤区分・勤務時刻(休業期間)の整合性チェック
+	 * 
+	 * 		①入社日より前、または休業期間中、または退職日より後の日付で
+	 * 			勤務区分"01"(出勤)or"03"(休日振替勤務)の場合に勤務開始時刻または休暇欠勤区分が入力されている場合はエラー
+	 * 				☆休業期間中と退職後の日付には勤怠を入力できません
+	 * 
+	 * @param form
+	 *            画面情報オブジェクト
+	 * @throws Exception 
+	 */
+	public static void chkKyugyoKikan(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws Exception {
+		
+		// 対象者
+		String taishoUserId = form.getTaishoUserId();
+		// 対象日
+		String taishoDate = kintaiInfo.getDate();
+		// 対象ユーザー情報を取得
+		Users user = baseDao.findById(taishoUserId, Users.class);
+		// 入社日
+		String nyushaDate = user.getNyushaDate();
+		// 休業開始日
+		String kyugyoSDate = user.getKyugyoStartDate();
+		// 休業終了日
+		String kyugyoEdate = user.getKyugyoEndDate();
+		// 退職日
+		String taishokuDate = user.getTaisyokuDate();
+		// 入社日より前
+		if (taishoDate.compareTo(nyushaDate) < 0) {
+			// 休業期間中と退職後の日付には勤怠を入力できません
+			form.putConfirmMsg(MessageConstants.COSE_E_026);
+			throw new Exception();
+		}
+		// 休業開始日が存在する
+		if (StringUtils.isNotEmpty(kyugyoSDate)) {
+			// 休業終了日が存在する
+			if (StringUtils.isNotEmpty(kyugyoEdate)) {
+				// 休業期間中
+				if (kyugyoSDate.compareTo(taishoDate) <= 0
+						&& taishoDate.compareTo(kyugyoEdate) <= 0) {
+					// 休業期間中と退職後の日付には勤怠を入力できません
+					form.putConfirmMsg(MessageConstants.COSE_E_026);
+					throw new Exception();
+				} else {
+					
+					if (kyugyoSDate.compareTo(taishoDate) <= 0) {
+						// 休業期間中と退職後の日付には勤怠を入力できません
+						form.putConfirmMsg(MessageConstants.COSE_E_026);
+						throw new Exception();
+					}
+				}
+			}
+		}
+		
+		// 退職日より後の日付
+		if (StringUtils.isNotEmpty(taishokuDate)
+				&& taishokuDate.compareTo(taishoDate) <= 0) {
+			// 休業期間中と退職後の日付には勤怠を入力できません
+			form.putConfirmMsg(MessageConstants.COSE_E_026);
+			throw new Exception();
+		}
+	}
 	
 	/**
 	 * 勤怠情報を追加する
@@ -219,6 +282,6 @@ public class MonthlyReportChecker {
 		
 		// 勤怠情報を追加する
 		baseDao.insert(entity);
-
 	}
+
 }

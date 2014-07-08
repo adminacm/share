@@ -116,21 +116,14 @@ public class AttendanceInputController extends AbstractController {
 
 		form.clearMessages();
 		// 就業データを更新する
-		Integer result = 0;
 		try {
-			result = attendanceInputService.updateAttdendanceInfo(form);
+			attendanceInputService.updateAttdendanceInfo(form);
 		} catch (Exception e) {
-			form.putConfirmMsg(e.getMessage());
-			result = 0;
-		}
-		
-		// 更新成功
-		if (1 == result) {
-			return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + "/nextDay";
-		} else {
 			// errorMessageを追加
 			return ATTDENDANCE_INPUT;
 		}
+		
+		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + "/nextDay";
 		
 	}
 
@@ -183,11 +176,16 @@ public class AttendanceInputController extends AbstractController {
 	 * @throws ParseException 
 	 */
 	@RequestMapping("/count")
-	public String count(AttendanceInputForm form) throws Exception {
+	public String count(AttendanceInputForm form) {
 
 		form.clearMessages();
-		// 勤務情報を計算する。
-		attendanceInputService.calcWorkingRec(form);
+		try {
+			// 勤務情報を計算する。
+			attendanceInputService.calcWorkingRec(form);
+		} catch (Exception ex) {
+			
+		}
+		
 
 		return ATTDENDANCE_INPUT;
 	}

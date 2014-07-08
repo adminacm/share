@@ -112,6 +112,10 @@ public class MessageConstants {
 	 */
 	public static final String COSE_E_025 = "作業時間数の合計が勤務時間数と一致していません";
 	/**
+	 *　作業時間数の合計が勤務時間数と一致していません
+	 */
+	public static final String COSE_E_026 = "休業期間中と退職後の日付には勤怠を入力できません";
+	/**
 	 *　｛0｝の勤怠情報を入力ください！
 	 */
 	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力ください";

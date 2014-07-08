@@ -141,7 +141,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 *            日付
 	 */
 	@Override
-	public void setAttForm(AttendanceInputForm form, String newDate) throws ParseException {
+	public void setAttForm(AttendanceInputForm form, String newDate) throws Exception {
 		
 		// 対象社員番号
 		String taishoUserId = form.getTaishoUserId();
@@ -357,20 +357,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @throws Exception 
 	 */
 	@Override
-	public Integer updateAttdendanceInfo(AttendanceInputForm form) throws Exception {
+	public void updateAttdendanceInfo(AttendanceInputForm form) throws Exception {
 
 		// 計算を実行する
-		try {
-			this.calcWorkingRec(form);
-		} catch (ParseException e) {
-			// 更新失敗
-			return 0;
-		}
-		// エラーが発生する場合
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			// 更新失敗
-			return 0;
-		}
+		this.calcWorkingRec(form);
 
 		// ログイン社員番号
 		String loginId = form.getUserId();
@@ -396,7 +386,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			List<KintaiInfo> entityList = baseDao.findResultList(condition, KintaiInfo.class);
 			if (entityList != null && entityList.size() > 0) {
 				form.putConfirmMsg("代休データはすでに存在いるです");
-				return 0;
+				throw new Exception();
 			} else {
 				// 休日勤務情報を取得
 				condition = new BaseCondition();
@@ -427,8 +417,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		saveKintaiInfo(form, kintaiEntity);
 		// プロジェクト情報を更新する
 		saveProjectInfo(loginId, taishoUserId, date, form.getProjectList());
-		// 勤怠情報テーブルの更新
-		return 1;
 	}
 
 	/**
@@ -436,10 +424,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * 
 	 * @param form
 	 *            勤怠入力画面情報
-	 * @throws ParseException
+	 * @throws Exception
 	 */
 	@Override
-	public void calcWorkingRec(AttendanceInputForm form) throws ParseException {
+	public void calcWorkingRec(AttendanceInputForm form) throws Exception {
 		
 		// 画面数字の初期化
 		form.setWorkHours(0.0);
@@ -509,7 +497,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 *            勤怠入力画面情報
 	 * @throws ParseException 
 	 */
-	private void getWorkHours(AttendanceInputForm form) throws ParseException {
+	private void getWorkHours(AttendanceInputForm form) throws Exception {
 
 		// 勤務時間取得
 		Double hours = 0.0;
@@ -707,7 +695,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @param form 勤怠入力画面情報
 	 * @throws ParseException 
 	 */
-	private void getMidnight(AttendanceInputForm form) throws ParseException {
+	private void getMidnight(AttendanceInputForm form) throws Exception {
 
 		// シフトコード
 		String shiftCode = form.getShiftCdShow();
@@ -745,8 +733,9 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @param shiftCode
 	 *            シフトコード
 	 * @return シフト情報
+	 * @throws Exception 
 	 */
-	private ShiftVO getShiftInfo(AttendanceInputForm form) {
+	private ShiftVO getShiftInfo(AttendanceInputForm form) throws Exception {
 
 		String shiftCode = form.getShiftCd();
 		String shiftCodeShow = form.getShiftCdShow();
@@ -763,7 +752,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (shiftList == null || shiftList.isEmpty()) {
 			// ｼﾌﾄｺｰﾄﾞを正しく入力してください
 			 form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {"シフトコード"});
-			 return null;
+			 throw new Exception();
 		}
 		ShiftVO info = null;
 		// シフト時刻情報を取得
@@ -772,7 +761,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (entity == null) {
 			// ｼﾌﾄｺｰﾄﾞの時刻データが設定されていません
 			form.putConfirmMsg(MessageConstants.COSE_E_005, new String[] {SHIFT_TIME_DATA});
-			return null;
+			throw new Exception();
 		} else {
 			String standSTime = entity.getTeijiKinmuTime();               // 定時出勤時刻
 			String amETime = entity.getAmEndTime();                       // 午前終了時刻
@@ -1020,86 +1009,39 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * 
 	 * @param form 
 	 * 				勤怠入力画面情報
+	 * @throws Exception 
 	 * 
 	 */
-	private void doInputCheck(AttendanceInputForm form) {
+	private void doInputCheck(AttendanceInputForm form) throws Exception {
 		// シフトコードより、シフト情報を取得
 		ShiftVO shiftinfo = getShiftInfo(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		form.setShiftInfo(shiftinfo);
-
+		// 勤務期間のチェック
+		AttendanceInputChecker.chkKyugyoKikan(form);
 		// 勤務開始時刻の型チェックとフォーマット
 		AttendanceInputChecker.chkWorkSTimeFormat(form);
 		// 勤務終了時刻の型チェックとフォーマット
 		AttendanceInputChecker.chkWorkETimeFormat(form);
 		// 休暇欠勤区分・勤務時刻:勤怠が未入力です
 		AttendanceInputChecker.chkKykaKbnAndWorkTime05(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分と勤務区分のチェック
 		AttendanceInputChecker.chkKyuKaKbnAndKinmuKbn(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分・勤務時刻:勤務開始時刻・終了時刻を入力してください
 		AttendanceInputChecker.chkKykaKbnAndWorkTime01(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分・勤務時刻:取得できる代休はありません
 		AttendanceInputChecker.chkKykaKbn001(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 勤務時刻の整合性チェック
-		try {
-			AttendanceInputChecker.chkWorkTimeFormat(form);
-		} catch (ParseException e) {
-			// 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
+		AttendanceInputChecker.chkWorkTimeFormat(form);
 		// 休暇欠勤区分・勤務時刻:定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください
 		AttendanceInputChecker.chkKykaKbnAndWorkTime02(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分・勤務時刻:正しい休暇区分を入力してください
 		AttendanceInputChecker.chkKykaKbnAndWorkTime03(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分・勤務時刻:有給休暇が余分に取得されています
 		AttendanceInputChecker.chkKykaKbn003(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分・勤務時刻:終日休暇の日は勤務できません
 		AttendanceInputChecker.chkKykaKbnAndWorkTime06(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分・勤務時刻:休暇欠勤区分が入力されています
 		AttendanceInputChecker.chkKykaKbnAndWorkTime04(form);
-		// エラーを発生した時
-		if (StringUtils.isNotEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分・勤務時刻:休日の勤務開始は定時出勤時刻を入力してください
 		AttendanceInputChecker.chkKykaKbnAndShiftCode(form);
 

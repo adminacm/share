@@ -190,6 +190,8 @@ public class MonthlyReportController extends AbstractController {
 			form.clearMessages();
 			for (int i = 0; i < mRList.size() - 1; i++) {
 				MonthlyReportDispVO monthlyReport = mRList.get(i);
+				// 勤務期間チェック
+				MonthlyReportChecker.chkKyugyoKikan(form, monthlyReport);
 				// 入力チェック
 				MonthlyReportChecker.chkKintaiInfoNull(form, monthlyReport);
 				MonthlyReportChecker.chkKintaiInfoInput(form, monthlyReport);

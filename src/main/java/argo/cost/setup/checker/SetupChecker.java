@@ -2,6 +2,7 @@ package argo.cost.setup.checker;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +12,7 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
-import argo.cost.common.entity.ApprovalManage;
+import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.model.SetupForm;
 
@@ -77,62 +78,10 @@ public class SetupChecker {
 		}
 		
 		// 入力された休業期間や退職日の勤怠が提出以降の状況の場合
-		// 休業開始と休業終了がnull以外の場合
-		if (!StringUtils.isEmpty(setupForm.getHolidayStart()) && !StringUtils.isEmpty(setupForm.getHolidayEnd())) {
-
-			// 休業開始日
-			String holidayStart = setupForm.getHolidayStart().replace("/", "").substring(0, 6);
-			// 休業終了日
-			String holidayEnd = setupForm.getHolidayEnd().replace("/", "").substring(0, 6);
-			
-			// 退職日の承認情報を取得
-			BaseCondition condition = new BaseCondition();
-			condition.addConditionBetween("syoriYm", holidayStart, holidayEnd);
-			// 先日の勤怠情報を取得
-			List<ApprovalManage> resultList = baseDao.findResultList(condition, ApprovalManage.class);
-			
-			if (resultList.size() > 0) {
-				
-				setupForm.putConfirmMsg(MessageConstants.COSE_E_1107);
-				throw new Exception();
-			}
-		}
-		// 休業開始がnull以外の場合
-		if (!StringUtils.isEmpty(setupForm.getHolidayStart()) && StringUtils.isEmpty(setupForm.getHolidayEnd())) {
-
-			// 休業開始日
-			String holidayStart = setupForm.getHolidayStart().replace("/", "").substring(0, 6);
-		
-			// 退職日の承認情報を取得
-			BaseCondition condition = new BaseCondition();
-			condition.addConditionGreaterEqualThan("syoriYm", holidayStart);
-			// 先日の勤怠情報を取得
-			List<ApprovalManage> resultList = baseDao.findResultList(condition, ApprovalManage.class);
-			
-			if (resultList.size() > 0) {
-				
-				setupForm.putConfirmMsg(MessageConstants.COSE_E_1107);
-				throw new Exception();
-			}
-		}
-		// 退職日がnull以外の場合
-		if (!StringUtils.isEmpty(setupForm.getOutDate())) {
-
-			// 休業開始日
-			String outDate = setupForm.getOutDate().replace("/", "").substring(0, 6);
-			
-			// 退職日の承認情報を取得
-			BaseCondition condition = new BaseCondition();
-			condition.addConditionGreaterEqualThan("syoriYm", outDate);
-			// 先日の勤怠情報を取得
-			List<ApprovalManage> resultList = baseDao.findResultList(condition, ApprovalManage.class);
-			
-			if (resultList.size() > 0) {
-				
-				setupForm.putConfirmMsg(MessageConstants.COSE_E_1107);
-				throw new Exception();
-			}
-		}
+		// 休業期間内の勤怠をチェックする
+		chkApplyStatus(setupForm, setupForm.getHolidayStart(), setupForm.getHolidayEnd(), 0);
+		// 退職日より後の勤怠をチェックする
+		chkApplyStatus(setupForm, null, setupForm.getOutDate(), 0);
 	}
 	
 	/**
@@ -189,6 +138,66 @@ public class SetupChecker {
 			// 退職日を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {TAISHOKU_DATE});
 			throw new Exception();
+		}
+	}
+	
+	private static void chkApplyStatus(SetupForm form, String sDate, String eDate, int flag) throws Exception {
+		
+		// 対象者
+		String userId = form.getUserId();
+		BaseCondition condition = new BaseCondition();
+		List<KintaiInfo> kintaiList = new ArrayList<KintaiInfo>();
+		// 期間内の場合
+		if (0 == flag) {
+			// 期間開始日が存在する場合
+			if (StringUtils.isNotEmpty(sDate)) {
+				
+				// 期間終了日が存在する場合
+				if (StringUtils.isNotEmpty(eDate)) {
+					condition = new BaseCondition();
+					condition.addConditionEqual("users.id", userId);
+					// 勤怠日は期間内
+					condition.addConditionBetween("atendanceDate",
+							sDate.replaceAll("/", StringUtils.EMPTY),
+							eDate.replaceAll("/", StringUtils.EMPTY));
+					// 期間内の勤怠情報を取得
+					kintaiList = baseDao.findResultList(condition, KintaiInfo.class); 
+				} else {
+					condition = new BaseCondition();
+					condition.addConditionEqual("users.id", userId);
+					// 勤怠日は期間開始日より後
+					condition.addConditionGreaterEqualThan("atendanceDate",
+							sDate.replaceAll("/", StringUtils.EMPTY));
+					// 期間開始日より後の勤怠情報を取得
+					kintaiList = baseDao.findResultList(condition, KintaiInfo.class); 
+				}
+			}
+		} else {
+			
+			// 期間終了日が存在する場合
+			if (StringUtils.isNotEmpty(eDate)) {
+				condition = new BaseCondition();
+				condition.addConditionEqual("users.id", userId);
+				// 勤怠日は期間終了日より後
+				condition.addConditionGreaterEqualThan("atendanceDate",
+						eDate.replaceAll("/", StringUtils.EMPTY));
+				// 期間開始日より後の勤怠情報を取得
+				kintaiList = baseDao.findResultList(condition, KintaiInfo.class);
+			}
+		}
+		// 休業期間内の勤怠情報
+		for (KintaiInfo kintaiInfo : kintaiList) {
+			// 申請情報が存在する場合
+			if (kintaiInfo.getApprovalManage1() != null) {
+				// 申請状態
+				String status = kintaiInfo.getApprovalManage1().getStatusMaster().getCode();
+				// 「作成中」以外の場合
+				if (!StringUtils.equals(CommonConstant.STATUS_SAKUSEIJYOU, status)) {
+					// 休業終了日は休業開始日よりあとの日付を入力してください
+					form.putConfirmMsg(MessageConstants.COSE_E_1107);
+					throw new Exception();
+				}
+			}
 		}
 	}
 }
