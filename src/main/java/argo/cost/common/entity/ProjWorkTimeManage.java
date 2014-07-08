@@ -42,7 +42,7 @@ public class ProjWorkTimeManage implements Serializable {
 	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
-	@Column(name="work_times", nullable=false, precision=2, scale=1)
+	@Column(name="work_times", nullable=false, precision=3, scale=1)
 	private BigDecimal workTimes;
 
 	//bi-directional many-to-one association to KintaiInfo

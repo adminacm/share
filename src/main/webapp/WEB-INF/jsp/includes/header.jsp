@@ -3,10 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<div id="userBar" style="height:30px; margin-top: 10px; background-color:#ddffdd;padding-right: 20px;" align="right">
+<div id="userBar" style="height:30px; margin-top: 10px; background-color:#eeffdd;padding-right: 20px;" align="right">
 		<table>
 			<tr>
-
 				<c:if test="${ not empty userName }">
 					<td>ようこそ：</td>
 					<td>${ userName }</td>
