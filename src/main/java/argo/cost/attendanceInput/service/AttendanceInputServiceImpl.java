@@ -958,9 +958,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * 
 	 * @param form 
 	 * 				勤怠入力画面情報
+	 * @throws ParseException 
 	 * 
 	 */
-	private void setHolidayAttendanceInfo(AttendanceInputForm form) {
+	private void setHolidayAttendanceInfo(AttendanceInputForm form) throws ParseException {
 		
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
@@ -982,15 +983,15 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			// 休日勤務日
 			attendanceVO.setAttendanceDate(form.getAttDate());
 			// 振替日
-			attendanceVO.setFurikaeDate(attYoteEntity.getFurikaeDate());
+			attendanceVO.setFurikaeDate(CostDateUtils.formatDate(attYoteEntity.getFurikaeDate(), CommonConstant.YYYY_MM_DD));
 			// 勤務区分コード
 			attendanceVO.setKinmuKbnCode(attYoteEntity.getWorkDayKbnMaster().getCode());
 			// 勤務区分名称
 			attendanceVO.setKinmuKbnName(attYoteEntity.getWorkDayKbnMaster().getName());
 			// 勤務開始時間
-			attendanceVO.setKinmuStartTime(attYoteEntity.getKinmuStartTime());
+			attendanceVO.setKinmuStartTime(CostDateUtils.formatTime(attYoteEntity.getKinmuStartTime()));
 			// 勤務終了時間
-			attendanceVO.setKinmuEndTime(attYoteEntity.getKinmuEndTime());
+			attendanceVO.setKinmuEndTime(CostDateUtils.formatTime(attYoteEntity.getKinmuEndTime()));
 			// プロジェクトID
 			attendanceVO.setProjectId(attYoteEntity.getProjectBasic().getProjectCode());
 			// プロジェクト名称
