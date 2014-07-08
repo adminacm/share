@@ -178,8 +178,9 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 		condition.addConditionEqual("users.id", userId);
 		// 日付
 		condition.addConditionLike("atendanceDate", yearPeriod + "%");
-		// 休暇欠勤区分に「欠勤」をセット
-		condition.addConditionEqual("kyukaKekinKbnMaster.code", CommonConstant.KK_KBN_KEKIN);
+		// 休暇欠勤区分に「欠勤」「遅刻・早退」をセット
+		String[] vals = {CommonConstant.KK_KBN_KEKIN, CommonConstant.KK_KBN_CHIKOKU};
+		condition.addConditionIn("kyukaKekinKbnMaster.code", vals);
 		
 		// 欠勤情報取得
 		List<KintaiInfo> kekinList = baseDao.findResultList(condition, KintaiInfo.class);
