@@ -107,7 +107,7 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 				//　時間数
 				payHolidayInfo.setHourQuantity(kyukaInfo.getKyukaJikansu().toString());
 				// 休暇欠勤区分名称
-				payHolidayInfo.setHolidayKbnName(kyukaInfo.getKyukaKekinKbnMaster().getName());
+				payHolidayInfo.setHolidayKbnName(kyukaInfo.getKyukaKekinKbnMaster().getName().replace("(有給休暇)", ""));
 				
 				if (CommonConstant.KK_KBN_ZENKYU.equals(payHolidayInfo.getHolidayKbnCode())) {
 	
@@ -142,11 +142,11 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 			payHolidayInfo.setPayHolidayDate("累計");
 			// 日数
 			if (totleDayQuantity != 0) {
-				payHolidayInfo.setDayQuantity(totleDayQuantity.toString() + "日");
+				payHolidayInfo.setDayQuantity(totleDayQuantity.toString() + " 日");
 			}
 			// 時間数
 			if (totleTimeQuantity != 0) {
-				payHolidayInfo.setHourQuantity(totleTimeQuantity.toString() + "時間");
+				payHolidayInfo.setHourQuantity(totleTimeQuantity.toString() + " 時間");
 			}
 			payHolidayList.add(payHolidayInfo);
 		}
@@ -225,11 +225,11 @@ public class HolidayRecordServiceImpl implements HolidayRecordService {
 			absenceInfo.setAbsentDate("累計");
 			// 日数
 			if (totleDayQuantity != 0) {
-				absenceInfo.setDayQuantity(totleDayQuantity.toString() + "日");
+				absenceInfo.setDayQuantity(totleDayQuantity.toString() + " 日");
 			}
 			// 時間数
 			if (totleTimeQuantity != 0) {
-				absenceInfo.setHourQuantity(totleTimeQuantity.toString() + "時間");
+				absenceInfo.setHourQuantity(totleTimeQuantity.toString() + " 時間");
 			}
 			absenceList.add(absenceInfo);
 		}

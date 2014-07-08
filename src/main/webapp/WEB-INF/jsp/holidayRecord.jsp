@@ -23,7 +23,7 @@
 	border: 1px solid #9BDF70;
 	border-top-color: #0080FF;
 	border-top-style: dotted;
-	border-top-width: 3px
+	border-top-width: 3px;
 }
 .tab1 {
 	margin-bottom: 1px;
@@ -34,8 +34,8 @@
 	height: 100%;
 	margin: 0px auto;
 	margin-bottom: 20px;
-	border: 1px solid #73BF00;
 	background-color: #FFFFF7;
+	border-collapse:collapse;
 }
 .headStyle {
 	margin-left: 20px;
@@ -45,16 +45,16 @@
 	text-align: center;
 	color: white;
 	border: 1px;
-	style: border-collapse:collapse;
 	frame: hsides;
 	rules: rows;
 	width: 50px;
 	border-bottom: 1px solid #CCC;
+	border-collapse:collapse;
 }
-
+.headStyle th {
+	border: 1px solid #ffffff;
+}
 </STYLE>
-
-<link href="../css/common.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
 /* アクション提出 */
@@ -117,18 +117,11 @@ function submitAction(action) {
 							</thead>
 							<tbody>
 								<c:forEach var="payHoliday" items="${holidayRecordForm.payHolidayList}">
-									<tr align="center">
-										<td style="width:100px">
-											${payHoliday.payHolidayDate}
-										</td>
-										<td style="width:150px">
-											${payHoliday.holidayKbnName}
-										</td>
-										<td style="text-align:right;width:100px">
-											${payHoliday.dayQuantity}
-										</td>
-										<td style="text-align:right">
-											${payHoliday.hourQuantity}
+									<tr align="center" style="border-top: 1px solid #73BF00;">
+										<td style="width: 100px;">${payHoliday.payHolidayDate}</td>
+										<td style="width: 150px">${payHoliday.holidayKbnName}</td>
+										<td style="text-align: right; width: 100px;">${payHoliday.dayQuantity}</td>
+										<td style="text-align: right">${payHoliday.hourQuantity}
 										</td>
 									</tr>
 								</c:forEach>
@@ -153,16 +146,10 @@ function submitAction(action) {
 							</thead>
 							<tbody>
 								<c:forEach var="absenceInfo" items="${holidayRecordForm.absenceList}">
-									<tr align="center">
-										<td style="width:100px">
-											${absenceInfo.absentDate}
-										</td>
-										<td style="text-align:right;width:100px">
-											${absenceInfo.dayQuantity}
-										</td>
-										<td style="text-align:right">
-											${absenceInfo.hourQuantity}
-										</td>
+									<tr align="center" style="border-top: 1px solid #73BF00;">
+										<td style="width: 100px">${absenceInfo.absentDate}</td>
+										<td style="text-align: right; width: 100px">${absenceInfo.dayQuantity}</td>
+										<td style="text-align: right">${absenceInfo.hourQuantity}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -185,13 +172,9 @@ function submitAction(action) {
 							</thead>
 							<tbody>
 								<c:forEach var="specialHoliday" items="${holidayRecordForm.specialHolidayList}">
-									<tr align="center">
-										<td style="width:100px">
-											${specialHoliday.specialHolidayDate}
-										</td>
-										<td style="text-align:right">
-											${specialHoliday.dayQuantity}
-										</td>
+									<tr align="center" style="border-top: 1px solid #73BF00;">
+										<td style="width: 100px">${specialHoliday.specialHolidayDate}</td>
+										<td style="text-align: right">${specialHoliday.dayQuantity}</td>
 									</tr>
 								</c:forEach>
 							</tbody>

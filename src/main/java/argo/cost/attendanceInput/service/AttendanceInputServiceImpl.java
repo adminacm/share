@@ -1130,7 +1130,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (StringUtils.equals(CommonConstant.KK_KBN_HANKYU, form.getKyukaKb())) {
 			kintaiEntity.setKyukaJikansu(new BigDecimal(4.0));    // 休暇時間数
 		// 全休の場合
-		} else if (StringUtils.equals(CommonConstant.KK_KBN_ZENKYU, form.getKyukaKb())) {
+		} else if (StringUtils.equals(CommonConstant.KK_KBN_ZENKYU, form.getKyukaKb())
+				|| StringUtils.equals(CommonConstant.KK_KBN_KEKIN, form.getKyukaKb())) {
 			kintaiEntity.setKyukaJikansu(new BigDecimal(8.0));    // 休暇時間数
 		} else {
 			kintaiEntity.setKyukaJikansu(toBigDecimal(form.getKyukaHours()));    // 休暇時間数
