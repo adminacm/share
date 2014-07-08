@@ -1,5 +1,6 @@
 package argo.cost.monthlyReport.service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -194,42 +195,30 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 						monthInfo.setShift(kintaiInfo.getShiftJikoku().getShiftCode().substring(0, 4));
 					}
 					// 出勤
-					monthInfo.setWorkSTime(kintaiInfo.getKinmuStartTime());
+					monthInfo.setWorkSTime(CostDateUtils.formatTime(kintaiInfo.getKinmuStartTime()));
 					// 退勤
-					monthInfo.setWorkETime(kintaiInfo.getKinmuEndTime());
+					monthInfo.setWorkETime(CostDateUtils.formatTime(kintaiInfo.getKinmuEndTime()));
 					// 休暇時間数
-					if (kintaiInfo.getKyukaJikansu() != null ) {
-						monthInfo.setRestHours(kintaiInfo.getKyukaJikansu().doubleValue());
-					}
+					monthInfo.setRestHours(toDouble(kintaiInfo.getKyukaJikansu()));
 					// 休暇欠勤区分
 					if (kintaiInfo.getKyukaKekinKbnMaster() != null) {
 						monthInfo.setKyukaKb(kintaiInfo.getKyukaKekinKbnMaster().getCode());
 						monthInfo.setKyukaKbName(kintaiInfo.getKyukaKekinKbnMaster().getName());
 					}
 					// 勤務時間数
-					if (kintaiInfo.getKinmuJikansu() != null ) {
-						monthInfo.setWorkHours(kintaiInfo.getKinmuJikansu().doubleValue());
-					}
+					monthInfo.setWorkHours(toDouble(kintaiInfo.getKinmuJikansu()));
 					// 超勤開始
-					monthInfo.setChoSTime(kintaiInfo.getChokinStartTime());
+					monthInfo.setChoSTime(CostDateUtils.formatTime(kintaiInfo.getChokinStartTime()));
 					// 超勤終了
-					monthInfo.setChoETime(kintaiInfo.getChokinEndTime());
+					monthInfo.setChoETime(CostDateUtils.formatTime(kintaiInfo.getChokinEndTime()));
 					// 超勤平増
-					if (kintaiInfo.getChokinHeijituJikansu() != null ) {
-						monthInfo.setChoWeekday(kintaiInfo.getChokinHeijituJikansu().doubleValue());
-					}
+					monthInfo.setChoWeekday(toDouble(kintaiInfo.getChokinHeijituJikansu()));
 					// 超勤平常
-					if (kintaiInfo.getChokinHeijituTujyoJikansu() != null ) {
-						monthInfo.setChoWeekdayNomal(kintaiInfo.getChokinHeijituTujyoJikansu().doubleValue());
-					}
+					monthInfo.setChoWeekdayNomal(toDouble(kintaiInfo.getChokinHeijituTujyoJikansu()));
 					// 超勤休日
-					if (kintaiInfo.getChokinKyujituJikansu() != null ) {
-						monthInfo.setChoHoliday(kintaiInfo.getChokinKyujituJikansu().doubleValue());
-					}
+					monthInfo.setChoHoliday(toDouble(kintaiInfo.getChokinKyujituJikansu()));
 					// 超勤深夜
-					if (kintaiInfo.getSinyaKinmuJikansu() != null ) {
-						monthInfo.setmNHours(kintaiInfo.getSinyaKinmuJikansu().doubleValue());
-					}
+					monthInfo.setmNHours(toDouble(kintaiInfo.getSinyaKinmuJikansu()));
 					// ﾛｹｰｼｮﾝコード
 					monthInfo.setLocationCode(kintaiInfo.getLocation().getCode());
 					// ﾛｹｰｼｮﾝ名前
@@ -266,12 +255,12 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		
 		// 合計フラグ
 		totleInfo.setTotleFlg(true);
-		totleInfo.setRestHours(totleRestHours);
-		totleInfo.setWorkHours(totleWorkHours);
-		totleInfo.setChoWeekday(totleChoWeekday);
-		totleInfo.setChoWeekdayNomal(totleChoWeekdayNomal);
-		totleInfo.setChoHoliday(totleChoHoliday);
-		totleInfo.setmNHours(totleMNHours);
+		totleInfo.setRestHours(formatDouble(totleRestHours));
+		totleInfo.setWorkHours(formatDouble(totleWorkHours));
+		totleInfo.setChoWeekday(formatDouble(totleChoWeekday));
+		totleInfo.setChoWeekdayNomal(formatDouble(totleChoWeekdayNomal));
+		totleInfo.setChoHoliday(formatDouble(totleChoHoliday));
+		totleInfo.setmNHours(formatDouble(totleMNHours));
 		monthlyReportList.add(totleInfo);
 		
 		// プロジェクトリスト
@@ -515,5 +504,37 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		} else {
 			form.setProStatus("作成中");
 		}
+	}
+	
+	/**
+	 * 時間数をフォーマットする
+	 * 
+	 * @param d
+	 *               時間数
+	 * @return 時間数（0.0の場合、ブランクにする）
+	 */
+	private Double formatDouble(Double d) {
+		
+		if (d != 0.0) {
+			return d;
+		}
+ 		
+		return null;
+	}
+	
+	/**
+	 * 時間数をBigDecimalからDoubleにする
+	 * 
+	 * @param b
+	 *               時間数
+	 * @return 時間数
+	 */
+	private Double toDouble(BigDecimal b) {
+		// bは０以外の値の場合
+		if (b != null && b.compareTo(new BigDecimal(0.0)) != 0) {
+			return b.doubleValue();
+		}
+ 		
+		return null;
 	}
 }

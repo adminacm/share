@@ -150,9 +150,11 @@ function submitAction(action) {
 					</tbody>
 				</table>
 			</div>
-			<div style="margin-left:40px;">
-				【PJ別作業時間集計】
-			</div>
+			<c:if test="${ not empty monthlyReportForm.projWorkTimeCountVOList}">
+				<div style="margin-left:40px;">
+					【PJ別作業時間集計】
+				</div>
+			</c:if>
 			<div style="margin-left:80px;">
 				<table style="width:400px">
 					<c:forEach var="projWorkTimeCountInfo" items="${monthlyReportForm.projWorkTimeCountVOList}">
