@@ -144,44 +144,30 @@ function submitAction(action) {
 					</tbody>
 				</table>
 			</div>
-			<div style="margin-left:40px;">
-				【PJ別作業時間集計】
-			</div>
+			<c:if test="${ not empty monthlyReportApprovalForm.projectList}">
+				<div style="margin-left:40px;">
+					【PJ別作業時間集計】
+				</div>
+			</c:if>
 			<div style="margin-left:80px;">
 				<table style="width:400px">
-					<c:forEach var="projectInfo" items="${monthlyReportApprovalForm.projectList}">
-						<tr>
-							<td style="width:200px" colspan="2">
-								${projectInfo.projName}
-							</td>
-							<td>
-								${projectInfo.projHours}
-							</td>
-						</tr>
-						<c:if test="${not empty projectInfo.projManageHours}">
+					<c:forEach var="projWorkTimeCountInfo" items="${monthlyReportApprovalForm.projectList}">
+						<c:if test="${not empty projWorkTimeCountInfo.projName}">
 							<tr>
-								<td style="width:40px">&nbsp;</td>
-								<td>プロジェクト管理</td>
+								<td style="width:200px" colspan="2">
+									${projWorkTimeCountInfo.projName}
+								</td>
 								<td>
-									${projectInfo.projManageHours}
+									${projWorkTimeCountInfo.prpjectWorkTotalHours}
 								</td>
 							</tr>
 						</c:if>
-						<c:if test="${not empty projectInfo.basicDesignHours}">
+						<c:if test="${not empty projWorkTimeCountInfo.workContentName}">
 							<tr>
-								<td style="width:40px">&nbsp;</td>
-								<td>基本設計</td>
-								<td>
-									${projectInfo.basicDesignHours}
-								</td>
-							</tr>
-						</c:if>
-						<c:if test="${not empty projectInfo.meetingHours}">
-							<tr>
-								<td style="width:40px">&nbsp;</td>
-								<td>会議</td>
-								<td>
-									${projectInfo.meetingHours}
+								<td width="30px" align="left">&nbsp;</td>
+								<td width="170xp" align="left">${projWorkTimeCountInfo.workContentName}</td>
+								<td align="left">
+									${projWorkTimeCountInfo.workHoursNum}
 								</td>
 							</tr>
 						</c:if>

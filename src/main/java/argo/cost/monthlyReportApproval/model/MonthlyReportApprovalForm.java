@@ -1,6 +1,7 @@
 package argo.cost.monthlyReportApproval.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import argo.cost.common.model.AbstractForm;
@@ -52,7 +53,7 @@ public class MonthlyReportApprovalForm extends AbstractForm implements Serializa
 	/**
 	 * プロジェクト情報
 	 */
-	private List<ProjWorkTimeCountVO> projectList;
+	private List<ProjWorkTimeCountVO> projectList = new ArrayList<ProjWorkTimeCountVO>();
 
 	//#################################
 	//#################################
