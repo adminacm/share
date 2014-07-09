@@ -112,7 +112,7 @@ function formatDate(e) {
 			<div style="margin-top:20px;">
 				<table style="margin-top: 40px;margin-bottom:10px;width: 300px;margin: auto">
 					<tr>
-						<td align="center" width="100px"><input type="button" value="保存" onclick="submitAction('/attendanceOnHoliday/save');" /></td>
+						<td align="center" width="100px"><input type="button" value="保存" onclick="javascript:document.all.week.focus();submitAction('/attendanceOnHoliday/save');" /></td>
 						<c:if test="${ atendanceOnHolidayForm.showFlag == '1' }">
 							<td align="center" width="100px"><input type="button" value="削除" onclick="submitAction('/attendanceOnHoliday/delete');" /></td>
 						</c:if>
