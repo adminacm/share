@@ -117,9 +117,10 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 *            
 	 * @return　saveFlg
 	 *            勤務情報データの保存結果フラグ
+	 * @throws Exception 
 	 */
 	@Override 
-	public String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday) {
+	public void saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday) throws Exception {
 		
 		// 当前の日付を検索条件として、DBの休日勤務情報有無をチェックする		
 		BaseCondition condition = new BaseCondition();
@@ -163,8 +164,6 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		entity.setCommont(atendanceOnHoliday.getStrCommont());
 		entity.setUpdatedUserId(loginId);               // 更新者
 		entity.setUpdateDate(new Timestamp(System.currentTimeMillis())); // 更新時刻
-		
-		String strHolidayAtendanceSaveFlg = "1";
 		try {
 			// 更新の場合
 			if (flag) {
@@ -173,11 +172,9 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 				baseDao.insert(entity);
 			}
 		} catch (Exception e ) {
-			strHolidayAtendanceSaveFlg = "0";
 			atendanceOnHoliday.putConfirmMsg("休日勤務入力データ登録失敗しました！");
+			throw new Exception();
 		}
-		
-		return strHolidayAtendanceSaveFlg;
 	}
 
 	/**
@@ -190,9 +187,10 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 *            
 	 * @return　deleteFlg
 	 *            勤務情報データの保存結果フラグ
+	 * @ throws Exception
 	 */
 	@Override
-	public Integer deleteAtendanceOnHoliday(String strAtendanceDate, String userID) {
+	public void deleteAtendanceOnHoliday(String strAtendanceDate, String userID) throws Exception {
 
 		// 当前の日付の休日勤務予定情報を削除する
 		BaseCondition deleteAtendanceOnHolidayCondition = new BaseCondition();
@@ -200,9 +198,8 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		deleteAtendanceOnHolidayCondition.addConditionEqual("atendanceDate", strAtendanceDate.replace("/", ""));
 		// 検索条件：社員ID
 		deleteAtendanceOnHolidayCondition.addConditionEqual("users.id", userID);
-		Integer deleteResult = baseDao.deleteByCondition(deleteAtendanceOnHolidayCondition, HolidayAtendanceYotei.class);
+		baseDao.deleteByCondition(deleteAtendanceOnHolidayCondition, HolidayAtendanceYotei.class);
 		
-		return deleteResult;
 
 	}
 

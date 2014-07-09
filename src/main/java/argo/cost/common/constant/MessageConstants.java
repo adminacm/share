@@ -116,6 +116,14 @@ public class MessageConstants {
 	 */
 	public static final String COSE_E_026 = "休業期間中と退職後の日付には勤怠を入力できません";
 	/**
+	 *　勤怠実績が存在する、休日勤務情報を削除しないてください
+	 */
+	public static final String COSE_E_027 = "勤怠実績が存在する、休日勤務情報を削除しないてください";
+	/**
+	 *　勤怠実績が存在する、振替日を指定できません
+	 */
+	public static final String COSE_E_028 = "勤怠実績が存在する、振替日を指定できません";
+	/**
 	 *　｛0｝の勤怠情報を入力ください！
 	 */
 	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力ください";

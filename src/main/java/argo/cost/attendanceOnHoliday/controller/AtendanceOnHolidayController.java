@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,36 +82,28 @@ public class AtendanceOnHolidayController extends AbstractController {
 		// チェック処理を呼ぶ
 		form.clearMessages();
 		// 勤務開始時刻チェック
-		AtendanceOnHolidayChecker.chkStartTimeInput(form);
-		// 勤務終了時刻チェック
-		AtendanceOnHolidayChecker.chkEndTimeInput(form);
-		// 勤務日区分チェック
-		AtendanceOnHolidayChecker.chkWorkDayKbn(form);
-		// プロジェクト情報チェック
-		AtendanceOnHolidayChecker.chkProjectID(form);
-		// 業務内容チェック
-		AtendanceOnHolidayChecker.chkWorkDetail(form);
-		// 振替日チェック
-		AtendanceOnHolidayChecker.chkFurikaeBiInput(form);
-		
-		// チャック処理の結果がエラーがない場合
-		if (StringUtils.isEmpty(form.getConfirmMsg())) {
-			// 保存成功の場合、勤怠入力画面に遷移する
-			if ("1".equals(atendanceOnHolidayService.saveAtendanceOnHoliday(form))) {
-
-				// 勤怠入力画面へ遷移する
-				return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK 
-						+ ATTDENDANCE_DATE + EQUAL_SIGN + form.getStrAtendanceDate().replace("/", "");
-			} else {
-
-				// 保存失敗の場合、エラーメッセージを出力する
-				return ATTENDANCE_HOLIDAY;
-			}
-
-		} else {
+		try {
+			AtendanceOnHolidayChecker.chkStartTimeInput(form);
+			// 勤務終了時刻チェック
+			AtendanceOnHolidayChecker.chkEndTimeInput(form);
+			// 勤務日区分チェック
+			AtendanceOnHolidayChecker.chkWorkDayKbn(form);
+			// プロジェクト情報チェック
+			AtendanceOnHolidayChecker.chkProjectID(form);
+			// 業務内容チェック
+			AtendanceOnHolidayChecker.chkWorkDetail(form);
+			// 振替日チェック
+			AtendanceOnHolidayChecker.chkFurikaeBiInput(form);
+			// 休日勤務情報を保存する
+			atendanceOnHolidayService.saveAtendanceOnHoliday(form);
+		} catch (Exception e) {
+			// エラーメッセージを出力する
 			return ATTENDANCE_HOLIDAY;
-
 		}
+		
+		// 勤怠入力画面へ遷移する
+		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK 
+				+ ATTDENDANCE_DATE + EQUAL_SIGN + form.getStrAtendanceDate().replace("/", "");
 	}
 
 	/**
@@ -128,12 +119,17 @@ public class AtendanceOnHolidayController extends AbstractController {
 
 		// 勤務日付
 		String strAtendanceDate = form.getStrAtendanceDate();
-
-		// 削除失敗する場合
-		if (atendanceOnHolidayService.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getTaishoUserId()) == 0) {
-			
+		
+		try {
+			// 対象日の勤怠実績チェック
+			AtendanceOnHolidayChecker.chkDelKintaiInfo(form);
+			// 休日勤務情報を削除する
+			atendanceOnHolidayService.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getTaishoUserId());
+		} catch (Exception e) {
+			// エラーメッセージを出力する
 			return ATTENDANCE_HOLIDAY;
 		}
+
 		// 削除成功する場合、勤怠入力画面に遷移する
 		return REDIRECT + UrlConstant.URL_ATTENDANCE_INPUT + INIT + QUESTION_MARK + ATTDENDANCE_DATE + "=" + strAtendanceDate.replace("/", "");
 

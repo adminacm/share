@@ -41,8 +41,10 @@ public interface AtendanceOnHolidayService {
 	 *            ユーザーID
 	 * 
 	 * @return 休日勤務データ保存結果
+	 * 
+	 * @ throws Exception
 	 */
-	String saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHolidayForm);
+	void saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHolidayForm) throws Exception;
 	
 	/**
 	 * 休日勤務データ削除
@@ -54,6 +56,6 @@ public interface AtendanceOnHolidayService {
 	 * 
 	 * @return 休日勤務データ削除結果
 	 */
-	Integer deleteAtendanceOnHoliday(String strAtendanceDate, String UserID);
+	void deleteAtendanceOnHoliday(String strAtendanceDate, String UserID) throws Exception;
 
 }

@@ -7,7 +7,9 @@ import argo.cost.attendanceOnHoliday.dao.AtendanceOnHolidayDao;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
+import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.utils.CostDateUtils;
 
 /**
@@ -75,8 +77,9 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
+	 * @throws Exception 
 	 */
-	public static void chkStartTimeInput(AtendanceOnHolidayForm form) {
+	public static void chkStartTimeInput(AtendanceOnHolidayForm form) throws Exception {
 		
 		// 勤務開始時刻
 		String wSTime = form.getStrAtendanceTimeStat();
@@ -84,18 +87,20 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(wSTime)) {
 			// 勤務開始時刻が未入力です
 			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {KINMU_START_TIME});
-			return;
+			throw new Exception();
 		}
 		// 勤務開始時刻のhhnn形式値が数値以外
 		if (!CostDateUtils.isTimeHHnn(wSTime.replace(":", StringUtils.EMPTY))) {
 			// 勤務終了時刻を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
+			throw new Exception();
 		}
 		// 勤務終了時刻の分の値が0、30以外
 		if ((!StringUtils.endsWith(wSTime, "00"))
 				&& (!StringUtils.endsWith(wSTime, "30"))) {
 			// 勤務終了時刻は30分単位で入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_START_TIME});
+			throw new Exception();
 		}
 		
 		
@@ -106,8 +111,9 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
+	 * @throws Exception 
 	 */
-	public static void chkEndTimeInput(AtendanceOnHolidayForm form) {
+	public static void chkEndTimeInput(AtendanceOnHolidayForm form) throws Exception {
 		
 		// 勤務終了時刻
 		String wETime = form.getStrAtendanceTimeEnd();
@@ -115,18 +121,20 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(wETime)) {
 			// 勤務終了時刻が未入力です
 			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {KINMU_END_TIME});
-			return;
+			throw new Exception();
 		}
 		// 勤務終了時刻のhhnn形式値が数値以外
 		if (!CostDateUtils.isTimeHHnn(wETime.replace(":", StringUtils.EMPTY))) {
 			// 勤務終了時刻を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
+			throw new Exception();
 		}
 		// 勤務終了時刻の分の値が0、30以外
 		if ((!StringUtils.endsWith(wETime, "00"))
 				&& (!StringUtils.endsWith(wETime, "30"))) {
 			// 勤務終了時刻は30分単位で入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_END_TIME});
+			throw new Exception();
 		}
 	}
 
@@ -135,8 +143,9 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
+	 * @throws Exception 
 	 */
-	public static void chkFurikaeBiInput(AtendanceOnHolidayForm form) {
+	public static void chkFurikaeBiInput(AtendanceOnHolidayForm form) throws Exception {
 		
 		// 勤務終了時刻
 		String furikaebi = form.getStrHurikaeDate();
@@ -148,31 +157,40 @@ public class AtendanceOnHolidayChecker {
 			if (StringUtils.isEmpty(furikaebi)) {
 				// 振替休日を入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_004, new String[] {FURIKAEBI});
-				return;
+				throw new Exception();
 			}
 			// 振替休日に日付以外が入力されている
 			if (!CostDateUtils.isValidDate(furikaebi, CommonConstant.YYYY_MM_DD)) {
 				// 振替休日には日付を入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_017, new String[] {FURIKAEBI});
+				throw new Exception();
 			}
 			// 振替休日が当日の日付
 			if (StringUtils.equals(form.getStrAtendanceDate(), furikaebi.replaceAll("/", ""))) {
 				// 振替休日が当日の日付です
 				form.putConfirmMsg(MessageConstants.COSE_E_018, new String[] {FURIKAEBI});
+				throw new Exception();
 			}
 			// 振替休日の日付の就業データが処理済の場合
-			// 処理状況を取得
-			String status = atendanceOnHolidayDao.getAttendanceInfoStatus(form.getUserId(), furikaebi.replaceAll("/", ""));
-			// 振替休日の日付の就業データが処理済の場合 TODO
-			if (StringUtils.equals(status, "03")) {
-				// 振替休日が当日の日付です
-				form.putConfirmMsg(MessageConstants.COSE_E_020, new String[] {FURIKAEBI});
+			BaseCondition condition = new BaseCondition();
+			condition.addConditionEqual("users.id", form.getTaishoUserId());                  // 対象者
+			condition.addConditionEqual("atendanceDate", furikaebi.replaceAll("/", ""));      // 振替日
+			// 振替日の勤怠情報実績を取得
+			KintaiInfo kintai = baseDao.findSingleResult(condition, KintaiInfo.class);
+			// 振替日の勤怠情報実績が存在する
+			if (kintai != null
+					&& (StringUtils.isNotEmpty(kintai.getKinmuStartTime())
+							|| kintai.getKyukaKekinKbnMaster() != null)) {
+				// 勤怠実績が存在する、振替日を指定できません
+				form.putConfirmMsg(MessageConstants.COSE_E_028);
+				throw new Exception();
 			}
 		} else {
 			// 振替休日が入力されている
 			if (StringUtils.isNotEmpty(furikaebi)) {
 				// 休日振替勤務以外のときは振替休日は入力できません
 				form.putConfirmMsg(MessageConstants.COSE_E_019);
+				throw new Exception();
 			}
 		}
 	}
@@ -182,8 +200,9 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
+	 * @throws Exception 
 	 */
-	public static void chkProjectID(AtendanceOnHolidayForm form) {
+	public static void chkProjectID(AtendanceOnHolidayForm form) throws Exception {
 		
 		// プロジェクトID
 		String projectId = form.getSelectedProjCd();
@@ -191,6 +210,7 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(projectId)) {
 			// プロジェクト名を選択してください
 			form.putConfirmMsg(MessageConstants.COSE_E_021, new String[] {PROJECT_NAME});
+			throw new Exception();
 		}
 	}
 
@@ -199,8 +219,9 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
+	 * @throws Exception 
 	 */
-	public static void chkWorkDetail(AtendanceOnHolidayForm form) {
+	public static void chkWorkDetail(AtendanceOnHolidayForm form) throws Exception {
 		
 		// 業務内容
 		String workDetail = form.getStrCommont();
@@ -208,6 +229,7 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(workDetail)) {
 			// プロジェクト名を選択してください
 			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {WORK_DETAIL});
+			throw new Exception();
 		}
 	}
 
@@ -216,14 +238,47 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
+	 * @throws Exception 
 	 */
-	public static void chkWorkDayKbn(AtendanceOnHolidayForm form) {
+	public static void chkWorkDayKbn(AtendanceOnHolidayForm form) throws Exception {
 		
 		// 勤務日区分が「休日」「休日振替勤務」以外
 		if ((!StringUtils.equals(form.getSelectedAtendanceDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU))
 				&& (!StringUtils.equals(form.getSelectedAtendanceDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE))) {
 			// 勤務区分の値が不正です
 			form.putConfirmMsg(MessageConstants.COSE_E_022, new String[] {WORK_DAY_KBN});
+			throw new Exception();
+		}
+	}
+	
+
+	/**
+	 * 勤務日実績チェック
+	 * 
+	 * @param form
+	 *            画面情報オブジェクト
+	 * @throws Exception 
+	 */
+	public static void chkDelKintaiInfo(AtendanceOnHolidayForm form) throws Exception {
+		
+		// 対象日
+		String date = form.getStrAtendanceDate().replace("/", "");
+		// 対象者
+		String userId = form.getTaishoUserId();
+		
+		BaseCondition condition = new BaseCondition();
+		
+		condition.addConditionEqual("users.id", userId);         // 対象者
+		condition.addConditionEqual("atendanceDate", date);      // 勤務日
+		// 対象日の勤怠情報実績を取得
+		KintaiInfo kintai = baseDao.findSingleResult(condition, KintaiInfo.class);
+		// 勤怠実績が存在する場合
+		if (kintai != null
+				&& (StringUtils.isNotEmpty(kintai.getKinmuStartTime())
+						|| kintai.getKyukaKekinKbnMaster() != null)) {
+			// 勤怠実績が存在する、休日勤務情報を削除しないてください
+			form.putConfirmMsg(MessageConstants.COSE_E_027);
+			throw new Exception();
 		}
 	}
 }
