@@ -378,7 +378,7 @@ public class CostDateUtils extends DateUtils {
 		
 		SimpleDateFormat sf = new SimpleDateFormat(CommonConstant.YYYYMMDD);
 		result = sf.format(date);
-		return result;
+		return result.substring(0, 6);
 
 	}
 

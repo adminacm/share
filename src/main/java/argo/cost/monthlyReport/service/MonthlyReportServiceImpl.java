@@ -438,7 +438,7 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 		// 社員番号
 		approvalManage.setUser(baseDao.findById(taishoUserId, Users.class));
 		// 申請日付
-		approvalManage.setAppYmd(form.getYearMonth().concat("01"));
+		approvalManage.setAppYmd(form.getYearMonth());
 		// 処理年月
 		approvalManage.setSyoriYm(CostDateUtils.getDealDate(form.getYearMonth(), CommonConstant.APPLY_KBN_GETUHOU));
 		approvalManage.setUpdatedUserId(loginUserId);               // 更新者
