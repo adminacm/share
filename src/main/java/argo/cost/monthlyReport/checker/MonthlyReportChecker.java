@@ -227,14 +227,14 @@ public class MonthlyReportChecker {
 					// 休業期間中と退職後の日付には勤怠を入力できません
 					form.putConfirmMsg(MessageConstants.COSE_E_026);
 					throw new Exception();
-				} else {
-					
-					if (kyugyoSDate.compareTo(taishoDate) <= 0) {
-						// 休業期間中と退職後の日付には勤怠を入力できません
-						form.putConfirmMsg(MessageConstants.COSE_E_026);
-						throw new Exception();
-					}
+				} 
+			} else {
+				if (kyugyoSDate.compareTo(taishoDate) <= 0) {
+					// 休業期間中と退職後の日付には勤怠を入力できません
+					form.putConfirmMsg(MessageConstants.COSE_E_026);
+					throw new Exception();
 				}
+			
 			}
 		}
 		
