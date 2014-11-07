@@ -1,8 +1,9 @@
 package argo.cost.makeKyuyoFile.checker;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import argo.cost.common.constant.CommonConstant;
@@ -44,14 +45,14 @@ public class MakeKyuyoFileChecker {
 		BaseCondition selectApprovalManageInfoCondition = new BaseCondition();
 		// 処理年月
 		selectApprovalManageInfoCondition.addConditionEqual("syoriYm", makeKyuyoFileForm.getDealYearMonth());
-		// ユーザーID
-		selectApprovalManageInfoCondition.addConditionEqual("users.id", makeKyuyoFileForm.getUserId());
 		// 申請区分（"1" 月報）
 		selectApprovalManageInfoCondition.addConditionEqual("applyKbnMaster.code", CommonConstant.APPLY_KBN_GETUHOU);
-		ApprovalManage approvalManageRes = baseDao.findSingleResult(selectApprovalManageInfoCondition, ApprovalManage.class);
+		// 月報状況（状況：承認「03」）
+		selectApprovalManageInfoCondition.addConditionEqual("statusMaster.code", CommonConstant.STATUS_SYOUNIN);
+		List<ApprovalManage> approvalManageResList = baseDao.findResultList(selectApprovalManageInfoCondition, ApprovalManage.class);
 		int intOption = JOptionPane.DEFAULT_OPTION;
-		if (approvalManageRes != null && !StringUtils.equals(approvalManageRes.getStatusMaster().getCode(),CommonConstant.STATUS_SYORIZUMI)) {
-			
+		
+		if (approvalManageResList.size() >= 0) {
 			Object[] options = { "はい", "いいえ" }; 
 			intOption = JOptionPane.showOptionDialog(null, MessageConstants.COSE_E_1104, "Warning", 
 			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
