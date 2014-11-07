@@ -76,9 +76,12 @@ public class MonthlyReportChecker {
 				
 				// 振替元の勤怠情報は存在しない場合
 				if (furikaeInfo == null) {
-					// 勤怠情報を入力ください
-					form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
-					throw new Exception();
+					// 休暇期間以外の場合
+					if (isWorkDate(attDate, userId)) {
+						// 勤怠情報を入力ください
+						form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
+						throw new Exception();
+					}
 				} else {
 					// 勤怠情報を追加する(振替休日)
 					insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU);
@@ -197,6 +200,10 @@ public class MonthlyReportChecker {
 	 */
 	public static void chkKyugyoKikan(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws Exception {
 		
+		// 勤怠データ存在するのみ、チェックを実行する。
+		if (StringUtils.isEmpty(kintaiInfo.getWorkKbn())) {
+			return;
+		}
 		// 対象者
 		String taishoUserId = form.getTaishoUserId();
 		// 対象日
@@ -282,6 +289,43 @@ public class MonthlyReportChecker {
 		
 		// 勤怠情報を追加する
 		baseDao.insert(entity);
+	}
+	
+	private static boolean isWorkDate(String taishoDate, String taishoUserId) {
+		
+		// 対象ユーザー情報を取得
+		Users user = baseDao.findById(taishoUserId, Users.class);
+		// 入社日
+		String nyushaDate = user.getNyushaDate();
+		// 休業開始日
+		String kyugyoSDate = user.getKyugyoStartDate();
+		// 休業終了日
+		String kyugyoEdate = user.getKyugyoEndDate();
+		// 退職日
+		String taishokuDate = user.getTaisyokuDate();
+		// 入社日より前
+		if (taishoDate.compareTo(nyushaDate) < 0) {
+			return false;
+		}
+		// 休業開始日が存在する
+		if (StringUtils.isNotEmpty(kyugyoSDate)) {
+			// 休業終了日が存在する
+			if (StringUtils.isNotEmpty(kyugyoEdate)) {
+				// 休業期間中
+				if (kyugyoSDate.compareTo(taishoDate) <= 0
+						&& taishoDate.compareTo(kyugyoEdate) <= 0) {
+					return false;
+				} 
+			} else if (kyugyoSDate.compareTo(taishoDate) <= 0) {
+					return false;
+			}
+		}
+		// 退職日より後の日付
+		if (StringUtils.isNotEmpty(taishokuDate)
+				&& taishokuDate.compareTo(taishoDate) <= 0) {
+			return false;
+		}
+		return true;
 	}
 
 }
