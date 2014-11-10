@@ -73,18 +73,17 @@ public class MonthlyReportChecker {
 				condition.addConditionEqual("furikaeDate", attDate);          // 振替日
 				// 振替日は当日の勤怠情報を取得
 				KintaiInfo furikaeInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
-				
-				// 振替元の勤怠情報は存在しない場合
-				if (furikaeInfo == null) {
-					// 休暇期間以外の場合
-					if (isWorkDate(attDate, userId)) {
+				// 休暇期間以外の場合
+				if (isWorkDate(attDate, userId)) {
+					// 振替元の勤怠情報は存在しない場合
+					if (furikaeInfo == null) {
 						// 勤怠情報を入力ください
 						form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
 						throw new Exception();
+					} else {
+						// 勤怠情報を追加する(振替休日)
+						insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU);
 					}
-				} else {
-					// 勤怠情報を追加する(振替休日)
-					insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU);
 				}
 			}
 		} else {
@@ -93,19 +92,19 @@ public class MonthlyReportChecker {
 			condition.addConditionEqual("atendanceDate", attDate);           // 対象日
 			// 休日勤務情報を取得
 			HolidayAtendanceYotei holidayInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
-			// 休日勤務情報が存在する
-			if (holidayInfo != null) {
-				// 休暇期間以外の場合
-				if (isWorkDate(attDate, userId)) {
+			// 休暇期間以外の場合
+			if (isWorkDate(attDate, userId)) {
+				// 休日勤務情報が存在する
+				if (holidayInfo != null) {
 					// 勤怠情報を入力ください
 					form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
 					throw new Exception();
-				}
-			} else {
-				// 勤怠情報が存在しない場合
-				if (kintai == null) {
-					// 勤怠情報を追加する(休日)
-					insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_KYUJITU);
+				} else {
+					// 勤怠情報が存在しない場合
+					if (kintai == null) {
+						// 勤怠情報を追加する(休日)
+						insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_KYUJITU);
+					}
 				}
 			}
 		}
