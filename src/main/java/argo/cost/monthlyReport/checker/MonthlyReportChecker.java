@@ -95,10 +95,10 @@ public class MonthlyReportChecker {
 			HolidayAtendanceYotei holidayInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 			// 休日勤務情報が存在する
 			if (holidayInfo != null) {
-				// 勤怠情報が存在しない場合
-				if (kintai == null) {
+				// 休暇期間以外の場合
+				if (isWorkDate(attDate, userId)) {
 					// 勤怠情報を入力ください
-					form.putConfirmMsg(MessageConstants.COSE_E_024, new String[] {kintaiInfo.getDate()});
+					form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
 					throw new Exception();
 				}
 			} else {
