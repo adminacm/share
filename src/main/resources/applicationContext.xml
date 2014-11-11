@@ -46,8 +46,8 @@
 
     <beans profile="prod">
         <bean class="java.net.URI" id="dbUrl">
-            <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
-            <!-- <constructor-arg value="postgres://root:root@192.168.0.163:5432/postgres"></constructor-arg> -->
+           <!-- <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/> -->
+            <constructor-arg value="postgres://root:root@192.168.0.163:5432/postgres"></constructor-arg>
         </bean>
 
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -90,8 +90,17 @@
         <bean id="makeKyuyoFileChecker" class="argo.cost.makeKyuyoFile.checker.MakeKyuyoFileChecker">
         	<property name="baseDao" ref="baseDao"></property>
         </bean>
-    
+        <!-- エラー画面設定 -->
+        <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        	<property name="defaultErrorView" value="/errors/error"></property>
+        	<property name="defaultStatusCode" value="500"></property>
+        	<property name="statusCodes">
+        		<props>
+        			<prop key="error">500</prop>
+        			<prop key="error1">403</prop>
+        			<prop key="error2">404</prop>
+        		</props>
+        	</property>
+        </bean>
     </beans>
-    
-
 </beans>

@@ -47,7 +47,10 @@
     <welcome-file-list>
         <welcome-file>/login</welcome-file>
     </welcome-file-list>
-
+	<error-page>
+        <exception-type>java.lang.IndexOutOfBoundsException</exception-type>
+        <location>/errors/errorPage.jsp</location>
+    </error-page>
     <servlet>
         <servlet-name>spring</servlet-name>
         <servlet-class>
@@ -57,6 +60,7 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:applicationContext.xml</param-value>
         </init-param>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>spring</servlet-name>
