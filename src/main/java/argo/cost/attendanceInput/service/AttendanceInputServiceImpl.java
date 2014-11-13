@@ -24,6 +24,7 @@ import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
+import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.HolidayAtendanceYotei;
 import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.KyukaKekinKbnMaster;
@@ -34,6 +35,7 @@ import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.entity.ProjectBasic;
 import argo.cost.common.entity.ShiftInfo;
 import argo.cost.common.entity.ShiftJikoku;
+import argo.cost.common.entity.StatusMaster;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.service.ComService;
@@ -173,7 +175,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		List<ProjectBasic> projectItemList = baseDao.findAll(ProjectBasic.class);
 		// プロジェクト作業リストを取得
 		List<ProjWorkMaster> workItemList = baseDao.findAll(ProjWorkMaster.class);
-		
+		// 勤怠情報申請状況を設定する
+		setRepStatus(form);
 		// 検索条件
 		condition = new BaseCondition();
 		condition.addConditionEqual("users.id", taishoUserId);  // 社員番号
@@ -184,13 +187,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		HolidayAtendanceYotei attYoteEntity = null;
 		// 勤怠情報が存在する場合
 		if (kintaiEntity != null) {
-			// 月報申請情報は存在する場合
-			if (kintaiEntity.getApprovalManage1() != null) {
-				// 月報申請状況コード
-				form.setAppStatusCode(kintaiEntity.getApprovalManage1().getStatusMaster().getCode());
-				// 月報申請状況名
-				form.setAppStatusName(kintaiEntity.getApprovalManage1().getStatusMaster().getName());
-			}
+
 			// 勤務日区分
 			String workDayKbn = kintaiEntity.getWorkDayKbnMaster().getCode();
 			form.setWorkDayKbn(workDayKbn);
@@ -1214,6 +1211,37 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			    // プロジェクト情報を追加する
 				baseDao.insert(projectEntity);
 			}
+		}
+	}
+	
+	/**
+	 * 勤怠情報申請状況を設定
+	 * @param form
+	 *            画面情報
+	 */
+	private void setRepStatus(AttendanceInputForm form) {
+		
+		// 検索条件
+		BaseCondition condition = new BaseCondition();
+		condition.addConditionEqual("users.id", form.getTaishoUserId());  // 社員番号
+		condition.addConditionLike("appYmd", form.getAttDate().substring(0, 6).concat("%"));    // 申請日付
+		
+		// 承認管理情報を取得
+		ApprovalManage app = baseDao.findSingleResult(condition, ApprovalManage.class);
+		
+		// 承認管理情報は存在する場合
+		if (app != null) {
+			// 申請状況コードを設定する
+			// 月報申請状況コード
+			form.setAppStatusCode(app.getStatusMaster().getCode());
+			// 月報申請状況名
+			form.setAppStatusName(app.getStatusMaster().getName());
+		} else {
+			StatusMaster master = baseDao.findById(CommonConstant.STATUS_SAKUSEIJYOU, StatusMaster.class);
+			// 月報申請状況コード
+			form.setAppStatusCode(master.getCode());
+			// 月報申請状況名
+			form.setAppStatusName(master.getName());
 		}
 	}
 }

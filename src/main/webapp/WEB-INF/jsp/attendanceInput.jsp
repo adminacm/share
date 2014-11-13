@@ -126,6 +126,13 @@ function submitAction(action) {
 						</tr>
 					</table>
 				</c:if>
+				<c:if test="${ !empty attendanceInputForm.appStatusCode && attendanceInputForm.appStatusCode != '01'}">
+					<table style="margin:auto; width:300px;">
+						<tr>
+							<td align="center" ><input type="button" value="休日勤務入力" onclick="submitAction('/attendanceInput/attendanceOnHoliday');" disabled="disabled"/></td>
+						</tr>
+					</table>
+				</c:if>
 			</c:if>
 			<c:if test="${attendanceInputForm.holidayAttendance != null}">
 				<table style="margin:auto;width:300px;border: 1px solid #333;">
@@ -182,7 +189,12 @@ function submitAction(action) {
 				</table>
 				<table style="margin:auto; width:300px;">
 					<tr>
-						<td align="left" colspan="3"><input type="button" value="計算" onclick="submitAction('/attendanceInput/count');" /></td>
+						<c:if test="${ empty attendanceInputForm.appStatusCode || attendanceInputForm.appStatusCode == '01'}">
+							<td align="left" colspan="3"><input type="button" value="計算" onclick="submitAction('/attendanceInput/count');" /></td>
+						</c:if>
+						<c:if test="${ !empty attendanceInputForm.appStatusCode && attendanceInputForm.appStatusCode != '01'}">
+							<td align="left" colspan="3"><input type="button" value="計算" onclick="submitAction('/attendanceInput/count');"  disabled="disabled"/></td>
+						</c:if>
 					</tr>
 				</table>
 				<table class="table1">
