@@ -1,6 +1,7 @@
 package argo.cost.attendanceInput.checker;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ import argo.cost.common.entity.KyukaKekinKbnMaster;
 import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.YukyuKyukaFuyu;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
 
@@ -88,9 +90,9 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @param standSTimeStr
 	 *            定時出勤時刻(hhnn)
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkWorkSTimeFormat(AttendanceInputForm form) throws Exception {
+	public static void chkWorkSTimeFormat(AttendanceInputForm form) throws BusinessException {
 		
 		// シフト情報
 		ShiftVO shift = form.getShiftInfo();
@@ -107,7 +109,7 @@ public class AttendanceInputChecker {
 			if (!CostDateUtils.isTimeHHnn(kinmuSTime)) {
 				// 勤務開始時刻を正しく入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
-				throw new Exception();
+				throw new BusinessException();
 			} else {
 				// 勤務開始時刻＜定時出勤時刻(hhnn)
 				if (kinmuSTime.compareTo(shift.getStartTimeStr()) < 0) {
@@ -125,9 +127,9 @@ public class AttendanceInputChecker {
 	 * 			☆勤務開始時刻が前日の勤務終了時刻と同時刻です
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkWorkSTimeSame(AttendanceInputForm form) throws Exception {
+	public static void chkWorkSTimeSame(AttendanceInputForm form) throws BusinessException {
 		
 		// 勤怠日付
 		String date = form.getAttDate();
@@ -145,7 +147,7 @@ public class AttendanceInputChecker {
 			if (StringUtils.equals(form.getWorkSTime(), info.getKinmuEndTime())) {
 				// 勤務開始時刻が前日の勤務終了時刻と同時刻です
 				form.putConfirmMsg(MessageConstants.COSE_W_1102);
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -157,9 +159,9 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @param standSTimeStr
 	 *            定時出勤時刻(hhnn)
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkWorkETimeFormat(AttendanceInputForm form) throws Exception {
+	public static void chkWorkETimeFormat(AttendanceInputForm form) throws BusinessException {
 		// シフト情報
 		ShiftVO shift = form.getShiftInfo();
 		String hour = StringUtils.isEmpty(form.getWorkEHour()) ? StringUtils.EMPTY : form.getWorkEHour();
@@ -175,7 +177,7 @@ public class AttendanceInputChecker {
 			if (!CostDateUtils.isTimeHHnn(kinmuETime)) {
 				// 勤務終了時刻を正しく入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
-				throw new Exception();
+				throw new BusinessException();
 			} else {
 				// 勤務終了時刻＜＝定時出勤時刻(hhnn)
 				if (kinmuETime.compareTo(shift.getStartTimeStr()) <= 0) {
@@ -192,9 +194,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkWorkTimeFormat(AttendanceInputForm form) throws Exception {
+	public static void chkWorkTimeFormat(AttendanceInputForm form) throws BusinessException {
 		
 		// シフト情報
 		ShiftVO shift = form.getShiftInfo();
@@ -222,7 +224,7 @@ public class AttendanceInputChecker {
 					|| StringUtils.isEmpty(eTime)) {
 				// 勤務開始時刻・終了時刻は両方入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_006);
-				throw new Exception();
+				throw new BusinessException();
 			} else {
 
 				// 勤務開始時刻は定時勤務時間帯以外はエラー
@@ -230,31 +232,35 @@ public class AttendanceInputChecker {
 						|| standETimeStr.compareTo(sTimeStr) <= 0) {
 					// 勤務開始時刻は定時勤務時間内の時刻を入力してください
 					form.putConfirmMsg(MessageConstants.COSE_E_008);
-					throw new Exception();
+					throw new BusinessException();
 				}
 				// 勤務終了時刻が定時出勤時刻～勤務開始時刻の間の時刻はエラー
 				if (eTimeStr.compareTo(sTimeStr) <= 0) {
 					// 勤務終了時刻は勤務開始時刻より後の時刻を入力してください
 					form.putConfirmMsg(MessageConstants.COSE_E_009);
-					throw new Exception();
+					throw new BusinessException();
 				}
 				// 24時間を越える勤務はエラー
-				if (24 < CostDateUtils.MinusTime(sTimeStr, eTimeStr)) {
-					// 1日に24時間を超える勤務は入力できません
-					form.putConfirmMsg(MessageConstants.COSE_E_010);
-					throw new Exception();
+				try {
+					if (24 < CostDateUtils.MinusTime(sTimeStr, eTimeStr)) {
+						// 1日に24時間を超える勤務は入力できません
+						form.putConfirmMsg(MessageConstants.COSE_E_010);
+						throw new BusinessException();
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
 				// 勤務開始時刻は30分単位で入力
 				if (!CostDateUtils.isHalfHour(sMinute)) {
 					// 勤務開始時刻は30分単位で入力してください
 					form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_START_TIME});
-					throw new Exception();
+					throw new BusinessException();
 				}
 				// 勤務終了時刻は30分単位で入力
 				if (!CostDateUtils.isHalfHour(eMinute)) {
 					// 勤務終了時刻は30分単位で入力してください
 					form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_END_TIME});
-					throw new Exception();
+					throw new BusinessException();
 				}
 			}
 			
@@ -266,9 +272,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKyuKaKbn(AttendanceInputForm form) throws Exception {
+	public static void chkKyuKaKbn(AttendanceInputForm form) throws BusinessException {
 		
 		// 休暇欠勤区分
 		String kykaKbn = form.getKyukaKb();
@@ -281,7 +287,7 @@ public class AttendanceInputChecker {
 			if (entity == null) {
 				// 休暇欠勤区分を正しく入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KYUKA_KEKIN_KBN});
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -291,9 +297,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkWorkDayFlag(AttendanceInputForm form) throws Exception {
+	public static void chkWorkDayFlag(AttendanceInputForm form) throws BusinessException {
 		
 		// 対象日付
 		String date = form.getAttDate();
@@ -306,7 +312,7 @@ public class AttendanceInputChecker {
 			if (calender == null) {
 				// カレンダーデータの出勤日フラグが設定されていません
 				form.putConfirmMsg("カレンダーデータの出勤日フラグが設定されていません");
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -320,9 +326,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime01(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbnAndWorkTime01(AttendanceInputForm form) throws BusinessException {
 		
 		// 休暇欠勤区分
 		String kyukaKbn = form.getKyukaKb();
@@ -340,7 +346,7 @@ public class AttendanceInputChecker {
 			if (StringUtils.isEmpty(sTime) || StringUtils.isEmpty(eTime)) {
 				// 勤務開始時刻・終了時刻を入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_004, new String[] { KINMU_START_END_TIME });
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -355,9 +361,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime02(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbnAndWorkTime02(AttendanceInputForm form) throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -377,7 +383,7 @@ public class AttendanceInputChecker {
 					if (StringUtils.isEmpty(kyukaKbn)) {
 						// 定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください
 						form.putConfirmMsg(MessageConstants.COSE_E_011, new String[] {String.valueOf(shift.getWorkHours()) + "h"});
-						throw new Exception();
+						throw new BusinessException();
 					}
 				}
 			}
@@ -396,9 +402,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime03(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbnAndWorkTime03(AttendanceInputForm form) throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -426,7 +432,7 @@ public class AttendanceInputChecker {
 								|| shift.getFmSTimeStr().compareTo(form.getWorkSTimeStr()) < 0) {
 							// 正しい休暇区分を入力してください
 							form.putConfirmMsg(MessageConstants.COSE_E_012, new String[] {KYUKA_KBN});
-							throw new Exception();
+							throw new BusinessException();
 						}
 					}
 				}
@@ -443,9 +449,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime04(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbnAndWorkTime04(AttendanceInputForm form) throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -466,7 +472,7 @@ public class AttendanceInputChecker {
 					if (StringUtils.isNotEmpty(kyukaKbn)) {
 						// 休暇欠勤区分が入力されています
 						form.putConfirmMsg(MessageConstants.COSE_E_013);
-						throw new Exception();
+						throw new BusinessException();
 					}
 				}
 			}
@@ -482,9 +488,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime05(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbnAndWorkTime05(AttendanceInputForm form) throws BusinessException {
 		
 		// 勤務区分"01"(出勤)or"03"(休日振替勤務)で
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, form.getWorkDayKbn())
@@ -496,7 +502,7 @@ public class AttendanceInputChecker {
 				if (StringUtils.isEmpty(form.getKyukaKb())) {
 					// 休暇欠勤区分が入力されています
 					form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {KINTAI});
-					throw new Exception();
+					throw new BusinessException();
 				}
 			}
 		}
@@ -511,9 +517,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime06(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbnAndWorkTime06(AttendanceInputForm form) throws BusinessException {
 		
 		// 休暇欠勤区分
 		String kyukaKbn = form.getKyukaKb();
@@ -533,7 +539,7 @@ public class AttendanceInputChecker {
 					|| (!StringUtils.isEmpty(eTime))) {
 				// 終日休暇の日は勤務できません
 				form.putConfirmMsg(MessageConstants.COSE_E_003);
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -547,9 +553,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndShiftCode(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbnAndShiftCode(AttendanceInputForm form) throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -562,7 +568,7 @@ public class AttendanceInputChecker {
 			if (!StringUtils.equals(form.getWorkSTimeStr(), shift.getStartTimeStr())) {
 				// 休日の勤務開始は定時出勤時刻を入力してください
 				form.putConfirmMsg(MessageConstants.COSE_E_014);
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -576,9 +582,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbn001(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbn001(AttendanceInputForm form) throws BusinessException {
 		
 		// 休暇欠勤区分"05"(代休)で
 		if (StringUtils.equals(CommonConstant.KK_KBN_TAIKYU, form.getKyukaKb())) {
@@ -602,7 +608,7 @@ public class AttendanceInputChecker {
 			if (entity == null || entity.isEmpty()) {
 				// 取得できる代休はありません
 				form.putConfirmMsg(MessageConstants.COSE_E_015);
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -619,9 +625,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbn002(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbn002(AttendanceInputForm form) throws BusinessException {
 		
 		Double kyukaHours = 0.0;
 		// 休暇欠勤区分
@@ -654,7 +660,7 @@ public class AttendanceInputChecker {
 		if (yukyuKyukaHours < kyukaHours + sumKyukaHours) {
 			// 有給休暇の取得限度を超えています
 			form.putConfirmMsg(MessageConstants.COSE_E_016);
-			throw new Exception();
+			throw new BusinessException();
 		}
 		
 		// 本年度の休暇時間数(時間休)を取得
@@ -663,7 +669,7 @@ public class AttendanceInputChecker {
 		if (40 < sumKyukaHours + kyukaHours) {
 			// 有給休暇の取得限度を超えています
 			form.putConfirmMsg(MessageConstants.COSE_E_016);
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 
@@ -678,9 +684,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbn003(AttendanceInputForm form) throws Exception {
+	public static void chkKykaKbn003(AttendanceInputForm form) throws BusinessException {
 
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -704,7 +710,7 @@ public class AttendanceInputChecker {
 										&& shift.getEndTimeStr().compareTo(form.getWorkETimeStr()) <= 0)) {
 							// 有給休暇が余分に取得されています
 							form.putConfirmMsg(MessageConstants.COSE_W_1101);
-							throw new Exception();
+							throw new BusinessException();
 						}
 					}
 				}
@@ -719,9 +725,9 @@ public class AttendanceInputChecker {
 	 * 			☆休日には休暇取得できません
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKyuKaKbnAndKinmuKbn(AttendanceInputForm form) throws Exception {
+	public static void chkKyuKaKbnAndKinmuKbn(AttendanceInputForm form) throws BusinessException {
 		
 		// 勤務区分が「休日」か「振替休日」の場合
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU, form.getWorkDayKbn())
@@ -730,7 +736,7 @@ public class AttendanceInputChecker {
 			if (StringUtils.isNotEmpty(form.getKyukaKb())) {
 				// 休暇欠勤区分を正しく入力してください
 				form.putConfirmMsg("休日には休暇取得できません");
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -742,9 +748,9 @@ public class AttendanceInputChecker {
 	 * 			☆休日勤務が存在する、勤怠実績を入力してください
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkHolidayYoteiInfo(AttendanceInputForm form) throws Exception {
+	public static void chkHolidayYoteiInfo(AttendanceInputForm form) throws BusinessException {
 		
 		// 休日勤務情報が存在する場合
 		if (form.getHolidayAttendance() != null) {
@@ -756,13 +762,13 @@ public class AttendanceInputChecker {
 			if (kintaiInfo == null) {
 				// 休日勤務が存在する、勤怠実績を入力してください
 				form.putConfirmMsg("休日勤務が存在する、勤怠実績を入力してください");
-				throw new Exception();
+				throw new BusinessException();
 			} else {
 				// 勤怠情報が存在しない
 				if (StringUtils.isEmpty(kintaiInfo.getKinmuStartTime())) {
 					// 休日勤務が存在する、勤怠実績を入力してください
 					form.putConfirmMsg("休日勤務が存在する、勤怠実績を入力してください");
-					throw new Exception();
+					throw new BusinessException();
 				}
 			}
 		}
@@ -775,9 +781,9 @@ public class AttendanceInputChecker {
 	 * 			☆休日勤務が存在する、勤怠実績を入力してください
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkProjectList(AttendanceInputForm form) throws Exception {
+	public static void chkProjectList(AttendanceInputForm form) throws BusinessException {
 		
 		// プロジェクト情報
 		List<AttendanceProjectVO> projectList = form.getProjectList();
@@ -791,7 +797,7 @@ public class AttendanceInputChecker {
 				if (!CostStringUtils.isToDouble(workHour)) {
 					// 作業時間数を正しく入力してください
 					form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {"作業時間数"});
-					throw new Exception();
+					throw new BusinessException();
 				}
 				sumHour += Double.parseDouble(workHour);
 			}
@@ -800,7 +806,7 @@ public class AttendanceInputChecker {
 		if (sumHour != 0.0 && sumHour.compareTo(form.getWorkHours()) != 0) {
 			// 作業時間数の合計が勤務時間数と一致していません
 			form.putConfirmMsg(MessageConstants.COSE_E_025);
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 
@@ -813,9 +819,9 @@ public class AttendanceInputChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKyugyoKikan(AttendanceInputForm form) throws Exception {
+	public static void chkKyugyoKikan(AttendanceInputForm form) throws BusinessException {
 		
 		// 対象者
 		String taishoUserId = form.getTaishoUserId();
@@ -835,7 +841,7 @@ public class AttendanceInputChecker {
 		if (taishoDate.compareTo(nyushaDate) < 0) {
 			// 休業期間中と退職後の日付には勤怠を入力できません
 			form.putConfirmMsg(MessageConstants.COSE_E_026);
-			throw new Exception();
+			throw new BusinessException();
 		}
 		// 休業開始日が存在する
 		if (StringUtils.isNotEmpty(kyugyoSDate)) {
@@ -846,13 +852,13 @@ public class AttendanceInputChecker {
 						&& taishoDate.compareTo(kyugyoEdate) <= 0) {
 					// 休業期間中と退職後の日付には勤怠を入力できません
 					form.putConfirmMsg(MessageConstants.COSE_E_026);
-					throw new Exception();
+					throw new BusinessException();
 				}
 			} else {
 				if (kyugyoSDate.compareTo(taishoDate) <= 0) {
 					// 休業期間中と退職後の日付には勤怠を入力できません
 					form.putConfirmMsg(MessageConstants.COSE_E_026);
-					throw new Exception();
+					throw new BusinessException();
 				}
 			}
 		}
@@ -862,7 +868,7 @@ public class AttendanceInputChecker {
 				&& taishokuDate.compareTo(taishoDate) <= 0) {
 			// 休業期間中と退職後の日付には勤怠を入力できません
 			form.putConfirmMsg(MessageConstants.COSE_E_026);
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 

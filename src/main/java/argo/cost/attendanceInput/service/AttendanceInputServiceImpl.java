@@ -38,6 +38,7 @@ import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.StatusMaster;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.service.ComService;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
@@ -354,7 +355,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @throws Exception 
 	 */
 	@Override
-	public void updateAttdendanceInfo(AttendanceInputForm form) throws Exception {
+	public void updateAttdendanceInfo(AttendanceInputForm form) throws BusinessException {
 
 		// 計算を実行する
 		this.calcWorkingRec(form);
@@ -383,7 +384,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			List<KintaiInfo> entityList = baseDao.findResultList(condition, KintaiInfo.class);
 			if (entityList != null && entityList.size() > 0) {
 				form.putConfirmMsg("代休データはすでに存在いるです");
-				throw new Exception();
+				throw new BusinessException();
 			} else {
 				// 休日勤務情報を取得
 				condition = new BaseCondition();
@@ -411,7 +412,12 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			}
 		}
 		// 勤怠データを更新
-		saveKintaiInfo(form, kintaiEntity);
+		try {
+			saveKintaiInfo(form, kintaiEntity);
+		} catch (ParseException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 		// プロジェクト情報を更新する
 		saveProjectInfo(loginId, taishoUserId, date, form.getProjectList());
 	}
@@ -424,7 +430,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @throws Exception
 	 */
 	@Override
-	public void calcWorkingRec(AttendanceInputForm form) throws Exception {
+	public void calcWorkingRec(AttendanceInputForm form) throws BusinessException {
 		
 		// 画面数字の初期化
 		form.setWorkHours(0.0);
@@ -492,9 +498,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * 
 	 * @param form
 	 *            勤怠入力画面情報
-	 * @throws ParseException 
 	 */
-	private void getWorkHours(AttendanceInputForm form) throws Exception {
+	private void getWorkHours(AttendanceInputForm form) {
 
 		// 勤務時間取得
 		Double hours = 0.0;
@@ -537,9 +542,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 *            勤怠入力画面情報
 	 * @param shiftinfo
 	 *            シフト情報
-	 * @throws ParseException 
 	 */
-	private void getRestHours(AttendanceInputForm form, ShiftVO shiftinfo) throws ParseException {
+	private void getRestHours(AttendanceInputForm form, ShiftVO shiftinfo) {
 
 		// 遅刻時刻
 		Double wChikoku = 0.0;
@@ -612,7 +616,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @param form 勤怠入力画面情報
 	 * @throws ParseException 
 	 */
-	private void getChokin(AttendanceInputForm form) throws ParseException {
+	private void getChokin(AttendanceInputForm form) {
 		
 		// シフトコード
 		String shiftCode = form.getShiftCdShow();
@@ -692,7 +696,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @param form 勤怠入力画面情報
 	 * @throws ParseException 
 	 */
-	private void getMidnight(AttendanceInputForm form) throws Exception {
+	private void getMidnight(AttendanceInputForm form) {
 
 		// シフトコード
 		String shiftCode = form.getShiftCdShow();
@@ -732,7 +736,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @return シフト情報
 	 * @throws Exception 
 	 */
-	private ShiftVO getShiftInfo(AttendanceInputForm form) throws Exception {
+	private ShiftVO getShiftInfo(AttendanceInputForm form) throws BusinessException {
 
 		String shiftCode = form.getShiftCd();
 		String shiftCodeShow = form.getShiftCdShow();
@@ -749,7 +753,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (shiftList == null || shiftList.isEmpty()) {
 			// ｼﾌﾄｺｰﾄﾞを正しく入力してください
 			 form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {"シフトコード"});
-			 throw new Exception();
+			 throw new BusinessException();
 		}
 		ShiftVO info = null;
 		// シフト時刻情報を取得
@@ -758,7 +762,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		if (entity == null) {
 			// ｼﾌﾄｺｰﾄﾞの時刻データが設定されていません
 			form.putConfirmMsg(MessageConstants.COSE_E_005, new String[] {SHIFT_TIME_DATA});
-			throw new Exception();
+			throw new BusinessException();
 		} else {
 			String standSTime = entity.getTeijiKinmuTime();               // 定時出勤時刻
 			String amETime = entity.getAmEndTime();                       // 午前終了時刻
@@ -1010,7 +1014,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @throws Exception 
 	 * 
 	 */
-	private void doInputCheck(AttendanceInputForm form) throws Exception {
+	private void doInputCheck(AttendanceInputForm form) throws BusinessException {
 		// シフトコードより、シフト情報を取得
 		ShiftVO shiftinfo = getShiftInfo(form);
 		form.setShiftInfo(shiftinfo);
@@ -1080,11 +1084,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * 				画面情報
 	 * @param kintaiEntity 
 	 * 				勤怠情報
-	 * 
-	 * @throws Exception 
+	 * @throws ParseException 
 	 * 
 	 */
-	private void saveKintaiInfo(AttendanceInputForm form, KintaiInfo kintaiEntity) throws Exception {
+	private void saveKintaiInfo(AttendanceInputForm form, KintaiInfo kintaiEntity) throws ParseException {
 		
 		// ログイン社員番号
 		String loginId = form.getUserId();

@@ -1,6 +1,7 @@
 package argo.cost.attendanceInput.service;
 
 import argo.cost.attendanceInput.model.AttendanceInputForm;
+import argo.cost.common.exception.BusinessException;
 
 /**
  * 勤怠入力サービスクラス
@@ -39,7 +40,7 @@ public interface AttendanceInputService {
 	 * 				画面情報
 	 *  @throws Exception 
 	 */
-	void updateAttdendanceInfo(AttendanceInputForm form) throws Exception;
+	void updateAttdendanceInfo(AttendanceInputForm form) throws BusinessException;
 	
 	/**
 	 * 各種値算出

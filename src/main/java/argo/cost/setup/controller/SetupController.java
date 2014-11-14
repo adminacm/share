@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.setup.model.SetupForm;
 import argo.cost.setup.service.SetupService;
 
@@ -121,7 +122,7 @@ public class SetupController extends AbstractController {
 			// 入力チェックOKの場合は入力された内容が保存されて、個人設定画面に遷移する
 			setupService.doSave(setupInfo);
 			
-		} catch (Exception e) {
+		} catch (BusinessException e) {
 			// エラーが発生した場合はエラーメッセージが表示され個人設定変更画面に戻る
 			return SETUPEDIT_GAMENID;
 		}

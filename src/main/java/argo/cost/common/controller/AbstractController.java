@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.model.AbstractForm;
 import argo.cost.common.model.AppSession;
 import argo.cost.common.service.ComService;
@@ -119,7 +120,7 @@ public abstract class AbstractController {
 
 		if (session == null) {
 
-			throw new Exception();
+			throw new BusinessException();
 		}
 
 		// ユーザIDを設定する

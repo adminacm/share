@@ -2,6 +2,7 @@ package argo.cost.setup.service;
 
 import java.text.ParseException;
 
+import argo.cost.common.exception.BusinessException;
 import argo.cost.setup.model.SetupForm;
 
 /**
@@ -44,7 +45,7 @@ public interface SetupService {
 	 * @throws Exception 
 	 *            
 	 */
-	void doSaveCheck(SetupForm setupInfo) throws Exception;
+	void doSaveCheck(SetupForm setupInfo) throws BusinessException;
 
 	/**
 	 * 保存処理を実行
@@ -52,5 +53,5 @@ public interface SetupService {
 	 * @param setupInfo
 	 *        個人設定情報
 	 */
-	void doSave(SetupForm setupInfo) throws Exception;
+	void doSave(SetupForm setupInfo) throws BusinessException;
 }

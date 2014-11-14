@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.entity.Users;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.checker.MonthlyReportChecker;
@@ -199,7 +200,7 @@ public class MonthlyReportController extends AbstractController {
 			}
 	    	// 月報を提出
 	    	monthlyReportService.monthyReportCommit(form);
-		} catch (Exception e) {
+		} catch (BusinessException e) {
 			return MONTHLYREPORT;
 		}
 

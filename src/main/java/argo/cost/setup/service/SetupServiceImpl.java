@@ -14,6 +14,7 @@ import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.checker.SetupChecker;
 import argo.cost.setup.model.SetupForm;
@@ -150,7 +151,7 @@ public class SetupServiceImpl implements SetupService {
 	 *            
 	 */  
 	@Override
-	public void doSaveCheck(SetupForm form) throws Exception {
+	public void doSaveCheck(SetupForm form) throws BusinessException {
 		
 		form.clearMessages();
 		// 休業開始日のチェック
@@ -197,7 +198,7 @@ public class SetupServiceImpl implements SetupService {
 	 *        個人設定情報
 	 */
 	@Override
-	public void doSave(SetupForm setupForm) throws Exception {
+	public void doSave(SetupForm setupForm) throws BusinessException {
 		
 		Users user = baseDao.findById(setupForm.getUserId(), Users.class);
 		// 代理者ID
@@ -226,7 +227,7 @@ public class SetupServiceImpl implements SetupService {
 			
 		} catch (Exception ex) {
 			setupForm.putConfirmMsg("ユーザー情報の更新は失敗しました");
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 }

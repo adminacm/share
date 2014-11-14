@@ -13,6 +13,7 @@ import argo.cost.common.constant.MessageConstants;
 import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.KintaiInfo;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.setup.model.SetupForm;
 
@@ -54,27 +55,27 @@ public class SetupChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkSaveDate(SetupForm setupForm) throws Exception {
+	public static void chkSaveDate(SetupForm setupForm) throws BusinessException {
 		
 		// 休業開始日、退職日は入社日より後の日付であること
 		// 休業開始日は入社日より後の日付であること
 		if (!StringUtils.isEmpty(setupForm.getHolidayStart()) && setupForm.getHolidayStart().compareTo(setupForm.getJoinDate()) < 0) {
 			setupForm.putConfirmMsg(MessageConstants.COSE_E_1105, new String[] {KYUGYO_START_DATE});
-			throw new Exception();
+			throw new BusinessException();
 	    
 		// 退職日は入社日より後の日付であること
 		} else if (!StringUtils.isEmpty(setupForm.getOutDate()) && setupForm.getOutDate().compareTo(setupForm.getJoinDate()) < 0) {
 			setupForm.putConfirmMsg(MessageConstants.COSE_E_1105,new String[] {TAISHOKU_DATE});
-			throw new Exception();
+			throw new BusinessException();
 		}
 		
 		// 休業終了日は休業開始日より後の日付であること
 		if (!StringUtils.isEmpty(setupForm.getHolidayEnd()) && !StringUtils.isEmpty(setupForm.getHolidayStart()) 
 				&& setupForm.getHolidayEnd().compareTo(setupForm.getHolidayStart()) < 0) {
 			setupForm.putConfirmMsg(MessageConstants.COSE_E_1106);
-			throw new Exception();
+			throw new BusinessException();
 		}
 		
 		// 入力された休業期間や退職日の勤怠が提出以降の状況の場合
@@ -89,9 +90,9 @@ public class SetupChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKyukaKaishiDate(SetupForm form) throws Exception {
+	public static void chkKyukaKaishiDate(SetupForm form) throws BusinessException {
 		
 		// 休業開始日
 		String date = form.getHolidayStart();
@@ -99,7 +100,7 @@ public class SetupChecker {
 		if (StringUtils.isNotEmpty(date) && !CostDateUtils.isValidDate(date, CommonConstant.YYYY_MM_DD)) {
 			// 休業開始日を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KYUGYO_START_DATE});
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 
@@ -108,9 +109,9 @@ public class SetupChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKyukaShyuryoDate(SetupForm form) throws Exception {
+	public static void chkKyukaShyuryoDate(SetupForm form) throws BusinessException {
 		
 		// 休業終了日
 		String date = form.getHolidayEnd();
@@ -118,7 +119,7 @@ public class SetupChecker {
 		if (StringUtils.isNotEmpty(date) && !CostDateUtils.isValidDate(date, CommonConstant.YYYY_MM_DD)) {
 			// 休業終了日を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KYUGYO_END_DATE});
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 
@@ -127,9 +128,9 @@ public class SetupChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkTaishokuDate(SetupForm form) throws Exception {
+	public static void chkTaishokuDate(SetupForm form) throws BusinessException {
 		
 		// 退職日
 		String date = form.getOutDate();
@@ -137,11 +138,11 @@ public class SetupChecker {
 		if (StringUtils.isNotEmpty(date) && !CostDateUtils.isValidDate(date, CommonConstant.YYYY_MM_DD)) {
 			// 退職日を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {TAISHOKU_DATE});
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 	
-	private static void chkApplyStatus(SetupForm form, String sDate, String eDate, int flag) throws Exception {
+	private static void chkApplyStatus(SetupForm form, String sDate, String eDate, int flag) throws BusinessException {
 		
 		// 対象者
 		String userId = form.getUserId();
@@ -195,7 +196,7 @@ public class SetupChecker {
 				if (!StringUtils.equals(CommonConstant.STATUS_SAKUSEIJYOU, status)) {
 					// 休業終了日は休業開始日よりあとの日付を入力してください
 					form.putConfirmMsg(MessageConstants.COSE_E_1107);
-					throw new Exception();
+					throw new BusinessException();
 				}
 			}
 		}

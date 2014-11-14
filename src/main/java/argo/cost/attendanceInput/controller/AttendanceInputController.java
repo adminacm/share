@@ -16,6 +16,7 @@ import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.service.AttendanceInputService;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
+import argo.cost.common.exception.BusinessException;
 
 /**
  * 勤怠入力画面業務クラス
@@ -118,7 +119,7 @@ public class AttendanceInputController extends AbstractController {
 		// 就業データを更新する
 		try {
 			attendanceInputService.updateAttdendanceInfo(form);
-		} catch (Exception e) {
+		} catch (BusinessException e) {
 			// errorMessageを追加
 			return ATTDENDANCE_INPUT;
 		}

@@ -2,6 +2,7 @@ package argo.cost.monthlyReportApproval.service;
 
 import java.text.ParseException;
 
+import argo.cost.common.exception.BusinessException;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
 
 
@@ -38,5 +39,5 @@ public interface MonthlyReportApprovalService {
 	 * @return
 	 *        更新フラグ
 	 */
-	void updateProStatus(String applyNo, String proStatus) throws Exception;
+	void updateProStatus(String applyNo, String proStatus) throws BusinessException;
 }

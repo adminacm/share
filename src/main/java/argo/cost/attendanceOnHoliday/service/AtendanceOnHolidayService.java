@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.entity.WorkDayKbnMaster;
+import argo.cost.common.exception.BusinessException;
 
 /**
  * 休日勤務入力画面サービスのインタフェース
@@ -44,7 +45,7 @@ public interface AtendanceOnHolidayService {
 	 * 
 	 * @ throws Exception
 	 */
-	void saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHolidayForm) throws Exception;
+	void saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHolidayForm) throws BusinessException;
 	
 	/**
 	 * 休日勤務データ削除
@@ -56,6 +57,6 @@ public interface AtendanceOnHolidayService {
 	 * 
 	 * @return 休日勤務データ削除結果
 	 */
-	void deleteAtendanceOnHoliday(String strAtendanceDate, String UserID) throws Exception;
+	void deleteAtendanceOnHoliday(String strAtendanceDate, String UserID) throws BusinessException;
 
 }

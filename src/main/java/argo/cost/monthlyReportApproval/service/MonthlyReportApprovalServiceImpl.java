@@ -23,6 +23,7 @@ import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.KintaiInfo;
 import argo.cost.common.entity.ProjWorkTimeManage;
 import argo.cost.common.entity.StatusMaster;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.model.ProjWorkTimeCountVO;
 import argo.cost.common.utils.CostDateUtils;
@@ -343,9 +344,8 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 	 *        更新フラグ
 	 */
 	@Override
-	public void updateProStatus(String applyNo, String proStatusCode) throws Exception {
+	public void updateProStatus(String applyNo, String proStatusCode) throws BusinessException {
 		
-
 		try {
 			// 申請番号によって、承認情報を取得する		
 			ApprovalManage approvalManageInfo = baseDao.findById(applyNo, ApprovalManage.class);
@@ -357,7 +357,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 			baseDao.update(approvalManageInfo);
 		} catch (Exception e) {
 
-			throw new Exception();
+			throw new BusinessException();
 		}
 				
 	}

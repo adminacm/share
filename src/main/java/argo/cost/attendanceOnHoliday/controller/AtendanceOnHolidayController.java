@@ -19,6 +19,7 @@ import argo.cost.attendanceOnHoliday.service.AtendanceOnHolidayService;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.utils.CostDateUtils;
 
 /**
@@ -96,7 +97,7 @@ public class AtendanceOnHolidayController extends AbstractController {
 			AtendanceOnHolidayChecker.chkFurikaeBiInput(form);
 			// 休日勤務情報を保存する
 			atendanceOnHolidayService.saveAtendanceOnHoliday(form);
-		} catch (Exception e) {
+		} catch (BusinessException e) {
 			// エラーメッセージを出力する
 			return ATTENDANCE_HOLIDAY;
 		}
@@ -125,7 +126,7 @@ public class AtendanceOnHolidayController extends AbstractController {
 			AtendanceOnHolidayChecker.chkDelKintaiInfo(form);
 			// 休日勤務情報を削除する
 			atendanceOnHolidayService.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getTaishoUserId());
-		} catch (Exception e) {
+		} catch (BusinessException e) {
 			// エラーメッセージを出力する
 			return ATTENDANCE_HOLIDAY;
 		}

@@ -16,6 +16,7 @@ import argo.cost.common.entity.HolidayAtendanceYotei;
 import argo.cost.common.entity.ProjectBasic;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.utils.CostDateUtils;
 
 /**
@@ -120,7 +121,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 * @throws Exception 
 	 */
 	@Override 
-	public void saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday) throws Exception {
+	public void saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday) throws BusinessException {
 		
 		// 当前の日付を検索条件として、DBの休日勤務情報有無をチェックする		
 		BaseCondition condition = new BaseCondition();
@@ -173,7 +174,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			}
 		} catch (Exception e ) {
 			atendanceOnHoliday.putConfirmMsg("休日勤務入力データ登録失敗しました！");
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 
@@ -190,7 +191,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 * @ throws Exception
 	 */
 	@Override
-	public void deleteAtendanceOnHoliday(String strAtendanceDate, String userID) throws Exception {
+	public void deleteAtendanceOnHoliday(String strAtendanceDate, String userID) throws BusinessException {
 
 		// 当前の日付の休日勤務予定情報を削除する
 		BaseCondition deleteAtendanceOnHolidayCondition = new BaseCondition();

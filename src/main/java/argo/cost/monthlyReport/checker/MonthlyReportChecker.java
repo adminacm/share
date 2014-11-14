@@ -18,6 +18,7 @@ import argo.cost.common.entity.MCalendar;
 import argo.cost.common.entity.ShiftJikoku;
 import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
+import argo.cost.common.exception.BusinessException;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 
@@ -47,9 +48,9 @@ public class MonthlyReportChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKintaiInfoNull(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws Exception {
+	public static void chkKintaiInfoNull(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
 		
 		// 社員番号
 		String userId = form.getTaishoUserId();
@@ -79,7 +80,7 @@ public class MonthlyReportChecker {
 					if (furikaeInfo == null) {
 						// 勤怠情報を入力ください
 						form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
-						throw new Exception();
+						throw new BusinessException();
 					} else {
 						// 勤怠情報を追加する(振替休日)
 						insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_FURIKAE_KYUJITU);
@@ -94,16 +95,19 @@ public class MonthlyReportChecker {
 			HolidayAtendanceYotei holidayInfo = baseDao.findSingleResult(condition, HolidayAtendanceYotei.class);
 			// 休暇期間以外の場合
 			if (isWorkDate(attDate, userId)) {
-				// 休日勤務情報が存在する
-				if (holidayInfo != null) {
-					// 勤怠情報を入力ください
-					form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
-					throw new Exception();
-				} else {
-					// 勤怠情報が存在しない場合
-					if (kintai == null) {
-						// 勤怠情報を追加する(休日)
-						insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_KYUJITU);
+				// 当日の勤怠情報が存在しない場合
+				if (kintai == null) {
+					// 休日勤務情報が存在する
+					if (holidayInfo != null) {
+						// 勤怠情報を入力ください
+						form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
+						throw new BusinessException();
+					} else {
+						// 勤怠情報が存在しない場合
+						if (kintai == null) {
+							// 勤怠情報を追加する(休日)
+							insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_KYUJITU);
+						}
 					}
 				}
 			}
@@ -115,9 +119,9 @@ public class MonthlyReportChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKintaiInfoInput(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws Exception {
+	public static void chkKintaiInfoInput(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
 		
 		// 社員番号
 		String userId = form.getTaishoUserId();
@@ -143,7 +147,7 @@ public class MonthlyReportChecker {
 					// 勤怠情報を入力ください
 					form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
 					
-					throw new Exception();
+					throw new BusinessException();
 				}
 			}
 		}
@@ -154,9 +158,9 @@ public class MonthlyReportChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKintaiInfoDaikyu(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws Exception {
+	public static void chkKintaiInfoDaikyu(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
 
 		// 社員番号
 		String userId = form.getTaishoUserId();
@@ -181,7 +185,7 @@ public class MonthlyReportChecker {
 			if (entity == null || entity.isEmpty()) {
 				// 取得できる代休はありません
 				form.putConfirmMsg(MessageConstants.COSE_E_023, new String[] {attDate});
-				throw new Exception();
+				throw new BusinessException();
 			}
 		}
 	}
@@ -195,9 +199,9 @@ public class MonthlyReportChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	public static void chkKyugyoKikan(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws Exception {
+	public static void chkKyugyoKikan(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
 		
 		// 勤怠データ存在するのみ、チェックを実行する。
 		if (StringUtils.isEmpty(kintaiInfo.getWorkKbn())) {
@@ -221,7 +225,7 @@ public class MonthlyReportChecker {
 		if (taishoDate.compareTo(nyushaDate) < 0) {
 			// 休業期間中と退職後の日付には勤怠を入力できません
 			form.putConfirmMsg(MessageConstants.COSE_E_026);
-			throw new Exception();
+			throw new BusinessException();
 		}
 		// 休業開始日が存在する
 		if (StringUtils.isNotEmpty(kyugyoSDate)) {
@@ -232,13 +236,13 @@ public class MonthlyReportChecker {
 						&& taishoDate.compareTo(kyugyoEdate) <= 0) {
 					// 休業期間中と退職後の日付には勤怠を入力できません
 					form.putConfirmMsg(MessageConstants.COSE_E_026);
-					throw new Exception();
+					throw new BusinessException();
 				} 
 			} else {
 				if (kyugyoSDate.compareTo(taishoDate) <= 0) {
 					// 休業期間中と退職後の日付には勤怠を入力できません
 					form.putConfirmMsg(MessageConstants.COSE_E_026);
-					throw new Exception();
+					throw new BusinessException();
 				}
 			
 			}
@@ -249,7 +253,7 @@ public class MonthlyReportChecker {
 				&& taishokuDate.compareTo(taishoDate) <= 0) {
 			// 休業期間中と退職後の日付には勤怠を入力できません
 			form.putConfirmMsg(MessageConstants.COSE_E_026);
-			throw new Exception();
+			throw new BusinessException();
 		}
 	}
 	
@@ -263,9 +267,9 @@ public class MonthlyReportChecker {
 	 * @param attDate
 	 *            対象日ID
 	 *            
-	 * @throws Exception 
+	 * @throws BusinessException 
 	 */
-	private static void insertKintaiInfo(String userId, String loginId, String attDate, String kbn) throws Exception {
+	private static void insertKintaiInfo(String userId, String loginId, String attDate, String kbn) throws BusinessException {
 
 		// 勤怠情報
 		KintaiInfo entity = new KintaiInfo();
