@@ -98,6 +98,7 @@ public class AttendanceInputChecker {
 		ShiftVO shift = form.getShiftInfo();
 		String hour = StringUtils.isEmpty(form.getWorkSHour()) ? StringUtils.EMPTY : form.getWorkSHour();
 		String minute = StringUtils.isEmpty(form.getWorkSMinute()) ? StringUtils.EMPTY : form.getWorkSMinute();
+		
 		// 勤務開始時刻
 		String kinmuSTime = hour.concat(minute);
 		form.setWorkSTime(kinmuSTime);

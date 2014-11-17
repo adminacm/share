@@ -12,8 +12,7 @@
 		<access-denied-handler error-page="/denied"/>
 		<!-- 实现免登陆验证 -->
 		<remember-me />
-		<session-management invalid-session-url="/login"
-			session-fixation-protection="none">
+		<session-management invalid-session-url="/login" session-fixation-protection="none">
 		</session-management>
 		<custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" />
 	</http>
