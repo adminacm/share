@@ -19,6 +19,12 @@ function submitAction(action) {
 	document.forms[0].action = action;
 	document.forms[0].submit();
 }
+function checkAge(e){
+	e.value=e.value.replace(/\D/g,'')
+}
+function addZero(e){
+	if(e.value.length==1)e.value='0'+e.value;
+}
 </script>
 <style type="text/css">
 
@@ -171,11 +177,11 @@ function submitAction(action) {
 					</tr>
 					<tr>
 						<td align="left" width="120px">勤務開始時刻</td>
-						<td align="left" width="180px" colspan="2"><form:input path="workSHour" maxlength="2" cssStyle="width:15%"/><form:input path="workSMinute"  maxlength="2" cssStyle="width:15%"/></td>
+						<td align="left" width="180px" colspan="2"><form:input path="workSHour" maxlength="2" cssStyle="width:15%" onkeyup="checkAge(this)" onafterpaste="checkAge(this)" onblur="addZero(this)"/><form:input path="workSMinute"  maxlength="2" cssStyle="width:15%" onkeyup="checkAge(this)" onafterpaste="checkAge(this)" onblur="addZero(this)"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="120px">勤務終了時刻</td>
-						<td align="left" width="180px" colspan="2"><form:input path="workEHour" maxlength="2" cssStyle="width:15%"/><form:input path="workEMinute"  maxlength="2" cssStyle="width:15%"/></td>
+						<td align="left" width="180px" colspan="2"><form:input path="workEHour" maxlength="2" cssStyle="width:15%" onkeyup="checkAge(this)" onafterpaste="checkAge(this)" onblur="addZero(this)"/><form:input path="workEMinute"  maxlength="2" cssStyle="width:15%" onkeyup="checkAge(this)" onafterpaste="checkAge(this)" onblur="addZero(this)"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="120px">休暇欠勤区分</td>
