@@ -49,6 +49,6 @@ public interface AttendanceInputService {
 	 *            勤怠入力画面情報
 	 *  @throws Exception 
 	 */
-	void calcWorkingRec(AttendanceInputForm form) throws Exception;
+	void calcWorkingRec(AttendanceInputForm form) throws BusinessException;
 	
 }

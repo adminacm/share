@@ -329,6 +329,8 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				}
 			}
 			// 個人プロジェクト作業情報
+			// ロケーション情報の初期値設定
+			form.setLocationId(CommonConstant.LOCATION_JPA);
 			// 空行を追加する
 			attPorject = new AttendanceProjectVO();
 			attPorject.setProjectItemList(projectItemList);

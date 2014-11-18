@@ -183,10 +183,9 @@ public class AttendanceInputController extends AbstractController {
 		try {
 			// 勤務情報を計算する。
 			attendanceInputService.calcWorkingRec(form);
-		} catch (Exception ex) {
-			
+		} catch (BusinessException ex) {
+			return ATTDENDANCE_INPUT;
 		}
-		
 
 		return ATTDENDANCE_INPUT;
 	}

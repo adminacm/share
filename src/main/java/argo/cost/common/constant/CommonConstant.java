@@ -134,4 +134,19 @@ public class CommonConstant {
 	 *　状況：処理済「04」
 	 */
 	public static final String STATUS_SYORIZUMI = "04";
+
+	/**
+	 *　ロケーション：中国「01」
+	 */
+	public static final String LOCATION_CH = "01";
+
+	/**
+	 *　ロケーション：日本「02」
+	 */
+	public static final String LOCATION_JPA = "02";
+
+	/**
+	 *　ロケーション：ベトナム「03」
+	 */
+	public static final String LOCATION_VIE = "03";
 }
