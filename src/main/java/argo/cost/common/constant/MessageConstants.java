@@ -126,7 +126,7 @@ public class MessageConstants {
 	/**
 	 *　｛0｝の勤怠情報を入力ください！
 	 */
-	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力ください";
+	public static final String COSE_E_1103 = "｛0｝の勤怠情報を入力してください";
 	
 	/**
 	 *　未承認の月報が存在します。処理を続けますか？
@@ -155,5 +155,10 @@ public class MessageConstants {
 	 *　休業終了日は休業開始日よりあとの日付を入力してください
 	 */
 	public static final String COSE_E_1107 = "勤怠提出後の日付を休業期間や退職日には設定はできません。";
+	
+	/**
+	 *　代休取得期限切れとなる休日勤務があります
+	 */
+	public static final String COSE_E_1108 = "代休取得期限切れとなる休日勤務があります";
 
 }

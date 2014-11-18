@@ -189,6 +189,8 @@ public class MonthlyReportController extends AbstractController {
     	
 		try {
 			form.clearMessages();
+			// 代休取得期限チェック
+			MonthlyReportChecker.chkDaikyuKigen(form);
 			for (int i = 0; i < mRList.size() - 1; i++) {
 				MonthlyReportDispVO monthlyReport = mRList.get(i);
 				// 勤務期間チェック

@@ -2,6 +2,7 @@ package argo.cost.monthlyReport.checker;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,7 @@ import argo.cost.common.entity.Users;
 import argo.cost.common.entity.WorkDayKbnMaster;
 import argo.cost.common.exception.BusinessException;
 import argo.cost.common.model.MonthlyReportDispVO;
+import argo.cost.common.utils.CostDateUtils;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 
 /**
@@ -49,8 +51,9 @@ public class MonthlyReportChecker {
 	 * @param form
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
+	 * @throws ParseException 
 	 */
-	public static void chkKintaiInfoNull(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
+	public static void chkKintaiInfoNull(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException, ParseException {
 		
 		// 社員番号
 		String userId = form.getTaishoUserId();
@@ -78,8 +81,9 @@ public class MonthlyReportChecker {
 				if (isWorkDate(attDate, userId)) {
 					// 振替元の勤怠情報は存在しない場合
 					if (furikaeInfo == null) {
+						String kintaiDate = CostDateUtils.formatDate(kintaiInfo.getDate(), CommonConstant.YYYY_MM_DD);
 						// 勤怠情報を入力ください
-						form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
+						form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiDate});
 						throw new BusinessException();
 					} else {
 						// 勤怠情報を追加する(振替休日)
@@ -256,7 +260,43 @@ public class MonthlyReportChecker {
 			throw new BusinessException();
 		}
 	}
-	
+
+	/**
+	 * 代休期限日のチェック
+	 * 
+	 * 		①処理月が代休取得期限となる休日勤務があり
+	 * 			代休未取得かつ超勤振替未申請の場合
+	 * 				☆代休取得期限切れとなる休日勤務があります
+	 * 
+	 * @param form
+	 *            画面情報オブジェクト
+	 * @throws BusinessException 
+	 */
+	public static void chkDaikyuKigen(MonthlyReportForm form) throws BusinessException {
+		
+		// 検索条件を設定
+		BaseCondition condition = new BaseCondition();
+		// 社員番号
+		condition.addConditionEqual("users.id", form.getTaishoUserId());
+		// 代休取得期限
+		condition.addConditionLike("daikyuGetShimekiriDate", form.getYearMonth().substring(0, 6).concat("%"));
+		// 勤務区分が「02」休日
+		condition.addConditionEqual("workDayKbnMaster.code", CommonConstant.WORKDAY_KBN_KYUJITU);
+		// 代休日は存在しない
+		condition.addConditionIsNull("daikyuDate");
+		// 超勤振替未申請
+		condition.addConditionIsNull("approvalManage2");
+		// 代休情報を取得
+		List<KintaiInfo> result = baseDao.findResultList(condition, KintaiInfo.class);
+		
+		// 代休情報が存在する場合
+		if (result != null && result.size() > 0) {
+			// 休暇欠勤区分が入力されています
+			form.putConfirmMsg(MessageConstants.COSE_E_1108);
+			throw new BusinessException();
+		}
+	}
+
 	/**
 	 * 勤怠情報を追加する
 	 * 
@@ -330,5 +370,4 @@ public class MonthlyReportChecker {
 		}
 		return true;
 	}
-
 }
