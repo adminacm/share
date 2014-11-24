@@ -114,7 +114,7 @@ public class AttendanceInputChecker {
 			} else {
 				// 勤務開始時刻＜定時出勤時刻(hhnn)
 				if (kinmuSTime.compareTo(shift.getStartTimeStr()) < 0) {
-					form.setWorkSTimeStr(CostDateUtils.AddForOneDay(kinmuSTime));
+					form.setWorkSTimeStr(CostDateUtils.addForOneDay(kinmuSTime));
 				} else {
 					form.setWorkSTimeStr(kinmuSTime);
 				}
@@ -182,7 +182,7 @@ public class AttendanceInputChecker {
 			} else {
 				// 勤務終了時刻＜＝定時出勤時刻(hhnn)
 				if (kinmuETime.compareTo(shift.getStartTimeStr()) <= 0) {
-					form.setWorkETimeStr(CostDateUtils.AddForOneDay(kinmuETime));
+					form.setWorkETimeStr(CostDateUtils.addForOneDay(kinmuETime));
 				} else {
 					form.setWorkETimeStr(kinmuETime);
 				}
@@ -243,7 +243,7 @@ public class AttendanceInputChecker {
 				}
 				// 24時間を越える勤務はエラー
 				try {
-					if (24 < CostDateUtils.MinusTime(sTimeStr, eTimeStr)) {
+					if (24 < CostDateUtils.minusTime(sTimeStr, eTimeStr)) {
 						// 1日に24時間を超える勤務は入力できません
 						form.putConfirmMsg(MessageConstants.COSE_E_010);
 						throw new BusinessException();

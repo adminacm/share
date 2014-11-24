@@ -290,7 +290,7 @@ public class CostDateUtils extends DateUtils {
 	 * 
 	 * @return 時刻＋24H
 	 */
-	public static String AddForOneDay(String time) {
+	public static String addForOneDay(String time) {
 		
 		Integer t1 = Integer.parseInt(time);
 		
@@ -309,7 +309,7 @@ public class CostDateUtils extends DateUtils {
 	 * 
 	 * @throws ParseException 
 	 */
-	public static long MinusTime(String time1, String time2) throws ParseException {
+	public static long minusTime(String time1, String time2) throws ParseException {
 		
 		SimpleDateFormat df = new SimpleDateFormat("HHmm");
 

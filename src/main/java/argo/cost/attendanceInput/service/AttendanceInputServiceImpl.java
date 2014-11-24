@@ -777,25 +777,25 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			String amETimeStr = amETime;
 			// 午前終了時刻＜＝定時出勤時刻(hhnn)
 			if (amETime.compareTo(standSTimeStr) <= 0) {
-				amETimeStr = CostDateUtils.AddForOneDay(amETime);
+				amETimeStr = CostDateUtils.addForOneDay(amETime);
 			}
 			// 午後開始時刻(hhnn)
 			String pmSTimeStr = pmSTime;
 			// 午後開始時刻＜＝定時出勤時刻(hhnn)
 			if (pmSTime.compareTo(standSTimeStr) <= 0) {
-				pmSTimeStr = CostDateUtils.AddForOneDay(pmSTime);
+				pmSTimeStr = CostDateUtils.addForOneDay(pmSTime);
 			}
 			// 定時退勤時刻(hhnn)
 			String standEtimeStr = standEtime;
 			// 定時退勤時刻＜＝定時出勤時刻(hhnn)
 			if (standEtime.compareTo(standSTimeStr) <= 0) {
-				standEtimeStr = CostDateUtils.AddForOneDay(standEtime);
+				standEtimeStr = CostDateUtils.addForOneDay(standEtime);
 			}
 			// シフト超勤開始時刻(hhnn)
 			String chokinSTimeStr = chokinSTime;
 			// シフト超勤開始時刻＜＝定時出勤時刻(hhnn)
 			if (chokinSTime.compareTo(standSTimeStr) <= 0) {
-				chokinSTimeStr = CostDateUtils.AddForOneDay(chokinSTime);
+				chokinSTimeStr = CostDateUtils.addForOneDay(chokinSTime);
 			}
 			
 			info = new ShiftVO();
