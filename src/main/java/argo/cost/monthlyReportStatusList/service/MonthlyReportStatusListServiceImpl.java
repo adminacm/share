@@ -147,8 +147,8 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 				monthlyReportStatusInfo.setAffiliationName(approvalInfo.getUser().getAffiliationMaster().getName());
 				// ユーザID	
 				monthlyReportStatusInfo.setUserId(approvalInfo.getUser().getId());
-				// 氏名	
-				monthlyReportStatusInfo.setUserName(approvalInfo.getUser().getUserName());
+				// 申請者氏名	
+				monthlyReportStatusInfo.setAppliedUserName(approvalInfo.getUser().getUserName());
 				// 申請区分
 				monthlyReportStatusInfo.setApplyKbnCd(approvalInfo.getApplyKbnMaster().getCode());
 				monthlyReportStatusInfo.setApplyKbnName(approvalInfo.getApplyKbnMaster().getName());
@@ -156,6 +156,12 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 				monthlyReportStatusInfo.setApplyDetail(approvalInfo.getApplyDetail());
 				// 状況
 				monthlyReportStatusInfo.setStatusName(approvalInfo.getStatusMaster().getName());
+				// 申請者名前
+				monthlyReportStatusInfo.setAppliedUserName(approvalInfo.getApplicantUser().getUserName());
+				// 承認日付
+				monthlyReportStatusInfo.setApprovedYmd(approvalInfo.getApprovedYmd());
+				// 承認者名前
+				monthlyReportStatusInfo.setApproverName(approvalInfo.getApproveUser().getUserName());
 				
 				monthlyReportStatusList.add(monthlyReportStatusInfo);
 			}

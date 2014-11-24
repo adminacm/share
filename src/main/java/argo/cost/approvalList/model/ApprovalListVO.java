@@ -45,6 +45,18 @@ public class ApprovalListVO {
 	 * 氏名
 	 */
 	private String userName;
+	/**
+	 * 申請日
+	 */
+	private String applyYmd;
+	/**
+	 * 承認日
+	 */
+	private String approveYmd;
+	/**
+	 * 処理年月
+	 */
+	private String syoriYm;
 
 	// ************************
 	// ** アクセサメソッド　** 
@@ -105,4 +117,30 @@ public class ApprovalListVO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+	public String getApplyYmd() {
+		return applyYmd;
+	}
+
+	public void setApplyYmd(String applyYmd) {
+		this.applyYmd = applyYmd;
+	}
+
+	public String getApproveYmd() {
+		return approveYmd;
+	}
+
+	public void setApproveYmd(String approveYmd) {
+		this.approveYmd = approveYmd;
+	}
+
+	public String getSyoriYm() {
+		return syoriYm;
+	}
+
+	public void setSyoriYm(String syoriYm) {
+		this.syoriYm = syoriYm;
+	}
+
+	
 }

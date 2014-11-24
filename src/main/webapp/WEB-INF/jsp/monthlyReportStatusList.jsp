@@ -108,12 +108,14 @@ function submitAction(action) {
 							<thead>
 								<tr class="headStyle">
 									<th>No.</th>
-									<th>所属</th>
-									<th>ID</th>
-									<th>氏名</th>
 									<th>申請区分</th>
 									<th>申請内容</th>
 									<th>状況</th>
+									<th>所属</th>
+									<th>ID</th>
+									<th>申請者</th>
+									<th>承認者</th>
+									<th>承認日</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -121,15 +123,6 @@ function submitAction(action) {
 									<tr>
 										<td align="center">
 											<a href="/monthlyReportStatusList/applyNoClick?applyNo=${mRS.applyNo}&applyKbnCd=${mRS.applyKbnCd}">${mRS.applyNo}</a>
-										</td>
-										<td>
-											${mRS.affiliationName}
-										</td>
-										<td>
-											${mRS.userId}
-										</td>
-										<td>
-											${mRS.userName}
 										</td>
 										<td>
 											${mRS.applyKbnName}
@@ -140,6 +133,22 @@ function submitAction(action) {
 										<td>
 											${mRS.statusName}
 										</td>
+										<td>
+											${mRS.affiliationName}
+										</td>
+										<td>
+											${mRS.userId}
+										</td>
+										<td>
+											${mRS.appliedUserName}
+										</td>
+										<td>
+											${mRS.approverName}
+										</td>
+										<td>
+											${mRS.approvedYmd}
+										</td>
+										
 									</tr>
 								</c:forEach>
 							</tbody>

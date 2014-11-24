@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<http use-expressions="true" auto-config="true" >
+	<http use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint">
 		<form-login login-page="/login" default-target-url="/login"
 			always-use-default-target="true" authentication-failure-url="/login?login_error=1" />
 		<logout invalidate-session="true" success-handler-ref="logoutSuccessHandler"
@@ -12,7 +12,8 @@
 		<access-denied-handler error-page="/denied"/>
 		<!-- 实现免登陆验证 -->
 		<remember-me />
-		<session-management invalid-session-url="/login" session-fixation-protection="none">
+		<session-management invalid-session-url="/timeOut" session-fixation-protection="migrateSession">
+			<concurrency-control max-sessions="1"/> 
 		</session-management>
 		<custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" />
 	</http>
@@ -28,6 +29,9 @@
 		<!-- 资源与权限对应关系 -->
 		<beans:property name="securityMetadataSource" ref="mySecurityMetadataSource" />
 	</beans:bean>
+	<beans:bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">  
+        <beans:property name="loginFormUrl" value="/login"></beans:property>  
+    </beans:bean>  
 	<!-- UserDetailsServiceBean -->
 	<authentication-manager alias="myAuthenticationManager">
 		<authentication-provider user-service-ref="myUserDetailServiceImpl" />

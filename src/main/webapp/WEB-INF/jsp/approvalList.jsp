@@ -100,11 +100,14 @@ function submitAction(action) {
 							<thead>
 								<tr class="headStyle">
 									<th style="width: 130px">No.</th>
-									<th style="width: 130px">申請区分</th>
-									<th style="width: 200px">申請内容</th>
+									<th style="width: 200px">申請区分</th>
+									<th style="width: 250px">申請内容</th>
 									<th style="width: 100px">状況</th>
 									<th style="width: 100px">所属</th>
-									<th>氏名</th>
+									<th style="width: 100px">氏名</th>
+									<th style="width: 100px">申請日</th>
+									<th style="width: 100px">承認日</th>
+									<th style="width: 100px">処理年月</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -127,6 +130,15 @@ function submitAction(action) {
 										</td>
 										<td>
 											${approval.userName}
+										</td>
+										<td>
+											${approval.applyYmd}
+										</td>
+										<td>
+											${approval.approveYmd}
+										</td>
+										<td>
+											${approval.syoriYm}
 										</td>
 									</tr>
 								</c:forEach>

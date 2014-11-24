@@ -154,7 +154,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		Users users = baseDao.findById(form.getTaishoUserId(), Users.class);
 		applyInfo.setUser(users);
 		// 申請時間
-		applyInfo.setAppYmd(CostDateUtils.getNowDate());
+		applyInfo.setApplyYmd(CostDateUtils.getNowDate());
 		// 処理日
 		applyInfo.setSyoriYm(CostDateUtils.getDealDate(CostDateUtils.getNowDate(),CommonConstant.APPLY_KBN_CHOKIN_FURIKAE));
 		

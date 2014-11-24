@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
@@ -81,7 +82,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 		
 		// 申請状況が承認に更新
 		try {
-			monthlyReportApprovalService.updateProStatus(form.getApplyNo(), "03");
+			monthlyReportApprovalService.updateProStatus(form.getApplyNo(), CommonConstant.STATUS_SYOUNIN, form.getUserId());
 		} catch (Exception ex) {
 			
 			form.putConfirmMsg("月報承認画面申請状況が差戻に更新しました");
@@ -103,7 +104,7 @@ public class MonthlyReportApprovalController extends AbstractController {
 
 		// 月報申請を差戻し
 		try {
-			monthlyReportApprovalService.updateProStatus(form.getApplyNo(), "01");
+			monthlyReportApprovalService.updateProStatus(form.getApplyNo(), "01", form.getUserId());
 		} catch (Exception ex) {
 			
 			form.putConfirmMsg("月報承認の差戻し失敗しました");

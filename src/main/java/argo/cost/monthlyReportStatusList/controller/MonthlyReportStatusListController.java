@@ -55,12 +55,13 @@ public class MonthlyReportStatusListController extends AbstractController  {
 	 * @param model
 	 *             画面情報モデル
 	 * @return 月報状況一覧画面
+	 * @throws Exception 
 	 */
     @RequestMapping(INIT)
-    public String initMonthlyReportStatusList(Model model) {
+    public String initMonthlyReportStatusList(Model model) throws Exception {
     	
     	// 画面情報を作成
-    	MonthlyReportStatusListForm form = new MonthlyReportStatusListForm();
+    	MonthlyReportStatusListForm form =  initForm(MonthlyReportStatusListForm.class);
     	model.addAttribute(form);
     	
     	// 年リストを取得

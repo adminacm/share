@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.approvalList.dao.ApprovalListDao;
 import argo.cost.approvalList.model.ApprovalListVO;
-import argo.cost.common.dao.BaseCondition;
 import argo.cost.common.dao.BaseDao;
 import argo.cost.common.entity.ApprovalManage;
 import argo.cost.common.entity.StatusMaster;
@@ -28,6 +28,12 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 */	
 	@Autowired
 	private BaseDao baseDao;
+	
+	/**
+	 * 承認一覧情報DAO
+	 */
+	@Autowired
+	ApprovalListDao approvalListDao;
 
 	/**
 	 * 状況プルダウンリスト取得
@@ -77,7 +83,7 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 	 * @return 承認リスト
 	 */
 	@Override
-	public List<ApprovalListVO> getApprovalList(String status) {
+	public List<ApprovalListVO> getApprovalList(String jyokyoStatus,String userId) {
 		
 		// 承認一覧リストを取得
 		List<ApprovalListVO> approvalList = new ArrayList<ApprovalListVO>();
@@ -87,14 +93,10 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 		List<ApprovalManage> approvalManageList = new ArrayList<ApprovalManage>();
 
 		// 状況がnull以外の場合
-		if (!status.isEmpty()) { 
+		if (!jyokyoStatus.isEmpty()) { 
 
-			// 検索条件
-			BaseCondition condition = new BaseCondition();
-			// 状況コード
-			condition.addConditionEqual("statusMaster.code", status);
 			// 承認管理情報取得
-			approvalManageList = baseDao.findResultList(condition, ApprovalManage.class);
+			approvalManageList = approvalListDao.searchApprovalManageList(jyokyoStatus, userId);
 		} else {
 			// 承認管理情報取得
 			approvalManageList = baseDao.findAll(ApprovalManage.class);
@@ -116,6 +118,12 @@ public class ApprovalListServiceImpl implements ApprovalListService {
 			approvalInfo.setAffiliationName(approvalManageInfo.getUser().getAffiliationMaster().getName());
 			// 氏名		
 			approvalInfo.setUserName(approvalManageInfo.getUser().getUserName());
+			// 申請日
+			approvalInfo.setApplyYmd(approvalManageInfo.getApplyYmd());
+			// 承認日
+			approvalInfo.setApproveYmd(approvalManageInfo.getApprovedYmd());
+			// 処理年月
+			approvalInfo.setSyoriYm(approvalManageInfo.getSyoriYm());
 			
 			approvalList.add(approvalInfo);
 		}

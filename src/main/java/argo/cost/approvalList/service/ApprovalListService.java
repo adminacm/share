@@ -28,5 +28,5 @@ public interface ApprovalListService {
 	 *              状況
 	 * @return 承認一覧リスト
 	 */
-	List<ApprovalListVO> getApprovalList(String status);
+	List<ApprovalListVO> getApprovalList(String jyokyoStatus,String userId);
 }

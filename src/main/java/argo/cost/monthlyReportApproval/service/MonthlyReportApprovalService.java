@@ -39,5 +39,5 @@ public interface MonthlyReportApprovalService {
 	 * @return
 	 *        更新フラグ
 	 */
-	void updateProStatus(String applyNo, String proStatus) throws BusinessException;
+	void updateProStatus(String applyNo, String proStatus,String updateUserId) throws BusinessException;
 }

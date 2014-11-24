@@ -1,17 +1,10 @@
 package argo.cost.common.entity;
 
+
 import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 /**
@@ -25,44 +18,57 @@ public class ApprovalManage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="apply_no", unique=true, nullable=false, length=30)
+	@Column(name="apply_no")
 	private String applyNo;
 
-	@Column(name="app_ymd", nullable=false, length=8)
-	private String appYmd;
-
-	@Column(name="apply_detail", length=255)
+	@Column(name="apply_detail")
 	private String applyDetail;
+
+	@Column(name="apply_ymd")
+	private String applyYmd;
+
+	@Column(name="approved_ymd")
+	private String approvedYmd;
 
 	@Column(name="created_date")
 	private Timestamp createdDate;
 
-	@Column(name="created_user_id", length=20)
+	@Column(name="created_user_id")
 	private String createdUserId;
 
-	@Column(name="syori_ym", length=6, nullable=false)
+	@Column(name="syori_ym")
 	private String syoriYm;
 
 	@Column(name="update_date")
 	private Timestamp updateDate;
 
-	@Column(name="updated_user_id", length=20)
+	@Column(name="updated_user_id")
 	private String updatedUserId;
 
 	//bi-directional many-to-one association to ApplyKbnMaster
 	@ManyToOne
-	@JoinColumn(name="apply_kbn_code", nullable=false)
+	@JoinColumn(name="apply_kbn_code")
 	private ApplyKbnMaster applyKbnMaster;
 
 	//bi-directional many-to-one association to StatusMaster
 	@ManyToOne
-	@JoinColumn(name="apply_status_code", nullable=false)
+	@JoinColumn(name="apply_status_code")
 	private StatusMaster statusMaster;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private Users users;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="apply_user_id")
+	private Users applicantUser;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="approve_user_id")
+	private Users approveUser;
 
 	//bi-directional many-to-one association to KintaiInfo
 	@OneToMany(mappedBy="approvalManage1")
@@ -83,28 +89,28 @@ public class ApprovalManage implements Serializable {
 		this.applyNo = applyNo;
 	}
 
-	public String getAppYmd() {
-		return this.appYmd;
-	}
-
-	public void setAppYmd(String appYmd) {
-		this.appYmd = appYmd;
-	}
-	
-	public String getSyoriYm() {
-		return syoriYm;
-	}
-
-	public void setSyoriYm(String syoriYm) {
-		this.syoriYm = syoriYm;
-	}
-
 	public String getApplyDetail() {
 		return this.applyDetail;
 	}
 
 	public void setApplyDetail(String applyDetail) {
 		this.applyDetail = applyDetail;
+	}
+
+	public String getApplyYmd() {
+		return this.applyYmd;
+	}
+
+	public void setApplyYmd(String applyYmd) {
+		this.applyYmd = applyYmd;
+	}
+
+	public String getApprovedYmd() {
+		return this.approvedYmd;
+	}
+
+	public void setApprovedYmd(String approvedYmd) {
+		this.approvedYmd = approvedYmd;
 	}
 
 	public Timestamp getCreatedDate() {
@@ -121,6 +127,14 @@ public class ApprovalManage implements Serializable {
 
 	public void setCreatedUserId(String createdUserId) {
 		this.createdUserId = createdUserId;
+	}
+
+	public String getSyoriYm() {
+		return this.syoriYm;
+	}
+
+	public void setSyoriYm(String syoriYm) {
+		this.syoriYm = syoriYm;
 	}
 
 	public Timestamp getUpdateDate() {
@@ -159,8 +173,24 @@ public class ApprovalManage implements Serializable {
 		return this.users;
 	}
 
-	public void setUser(Users users) {
-		this.users = users;
+	public void setUser(Users user) {
+		this.users = user;
+	}
+
+	public Users getApplicantUser() {
+		return this.applicantUser;
+	}
+
+	public void setApplicantUser(Users applicantUser) {
+		this.applicantUser = applicantUser;
+	}
+
+	public Users getApproveUser() {
+		return this.approveUser;
+	}
+
+	public void setApproveUser(Users approveUser) {
+		this.approveUser = approveUser;
 	}
 
 	public List<KintaiInfo> getKintaiInfos1() {
@@ -206,4 +236,5 @@ public class ApprovalManage implements Serializable {
 
 		return kintaiInfos2;
 	}
+
 }

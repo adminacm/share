@@ -27,9 +27,19 @@ public class MonthlyReportStatusListVo {
 	private String userId;
 	
 	/**
-	 * 氏名
+	 * 申請者
 	 */
-	private String userName;
+	private String appliedUserName;
+	
+	/**
+	 * 承認者
+	 */
+	private String approverName;
+	
+	/**
+	 * 承認日
+	 */
+	private String approvedYmd;
 	
 	/**
 	 * 申請区分
@@ -84,12 +94,12 @@ public class MonthlyReportStatusListVo {
 		this.userId = userId;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getAppliedUserName() {
+		return appliedUserName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setAppliedUserName(String appliedUserName) {
+		this.appliedUserName = appliedUserName;
 	}
 
 	public String getApplyKbnCd() {
@@ -130,5 +140,21 @@ public class MonthlyReportStatusListVo {
 
 	public void setApplyYm(String applyYm) {
 		this.applyYm = applyYm;
+	}
+
+	public String getApproverName() {
+		return approverName;
+	}
+
+	public void setApproverName(String approverName) {
+		this.approverName = approverName;
+	}
+
+	public String getApprovedYmd() {
+		return approvedYmd;
+	}
+
+	public void setApprovedYmd(String approvedYmd) {
+		this.approvedYmd = approvedYmd;
 	}
 }

@@ -1229,7 +1229,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
 		condition.addConditionEqual("users.id", form.getTaishoUserId());  // 社員番号
-		condition.addConditionLike("appYmd", form.getAttDate().substring(0, 6).concat("%"));    // 申請日付
+		condition.addConditionLike("applyYmd", form.getAttDate().substring(0, 6).concat("%"));    // 申請日付
 		
 		// 承認管理情報を取得
 		ApprovalManage app = baseDao.findSingleResult(condition, ApprovalManage.class);

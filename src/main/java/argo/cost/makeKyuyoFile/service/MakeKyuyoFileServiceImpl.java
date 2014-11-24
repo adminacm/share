@@ -187,7 +187,7 @@ public class MakeKyuyoFileServiceImpl implements MakeKyuyoFileService {
 						// ユーザー定義の時間外手当フラグが１の場合、対象月の超過勤務時間数を合計した値を出力する
 						if (intTimeExceptSubsidyFlg == 1) {
 							//　超過勤務時間数（休日出勤振替分）
-							csvInfo.setOverHolidayChangeWorkHours(bigDecimalToString(getFurikaeHours(approvalInfo.getUser().getId(), approvalInfo.getAppYmd())));
+							csvInfo.setOverHolidayChangeWorkHours(bigDecimalToString(getFurikaeHours(approvalInfo.getUser().getId(), approvalInfo.getApplyYmd())));
 						} else {
 							csvInfo.setOverHolidayChangeWorkHours("0.0");
 						}

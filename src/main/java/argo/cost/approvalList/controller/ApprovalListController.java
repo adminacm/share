@@ -50,27 +50,29 @@ public class ApprovalListController extends AbstractController  {
 	 * @param model
 	 *             モデル
 	 * @return 承認一覧画面
+	 * @throws Exception 
 	 */
     @RequestMapping(INIT)
-    public String initApprovalList(Model model) {
+    public String initApprovalList(Model model) throws Exception {
     	
+    	// フォーム初期化
+    	ApprovalListForm approvalListForm = initForm(ApprovalListForm.class);
     	// 画面情報を作成
-    	ApprovalListForm form = new ApprovalListForm();
-    	model.addAttribute(form);
+    	model.addAttribute(approvalListForm);
     	
     	// 状況リストを取得
     	List<ListItemVO> statusList = approvalListService.getStatusList();
     	
     	// 状況リストを設定
-    	form.setStatusList(statusList);
+    	approvalListForm.setStatusList(statusList);
     	
     	// 状況の初期値設定
-    	form.setStatus("");
+    	approvalListForm.setStatus("");
     	
     	// 承認リストを取得
-    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(form.getStatus());
+    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(approvalListForm.getStatus(),approvalListForm.getUserId());
     	
-    	form.setApprovalList(approvalList);
+    	approvalListForm.setApprovalList(approvalList);
     	
         return APPROVALLIST;
     }
@@ -83,12 +85,12 @@ public class ApprovalListController extends AbstractController  {
      * @return 承認一覧画面
      */
     @RequestMapping(value = SEARCH, method = RequestMethod.POST)
-    public String searchApprovalList(ApprovalListForm form) {
+    public String searchApprovalList(ApprovalListForm approvalListForm) {
     	
     	// 承認リストを取得
-    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(form.getStatus());
+    	List<ApprovalListVO> approvalList = approvalListService.getApprovalList(approvalListForm.getStatus(),approvalListForm.getUserId());
     	
-    	form.setApprovalList(approvalList);
+    	approvalListForm.setApprovalList(approvalList);
 
         return APPROVALLIST;
     }
