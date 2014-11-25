@@ -12,8 +12,6 @@
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="../css/common.css" rel="stylesheet" type="text/css">
-
 <script type="text/javascript">
 /* アクション提出 */
 function submitAction(action) {
