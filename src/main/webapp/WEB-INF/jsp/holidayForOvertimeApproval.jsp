@@ -32,7 +32,7 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
 				<table style="width:800px;margin-left:40px;margin-right:40px;">
 					<tr>
-						<td style="border:1px solid #333333;width:60px" align="center">${holidayForOvertimeApprovalForm.proStatus}</td>
+						<td style="border:1px solid #333333;width:60px" align="center"><c:out value="${holidayForOvertimeApprovalForm.proStatus}"/></td>
 						<td style="width:240px" align="center">
 							<c:if test="${holidayForOvertimeApprovalForm.proStatus ne '承認'}">
 								<input type="button" style="width:120px; height:25px" value="承認" onclick="submitAction('/holidayForOvertimeApproval/approval');" />
@@ -53,37 +53,37 @@ function submitAction(action) {
 				<table style="margin-left:70px;padding-bottom:20px">
 					<tr>
 						<td style="width:100px">社員番号</td>
-						<td>${holidayForOvertimeApprovalForm.taishoUserId}</td>
+						<td><c:out value="${holidayForOvertimeApprovalForm.taishoUserId}"/></td>
 					</tr>
 					<tr>
 						<td style="width:100px">氏名</td>
-						<td>${holidayForOvertimeApprovalForm.taishoUserName}</td>
+						<td><c:out value="${holidayForOvertimeApprovalForm.taishoUserName}"/></td>
 					</tr>
 					<tr>
 						<td style="width:100px">日付</td>
-						<td>${holidayForOvertimeApprovalForm.date}</td>
+						<td><c:out value="${holidayForOvertimeApprovalForm.date}"/></td>
 					</tr>
 					<tr>
 						<td>勤務区分</td>
-						<td>${holidayForOvertimeApprovalForm.workKbnName}</td>
+						<td><c:out value="${holidayForOvertimeApprovalForm.workKbnName}"/></td>
 					</tr>
 					<tr>
 						<td>勤務時間</td>
-						<td>${holidayForOvertimeApprovalForm.workStartTime} ～　${holidayForOvertimeApprovalForm.workEndTime}</td>
+						<td><c:out value="${holidayForOvertimeApprovalForm.workStartTime}"/> ～　<c:out value="${holidayForOvertimeApprovalForm.workEndTime}"/></td>
 					</tr>
 					<c:if test="${not empty holidayForOvertimeApprovalForm.turnedHolidayEndDate}">
 						<tr>
 							<td>代休期限</td>
-							<td>${holidayForOvertimeApprovalForm.turnedHolidayEndDate}</td>
+							<td><c:out value="${holidayForOvertimeApprovalForm.turnedHolidayEndDate}"/></td>
 						</tr>
 					</c:if>
 					<tr>
 						<td>PJ</td>
-						<td>${holidayForOvertimeApprovalForm.projectName}</td>
+						<td><c:out value="${holidayForOvertimeApprovalForm.projectName}"/></td>
 					</tr>
 					<tr>
 						<td>業務内容</td>
-						<td>${holidayForOvertimeApprovalForm.workDetail}</td>
+						<td><c:out value="${holidayForOvertimeApprovalForm.workDetail}"/></td>
 					</tr>
 				</table>
 			</div>

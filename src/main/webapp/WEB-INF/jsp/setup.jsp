@@ -41,7 +41,7 @@ function submitAction(action) {
 					</tr>
 					<tr>
 						<td></td>
-						<td colspan="3">${setupForm.agentName}</td>
+						<td colspan="3"><c:out value="${setupForm.agentName}"/></td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
@@ -52,42 +52,42 @@ function submitAction(action) {
 					<tr>
 						<td></td>
 						<td>1日の勤務時間数ﾄ</td>
-						<td colspan="2">${setupForm.oneDayKinmuHours}</td>
+						<td colspan="2"><c:out value="${setupForm.oneDayKinmuHours}"/></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>標準ｼﾌﾄ</td>
-						<td colspan="2">${setupForm.standardShift}</td>
+						<td colspan="2"><c:out value="${setupForm.standardShift}"/></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>勤務開始時刻</td>
-						<td colspan="2">${setupForm.workStartTime}</td>
+						<td colspan="2"><c:out value="${setupForm.workStartTime}"/></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>勤務終了時刻</td>
-						<td colspan="2">${setupForm.workEndTime}</td>
+						<td colspan="2"><c:out value="${setupForm.workEndTime}"/></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>入社日</td>
-						<td colspan="2">${setupForm.joinDate}</td>
+						<td colspan="2"><c:out value="${setupForm.joinDate}"/></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>休業開始日</td>
-						<td colspan="2">${setupForm.holidayStart}</td>
+						<td colspan="2"><c:out value="${setupForm.holidayStart}"/></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>休業終了日</td>
-						<td colspan="2">${setupForm.holidayEnd}</td>
+						<td colspan="2"><c:out value="${setupForm.holidayEnd}"/></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td>退職日</td>
-						<td colspan="2">${setupForm.outDate}</td>
+						<td colspan="2"><c:out value="${setupForm.outDate}"/></td>
 					</tr>
 				</table>
 			</div>

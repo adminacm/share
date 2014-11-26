@@ -69,7 +69,7 @@ function submitAction(action) {
 			</div>
 			<div style="margin-left: 10px;margin-top: 10px;">
 				<c:forEach var="message" items="${makeKyuyoFileForm.confirmMsgList}">
-					<span style="color:red">${message }</span><br/>
+					<span style="color:red"><c:out value="${message }"/></span><br/>
 				</c:forEach>
 			</div>
 			<table>
@@ -105,16 +105,16 @@ function submitAction(action) {
 								<c:forEach var="makeKyuyoFileIchiraninfo" items="${makeKyuyoFileForm.makeKyuyoFileIchiranList}">
 									<tr>
 										<td align="center">
-											<a href="/makeKyuyoFile/madeKyuyoFileNameClick?madeKyuyoFileName=${makeKyuyoFileIchiraninfo.madeKyuyoFileName}">${makeKyuyoFileIchiraninfo.madeKyuyoFileName}</a>
+											<a href="/makeKyuyoFile/madeKyuyoFileNameClick?madeKyuyoFileName=${makeKyuyoFileIchiraninfo.madeKyuyoFileName}"><c:out value="${makeKyuyoFileIchiraninfo.madeKyuyoFileName}"/></a>
 										</td>
 										<td>
-											${makeKyuyoFileIchiraninfo.dealYearMonth}
+											<c:out value="${makeKyuyoFileIchiraninfo.dealYearMonth}"/>
 										</td>
 										<td>
-											${makeKyuyoFileIchiraninfo.createdUserName}
+											<c:out value="${makeKyuyoFileIchiraninfo.createdUserName}"/>
 										</td>
 										<td>
-											${makeKyuyoFileIchiraninfo.createdDateTime}
+											<c:out value="${makeKyuyoFileIchiraninfo.createdDateTime}"/>
 										</td>
 									</tr>
 								</c:forEach>

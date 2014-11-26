@@ -118,10 +118,10 @@ function submitAction(action) {
 							<tbody>
 								<c:forEach var="payHoliday" items="${holidayRecordForm.payHolidayList}">
 									<tr align="center" style="border-top: 1px solid #73BF00;">
-										<td style="width: 100px;">${payHoliday.payHolidayDate}</td>
-										<td style="width: 150px">${payHoliday.holidayKbnName}</td>
-										<td style="text-align: right; width: 100px;">${payHoliday.dayQuantity}</td>
-										<td style="text-align: right">${payHoliday.hourQuantity}
+										<td style="width: 100px;"><c:out value="${payHoliday.payHolidayDate}"/></td>
+										<td style="width: 150px"><c:out value="${payHoliday.holidayKbnName}"/></td>
+										<td style="text-align: right; width: 100px;"><c:out value="${payHoliday.dayQuantity}"/></td>
+										<td style="text-align: right"><c:out value="${payHoliday.hourQuantity}"/>
 										</td>
 									</tr>
 								</c:forEach>
@@ -147,9 +147,9 @@ function submitAction(action) {
 							<tbody>
 								<c:forEach var="absenceInfo" items="${holidayRecordForm.absenceList}">
 									<tr align="center" style="border-top: 1px solid #73BF00;">
-										<td style="width: 100px">${absenceInfo.absentDate}</td>
-										<td style="text-align: right; width: 100px">${absenceInfo.dayQuantity}</td>
-										<td style="text-align: right">${absenceInfo.hourQuantity}</td>
+										<td style="width: 100px"><c:out value="${absenceInfo.absentDate}"/></td>
+										<td style="text-align: right; width: 100px"><c:out value="${absenceInfo.dayQuantity}"/></td>
+										<td style="text-align: right"><c:out value="${absenceInfo.hourQuantity}"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -173,8 +173,8 @@ function submitAction(action) {
 							<tbody>
 								<c:forEach var="specialHoliday" items="${holidayRecordForm.specialHolidayList}">
 									<tr align="center" style="border-top: 1px solid #73BF00;">
-										<td style="width: 100px">${specialHoliday.specialHolidayDate}</td>
-										<td style="text-align: right">${specialHoliday.dayQuantity}</td>
+										<td style="width: 100px"><c:out value="${specialHoliday.specialHolidayDate}"/></td>
+										<td style="text-align: right"><c:out value="${specialHoliday.dayQuantity}"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>

@@ -58,7 +58,7 @@ function submitAction(action) {
 			</div>
 			<div style="margin-left: 10px;margin-top: 10px;">
 			<c:forEach var="message" items="${monthlyReportForm.confirmMsgList }">
-				<span style="color:red">${message }</span><br/>
+				<span style="color:red"><c:out value="${message }"/></span><br/>
 			</c:forEach>
 		</div>
 			<div>
@@ -80,10 +80,10 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
 				<table style="width:800px;margin-left:40px;margin-right:40px;">
 					<tr>
-						<td style="border:1px solid #333333;" align="center" width="180px">${monthlyReportForm.proStatus}</td>
+						<td style="border:1px solid #333333;" align="center" width="180px"><c:out value="${monthlyReportForm.proStatus}"/></td>
 						<td align="right" width="130px"><input type="button" value="←" onclick="submitAction('/monthlyReport/lastMonth');" /></td>
 						<td align="center" width="100px;">
-							<form:label path="yearMonthHyoji" id="yearMonthHyoji">${monthlyReportForm.yearMonthHyoji}</form:label>
+							<form:label path="yearMonthHyoji" id="yearMonthHyoji"><c:out value="${monthlyReportForm.yearMonthHyoji}"/></form:label>
 							<form:hidden path="yearMonth"/>
 						</td>
 						<td align="left"><input type="button" value="→" onclick="submitAction('/monthlyReport/nextMonth');" /></td>
@@ -123,27 +123,27 @@ function submitAction(action) {
 							<tr>
 								<c:if test="${not monthlyReport.totleFlg}">
 									<td align="center" width="25PX;">
-										<a href="/attendanceInput/init?attendanceDate=${monthlyReport.date}">${monthlyReport.day}</a>
+										<a href="/attendanceInput/init?attendanceDate=${monthlyReport.date}"><c:out value="${monthlyReport.day}"/></a>
 									</td>
-									<td align="center" width="25PX;">${monthlyReport.week}</td>
-									<td align="center">${monthlyReport.workKbnName}</td>
-									<td align="center">${monthlyReport.shift}</td>
-									<td align="center">${monthlyReport.workSTime}</td>
-									<td align="center">${monthlyReport.workETime}</td>
-									<td align="center">${monthlyReport.kyukaKbName}</td>
+									<td align="center" width="25PX;"><c:out value="${monthlyReport.week}"/></td>
+									<td align="center"><c:out value="${monthlyReport.workKbnName}"/></td>
+									<td align="center"><c:out value="${monthlyReport.shift}"/></td>
+									<td align="center"><c:out value="${monthlyReport.workSTime}"/></td>
+									<td align="center"><c:out value="${monthlyReport.workETime}"/></td>
+									<td align="center"><c:out value="${monthlyReport.kyukaKbName}"/></td>
 								</c:if>
 								<c:if test="${monthlyReport.totleFlg}">
 									<td colspan="7" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
 								</c:if>
-								<td align="center">${monthlyReport.workHours}</td>
-								<td align="center">${monthlyReport.choSTime}</td>
-								<td align="center">${monthlyReport.choETime}</td>
-								<td align="center">${monthlyReport.choWeekday}</td>
-								<td align="center">${monthlyReport.choWeekdayNomal}</td>
-								<td align="center">${monthlyReport.choHoliday}</td>
-								<td align="center">${monthlyReport.mNHours}</td>
+								<td align="center"><c:out value="${monthlyReport.workHours}"/></td>
+								<td align="center"><c:out value="${monthlyReport.choSTime}"/></td>
+								<td align="center"><c:out value="${monthlyReport.choETime}"/></td>
+								<td align="center"><c:out value="${monthlyReport.choWeekday}"/></td>
+								<td align="center"><c:out value="${monthlyReport.choWeekdayNomal}"/></td>
+								<td align="center"><c:out value="${monthlyReport.choHoliday}"/></td>
+								<td align="center"><c:out value="${monthlyReport.mNHours}"/></td>
 								<c:if test="${not monthlyReport.totleFlg}">
-									<td align="center">${monthlyReport.locationName}</td>
+									<td align="center"><c:out value="${monthlyReport.locationName}"/></td>
 								</c:if>
 							</tr>
 						</c:forEach>
@@ -161,19 +161,19 @@ function submitAction(action) {
 						<c:if test="${not empty projWorkTimeCountInfo.projName}">
 							<tr>
 								<td style="width:200px" colspan="2">
-									${projWorkTimeCountInfo.projName}
+									<c:out value="${projWorkTimeCountInfo.projName}"/>
 								</td>
 								<td>
-									${projWorkTimeCountInfo.prpjectWorkTotalHours}
+									<c:out value="${projWorkTimeCountInfo.prpjectWorkTotalHours}"/>
 								</td>
 							</tr>
 						</c:if>
 						<c:if test="${not empty projWorkTimeCountInfo.workContentName}">
 							<tr>
 								<td width="30px" align="left">&nbsp;</td>
-								<td width="170xp" align="left">${projWorkTimeCountInfo.workContentName}</td>
+								<td width="170xp" align="left"><c:out value="${projWorkTimeCountInfo.workContentName}"/></td>
 								<td align="left">
-									${projWorkTimeCountInfo.workHoursNum}
+									<c:out value="${projWorkTimeCountInfo.workHoursNum}"/>
 								</td>
 							</tr>
 						</c:if>

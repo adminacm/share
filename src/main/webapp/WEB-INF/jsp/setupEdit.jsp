@@ -36,7 +36,7 @@ function change(e) {
 			</div>
 			<div style="margin-left: 10px;margin-top: 10px;">
 				<c:forEach var="message" items="${setupForm.confirmMsgList }">
-					<span style="color:red">${message }</span><br/>
+					<span style="color:red"><c:out value="${message }"/></span><br/>
 				</c:forEach>
 			</div>
 			<div style="margin-top: 20px;margin-bottom:10px;">
@@ -71,11 +71,11 @@ function change(e) {
 					</tr>
 					<tr>
 						<td>勤務開始時刻</td>
-						<td colspan="2">${setupForm.workStartTime}</td>
+						<td colspan="2"><c:out value="${setupForm.workStartTime}"/></td>
 					</tr>
 					<tr>
 						<td>勤務終了時刻</td>
-						<td colspan="2">${setupForm.workEndTime}</td>
+						<td colspan="2"><c:out value="${setupForm.workEndTime}"/></td>
 					</tr>
 					<tr>
 						<td>休業開始日</td>

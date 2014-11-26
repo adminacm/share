@@ -111,31 +111,31 @@ function submitAction(action) {
 								<c:forEach var="approval" items="${approvalListForm.approvalList}">
 									<tr>
 										<td align="center">
-											<a href="/approvalList/applyNoClick?applyNo=${approval.applyNo}&applyKbnCd=${approval.applyKbnCd}">${approval.applyNo}</a>
+											<a href="/approvalList/applyNoClick?applyNo=${approval.applyNo}&applyKbnCd=${approval.applyKbnCd}"><c:out value="${approval.applyNo}"/></a>
 										</td>
 										<td>
-											${approval.applyKbnName}
+											<c:out value="${approval.applyKbnName}"/>
 										</td>
 										<td>
-											${approval.applyDetail}
+											<c:out value="${approval.applyDetail}"/>
 										</td>
 										<td>
-											${approval.statusName}
+											<c:out value="${approval.statusName}"/>
 										</td>
 										<td>
-											${approval.affiliationName}
+											<c:out value="${approval.affiliationName}"/>
 										</td>
 										<td>
-											${approval.userName}
+											<c:out value="${approval.userName}"/>
 										</td>
 										<td>
-											${approval.applyYmd}
+											<c:out value="${approval.applyYmd}"/>
 										</td>
 										<td>
-											${approval.approveYmd}
+											<c:out value="${approval.approveYmd}"/>
 										</td>
 										<td>
-											${approval.syoriYm}
+											<c:out value="${approval.syoriYm}"/>
 										</td>
 									</tr>
 								</c:forEach>

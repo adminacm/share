@@ -121,31 +121,31 @@ function submitAction(action) {
 								<c:forEach var="mRS" items="${monthlyReportStatusListForm.monthlyReportStatusList}">
 									<tr>
 										<td align="center">
-											<a href="/monthlyReportStatusList/applyNoClick?applyNo=${mRS.applyNo}&applyKbnCd=${mRS.applyKbnCd}">${mRS.applyNo}</a>
+											<a href="/monthlyReportStatusList/applyNoClick?applyNo=${mRS.applyNo}&applyKbnCd=${mRS.applyKbnCd}"><c:out value="${mRS.applyNo}"/></a>
 										</td>
 										<td>
-											${mRS.applyKbnName}
+											<c:out value="${mRS.applyKbnName}"/>
 										</td>
 										<td>
-											${mRS.applyDetail}
+											<c:out value="${mRS.applyDetail}"/>
 										</td>
 										<td>
-											${mRS.statusName}
+											<c:out value="${mRS.statusName}"/>
 										</td>
 										<td>
-											${mRS.affiliationName}
+											<c:out value="${mRS.affiliationName}"/>
 										</td>
 										<td>
-											${mRS.userId}
+											<c:out value="${mRS.userId}"/>
 										</td>
 										<td>
-											${mRS.appliedUserName}
+											<c:out value="${mRS.appliedUserName}"/>
 										</td>
 										<td>
-											${mRS.approverName}
+											<c:out value="${mRS.approverName}"/>
 										</td>
 										<td>
-											${mRS.approvedYmd}
+											<c:out value="${mRS.approvedYmd}"/>
 										</td>
 										
 									</tr>

@@ -58,7 +58,7 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffddff">
 				<table style="width:800px;margin-left:40px;">
 					<tr>
-						<td style="border:1px solid #333333;width:80px" align="center">${monthlyReportApprovalForm.proStatusName}</td>
+						<td style="border:1px solid #333333;width:80px" align="center"><c:out value="${monthlyReportApprovalForm.proStatusName}"/></td>
 						<!-- 提出の場合 -->
 						<c:if test="${ monthlyReportApprovalForm.proStatus == '02' }">
 							<td style="width:240px" align="right">
@@ -82,11 +82,11 @@ function submitAction(action) {
 			<div style="margin-top: 20px;margin-bottom:10px;background:#ffdddd">
 				<table style="width:800px;margin-left:40px;">
 					<tr>
-						<td style="width:120px" align="left">${ monthlyReportApprovalForm.reportMoth }</td>
+						<td style="width:120px" align="left"><c:out value="${ monthlyReportApprovalForm.reportMoth }"/></td>
 						<td style="width:70px" align="left">社員番号</td>
-						<td style="width:60px" align="left">${monthlyReportApprovalForm.taishoUserId}</td>
+						<td style="width:60px" align="left"><c:out value="${monthlyReportApprovalForm.taishoUserId}"/></td>
 						<td style="width:60" align="left">氏名</td>
-						<td style="width:490px" align="left">${monthlyReportApprovalForm.taishoUserName}</td>
+						<td style="width:490px" align="left"><c:out value="${monthlyReportApprovalForm.taishoUserName}"/></td>
 					</tr>
 				</table>
 			</div>
@@ -118,26 +118,26 @@ function submitAction(action) {
 						<c:forEach var="approvalInfo" items="${monthlyReportApprovalForm.monthlyReportApprovalList}">
 							<tr>
 								<c:if test="${not approvalInfo.totleFlg}">
-									<td align="center">${approvalInfo.day}</td>
-									<td align="center">${approvalInfo.week}</td>
-									<td align="center">${approvalInfo.workKbnName}</td>
-									<td align="center">${approvalInfo.shift}</td>
-									<td align="center">${approvalInfo.workSTime}</td>
-									<td align="center">${approvalInfo.workETime}</td>
-									<td align="center">${approvalInfo.kyukaKbName}</td>
+									<td align="center"><c:out value="${approvalInfo.day}"/></td>
+									<td align="center"><c:out value="${approvalInfo.week}"/></td>
+									<td align="center"><c:out value="${approvalInfo.workKbnName}"/></td>
+									<td align="center"><c:out value="${approvalInfo.shift}"/></td>
+									<td align="center"><c:out value="${approvalInfo.workSTime}"/></td>
+									<td align="center"><c:out value="${approvalInfo.workETime}"/></td>
+									<td align="center"><c:out value="${approvalInfo.kyukaKbName}"/></td>
 								</c:if>
 								<c:if test="${approvalInfo.totleFlg}">
 									<td colspan="7" style="border-bottom-width: 0px; border-left-width: 0px" align="right">計</td>
 								</c:if>
-								<td align="center">${approvalInfo.workHours}</td>
-								<td align="center">${approvalInfo.choSTime}</td>
-								<td align="center">${approvalInfo.choETime}</td>
-								<td align="center">${approvalInfo.choWeekday}</td>
-								<td align="center">${approvalInfo.choWeekdayNomal}</td>
-								<td align="center">${approvalInfo.choHoliday}</td>
-								<td align="center">${approvalInfo.mNHours}</td>
+								<td align="center"><c:out value="${approvalInfo.workHours}"/></td>
+								<td align="center"><c:out value="${approvalInfo.choSTime}"/></td>
+								<td align="center"><c:out value="${approvalInfo.choETime}"/></td>
+								<td align="center"><c:out value="${approvalInfo.choWeekday}"/></td>
+								<td align="center"><c:out value="${approvalInfo.choWeekdayNomal}"/></td>
+								<td align="center"><c:out value="${approvalInfo.choHoliday}"/></td>
+								<td align="center"><c:out value="${approvalInfo.mNHours}"/></td>
 								<c:if test="${not approvalInfo.totleFlg}">
-									<td align="center">${approvalInfo.locationName}</td>
+									<td align="center"><c:out value="${approvalInfo.locationName}"/></td>
 								</c:if>
 							</tr>
 						</c:forEach>
@@ -155,19 +155,19 @@ function submitAction(action) {
 						<c:if test="${not empty projWorkTimeCountInfo.projName}">
 							<tr>
 								<td style="width:200px" colspan="2">
-									${projWorkTimeCountInfo.projName}
+									<c:out value="${projWorkTimeCountInfo.projName}"/>
 								</td>
 								<td>
-									${projWorkTimeCountInfo.prpjectWorkTotalHours}
+									<c:out value="${projWorkTimeCountInfo.prpjectWorkTotalHours}"/>
 								</td>
 							</tr>
 						</c:if>
 						<c:if test="${not empty projWorkTimeCountInfo.workContentName}">
 							<tr>
 								<td width="30px" align="left">&nbsp;</td>
-								<td width="170xp" align="left">${projWorkTimeCountInfo.workContentName}</td>
+								<td width="170xp" align="left"><c:out value="${projWorkTimeCountInfo.workContentName}"/></td>
 								<td align="left">
-									${projWorkTimeCountInfo.workHoursNum}
+									<c:out value="${projWorkTimeCountInfo.workHoursNum}"/>
 								</td>
 							</tr>
 						</c:if>

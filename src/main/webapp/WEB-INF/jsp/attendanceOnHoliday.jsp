@@ -51,22 +51,22 @@ function formatDate(e) {
 			</div><br>
 			<div style="margin-left: 10px;margin-top: 10px;">
 				<c:forEach var="message" items="${atendanceOnHolidayForm.confirmMsgList}">
-					<span style="color:red">${message }</span><br/>
+					<span style="color:red"><c:out value="${message }"/></span><br/>
 				</c:forEach>
 			</div>
 			<div style="margin-top: 10px;margin-bottom:10px;" >
 				<table style="margin:auto; width:300px; border: 1px solid #333;">
 					<tr>
 						<td align="left" width="80">社員番号</td>
-						<td align="left" width="50">${atendanceOnHolidayForm.taishoUserId}</td>
+						<td align="left" width="50"><c:out value="${atendanceOnHolidayForm.taishoUserId}"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="50">氏名</td>
-						<td align="left" width="150">${atendanceOnHolidayForm.taishoUserName}</td>
+						<td align="left" width="150"><c:out value="${atendanceOnHolidayForm.taishoUserName}"/></td>
 					</tr>
 					<tr>
 						<td width="120px">日付</td>
-						<td width="180px">${atendanceOnHolidayForm.strAtendanceDateShow}</td>
+						<td width="180px"><c:out value="${atendanceOnHolidayForm.strAtendanceDateShow}"/></td>
 					</tr>
 					<tr>
 						<td width="120px">勤務区分</td>
@@ -88,7 +88,7 @@ function formatDate(e) {
 						<td width="120px">振替日</td>
 						<td width="180px">
 							<form:input id="furikae" style="width: 80px;" path="strHurikaeDate" maxlength="8" onblur="formatDate(this)"></form:input>
-							<form:label id="week" path="week">${ atendanceOnHolidayForm.week}</form:label>
+							<form:label id="week" path="week"><c:out value="${atendanceOnHolidayForm.week}"/></form:label>
 						</td>
 					</tr>
 					<tr>

@@ -8,7 +8,7 @@
 			<tr>
 				<c:if test="${ not empty userName }">
 					<td>ようこそ：</td>
-					<td>${ userName }</td>
+					<td><c:out value="${ userName }"/></td>
 					<td><a href="/login">メニュー</a></td>
 				</c:if>
 				<c:if test="${ empty userName }">

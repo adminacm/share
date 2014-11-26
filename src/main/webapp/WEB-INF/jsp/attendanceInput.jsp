@@ -78,16 +78,16 @@ function addZero(e){
 		</div>
 		<div style="margin-left: 10px;margin-top: 10px;">
 			<c:forEach var="message" items="${attendanceInputForm.confirmMsgList }">
-				<span style="color:red">${message }</span><br/>
+				<span style="color:red"><c:out value="${message }"/></span><br/>
 			</c:forEach>
 		</div>
 		<div style="margin-top: 20px; margin-bottom: -20px;" >
 			<table style="margin:auto; width:300px;">
 				<tr>
 					<td align="left" width="80">社員番号</td>
-					<td align="left" width="50">${attendanceInputForm.taishoUserId}</td>
+					<td align="left" width="50"><c:out value="${attendanceInputForm.taishoUserId}"/></td>
 					<td align="left" width="50">氏名</td>
-					<td align="left" width="150">${attendanceInputForm.taishoUserName}</td>
+					<td align="left" width="150"><c:out value="${attendanceInputForm.taishoUserName}"/></td>
 				</tr>
 			</table>
 		</div>
@@ -95,7 +95,7 @@ function addZero(e){
 			<!-- 月報承認状況は「作成中」以外の場合 -->
 			<c:if test="${ !empty attendanceInputForm.appStatusCode && attendanceInputForm.appStatusCode != '01'}">
 				<table class="table2" style="width: 100px;">
-					<tr><td>${attendanceInputForm.appStatusName}</td></tr>
+					<tr><td><c:out value="${attendanceInputForm.appStatusName}"/></td></tr>
 				</table>
 				
 			</c:if>
@@ -106,11 +106,11 @@ function addZero(e){
 					<td align="right" width="30px"><input type="button" value="←" onclick="submitAction('/attendanceInput/lastDay');" /></td>
 					<!-- 勤務日 -->
 					<c:if test="${attendanceInputForm.workDayKbn != '01'}">
-						<td align="center" width="160px" style="background: #FF99CC">${attendanceInputForm.attDateShow}</td>
+						<td align="center" width="160px" style="background: #FF99CC"><c:out value="${attendanceInputForm.attDateShow}"/></td>
 					</c:if>
 					<!-- 社休日 -->
 					<c:if test="${attendanceInputForm.workDayKbn == '01'}">
-						<td align="center" width="160px" style="background: #CCFFFF">${attendanceInputForm.attDateShow}</td>
+						<td align="center" width="160px" style="background: #CCFFFF"><c:out value="${attendanceInputForm.attDateShow}"/></td>
 					</c:if>
 					<td align="left" width="30px"><input type="button" value="→" onclick="submitAction('/attendanceInput/nextDay');" /></td>
 				</tr>
@@ -119,7 +119,7 @@ function addZero(e){
 			<table style="margin:auto; width:300px;margin-top:10px;">
 				<tr>
 					<td align="left" width="120px">勤務日区分</td>
-					<td align="left" width="180px">${attendanceInputForm.workDayKbnName}</td>
+					<td align="left" width="180px"><c:out value="${attendanceInputForm.workDayKbnName}"/></td>
 				</tr>
 			</table>
 			<!-- 社休日 -->
@@ -147,23 +147,23 @@ function addZero(e){
 					</tr>
 					<tr>
 						<td align="left" width="150px">休日勤務区分</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.kinmuKbnName}</td>
+						<td align="left" width="150px"><c:out value="${attendanceInputForm.holidayAttendance.kinmuKbnName}"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">勤務時間</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.kinmuStartTime}～${attendanceInputForm.holidayAttendance.kinmuEndTime}</td>
+						<td align="left" width="150px"><c:out value="${attendanceInputForm.holidayAttendance.kinmuStartTime}"/>～<c:out value="${attendanceInputForm.holidayAttendance.kinmuEndTime}"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">振替日</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.furikaeDate}</td>
+						<td align="left" width="150px"><c:out value="${attendanceInputForm.holidayAttendance.furikaeDate}"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">プロジェクト名</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.projectName}</td>
+						<td align="left" width="150px"><c:out value="${attendanceInputForm.holidayAttendance.projectName}"/></td>
 					</tr>
 					<tr>
 						<td align="left" width="150px">業務内容</td>
-						<td align="left" width="150px">${attendanceInputForm.holidayAttendance.workDetail}</td>
+						<td align="left" width="150px"><c:out value="${attendanceInputForm.holidayAttendance.workDetail}"/></td>
 					</tr>
 				</table>
 			</c:if>
@@ -208,7 +208,7 @@ function addZero(e){
 						<td width="120px" colspan="2">休暇時間数</td>
 						<td>
 							<c:if test="${attendanceInputForm.kyukaHours != 0.0 && attendanceInputForm.kyukaHours != null}">
-								${attendanceInputForm.kyukaHours}h
+								<c:out value="${attendanceInputForm.kyukaHours}"/>h
 							</c:if>
 						</td>
 					</tr>
@@ -216,7 +216,7 @@ function addZero(e){
 						<td width="120px" colspan="2">勤務時間数</td>
 						<td>
 							<c:if test="${attendanceInputForm.workHours != 0.0 && attendanceInputForm.workHours != null}">
-								${attendanceInputForm.workHours}h
+								<c:out value="${attendanceInputForm.workHours}"/>h
 							</c:if>
 						</td>
 					</tr>
@@ -225,7 +225,7 @@ function addZero(e){
 						<td width="90">開始時刻</td>
 						<td>
 							<c:if test="${! empty attendanceInputForm.choSTimeShow}">
-								${attendanceInputForm.choSTimeShow}
+								<c:out value="${attendanceInputForm.choSTimeShow}"/>
 							</c:if>
 						</td>
 					</tr>
@@ -233,7 +233,7 @@ function addZero(e){
 						<td width="90">終了時刻</td>
 						<td>
 							<c:if test="${! empty attendanceInputForm.choETimeShow}">
-								${attendanceInputForm.choETimeShow}
+								<c:out value="${attendanceInputForm.choETimeShow}"/>
 							</c:if>
 						</td>
 					</tr>
@@ -241,7 +241,7 @@ function addZero(e){
 						<td width="90">平日割増</td>
 						<td>
 							<c:if test="${attendanceInputForm.choWeekday != 0.0 && attendanceInputForm.choWeekday != null}">
-								${attendanceInputForm.choWeekday}h
+								<c:out value="${attendanceInputForm.choWeekday}"/>h
 							</c:if>
 						</td>
 					</tr>
@@ -249,7 +249,7 @@ function addZero(e){
 						<td width="90">平日通常</td>
 						<td>
 							<c:if test="${attendanceInputForm.choWeekdayNomal != 0.0 && attendanceInputForm.choWeekdayNomal != null}">
-								${attendanceInputForm.choWeekdayNomal}h
+								<c:out value="${attendanceInputForm.choWeekdayNomal}"/>h
 							</c:if>
 						</td>
 					</tr>
@@ -257,7 +257,7 @@ function addZero(e){
 						<td width="90">休日</td>
 						<td>
 							<c:if test="${attendanceInputForm.choHoliday != 0.0 && attendanceInputForm.choHoliday != null}">
-								${attendanceInputForm.choHoliday}h
+								<c:out value="${attendanceInputForm.choHoliday}"/>h
 							</c:if>
 						</td>
 					</tr>
@@ -265,7 +265,7 @@ function addZero(e){
 						<td width="90">深夜</td>
 						<td>
 							<c:if test="${attendanceInputForm.mNHours != 0.0 && attendanceInputForm.mNHours != null}">
-								${attendanceInputForm.mNHours}h
+								<c:out value="${attendanceInputForm.mNHours}"/>h
 							</c:if>
 						</td>
 					</tr>

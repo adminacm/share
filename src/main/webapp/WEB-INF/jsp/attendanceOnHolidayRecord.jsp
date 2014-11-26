@@ -105,9 +105,9 @@ function submitAction(action) {
 						<table class="resultStyle" style="margin-left:2px;width: 300px">
 							<tr>
 								<td style="width: 80px">社員番号</td>
-								<td style="width: 50px">${attendanceOnHolidayRecordForm.taishoUserId}</td>
+								<td style="width: 50px"><c:out value="${attendanceOnHolidayRecordForm.taishoUserId}"/></td>
 								<td style="width: 50px">氏名</td>
-								<td>${attendanceOnHolidayRecordForm.taishoUserName}</td>
+								<td><c:out value="${attendanceOnHolidayRecordForm.taishoUserName}"/></td>
 							</tr>
 						</table>
 					</td>
@@ -130,10 +130,10 @@ function submitAction(action) {
 								<c:forEach var="holidayExchangeWork" items="${attendanceOnHolidayRecordForm.holidayExchangeWorkList}">
 									<tr align="center">
 										<td style="width:100px">
-											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayExchangeWork.holidayTurnedWorkingDate}&workKbn=03">${holidayExchangeWork.holidayTurnedWorkingDate}</a>
+											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayExchangeWork.holidayTurnedWorkingDate}&workKbn=03"><c:out value="${holidayExchangeWork.holidayTurnedWorkingDate}"/></a>
 										</td>
 										<td>
-											${holidayExchangeWork.workingDayTurnedHolidayDate}
+											<c:out value="${holidayExchangeWork.workingDayTurnedHolidayDate}"/>
 										</td>
 									</tr>
 								</c:forEach>
@@ -161,16 +161,16 @@ function submitAction(action) {
 								<c:forEach var="holidayOverWork" items="${attendanceOnHolidayRecordForm.holidayOverWorkList}">
 									<tr align="center">
 										<td style="width:100px">
-											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayOverWork.holidayOverWorkDate}&workKbn=02">${holidayOverWork.holidayOverWorkDate}</a>
+											<a href="/attendanceOnHolidayRecordDetail/init?date=${holidayOverWork.holidayOverWorkDate}&workKbn=02"><c:out value="${holidayOverWork.holidayOverWorkDate}"/></a>
 										</td>
 										<td style="width:100px">
-											${holidayOverWork.turnedHolidayEndDate}
+											<c:out value="${holidayOverWork.turnedHolidayEndDate}"/>
 										</td>
 										<td style="width:100px">
-											${holidayOverWork.turnedHolidayDate}
+											<c:out value="${holidayOverWork.turnedHolidayDate}"/>
 										</td>
 										<td>
-											${holidayOverWork.overWorkTurnedReqDate}
+											<c:out value="${holidayOverWork.overWorkTurnedReqDate}"/>
 										</td>
 									</tr>
 								</c:forEach>

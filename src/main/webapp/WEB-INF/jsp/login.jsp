@@ -10,7 +10,7 @@
 	<title>登録</title>
 </head>
 <body>
-	<span style="color:red">${errorMessages} ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message }</span>
+	<span style="color:red"><c:out value="${errorMessages}"/> <c:out value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message }"/></span>
 	<form action="j_spring_security_check" method="POST">
 		<table>
 			<tr>
