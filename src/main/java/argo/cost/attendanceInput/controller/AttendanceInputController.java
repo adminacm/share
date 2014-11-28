@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import argo.cost.attendanceInput.checker.AttendanceInputChecker;
 import argo.cost.attendanceInput.model.AttendanceInputForm;
 import argo.cost.attendanceInput.model.AttendanceProjectVO;
 import argo.cost.attendanceInput.service.AttendanceInputService;
@@ -43,7 +44,7 @@ public class AttendanceInputController extends AbstractController {
 	 *　休日勤務入力画面へ
 	 */
 	private static final String URL_ATT_HOLIDAY = "/attendanceOnHoliday";
-
+	
 	/**
 	 * 初期化
 	 * 
@@ -116,8 +117,14 @@ public class AttendanceInputController extends AbstractController {
 	public String save(AttendanceInputForm form) {
 
 		form.clearMessages();
-		// 就業データを更新する
+		// 単項目チェック
+		doSingleItemCheck(form);
+		// エラーが存在する場合
+		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
+			return ATTDENDANCE_INPUT;
+		}
 		try {
+			// 就業データを更新する
 			attendanceInputService.updateAttdendanceInfo(form);
 		} catch (BusinessException e) {
 			// errorMessageを追加
@@ -178,8 +185,16 @@ public class AttendanceInputController extends AbstractController {
 	 */
 	@RequestMapping("/count")
 	public String count(AttendanceInputForm form) {
-
+		
+		// エラーを削除する
 		form.clearMessages();
+		// 単項目チェック
+		doSingleItemCheck(form);
+		// エラーが存在する場合
+		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
+			return ATTDENDANCE_INPUT;
+		}
+
 		try {
 			// 勤務情報を計算する。
 			attendanceInputService.calcWorkingRec(form);
@@ -206,5 +221,23 @@ public class AttendanceInputController extends AbstractController {
 		
 		return REDIRECT + UrlConstant.URL_ATT_HOLIDAY + INIT 
 				+ QUESTION_MARK + ATTDENDANCE_DATE + EQUAL_SIGN + attendanceDate;
+	}
+	
+	/**
+	 * 画面の単項目チェック
+	 * 
+	 * @param model
+	 *            モデル
+	 * @return
+	 * @throws ParseException 
+	 */
+	private void doSingleItemCheck(AttendanceInputForm form) {
+		AttendanceInputChecker checker = new AttendanceInputChecker(form);
+		// シフトコード
+		checker.chkShiftCode();
+		// 勤務開始時刻
+		checker.chkSTime();
+		// 勤務終了時刻
+		checker.chkETime();
 	}
 }

@@ -448,10 +448,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		form.setChoETimeShow(null);
 		// 入力チェック
 		doInputCheck(form);
-		// エラーが発生されているの場合
-		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		// 休暇欠勤区分
 		String kyukaKbn = form.getKyukaKb();
 		// 勤務時間取得
@@ -464,10 +460,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		}
 		// 休暇欠勤区分・勤務時刻:有給休暇の取得限度を超えています
 		checker.chkKykaKbn002();
-		// エラーが発生されているの場合
-		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
-			return;
-		}
 		
 		// 超勤時間帯の勤務時間数を算出する
 		getChokin(form);
@@ -1021,13 +1013,11 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// シフトコードより、シフト情報を取得
 		ShiftVO shiftinfo = getShiftInfo(form);
 		form.setShiftInfo(shiftinfo);
-		AttendanceInputChecker checker = new AttendanceInputChecker(form,baseDao,attendanceInputDao);
+		// 勤務時刻のフォーマット
+		formatWorkTime(form);
+		AttendanceInputChecker checker = new AttendanceInputChecker(form, baseDao, attendanceInputDao);
 		// 勤務期間のチェック
 		checker.chkKyugyoKikan();
-		// 勤務開始時刻の型チェックとフォーマット
-		checker.chkWorkSTimeFormat();
-		// 勤務終了時刻の型チェックとフォーマット
-		checker.chkWorkETimeFormat();
 		// 休暇欠勤区分・勤務時刻:勤怠が未入力です
 		checker.chkKykaKbnAndWorkTime05();
 		// 休暇欠勤区分と勤務区分のチェック
@@ -1249,6 +1239,44 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			form.setAppStatusCode(master.getCode());
 			// 月報申請状況名
 			form.setAppStatusName(master.getName());
+		}
+	}
+	
+	/**
+	 * 勤務時刻をフォーマットする
+	 * @param form
+	 *            画面情報
+	 */
+	private void formatWorkTime(AttendanceInputForm form) {
+		
+		// シフト情報
+		ShiftVO shift = form.getShiftInfo();
+		// 勤務開始時刻
+		String sHour = form.getWorkSHour();
+		String sMinute = form.getWorkSMinute();
+		// 勤務開始時刻
+		String kinmuSTime = sHour.concat(sMinute);
+		form.setWorkSTime(kinmuSTime);
+		form.setWorkSTimeStr(kinmuSTime);
+		// 勤務開始時刻＜定時出勤時刻(hhnn)
+		if (kinmuSTime.compareTo(shift.getStartTimeStr()) < 0) {
+			form.setWorkSTimeStr(CostDateUtils.addForOneDay(kinmuSTime));
+		} else {
+			form.setWorkSTimeStr(kinmuSTime);
+		}
+		// 勤務終了時刻
+		String eHour = form.getWorkEHour();
+		String eMinute = form.getWorkEMinute();
+		// 勤務終了時刻
+		String kinmuETime = eHour.concat(eMinute);
+		form.setWorkETime(kinmuETime);
+		form.setWorkETimeStr(kinmuETime);
+		
+		// 勤務終了時刻＜＝定時出勤時刻(hhnn)
+		if (kinmuETime.compareTo(shift.getStartTimeStr()) <= 0) {
+			form.setWorkETimeStr(CostDateUtils.addForOneDay(kinmuETime));
+		} else {
+			form.setWorkETimeStr(kinmuETime);
 		}
 	}
 }

@@ -50,13 +50,11 @@ public interface AtendanceOnHolidayService {
 	/**
 	 * 休日勤務データ削除
 	 * 
-	 * @param strAtendanceDate
-	 *            休日勤務の日付
-	 * @param UserID
-	 *            ユーザーID
+	 * @param form
+	 *            休日勤務画面情報
 	 * 
 	 * @return 休日勤務データ削除結果
 	 */
-	void deleteAtendanceOnHoliday(String strAtendanceDate, String UserID) throws BusinessException;
+	void deleteAtendanceOnHoliday(AtendanceOnHolidayForm form) throws BusinessException;
 
 }

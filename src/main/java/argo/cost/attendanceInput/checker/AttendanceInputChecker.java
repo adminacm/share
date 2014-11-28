@@ -39,9 +39,25 @@ public class AttendanceInputChecker {
 	 */
 	private final static String  KINMU_START_TIME = "勤務開始時刻";
 	/**
+	 * 勤務開始時刻。
+	 */
+	private final static String  KINMU_START_TIME_H = "勤務開始時刻：時";
+	/**
+	 * 勤務開始時刻。
+	 */
+	private final static String  KINMU_START_TIME_M = "勤務開始時刻：分";
+	/**
 	 * 勤務終了時刻
 	 */
 	private final static String KINMU_END_TIME = "勤務終了時刻";
+	/**
+	 * 勤務開始時刻。
+	 */
+	private final static String  KINMU_END_TIME_H = "勤務終了時刻：時";
+	/**
+	 * 勤務開始時刻。
+	 */
+	private final static String  KINMU_END_TIME_M = "勤務終了時刻：分";
 	/**
 	 * 勤務開始時刻・勤務終了時刻
 	 */
@@ -54,7 +70,10 @@ public class AttendanceInputChecker {
 	 * 休暇区分
 	 */
 	private final static String KYUKA_KBN = "休暇区分";
-	
+	/**
+	 * シフトコード
+	 */
+	private final static String SHIFT_CODE = "シフトコード";
 	/**
 	 * 勤怠入力画面情報
 	 */
@@ -69,48 +88,98 @@ public class AttendanceInputChecker {
 	 */
 	AttendanceInputDao attendanceInputDao;
 
+	public AttendanceInputChecker(AttendanceInputForm form) {
+		this.form = form;
+	}
+	
 	public AttendanceInputChecker(AttendanceInputForm form,BaseDao baseDao,AttendanceInputDao attendanceInputDao) {
 		this.form = form;
 		this.baseDao = baseDao;
 		this.attendanceInputDao = attendanceInputDao;
 	}
-	
+
 	/**
-	 * 勤務開始時刻チェック
+	 * シフトコードの単項目チェック
 	 * 
-	 * @param form
-	 *            画面情報オブジェクト
-	 * @param standSTimeStr
-	 *            定時出勤時刻(hhnn)
 	 * @throws BusinessException 
 	 */
-	public void chkWorkSTimeFormat() throws BusinessException {
-		
-		// シフト情報
-		ShiftVO shift = form.getShiftInfo();
-		String hour = StringUtils.isEmpty(form.getWorkSHour()) ? StringUtils.EMPTY : form.getWorkSHour();
-		String minute = StringUtils.isEmpty(form.getWorkSMinute()) ? StringUtils.EMPTY : form.getWorkSMinute();
-		
+	public void chkShiftCode() {
+
+		// シフトコードを入力されていない場合
+		if (StringUtils.isEmpty(form.getShiftCdShow())) {
+			// シフトコードを入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_004, new String[] {SHIFT_CODE});
+		}
+	}
+
+	/**
+	 * 勤務開始時刻の単項目チェック
+	 * 
+	 * @throws BusinessException 
+	 */
+	public void chkSTime() {
+
 		// 勤務開始時刻
-		String kinmuSTime = hour.concat(minute);
-		form.setWorkSTime(kinmuSTime);
-		form.setWorkSTimeStr(kinmuSTime);
+		String sHour = form.getWorkSHour();
+		String sMinute = form.getWorkSMinute();
 		
-		// 勤務開始時刻が入力される場合
-		if (!StringUtils.isEmpty(kinmuSTime)) {
-			// 勤務開始時刻のhhnn形式値が数値以外
-			if (!CostDateUtils.isTimeHHnn(kinmuSTime)) {
-				// 勤務開始時刻を正しく入力してください
-				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
-				throw new BusinessException();
-			} else {
-				// 勤務開始時刻＜定時出勤時刻(hhnn)
-				if (kinmuSTime.compareTo(shift.getStartTimeStr()) < 0) {
-					form.setWorkSTimeStr(CostDateUtils.addForOneDay(kinmuSTime));
-				} else {
-					form.setWorkSTimeStr(kinmuSTime);
-				}
-			}
+		// 開始時刻の時を未入力の場合
+		if (StringUtils.isEmpty(sHour)) {
+			// 勤務開始時刻を正しく入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_004, new String[] {KINMU_START_TIME_H});
+		}
+		// 開始時刻の分を未入力の場合
+		if (StringUtils.isEmpty(sHour)) {
+			// 勤務開始時刻を正しく入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_004, new String[] {KINMU_START_TIME_M});
+		}
+		// 勤務開始時刻
+		String kinmuSTime = sHour.concat(sMinute);
+		// 勤務開始時刻のhhnn形式値が数値以外
+		if (!CostDateUtils.isTimeHHnn(kinmuSTime)) {
+			// 勤務開始時刻を正しく入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
+		}
+		// 勤務開始時刻は30分単位で入力
+		if (!CostDateUtils.isHalfHour(sMinute)) {
+			// 勤務開始時刻は30分単位で入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_START_TIME});
+		}
+	}
+
+	/**
+	 * 勤務終了時刻の単項目チェック
+	 * 
+	 * @throws BusinessException 
+	 */
+	public void chkETime() {
+
+		// 勤務終了時刻
+		String eHour = form.getWorkEHour();
+		String eMinute = form.getWorkEMinute();
+		
+		// 勤務終了時刻の時を未入力の場合
+		if (StringUtils.isEmpty(eHour)) {
+			// 勤務終了時刻の時を正しく入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_004, new String[] {KINMU_END_TIME_H});
+		}
+		// 勤務終了時刻の分を未入力の場合
+		if (StringUtils.isEmpty(eHour)) {
+			// 勤務開始時刻を正しく入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_004, new String[] {KINMU_END_TIME_M});
+		}
+		// 勤務終了時刻
+		String kinmuETime = eHour.concat(eMinute);
+		// 勤務終了時刻のhhnn形式値が数値以外
+		if (!CostDateUtils.isTimeHHnn(kinmuETime)) {
+			// 勤務終了時刻を正しく入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
+		}
+
+		// 勤務終了時刻は30分単位で入力
+		if (!CostDateUtils.isHalfHour(eMinute)) {
+			// 勤務終了時刻は30分単位で入力してください
+			form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_END_TIME});
 		}
 	}
 
@@ -164,22 +233,13 @@ public class AttendanceInputChecker {
 		form.setWorkETime(kinmuETime);
 		form.setWorkETimeStr(kinmuETime);
 		
-		// 勤務終了時刻が入力される場合
-		if (!StringUtils.isEmpty(kinmuETime)) {
-			// 勤務終了時刻のhhnn形式値が数値以外
-			if (!CostDateUtils.isTimeHHnn(kinmuETime)) {
-				// 勤務終了時刻を正しく入力してください
-				form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
-				throw new BusinessException();
-			} else {
-				// 勤務終了時刻＜＝定時出勤時刻(hhnn)
-				if (kinmuETime.compareTo(shift.getStartTimeStr()) <= 0) {
-					form.setWorkETimeStr(CostDateUtils.addForOneDay(kinmuETime));
-				} else {
-					form.setWorkETimeStr(kinmuETime);
-				}
-			}
+		// 勤務終了時刻＜＝定時出勤時刻(hhnn)
+		if (kinmuETime.compareTo(shift.getStartTimeStr()) <= 0) {
+			form.setWorkETimeStr(CostDateUtils.addForOneDay(kinmuETime));
+		} else {
+			form.setWorkETimeStr(kinmuETime);
 		}
+	
 	}
 
 	/**
@@ -199,12 +259,8 @@ public class AttendanceInputChecker {
 		String standETimeStr = shift.getEndTimeStr();
 		// 勤務開始時刻
 		String sTime = form.getWorkSTime();
-		// 勤務開始時刻の分
-		String sMinute = form.getWorkSMinute();
 		// 勤務終了時刻
 		String eTime = form.getWorkETime();
-		// 勤務終了時刻の分
-		String eMinute = form.getWorkEMinute();
 		// 勤務開始時刻（hhnn）
 		String sTimeStr = form.getWorkSTimeStr();
 		// 勤務終了時刻（hhnn）
@@ -243,20 +299,8 @@ public class AttendanceInputChecker {
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-				// 勤務開始時刻は30分単位で入力
-				if (!CostDateUtils.isHalfHour(sMinute)) {
-					// 勤務開始時刻は30分単位で入力してください
-					form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_START_TIME});
-					throw new BusinessException();
-				}
-				// 勤務終了時刻は30分単位で入力
-				if (!CostDateUtils.isHalfHour(eMinute)) {
-					// 勤務終了時刻は30分単位で入力してください
-					form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_END_TIME});
-					throw new BusinessException();
-				}
+
 			}
-			
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package argo.cost.setup.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import argo.cost.common.constant.UrlConstant;
 import argo.cost.common.controller.AbstractController;
 import argo.cost.common.exception.BusinessException;
+import argo.cost.setup.checker.SetupChecker;
 import argo.cost.setup.model.SetupForm;
 import argo.cost.setup.service.SetupService;
 
@@ -115,6 +117,21 @@ public class SetupController extends AbstractController {
 	 */
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String doSave(SetupForm setupInfo) {
+		
+		setupInfo.clearMessages();
+		// 単項目入力チェック
+		SetupChecker checker = new SetupChecker(setupInfo);
+		// 休業開始日のチェック
+		checker.chkKyukaKaishiDate();
+		// 休業終了日のチェック
+		checker.chkKyukaShyuryoDate();
+		// 退職日のチェック
+		checker.chkTaishokuDate();
+		// エラーを発生する場合
+		if (!StringUtils.isEmpty(setupInfo.getConfirmMsg())) {
+			// エラーが発生した場合はエラーメッセージが表示され個人設定変更画面に戻る
+			return SETUPEDIT_GAMENID;			
+		}
 
 		// チェックを実行
 		try {

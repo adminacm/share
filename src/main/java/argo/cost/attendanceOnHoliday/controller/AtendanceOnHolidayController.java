@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,19 +83,25 @@ public class AtendanceOnHolidayController extends AbstractController {
 
 		// チェック処理を呼ぶ
 		form.clearMessages();
+		// 単項目入力チェック
+		AtendanceOnHolidayChecker checker = new AtendanceOnHolidayChecker(form);
+		// 勤務開始時刻
+		checker.chkStartTimeInput();
+		// 勤務終了時刻チェック
+		checker.chkEndTimeInput();
+		// 勤務日区分チェック
+		checker.chkWorkDayKbn();
+		// プロジェクト情報チェック
+		checker.chkProjectID();
+		// 業務内容チェック
+		checker.chkWorkDetail();
+		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
+			// エラーメッセージを出力する
+			return ATTENDANCE_HOLIDAY;
+		}
 		// 勤務開始時刻チェック
 		try {
-			AtendanceOnHolidayChecker.chkStartTimeInput(form);
-			// 勤務終了時刻チェック
-			AtendanceOnHolidayChecker.chkEndTimeInput(form);
-			// 勤務日区分チェック
-			AtendanceOnHolidayChecker.chkWorkDayKbn(form);
-			// プロジェクト情報チェック
-			AtendanceOnHolidayChecker.chkProjectID(form);
-			// 業務内容チェック
-			AtendanceOnHolidayChecker.chkWorkDetail(form);
-			// 振替日チェック
-			AtendanceOnHolidayChecker.chkFurikaeBiInput(form);
+			
 			// 休日勤務情報を保存する
 			atendanceOnHolidayService.saveAtendanceOnHoliday(form);
 		} catch (BusinessException e) {
@@ -122,10 +129,8 @@ public class AtendanceOnHolidayController extends AbstractController {
 		String strAtendanceDate = form.getStrAtendanceDate();
 		
 		try {
-			// 対象日の勤怠実績チェック
-			AtendanceOnHolidayChecker.chkDelKintaiInfo(form);
 			// 休日勤務情報を削除する
-			atendanceOnHolidayService.deleteAtendanceOnHoliday(form.getStrAtendanceDate(), form.getTaishoUserId());
+			atendanceOnHolidayService.deleteAtendanceOnHoliday(form);
 		} catch (BusinessException e) {
 			// エラーメッセージを出力する
 			return ATTENDANCE_HOLIDAY;

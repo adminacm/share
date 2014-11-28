@@ -19,7 +19,6 @@ import argo.cost.common.entity.Users;
 import argo.cost.common.exception.BusinessException;
 import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.utils.CostDateUtils;
-import argo.cost.monthlyReport.checker.MonthlyReportChecker;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 import argo.cost.monthlyReport.service.MonthlyReportService;
 
@@ -184,22 +183,8 @@ public class MonthlyReportController extends AbstractController {
     @RequestMapping(value = MONTHLYREPORTCOMMIT, method = RequestMethod.POST)
     public String monthlyReportCommit(MonthlyReportForm form) throws Exception {
     	
-    	// 月報一覧情報
-    	List<MonthlyReportDispVO> mRList = form.getmRList();
-    	
 		try {
 			form.clearMessages();
-			// 代休取得期限チェック
-			MonthlyReportChecker.chkDaikyuKigen(form);
-			for (int i = 0; i < mRList.size() - 1; i++) {
-				MonthlyReportDispVO monthlyReport = mRList.get(i);
-				// 勤務期間チェック
-				MonthlyReportChecker.chkKyugyoKikan(form, monthlyReport);
-				// 入力チェック
-				MonthlyReportChecker.chkKintaiInfoNull(form, monthlyReport);
-				MonthlyReportChecker.chkKintaiInfoInput(form, monthlyReport);
-				MonthlyReportChecker.chkKintaiInfoDaikyu(form, monthlyReport);
-			}
 	    	// 月報を提出
 	    	monthlyReportService.monthyReportCommit(form);
 		} catch (BusinessException e) {

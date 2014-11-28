@@ -70,7 +70,7 @@ function addZero(e){
 </style>
 </head>
 <body>
-	<form:form modelAttribute="attendanceInputForm" >
+	<form:form modelAttribute="attendanceInputForm" commandName="attendanceInputForm">
 	<%@ include file="includes/header.jsp"%>
 	<div style="margin-left:50px;margin-right:50px;margin-top:50px;border-style:solid;width:600px;">
 		<div style="padding:2px;">

@@ -1,9 +1,7 @@
 package argo.cost.attendanceOnHoliday.checker;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import argo.cost.attendanceOnHoliday.dao.AtendanceOnHolidayDao;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
@@ -44,43 +42,30 @@ public class AtendanceOnHolidayChecker {
 	 * 勤務日区分
 	 */
 	private final static String WORK_DAY_KBN = "勤務日区分";
-	
+	/**
+	 * 勤怠休日勤務画面情報
+	 */
+	AtendanceOnHolidayForm form;
 	/**
 	 * 共通DAO
 	 */
-	@Autowired
-	static BaseDao baseDao;
-	/**
-	 * 勤怠入力DAO
-	 */
-	@Autowired
-	static AtendanceOnHolidayDao atendanceOnHolidayDao;
-	
-	public static BaseDao getBaseDao() {
-		return baseDao;
+	BaseDao baseDao;
+
+	public AtendanceOnHolidayChecker(AtendanceOnHolidayForm form) {
+		this.form = form;
 	}
 
-	public static void setBaseDao(BaseDao baseDao) {
-		AtendanceOnHolidayChecker.baseDao = baseDao;
+	public AtendanceOnHolidayChecker(AtendanceOnHolidayForm form, BaseDao baseDao) {
+		this.form = form;
+		this.baseDao = baseDao;
 	}
-
-	public static AtendanceOnHolidayDao getAtendanceOnHolidayDao() {
-		return atendanceOnHolidayDao;
-	}
-
-	public static void setAtendanceOnHolidayDao(
-			AtendanceOnHolidayDao atendanceOnHolidayDao) {
-		AtendanceOnHolidayChecker.atendanceOnHolidayDao = atendanceOnHolidayDao;
-	}
-
 	/**
 	 * 勤務開始時刻チェック
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws BusinessException 
 	 */
-	public static void chkStartTimeInput(AtendanceOnHolidayForm form) throws BusinessException {
+	public void chkStartTimeInput() {
 		
 		// 勤務開始時刻
 		String wSTime = form.getStrAtendanceTimeStat();
@@ -88,22 +73,18 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(wSTime)) {
 			// 勤務開始時刻が未入力です
 			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {KINMU_START_TIME});
-			throw new BusinessException();
 		}
 		// 勤務開始時刻のhhnn形式値が数値以外
 		if (!CostDateUtils.isTimeHHnn(wSTime.replace(":", StringUtils.EMPTY))) {
 			// 勤務終了時刻を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_START_TIME});
-			throw new BusinessException();
 		}
 		// 勤務終了時刻の分の値が0、30以外
 		if ((!StringUtils.endsWith(wSTime, "00"))
 				&& (!StringUtils.endsWith(wSTime, "30"))) {
 			// 勤務終了時刻は30分単位で入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_START_TIME});
-			throw new BusinessException();
 		}
-		
 		
 	}
 
@@ -112,9 +93,8 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws BusinessException 
 	 */
-	public static void chkEndTimeInput(AtendanceOnHolidayForm form) throws BusinessException {
+	public void chkEndTimeInput() {
 		
 		// 勤務終了時刻
 		String wETime = form.getStrAtendanceTimeEnd();
@@ -122,20 +102,17 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(wETime)) {
 			// 勤務終了時刻が未入力です
 			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {KINMU_END_TIME});
-			throw new BusinessException();
 		}
 		// 勤務終了時刻のhhnn形式値が数値以外
 		if (!CostDateUtils.isTimeHHnn(wETime.replace(":", StringUtils.EMPTY))) {
 			// 勤務終了時刻を正しく入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_002, new String[] {KINMU_END_TIME});
-			throw new BusinessException();
 		}
 		// 勤務終了時刻の分の値が0、30以外
 		if ((!StringUtils.endsWith(wETime, "00"))
 				&& (!StringUtils.endsWith(wETime, "30"))) {
 			// 勤務終了時刻は30分単位で入力してください
 			form.putConfirmMsg(MessageConstants.COSE_E_007, new String[] {KINMU_END_TIME});
-			throw new BusinessException();
 		}
 	}
 
@@ -146,7 +123,7 @@ public class AtendanceOnHolidayChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkFurikaeBiInput(AtendanceOnHolidayForm form) throws BusinessException {
+	public void chkFurikaeBiInput() throws BusinessException {
 		
 		// 勤務終了時刻
 		String furikaebi = form.getStrHurikaeDate();
@@ -201,9 +178,8 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws BusinessException 
 	 */
-	public static void chkProjectID(AtendanceOnHolidayForm form) throws BusinessException {
+	public void chkProjectID() {
 		
 		// プロジェクトID
 		String projectId = form.getSelectedProjCd();
@@ -211,7 +187,6 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(projectId)) {
 			// プロジェクト名を選択してください
 			form.putConfirmMsg(MessageConstants.COSE_E_021, new String[] {PROJECT_NAME});
-			throw new BusinessException();
 		}
 	}
 
@@ -220,9 +195,8 @@ public class AtendanceOnHolidayChecker {
 	 * 
 	 * @param form
 	 *            画面情報オブジェクト
-	 * @throws BusinessException 
 	 */
-	public static void chkWorkDetail(AtendanceOnHolidayForm form) throws BusinessException {
+	public void chkWorkDetail() {
 		
 		// 業務内容
 		String workDetail = form.getStrCommont();
@@ -230,7 +204,6 @@ public class AtendanceOnHolidayChecker {
 		if (StringUtils.isEmpty(workDetail)) {
 			// プロジェクト名を選択してください
 			form.putConfirmMsg(MessageConstants.COSE_E_001, new String[] {WORK_DETAIL});
-			throw new BusinessException();
 		}
 	}
 
@@ -241,14 +214,13 @@ public class AtendanceOnHolidayChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkWorkDayKbn(AtendanceOnHolidayForm form) throws BusinessException {
+	public void chkWorkDayKbn() {
 		
 		// 勤務日区分が「休日」「休日振替勤務」以外
 		if ((!StringUtils.equals(form.getSelectedAtendanceDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU))
 				&& (!StringUtils.equals(form.getSelectedAtendanceDayKbn(), CommonConstant.WORKDAY_KBN_KYUJITU_FURIKAE))) {
 			// 勤務区分の値が不正です
 			form.putConfirmMsg(MessageConstants.COSE_E_022, new String[] {WORK_DAY_KBN});
-			throw new BusinessException();
 		}
 	}
 	
@@ -260,7 +232,7 @@ public class AtendanceOnHolidayChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkDelKintaiInfo(AtendanceOnHolidayForm form) throws BusinessException {
+	public void chkDelKintaiInfo() throws BusinessException {
 		
 		// 対象日
 		String date = form.getStrAtendanceDate().replace("/", "");

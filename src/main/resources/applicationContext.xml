@@ -70,16 +70,6 @@
                 </props>
             </property>
         </bean>
-        <bean id="atendanceOnHolidayChecker" class="argo.cost.attendanceOnHoliday.checker.AtendanceOnHolidayChecker">
-        	<property name="baseDao" ref="baseDao"></property>
-        	<property name="atendanceOnHolidayDao" ref="atendanceOnHolidayDao"></property>
-        </bean>
-	    <bean id="SetupChecker" class="argo.cost.setup.checker.SetupChecker">
-	        <property name="baseDao" ref="baseDao"></property>
-        </bean>
-        <bean id="monthlyReportChecker" class="argo.cost.monthlyReport.checker.MonthlyReportChecker">
-        	<property name="baseDao" ref="baseDao"></property>
-        </bean>
         <bean id="baseDao" class="argo.cost.common.dao.BaseDaoImpl" autowire="byName"></bean>
         <bean id="attendanceInputDao" class="argo.cost.attendanceInput.dao.AttendanceInputDaoImpl" autowire="byName"></bean>
         <bean id="atendanceOnHolidayDao" class="argo.cost.attendanceOnHoliday.dao.AtendanceOnHolidayDaoImpl" autowire="byName"></bean>

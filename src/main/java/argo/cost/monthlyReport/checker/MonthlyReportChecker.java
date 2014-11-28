@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.constant.MessageConstants;
@@ -34,15 +33,13 @@ public class MonthlyReportChecker {
 	/**
 	 * 共通DAO
 	 */
-	@Autowired
-	static BaseDao baseDao;
+	BaseDao baseDao;
 	
-	public static BaseDao getBaseDao() {
-		return baseDao;
-	}
-
-	public static void setBaseDao(BaseDao baseDao) {
-		MonthlyReportChecker.baseDao = baseDao;
+	MonthlyReportForm form;
+	
+	public MonthlyReportChecker(MonthlyReportForm form, BaseDao baseDao) {
+		this.form = form;
+		this.baseDao = baseDao;
 	}
 
 	/**
@@ -53,7 +50,7 @@ public class MonthlyReportChecker {
 	 * @throws BusinessException 
 	 * @throws ParseException 
 	 */
-	public static void chkKintaiInfoNull(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException, ParseException {
+	public void chkKintaiInfoNull(MonthlyReportDispVO kintaiInfo) throws BusinessException, ParseException {
 		
 		// 社員番号
 		String userId = form.getTaishoUserId();
@@ -125,7 +122,7 @@ public class MonthlyReportChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKintaiInfoInput(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
+	public void chkKintaiInfoInput(MonthlyReportDispVO kintaiInfo) throws BusinessException {
 		
 		// 社員番号
 		String userId = form.getTaishoUserId();
@@ -164,7 +161,7 @@ public class MonthlyReportChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKintaiInfoDaikyu(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
+	public void chkKintaiInfoDaikyu(MonthlyReportDispVO kintaiInfo) throws BusinessException {
 
 		// 社員番号
 		String userId = form.getTaishoUserId();
@@ -205,7 +202,7 @@ public class MonthlyReportChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKyugyoKikan(MonthlyReportForm form, MonthlyReportDispVO kintaiInfo) throws BusinessException {
+	public void chkKyugyoKikan(MonthlyReportDispVO kintaiInfo) throws BusinessException {
 		
 		// 勤怠データ存在するのみ、チェックを実行する。
 		if (StringUtils.isEmpty(kintaiInfo.getWorkKbn())) {
@@ -272,7 +269,7 @@ public class MonthlyReportChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkDaikyuKigen(MonthlyReportForm form) throws BusinessException {
+	public void chkDaikyuKigen() throws BusinessException {
 		
 		// 検索条件を設定
 		BaseCondition condition = new BaseCondition();
@@ -309,7 +306,7 @@ public class MonthlyReportChecker {
 	 *            
 	 * @throws BusinessException 
 	 */
-	private static void insertKintaiInfo(String userId, String loginId, String attDate, String kbn) throws BusinessException {
+	private void insertKintaiInfo(String userId, String loginId, String attDate, String kbn) throws BusinessException {
 
 		// 勤怠情報
 		KintaiInfo entity = new KintaiInfo();
@@ -334,7 +331,7 @@ public class MonthlyReportChecker {
 		baseDao.insert(entity);
 	}
 	
-	private static boolean isWorkDate(String taishoDate, String taishoUserId) {
+	private boolean isWorkDate(String taishoDate, String taishoUserId) {
 		
 		// 対象ユーザー情報を取得
 		Users user = baseDao.findById(taishoUserId, Users.class);

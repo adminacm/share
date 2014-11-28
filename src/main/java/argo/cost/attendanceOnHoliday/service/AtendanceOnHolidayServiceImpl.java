@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import argo.cost.attendanceOnHoliday.checker.AtendanceOnHolidayChecker;
 import argo.cost.attendanceOnHoliday.model.AtendanceOnHolidayForm;
 import argo.cost.common.constant.CommonConstant;
 import argo.cost.common.dao.BaseCondition;
@@ -38,7 +39,6 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	@Override
 	public ArrayList<WorkDayKbnMaster> getAtendanceDayKbnList() {
 		
-
 		// データベースから勤務日区分リストを検索する		
 		ArrayList<WorkDayKbnMaster> atendanceDayKbnList = (ArrayList<WorkDayKbnMaster>) baseDao.findAll(WorkDayKbnMaster.class);
 		
@@ -123,6 +123,9 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	@Override 
 	public void saveAtendanceOnHoliday(AtendanceOnHolidayForm atendanceOnHoliday) throws BusinessException {
 		
+		AtendanceOnHolidayChecker checker = new AtendanceOnHolidayChecker(atendanceOnHoliday, baseDao);
+		// 振替日チェック
+		checker.chkFurikaeBiInput();
 		// 当前の日付を検索条件として、DBの休日勤務情報有無をチェックする		
 		BaseCondition condition = new BaseCondition();
 		String loginId = atendanceOnHoliday.getUserId();
@@ -181,24 +184,26 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	/**
 	 * 休日勤務入力画面の削除処理
 	 * 
-	 * @param strAtendanceDate
-	 *            休日勤務日付
-	 * @param UserID
-	 *            ユーザーID
-	 *            
-	 * @return　deleteFlg
-	 *            勤務情報データの保存結果フラグ
+	 * @param form
+	 *            休日勤務画面情報
 	 * @ throws Exception
 	 */
 	@Override
-	public void deleteAtendanceOnHoliday(String strAtendanceDate, String userID) throws BusinessException {
-
+	public void deleteAtendanceOnHoliday(AtendanceOnHolidayForm form) throws BusinessException {
+		// 勤務日付
+		String strAtendanceDate = form.getStrAtendanceDate();
+		// 対象者
+		String userId = form.getTaishoUserId();
+		
+		AtendanceOnHolidayChecker checker = new AtendanceOnHolidayChecker(form, baseDao);
+		// 対象日の勤怠実績チェック
+		checker.chkDelKintaiInfo();
 		// 当前の日付の休日勤務予定情報を削除する
 		BaseCondition deleteAtendanceOnHolidayCondition = new BaseCondition();
 		// 検索条件：休日勤務の日付
 		deleteAtendanceOnHolidayCondition.addConditionEqual("atendanceDate", strAtendanceDate.replace("/", ""));
 		// 検索条件：社員ID
-		deleteAtendanceOnHolidayCondition.addConditionEqual("users.id", userID);
+		deleteAtendanceOnHolidayCondition.addConditionEqual("users.id", userId);
 		baseDao.deleteByCondition(deleteAtendanceOnHolidayCondition, HolidayAtendanceYotei.class);
 		
 

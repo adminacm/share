@@ -30,6 +30,7 @@ import argo.cost.common.model.MonthlyReportDispVO;
 import argo.cost.common.model.ProjWorkTimeCountVO;
 import argo.cost.common.utils.CostDateUtils;
 import argo.cost.common.utils.CostStringUtils;
+import argo.cost.monthlyReport.checker.MonthlyReportChecker;
 import argo.cost.monthlyReport.dao.MonthlyReportDao;
 import argo.cost.monthlyReport.model.MonthlyReportForm;
 
@@ -417,7 +418,21 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
 	 */
 	@Override
 	public void monthyReportCommit(MonthlyReportForm form) throws Exception {
-		
+    	// 月報一覧情報
+    	List<MonthlyReportDispVO> mRList = form.getmRList();
+
+    	MonthlyReportChecker checker = new MonthlyReportChecker(form, baseDao);
+    	// 代休取得期限チェック
+    	checker.chkDaikyuKigen();
+		for (int i = 0; i < mRList.size() - 1; i++) {
+			MonthlyReportDispVO monthlyReport = mRList.get(i);
+			// 勤務期間チェック
+			checker.chkKyugyoKikan(monthlyReport);
+			// 入力チェック
+			checker.chkKintaiInfoNull(monthlyReport);
+			checker.chkKintaiInfoInput(monthlyReport);
+			checker.chkKintaiInfoDaikyu(monthlyReport);
+		}
 		// ログインID
 		String loginUserId = form.getUserId();
 		// 対象者ID
