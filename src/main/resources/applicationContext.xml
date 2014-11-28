@@ -70,10 +70,6 @@
                 </props>
             </property>
         </bean>
-        <bean id="attInputchecker" class="argo.cost.attendanceInput.checker.AttendanceInputChecker">
-        	<property name="baseDao" ref="baseDao"></property>
-        	<property name="attendanceInputDao" ref="attendanceInputDao"></property>
-        </bean>
         <bean id="atendanceOnHolidayChecker" class="argo.cost.attendanceOnHoliday.checker.AtendanceOnHolidayChecker">
         	<property name="baseDao" ref="baseDao"></property>
         	<property name="atendanceOnHolidayDao" ref="atendanceOnHolidayDao"></property>

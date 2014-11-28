@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import argo.cost.attendanceInput.dao.AttendanceInputDao;
 import argo.cost.attendanceInput.model.AttendanceInputForm;
@@ -57,32 +56,25 @@ public class AttendanceInputChecker {
 	private final static String KYUKA_KBN = "休暇区分";
 	
 	/**
+	 * 勤怠入力画面情報
+	 */
+	AttendanceInputForm form;
+	/**
 	 * 共通DAO
 	 */
-	@Autowired
-	static BaseDao baseDao;
+	BaseDao baseDao;
+	
 	/**
 	 * 勤怠入力DAO
 	 */
-	@Autowired
-	static AttendanceInputDao attendanceInputDao;
+	AttendanceInputDao attendanceInputDao;
+
+	public AttendanceInputChecker(AttendanceInputForm form,BaseDao baseDao,AttendanceInputDao attendanceInputDao) {
+		this.form = form;
+		this.baseDao = baseDao;
+		this.attendanceInputDao = attendanceInputDao;
+	}
 	
-	public static BaseDao getBaseDao() {
-		return baseDao;
-	}
-
-	public static void setBaseDao(BaseDao baseDao) {
-		AttendanceInputChecker.baseDao = baseDao;
-	}
-
-	public AttendanceInputDao getAttendanceInputDao() {
-		return attendanceInputDao;
-	}
-
-	public void setAttendanceInputDao(AttendanceInputDao attendanceInputDao) {
-		AttendanceInputChecker.attendanceInputDao = attendanceInputDao;
-	}
-
 	/**
 	 * 勤務開始時刻チェック
 	 * 
@@ -92,7 +84,7 @@ public class AttendanceInputChecker {
 	 *            定時出勤時刻(hhnn)
 	 * @throws BusinessException 
 	 */
-	public static void chkWorkSTimeFormat(AttendanceInputForm form) throws BusinessException {
+	public void chkWorkSTimeFormat() throws BusinessException {
 		
 		// シフト情報
 		ShiftVO shift = form.getShiftInfo();
@@ -130,7 +122,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkWorkSTimeSame(AttendanceInputForm form) throws BusinessException {
+	public void chkWorkSTimeSame() throws BusinessException {
 		
 		// 勤怠日付
 		String date = form.getAttDate();
@@ -162,7 +154,7 @@ public class AttendanceInputChecker {
 	 *            定時出勤時刻(hhnn)
 	 * @throws BusinessException 
 	 */
-	public static void chkWorkETimeFormat(AttendanceInputForm form) throws BusinessException {
+	public void chkWorkETimeFormat() throws BusinessException {
 		// シフト情報
 		ShiftVO shift = form.getShiftInfo();
 		String hour = StringUtils.isEmpty(form.getWorkEHour()) ? StringUtils.EMPTY : form.getWorkEHour();
@@ -197,7 +189,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkWorkTimeFormat(AttendanceInputForm form) throws BusinessException {
+	public void chkWorkTimeFormat() throws BusinessException {
 		
 		// シフト情報
 		ShiftVO shift = form.getShiftInfo();
@@ -275,7 +267,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKyuKaKbn(AttendanceInputForm form) throws BusinessException {
+	public void chkKyuKaKbn() throws BusinessException {
 		
 		// 休暇欠勤区分
 		String kykaKbn = form.getKyukaKb();
@@ -300,7 +292,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkWorkDayFlag(AttendanceInputForm form) throws BusinessException {
+	public void chkWorkDayFlag() throws BusinessException {
 		
 		// 対象日付
 		String date = form.getAttDate();
@@ -329,7 +321,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime01(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbnAndWorkTime01() throws BusinessException {
 		
 		// 休暇欠勤区分
 		String kyukaKbn = form.getKyukaKb();
@@ -364,7 +356,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime02(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbnAndWorkTime02() throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -405,7 +397,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime03(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbnAndWorkTime03() throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -452,7 +444,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime04(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbnAndWorkTime04() throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -491,7 +483,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime05(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbnAndWorkTime05() throws BusinessException {
 		
 		// 勤務区分"01"(出勤)or"03"(休日振替勤務)で
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_SHUKIN, form.getWorkDayKbn())
@@ -520,7 +512,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndWorkTime06(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbnAndWorkTime06() throws BusinessException {
 		
 		// 休暇欠勤区分
 		String kyukaKbn = form.getKyukaKb();
@@ -556,7 +548,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbnAndShiftCode(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbnAndShiftCode() throws BusinessException {
 		
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -585,7 +577,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbn001(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbn001() throws BusinessException {
 		
 		// 休暇欠勤区分"05"(代休)で
 		if (StringUtils.equals(CommonConstant.KK_KBN_TAIKYU, form.getKyukaKb())) {
@@ -628,7 +620,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbn002(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbn002() throws BusinessException {
 		
 		Double kyukaHours = 0.0;
 		// 休暇欠勤区分
@@ -687,7 +679,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKykaKbn003(AttendanceInputForm form) throws BusinessException {
+	public void chkKykaKbn003() throws BusinessException {
 
 		// 勤務区分
 		String kinmuKbn = form.getWorkDayKbn();
@@ -728,7 +720,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKyuKaKbnAndKinmuKbn(AttendanceInputForm form) throws BusinessException {
+	public void chkKyuKaKbnAndKinmuKbn() throws BusinessException {
 		
 		// 勤務区分が「休日」か「振替休日」の場合
 		if (StringUtils.equals(CommonConstant.WORKDAY_KBN_KYUJITU, form.getWorkDayKbn())
@@ -751,7 +743,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkHolidayYoteiInfo(AttendanceInputForm form) throws BusinessException {
+	public void chkHolidayYoteiInfo() throws BusinessException {
 		
 		// 休日勤務情報が存在する場合
 		if (form.getHolidayAttendance() != null) {
@@ -784,7 +776,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkProjectList(AttendanceInputForm form) throws BusinessException {
+	public void chkProjectList() throws BusinessException {
 		
 		// プロジェクト情報
 		List<AttendanceProjectVO> projectList = form.getProjectList();
@@ -822,7 +814,7 @@ public class AttendanceInputChecker {
 	 *            画面情報オブジェクト
 	 * @throws BusinessException 
 	 */
-	public static void chkKyugyoKikan(AttendanceInputForm form) throws BusinessException {
+	public void chkKyugyoKikan() throws BusinessException {
 		
 		// 対象者
 		String taishoUserId = form.getTaishoUserId();

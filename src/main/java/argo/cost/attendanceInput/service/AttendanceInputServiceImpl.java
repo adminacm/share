@@ -434,6 +434,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	@Override
 	public void calcWorkingRec(AttendanceInputForm form) throws BusinessException {
 		
+		AttendanceInputChecker checker = new AttendanceInputChecker(form, baseDao, attendanceInputDao);
 		// 画面数字の初期化
 		form.setWorkHours(0.0);
 		form.setKyukaHours(0.0);
@@ -462,7 +463,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			getRestHours(form, form.getShiftInfo());
 		}
 		// 休暇欠勤区分・勤務時刻:有給休暇の取得限度を超えています
-		AttendanceInputChecker.chkKykaKbn002(form);
+		checker.chkKykaKbn002();
 		// エラーが発生されているの場合
 		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
 			return;
@@ -474,7 +475,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		getMidnight(form);
 		
 		// プロジェクト情報のチェック
-		AttendanceInputChecker.chkProjectList(form);
+		checker.chkProjectList();
 		// エラーが発生されているの場合
 		if (!StringUtils.isEmpty(form.getConfirmMsg())) {
 			return;
@@ -1020,34 +1021,35 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// シフトコードより、シフト情報を取得
 		ShiftVO shiftinfo = getShiftInfo(form);
 		form.setShiftInfo(shiftinfo);
+		AttendanceInputChecker checker = new AttendanceInputChecker(form,baseDao,attendanceInputDao);
 		// 勤務期間のチェック
-		AttendanceInputChecker.chkKyugyoKikan(form);
+		checker.chkKyugyoKikan();
 		// 勤務開始時刻の型チェックとフォーマット
-		AttendanceInputChecker.chkWorkSTimeFormat(form);
+		checker.chkWorkSTimeFormat();
 		// 勤務終了時刻の型チェックとフォーマット
-		AttendanceInputChecker.chkWorkETimeFormat(form);
+		checker.chkWorkETimeFormat();
 		// 休暇欠勤区分・勤務時刻:勤怠が未入力です
-		AttendanceInputChecker.chkKykaKbnAndWorkTime05(form);
+		checker.chkKykaKbnAndWorkTime05();
 		// 休暇欠勤区分と勤務区分のチェック
-		AttendanceInputChecker.chkKyuKaKbnAndKinmuKbn(form);
+		checker.chkKyuKaKbnAndKinmuKbn();
 		// 休暇欠勤区分・勤務時刻:勤務開始時刻・終了時刻を入力してください
-		AttendanceInputChecker.chkKykaKbnAndWorkTime01(form);
+		checker.chkKykaKbnAndWorkTime01();
 		// 休暇欠勤区分・勤務時刻:取得できる代休はありません
-		AttendanceInputChecker.chkKykaKbn001(form);
+		checker.chkKykaKbn001();
 		// 勤務時刻の整合性チェック
-		AttendanceInputChecker.chkWorkTimeFormat(form);
+		checker.chkWorkTimeFormat();
 		// 休暇欠勤区分・勤務時刻:定時時間帯の勤務時間数が7.5h未満です。休暇区分も入力してください
-		AttendanceInputChecker.chkKykaKbnAndWorkTime02(form);
+		checker.chkKykaKbnAndWorkTime02();
 		// 休暇欠勤区分・勤務時刻:正しい休暇区分を入力してください
-		AttendanceInputChecker.chkKykaKbnAndWorkTime03(form);
+		checker.chkKykaKbnAndWorkTime03();
 		// 休暇欠勤区分・勤務時刻:有給休暇が余分に取得されています
-		AttendanceInputChecker.chkKykaKbn003(form);
+		checker.chkKykaKbn003();
 		// 休暇欠勤区分・勤務時刻:終日休暇の日は勤務できません
-		AttendanceInputChecker.chkKykaKbnAndWorkTime06(form);
+		checker.chkKykaKbnAndWorkTime06();
 		// 休暇欠勤区分・勤務時刻:休暇欠勤区分が入力されています
-		AttendanceInputChecker.chkKykaKbnAndWorkTime04(form);
+		checker.chkKykaKbnAndWorkTime04();
 		// 休暇欠勤区分・勤務時刻:休日の勤務開始は定時出勤時刻を入力してください
-		AttendanceInputChecker.chkKykaKbnAndShiftCode(form);
+		checker.chkKykaKbnAndShiftCode();
 
 	}
 	
