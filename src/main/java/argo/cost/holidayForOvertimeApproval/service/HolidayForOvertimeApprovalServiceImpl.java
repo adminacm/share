@@ -3,6 +3,8 @@ package argo.cost.holidayForOvertimeApproval.service;
 import java.sql.Timestamp;
 import java.text.ParseException;
 
+import javax.persistence.OptimisticLockException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,14 @@ import argo.cost.holidayForOvertimeApproval.model.HolidayForOvertimeApprovalForm
 
 @Service
 public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertimeApprovalService {
-	
+	/**
+	 * 勤怠情報更新履歴番号
+	 */
+	private int version1 = 0;
+	/**
+	 * 超勤振替申請情報更新履歴番号
+	 */
+	private int version2 = 0;
 	/**
 	 * 単一テーブル操作DAO
 	 */	
@@ -72,6 +81,8 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		KintaiInfo kintaiInfo = baseDao.findSingleResult(condition, KintaiInfo.class);
 
 		if (kintaiInfo != null) {
+			// 履歴番号
+			version1 = kintaiInfo.getVersion();
 			// 検索条件
 			condition = new BaseCondition();
 			// ユーザＩＤ
@@ -104,6 +115,8 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 			
 			Users taishoUser = new Users();
 			if (approvalManageInfo != null) {
+				// 履歴番号
+				version2 = approvalManageInfo.getVersion();
 				taishoUser = approvalManageInfo.getUser();
 			}
 			
@@ -140,7 +153,7 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 	 *               申請番号
 	 */
 	@Override
-	public void approvalOverWork(String applyNo) {
+	public void approvalOverWork(String applyNo) throws OptimisticLockException {
 
 		// 申請番号による、承認情報を取得
 		ApprovalManage approvalInfo = baseDao.findById(applyNo, ApprovalManage.class);
@@ -152,6 +165,7 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		approvalInfo.setUpdatedUserId(approvalInfo.getUser().getId());
 		// 更新時刻
 		approvalInfo.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+		approvalInfo.setVersion(version2);
 
 		// 更新実行
 		baseDao.update(approvalInfo);
@@ -164,7 +178,7 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 	 *               申請番号
 	 */
 	@Override
-	public void remandOverWork(String applyNo) {
+	public void remandOverWork(String applyNo) throws OptimisticLockException {
 		
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
@@ -183,12 +197,17 @@ public class HolidayForOvertimeApprovalServiceImpl implements HolidayForOvertime
 		kintaiInfo.setUpdatedUserId(kintaiInfo.getUsers().getId());
 		// 更新時刻
 		kintaiInfo.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+		kintaiInfo.setVersion(version1);
 
 		// 勤怠情報テーブルを更新
 		baseDao.update(kintaiInfo);
 		
 		// 申請番号による、承認情報を削除
-		baseDao.deleteById(applyNo, ApprovalManage.class);
+		condition = new BaseCondition();
+		condition.addConditionEqual("applyNo", applyNo);
+		condition.addConditionEqual("version", version2);
+		
+		baseDao.deleteByCondition(condition, ApprovalManage.class);
 	}
 
 	/**

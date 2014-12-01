@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.OptimisticLockException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,10 @@ import argo.cost.monthlyReportApproval.model.MonthlyReportApprovalForm;
 
 @Service
 public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalService {
-
+	/**
+	 * 更新履歴番号
+	 */
+	private int version = 0;
 	/**
 	 * 共通DAO
 	 */
@@ -55,6 +60,7 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 		String applyNo = form.getApplyNo();
 				
 		ApprovalManage approvalManageInfo = baseDao.findById(applyNo, ApprovalManage.class);
+		version = approvalManageInfo.getVersion();
 		// 処理状況コード取得
 		form.setProStatus(approvalManageInfo.getStatusMaster().getCode());
 		form.setProStatusName(approvalManageInfo.getStatusMaster().getName());
@@ -358,10 +364,11 @@ public class MonthlyReportApprovalServiceImpl implements MonthlyReportApprovalSe
 				approvalManageInfo.setApprovedYmd(CostDateUtils.getNowDate());
 				approvalManageInfo.setApproveUser(baseDao.findById(updateUserId, Users.class));
 			}
+			approvalManageInfo.setVersion(version);
 			// 承認情報を更新する
 			baseDao.update(approvalManageInfo);
-		} catch (Exception e) {
-
+		} catch (OptimisticLockException e) {
+			
 			throw new BusinessException();
 		}
 				

@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.OptimisticLockException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,10 @@ import argo.cost.setup.model.SetupForm;
  */
 @Service
 public class SetupServiceImpl implements SetupService {
-	
+	/**
+	 * 更新履歴番号
+	 */
+	private int version = 0;
 	/**
 	 * 共通DAO
 	 */
@@ -46,6 +51,7 @@ public class SetupServiceImpl implements SetupService {
 		
 		// DBから、個人設定情報を取得
 		Users userInfo = baseDao.findById(setupForm.getUserId(), Users.class);
+		version = userInfo.getVersion();
 		
 		// 画面の個人設定情報を設定
 		
@@ -215,11 +221,16 @@ public class SetupServiceImpl implements SetupService {
 		user.setTaisyokuDate(setupForm.getOutDate().replaceAll("/", ""));
 		user.setUpdatedUserId(setupForm.getUserId());               // 更新者
 		user.setUpdateDate(new Timestamp(System.currentTimeMillis()));  // 更新時刻
+		user.setVersion(version);
 		
 		try {
 			// ユーザー情報を更新する
 			baseDao.update(user);
 			
+		} catch (OptimisticLockException e) {
+			// 排他エラー
+			setupForm.putConfirmMsg("排他エラー！！！");
+			throw new BusinessException();
 		} catch (Exception ex) {
 			setupForm.putConfirmMsg("ユーザー情報の更新は失敗しました");
 			throw new BusinessException();

@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.persistence.OptimisticLockException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,6 +78,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * 一日終了時刻
 	 */
 	private final String DAY_OVER_TIME = "2330";
+	/**
+	 * 勤怠情報の更新履歴番号
+	 */
+	private int version = 0;
 	/**
 	 * 共通サービスです。
 	 */
@@ -505,6 +511,10 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+		} catch (OptimisticLockException e) {
+			// 排他エラー
+			form.putConfirmMsg("排他エラー！！！");
+			throw new BusinessException();
 		}
 		// プロジェクト情報を更新する
 		saveProjectInfo(loginId, taishoUserId, date, form.getProjectList());
@@ -1167,7 +1177,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 	 * @throws ParseException 
 	 * 
 	 */
-	private void saveKintaiInfo(AttendanceInputForm form, KintaiInfo kintaiEntity) throws ParseException {
+	private void saveKintaiInfo(AttendanceInputForm form, KintaiInfo kintaiEntity) throws ParseException, OptimisticLockException {
 		
 		// ログイン社員番号
 		String loginId = form.getUserId();
@@ -1233,6 +1243,7 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		kintaiEntity.setLocation(location);                  // ロケーション情報
 		kintaiEntity.setUpdatedUserId(loginId);               // 更新者
 		kintaiEntity.setUpdateDate(new Timestamp(System.currentTimeMillis())); // 更新時刻
+		kintaiEntity.setVersion(version);
 		
 		// 更新の場合
 		if (flag) {

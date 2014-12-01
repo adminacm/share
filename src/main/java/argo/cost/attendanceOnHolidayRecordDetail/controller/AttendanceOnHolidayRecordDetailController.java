@@ -1,5 +1,7 @@
 package argo.cost.attendanceOnHolidayRecordDetail.controller;
 
+import javax.persistence.OptimisticLockException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,9 +87,12 @@ public class AttendanceOnHolidayRecordDetailController extends AbstractControlle
 		// 超勤振替申請を提出
 		try {
 			service.overWorkPayRequest(form);
+		} catch (OptimisticLockException e) {
+			// 排他エラー
+			form.putConfirmMsg("排他エラー！！！");
+			return ATTENDANCE_ONHOLIDAY_RECORD_DETAIL;
 		} catch (Exception e) {
 			form.putConfirmMsg(e.getMessage());
-			e.printStackTrace();
 			return ATTENDANCE_ONHOLIDAY_RECORD_DETAIL;
 		}
 		

@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import javax.persistence.OptimisticLockException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,10 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 	 */
 	@Autowired
 	BaseDao baseDao;
-
+	/**
+	 * 更新履歴番号
+	 */
+	private int version = 0;
 
 	// 勤務日区分のプルダウンリストを取得
 	@Override
@@ -78,7 +83,9 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		
 		// 当前の日付の休日勤務情報が存在の場合
 		if (holidayInfo != null) {
-					
+		
+			// 更新履歴番号
+			version = holidayInfo.getVersion();
 			// 勤務日付
 			atendanceOnHolidayForm.setStrAtendanceDate(currentDate);
 			// 勤務区分
@@ -168,6 +175,7 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 		entity.setCommont(atendanceOnHoliday.getStrCommont());
 		entity.setUpdatedUserId(loginId);               // 更新者
 		entity.setUpdateDate(new Timestamp(System.currentTimeMillis())); // 更新時刻
+		entity.setVersion(version);
 		try {
 			// 更新の場合
 			if (flag) {
@@ -175,6 +183,10 @@ public class AtendanceOnHolidayServiceImpl implements AtendanceOnHolidayService 
 			} else {
 				baseDao.insert(entity);
 			}
+		} catch (OptimisticLockException e) {
+			// 排他エラー
+			atendanceOnHoliday.putConfirmMsg("排他エラー！！！");
+			throw new BusinessException();
 		} catch (Exception e ) {
 			atendanceOnHoliday.putConfirmMsg("休日勤務入力データ登録失敗しました！");
 			throw new BusinessException();

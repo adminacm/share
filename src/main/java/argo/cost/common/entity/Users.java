@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 import java.util.List;
@@ -77,6 +76,10 @@ public class Users implements Serializable {
 	@Column(name="user_name", nullable=false, length=30)
 	private String userName;
 
+	@Version
+	@Column(name="version")
+	private Integer version;
+	
 	//bi-directional many-to-one association to ApprovalManage
 	@OneToMany(mappedBy="users")
 	private List<ApprovalManage> approvalManages;
@@ -391,6 +394,14 @@ public class Users implements Serializable {
 		yukyuKyukaFuyus.setUsers(null);
 
 		return yukyuKyukaFuyus;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

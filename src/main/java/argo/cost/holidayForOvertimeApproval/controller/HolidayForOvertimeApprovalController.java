@@ -1,5 +1,7 @@
 package argo.cost.holidayForOvertimeApproval.controller;
 
+import javax.persistence.OptimisticLockException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,9 +81,14 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	 */
 	@RequestMapping(value = APPROVAL)
 	public String doApproval(HolidayForOvertimeApprovalForm form) {
-		
-		// 承認処理を実行
-		holidayForOvertimeApprovalService.approvalOverWork(form.getApplyNo());
+		form.clearMessages();
+		try {
+			// 承認処理を実行
+			holidayForOvertimeApprovalService.approvalOverWork(form.getApplyNo());
+		} catch (OptimisticLockException ex) {
+			form.putConfirmMsg("排他エラー！！！");
+			return HOLIDAYFOROVERTIME_APPROVAL;
+		}
 
 		// 承認一覧画面へ遷移する
 		return REDIRECT + form.getBackUrl() + INIT;
@@ -95,8 +102,14 @@ public class HolidayForOvertimeApprovalController extends AbstractController {
 	@RequestMapping(value = REMAND)
 	public String doRemand(HolidayForOvertimeApprovalForm form) {
 		
-		// 差戻処理実行
-		holidayForOvertimeApprovalService.remandOverWork(form.getApplyNo());
+		form.clearMessages();
+		try {
+			// 差戻処理実行
+			holidayForOvertimeApprovalService.remandOverWork(form.getApplyNo());
+		} catch (OptimisticLockException ex) {
+			form.putConfirmMsg("排他エラー！！！");
+			return HOLIDAYFOROVERTIME_APPROVAL;
+		}
 		
 		// 差戻ボタンを押すと申請状況が差戻しに更新され、承認一覧画面へ遷移する
 		return REDIRECT + form.getBackUrl() + INIT;

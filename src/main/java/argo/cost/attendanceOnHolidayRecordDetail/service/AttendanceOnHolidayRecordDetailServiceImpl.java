@@ -3,6 +3,8 @@ package argo.cost.attendanceOnHolidayRecordDetail.service;
 import java.sql.Timestamp;
 import java.text.ParseException;
 
+import javax.persistence.OptimisticLockException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,10 @@ import argo.cost.common.utils.CostDateUtils;
  */
 @Service
 public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnHolidayRecordDetailService {
-	
+	/**
+	 * 更新履歴番号
+	 */
+	private int version = 0;
 	/**
 	 * 単一テーブル操作DAO
 	 */	
@@ -102,6 +107,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		}
 		// 休日勤務予定情報がありの場合
 		if (holidayAtendanceYoteiInfo != null) {
+			version = holidayAtendanceYoteiInfo.getVersion();
 			// プロジェクト名
 			form.setProjectName(holidayAtendanceYoteiInfo.getProjectBasic().getProjectName());
 			// 業務内容
@@ -127,7 +133,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 	 *            
 	 */
 	@Override
-	public void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form) throws ParseException {
+	public void overWorkPayRequest(AttendanceOnHolidayRecordDetailForm form) throws ParseException, OptimisticLockException {
 
 		// 検索条件
 		BaseCondition condition = new BaseCondition();
@@ -175,6 +181,7 @@ public class AttendanceOnHolidayRecordDetailServiceImpl implements AttendanceOnH
 		detailInfo.setApprovalManage2(approvalManage2);
 		detailInfo.setUpdatedUserId(form.getUserId());               // 更新者
 		detailInfo.setUpdateDate(new Timestamp(System.currentTimeMillis()));  // 更新時刻
+		detailInfo.setVersion(version);
 		// 休日出勤テーブルを更新
 		baseDao.update(detailInfo);
 	}

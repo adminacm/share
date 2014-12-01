@@ -2,6 +2,8 @@ package argo.cost.holidayForOvertimeApproval.service;
 
 import java.text.ParseException;
 
+import javax.persistence.OptimisticLockException;
+
 import argo.cost.holidayForOvertimeApproval.model.HolidayForOvertimeApprovalForm;
 
 
@@ -34,7 +36,7 @@ public interface HolidayForOvertimeApprovalService {
 	 * @param applyNo
 	 *               申請番号
 	 */
-	void approvalOverWork(String applyNo);
+	void approvalOverWork(String applyNo) throws OptimisticLockException;
 
 	/**
 	 * 差戻処理実行
