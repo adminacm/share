@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 
 /**
@@ -89,6 +90,10 @@ public class KintaiInfo implements Serializable {
 	@Column(name="payout_ym", length=6)
 	private String payoutYm;
 
+	@Version
+	@Column(name="version")
+	private Integer version;
+	
 	@Column(name="sinya_kinmu_jikansu", precision=2, scale=1)
 	private BigDecimal sinyaKinmuJikansu;
 
@@ -147,8 +152,6 @@ public class KintaiInfo implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
 	public String getAtendanceDate() {
 		return atendanceDate;
 	}
@@ -401,6 +404,14 @@ public class KintaiInfo implements Serializable {
 		projWorkTimeManage.setKintaiInfo(null);
 
 		return projWorkTimeManage;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

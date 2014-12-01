@@ -337,7 +337,93 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			attPorject.setWorkItemList(workItemList);
 			attendanceProjectList.add(attPorject);
 		}
-
+		
+		// 月報承認状況は「作成中」以外の場合、月報状況名前を表示しない
+		if (!StringUtils.isEmpty(form.getAppStatusCode()) && form.getAppStatusCode() != CommonConstant.STATUS_SAKUSEIJYOU) {
+			
+			form.setMonthReportStatusHyojiFlg("1");
+		} else {
+			form.setMonthReportStatusHyojiFlg("0");
+		}
+		
+		// 月報承認状況は「作成中」or空の場合、休日勤務入力ボタン、計算ボタンと保存ボタンを可用にする
+		if (StringUtils.isEmpty(form.getAppStatusCode()) || form.getAppStatusCode() == CommonConstant.STATUS_SAKUSEIJYOU) {
+			
+			// 休日勤務入力ボタンを表示する
+			form.setHolidayAttendanceBtnInUseFlg("1");
+			// 計算ボタンを表示する
+			form.setKeisanBtnInUseFlg("1");
+			// 保存ボタンを表示する
+			form.setSaveBtnInUseFlg("1");
+		} else {
+				
+			form.setHolidayAttendanceBtnInUseFlg("0");
+			form.setKeisanBtnInUseFlg("0");
+			form.setSaveBtnInUseFlg("1");
+		}
+		
+		// 休日、或いは休日勤務が空ではない場合、休日勤務入力部分を表示する
+		if (form.getHolidayAttendance() != null || form.getWorkDayKbn() == CommonConstant.STATUS_SAKUSEIJYOU) {
+			form.setHolidayAttendanceInputPartHyojiFlg("1");
+		} else {
+			form.setHolidayAttendanceInputPartHyojiFlg("0");
+		}
+		
+		// 休暇時間数の表示フラグ
+		if ( form.getKyukaHours() != null && form.getKyukaHours() != 0.0) {
+			form.setKyukaJikansuHyojiFlg("1");
+		} else {
+			form.setKyukaJikansuHyojiFlg("0");
+		}
+		
+		// 勤務時間数の表示フラグ
+		if (form.getWorkHours() != null && form.getWorkHours() != 0.0) {
+			form.setKinmuJikansuHyojiFlg("1");
+		} else {
+			form.setKinmuJikansuHyojiFlg("0");
+		}
+		
+		// 平日割増の表示フラグ
+		if (form.getChoWeekday() != null && form.getChoWeekday() != 0.0) {
+			form.setHejituWarimashiHyojiFlg("1");
+			
+		} else {
+			form.setHejituWarimashiHyojiFlg("0");
+		}
+		
+		// 平日割増の表示フラグ
+		if (form.getChoWeekday() != null && form.getChoWeekday() != 0.0) {
+			form.setHejituWarimashiHyojiFlg("1");
+			
+		} else {
+			form.setHejituWarimashiHyojiFlg("0");
+		}
+		
+		// 平日通常の表示フラグ
+		if (form.getChoWeekdayNomal() != null && form.getChoWeekdayNomal() != 0.0) {
+			form.setHejituTujyouHyojiFlg("1");
+			
+		} else {
+			form.setHejituTujyouHyojiFlg("0");
+		}
+		
+		// 休日超勤時間数の表示フラグ
+		if (form.getChoHoliday() != null && form.getChoHoliday() != 0.0) {
+			form.setKyujituChokinJikansuHyojiFlg("1");
+			
+		} else {
+			form.setKyujituChokinJikansuHyojiFlg("0");
+		}
+		
+		// 深夜超勤時間数の表示フラグ
+		if (form.getmNHours() != null && form.getmNHours() != 0.0) {
+			form.setShiyaChokinJikansuHyojiFlg("1");
+			
+		} else {
+			form.setShiyaChokinJikansuHyojiFlg("0");
+		}
+				
+		
 		// 休暇欠勤区分リストを取得
 		List<KyukaKekinKbnMaster> kyukakbList = baseDao.findAll(KyukaKekinKbnMaster.class);
 		form.setKyukakbList(kyukakbList);

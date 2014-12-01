@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 
 /**
@@ -56,6 +57,10 @@ public class HolidayAtendanceYotei implements Serializable {
 	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
+	@Version
+	@Column(name="version")
+	private Integer version;
+	
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="user_id", nullable=false)
@@ -176,6 +181,14 @@ public class HolidayAtendanceYotei implements Serializable {
 
 	public void setProjectBasic(ProjectBasic projectBasic) {
 		this.projectBasic = projectBasic;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

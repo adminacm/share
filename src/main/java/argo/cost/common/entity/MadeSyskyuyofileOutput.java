@@ -2,7 +2,9 @@ package argo.cost.common.entity;
 
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 
@@ -35,6 +37,10 @@ public class MadeSyskyuyofileOutput implements Serializable {
 	@Column(name="updated_user_id", length=20)
 	private String updatedUserId;
 
+	@Version
+	@Column(name="version")
+	private Integer version;
+	
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="file_created_user_id", nullable=false)
@@ -97,6 +103,14 @@ public class MadeSyskyuyofileOutput implements Serializable {
 
 	public void setUsers(Users users) {
 		this.users = users;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

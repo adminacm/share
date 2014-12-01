@@ -176,6 +176,62 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	 * シフト情報
 	 */
 	private ShiftVO shiftVO;
+	
+	/**
+	 * 月報承認状況名前表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String monthReportStatusHyojiFlg;
+	
+	/**
+	 * 休日勤務入力ボタン可用不可用フラグ（"1"：可用する；"0":不可用する）
+	 */
+	private String holidayAttendanceBtnInUseFlg;
+	/**
+	 * 休日勤務の勤務情報入力部分表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String holidayAttendanceInputPartHyojiFlg;
+	
+	/**
+	 * 計算ボタン可用不可用フラグ（"1"：可用する；"0":不可用する）
+	 */
+	private String keisanBtnInUseFlg;
+	
+	/**
+	 * 休暇時間数表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String kyukaJikansuHyojiFlg;
+	
+	/**
+	 * 勤務時間数表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String kinmuJikansuHyojiFlg;
+	
+	/**
+	 * 平日割増表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String hejituWarimashiHyojiFlg;
+	
+	/**
+	 * 平日通常表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String hejituTujyouHyojiFlg;
+	
+	/**
+	 * 休日超勤時間数表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String kyujituChokinJikansuHyojiFlg;
+	
+	/**
+	 * 深夜超勤時間数表示非表示フラグ（"1"：表示する；"0":表示しない）
+	 */
+	private String shiyaChokinJikansuHyojiFlg;
+	
+	/**
+	 * 保存ボタン可用不可用フラグ（"1"：可用する；"0":不可用する）
+	 */
+	private String saveBtnInUseFlg;
+	
+	
 	//#################################
 	//#################################
 	/**
@@ -523,4 +579,94 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 		this.choETimeShow = choETimeShow;
 	}
 
+	public String getMonthReportStatusHyojiFlg() {
+		return monthReportStatusHyojiFlg;
+	}
+
+	public void setMonthReportStatusHyojiFlg(String monthReportStatusHyojiFlg) {
+		this.monthReportStatusHyojiFlg = monthReportStatusHyojiFlg;
+	}
+
+	public String getHolidayAttendanceBtnInUseFlg() {
+		return holidayAttendanceBtnInUseFlg;
+	}
+
+	public void setHolidayAttendanceBtnInUseFlg(String holidayAttendanceBtnInUseFlg) {
+		this.holidayAttendanceBtnInUseFlg = holidayAttendanceBtnInUseFlg;
+	}
+
+	public String getHolidayAttendanceInputPartHyojiFlg() {
+		return holidayAttendanceInputPartHyojiFlg;
+	}
+
+	public void setHolidayAttendanceInputPartHyojiFlg(
+			String holidayAttendanceInputPartHyojiFlg) {
+		this.holidayAttendanceInputPartHyojiFlg = holidayAttendanceInputPartHyojiFlg;
+	}
+
+	public String getKeisanBtnInUseFlg() {
+		return keisanBtnInUseFlg;
+	}
+
+	public void setKeisanBtnInUseFlg(String keisanBtnInUseFlg) {
+		this.keisanBtnInUseFlg = keisanBtnInUseFlg;
+	}
+
+	public String getKyukaJikansuHyojiFlg() {
+		return kyukaJikansuHyojiFlg;
+	}
+
+	public void setKyukaJikansuHyojiFlg(String kyukaJikansuHyojiFlg) {
+		this.kyukaJikansuHyojiFlg = kyukaJikansuHyojiFlg;
+	}
+
+	public String getKinmuJikansuHyojiFlg() {
+		return kinmuJikansuHyojiFlg;
+	}
+
+	public void setKinmuJikansuHyojiFlg(String kinmuJikansuHyojiFlg) {
+		this.kinmuJikansuHyojiFlg = kinmuJikansuHyojiFlg;
+	}
+
+	public String getHejituWarimashiHyojiFlg() {
+		return hejituWarimashiHyojiFlg;
+	}
+
+	public void setHejituWarimashiHyojiFlg(String hejituWarimashiHyojiFlg) {
+		this.hejituWarimashiHyojiFlg = hejituWarimashiHyojiFlg;
+	}
+
+	public String getHejituTujyouHyojiFlg() {
+		return hejituTujyouHyojiFlg;
+	}
+
+	public void setHejituTujyouHyojiFlg(String hejituTujyouHyojiFlg) {
+		this.hejituTujyouHyojiFlg = hejituTujyouHyojiFlg;
+	}
+
+	public String getKyujituChokinJikansuHyojiFlg() {
+		return kyujituChokinJikansuHyojiFlg;
+	}
+
+	public void setKyujituChokinJikansuHyojiFlg(String kyujituChokinJikansuHyojiFlg) {
+		this.kyujituChokinJikansuHyojiFlg = kyujituChokinJikansuHyojiFlg;
+	}
+
+	public String getShiyaChokinJikansuHyojiFlg() {
+		return shiyaChokinJikansuHyojiFlg;
+	}
+
+	public void setShiyaChokinJikansuHyojiFlg(String shiyaChokinJikansuHyojiFlg) {
+		this.shiyaChokinJikansuHyojiFlg = shiyaChokinJikansuHyojiFlg;
+	}
+
+	public String getSaveBtnInUseFlg() {
+		return saveBtnInUseFlg;
+	}
+
+	public void setSaveBtnInUseFlg(String saveBtnInUseFlg) {
+		this.saveBtnInUseFlg = saveBtnInUseFlg;
+	}
+	
+	
 }

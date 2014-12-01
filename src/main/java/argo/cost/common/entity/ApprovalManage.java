@@ -2,7 +2,9 @@ package argo.cost.common.entity;
 
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -45,6 +47,10 @@ public class ApprovalManage implements Serializable {
 	@Column(name="updated_user_id")
 	private String updatedUserId;
 
+	@Version
+	@Column(name="version")
+	private Integer version;
+	
 	//bi-directional many-to-one association to ApplyKbnMaster
 	@ManyToOne
 	@JoinColumn(name="apply_kbn_code")
@@ -235,6 +241,14 @@ public class ApprovalManage implements Serializable {
 		kintaiInfos2.setApprovalManage2(null);
 
 		return kintaiInfos2;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }
