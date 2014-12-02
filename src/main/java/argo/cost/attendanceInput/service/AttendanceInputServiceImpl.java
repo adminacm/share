@@ -344,16 +344,16 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			attendanceProjectList.add(attPorject);
 		}
 		
-		// 月報承認状況は「作成中」以外の場合、月報状況名前を表示しない
-		if (!StringUtils.isEmpty(form.getAppStatusCode()) && form.getAppStatusCode() != CommonConstant.STATUS_SAKUSEIJYOU) {
+		// 月報承認状況は「作成中」以外の場合、月報状況名前を表示する
+		if (!StringUtils.isEmpty(form.getAppStatusCode()) && !CommonConstant.STATUS_SAKUSEIJYOU.equals(form.getAppStatusCode())) {
 			
 			form.setMonthReportStatusHyojiFlg("1");
 		} else {
 			form.setMonthReportStatusHyojiFlg("0");
 		}
 		
-		// 月報承認状況は「作成中」or空の場合、休日勤務入力ボタン、計算ボタンと保存ボタンを可用にする
-		if (StringUtils.isEmpty(form.getAppStatusCode()) || form.getAppStatusCode() == CommonConstant.STATUS_SAKUSEIJYOU) {
+		// 月報承認状況は「作成中」or空の場合、休日勤務入力ボタン、計算ボタンと保存ボタンを活用にする
+		if (StringUtils.isEmpty(form.getAppStatusCode()) || CommonConstant.STATUS_SAKUSEIJYOU.equals(form.getAppStatusCode())) {
 			
 			// 休日勤務入力ボタンを表示する
 			form.setHolidayAttendanceBtnInUseFlg("1");
@@ -365,11 +365,11 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 				
 			form.setHolidayAttendanceBtnInUseFlg("0");
 			form.setKeisanBtnInUseFlg("0");
-			form.setSaveBtnInUseFlg("1");
+			form.setSaveBtnInUseFlg("0");
 		}
 		
 		// 休日、或いは休日勤務が空ではない場合、休日勤務入力部分を表示する
-		if (form.getHolidayAttendance() != null || form.getWorkDayKbn() == CommonConstant.STATUS_SAKUSEIJYOU) {
+		if (form.getHolidayAttendance() != null || CommonConstant.WORKDAY_KBN_SHUKIN.equals(form.getWorkDayKbn())) {
 			form.setHolidayAttendanceInputPartHyojiFlg("1");
 		} else {
 			form.setHolidayAttendanceInputPartHyojiFlg("0");

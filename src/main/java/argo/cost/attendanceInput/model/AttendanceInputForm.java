@@ -183,7 +183,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	private String monthReportStatusHyojiFlg;
 	
 	/**
-	 * 休日勤務入力ボタン可用不可用フラグ（"1"：可用する；"0":不可用する）
+	 * 休日勤務入力ボタン活性非活性フラグ（"1"：活性する；"0":非活性する）
 	 */
 	private String holidayAttendanceBtnInUseFlg;
 	/**
@@ -192,7 +192,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	private String holidayAttendanceInputPartHyojiFlg;
 	
 	/**
-	 * 計算ボタン可用不可用フラグ（"1"：可用する；"0":不可用する）
+	 * 計算ボタン活性非活性フラグ（"1"：活性する；"0":非活性する）
 	 */
 	private String keisanBtnInUseFlg;
 	
@@ -227,7 +227,7 @@ public class AttendanceInputForm extends AbstractForm implements Serializable {
 	private String shiyaChokinJikansuHyojiFlg;
 	
 	/**
-	 * 保存ボタン可用不可用フラグ（"1"：可用する；"0":不可用する）
+	 * 保存ボタン活性非活性フラグ（"1"：活性する；"0":非活性する）
 	 */
 	private String saveBtnInUseFlg;
 	
