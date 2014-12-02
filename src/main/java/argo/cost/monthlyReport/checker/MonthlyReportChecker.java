@@ -103,12 +103,6 @@ public class MonthlyReportChecker {
 						// 勤怠情報を入力ください
 						form.putConfirmMsg(MessageConstants.COSE_E_1103, new String[] {kintaiInfo.getDate()});
 						throw new BusinessException();
-					} else {
-						// 勤怠情報が存在しない場合
-						if (kintai == null) {
-							// 勤怠情報を追加する(休日)
-							insertKintaiInfo(userId, form.getUserId(), attDate, CommonConstant.WORKDAY_KBN_KYUJITU);
-						}
 					}
 				}
 			}

@@ -2,11 +2,18 @@ package argo.cost.common.entity;
 
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 
 /**
@@ -118,7 +125,6 @@ public class ApprovalManage implements Serializable {
 	public void setApprovedYmd(String approvedYmd) {
 		this.approvedYmd = approvedYmd;
 	}
-
 	public Timestamp getCreatedDate() {
 		return this.createdDate;
 	}

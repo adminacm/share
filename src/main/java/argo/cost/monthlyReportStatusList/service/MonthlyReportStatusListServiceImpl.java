@@ -159,9 +159,13 @@ public class MonthlyReportStatusListServiceImpl implements MonthlyReportStatusLi
 				// 申請者名前
 				monthlyReportStatusInfo.setAppliedUserName(approvalInfo.getApplicantUser().getUserName());
 				// 承認日付
-				monthlyReportStatusInfo.setApprovedYmd(approvalInfo.getApprovedYmd());
+				if (!StringUtils.isEmpty(approvalInfo.getApprovedYmd())) {
+					monthlyReportStatusInfo.setApprovedYmd(approvalInfo.getApprovedYmd());
+				}
 				// 承認者名前
-				monthlyReportStatusInfo.setApproverName(approvalInfo.getApproveUser().getUserName());
+				if (approvalInfo.getApproveUser() != null) {
+					monthlyReportStatusInfo.setApproverName(approvalInfo.getApproveUser().getUserName());
+				}
 				
 				monthlyReportStatusList.add(monthlyReportStatusInfo);
 			}
