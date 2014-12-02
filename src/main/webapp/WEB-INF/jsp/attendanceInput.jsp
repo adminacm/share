@@ -240,7 +240,7 @@ function addZero(e){
 					<tr>
 						<td width="90">平日割増</td>
 						<td>
-							<c:if test="${attendanceInputForm.hejituWarimashiHyojiFlg != '1'}">
+							<c:if test="${attendanceInputForm.hejituWarimashiHyojiFlg == '1'}">
 								<c:out value="${attendanceInputForm.choWeekday}"/>h
 							</c:if>
 						</td>

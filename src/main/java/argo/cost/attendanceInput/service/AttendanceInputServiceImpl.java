@@ -397,14 +397,6 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 			form.setHejituWarimashiHyojiFlg("0");
 		}
 		
-		// 平日割増の表示フラグ
-		if (form.getChoWeekday() != null && form.getChoWeekday() != 0.0) {
-			form.setHejituWarimashiHyojiFlg("1");
-			
-		} else {
-			form.setHejituWarimashiHyojiFlg("0");
-		}
-		
 		// 平日通常の表示フラグ
 		if (form.getChoWeekdayNomal() != null && form.getChoWeekdayNomal() != 0.0) {
 			form.setHejituTujyouHyojiFlg("1");
@@ -562,6 +554,52 @@ public class AttendanceInputServiceImpl implements AttendanceInputService {
 		// 深夜勤務時間数を算出する
 		getMidnight(form);
 		
+		// 休暇時間数の表示フラグ
+		if ( form.getKyukaHours() != null && form.getKyukaHours() != 0.0) {
+			form.setKyukaJikansuHyojiFlg("1");
+		} else {
+			form.setKyukaJikansuHyojiFlg("0");
+		}
+		
+		// 勤務時間数の表示フラグ
+		if (form.getWorkHours() != null && form.getWorkHours() != 0.0) {
+			form.setKinmuJikansuHyojiFlg("1");
+		} else {
+			form.setKinmuJikansuHyojiFlg("0");
+		}
+		
+		// 平日割増の表示フラグ
+		if (form.getChoWeekday() != null && form.getChoWeekday() != 0.0) {
+			form.setHejituWarimashiHyojiFlg("1");
+			
+		} else {
+			form.setHejituWarimashiHyojiFlg("0");
+		}
+		
+		// 平日通常の表示フラグ
+		if (form.getChoWeekdayNomal() != null && form.getChoWeekdayNomal() != 0.0) {
+			form.setHejituTujyouHyojiFlg("1");
+			
+		} else {
+			form.setHejituTujyouHyojiFlg("0");
+		}
+		
+		// 休日超勤時間数の表示フラグ
+		if (form.getChoHoliday() != null && form.getChoHoliday() != 0.0) {
+			form.setKyujituChokinJikansuHyojiFlg("1");
+			
+		} else {
+			form.setKyujituChokinJikansuHyojiFlg("0");
+		}
+		
+		// 深夜超勤時間数の表示フラグ
+		if (form.getmNHours() != null && form.getmNHours() != 0.0) {
+			form.setShiyaChokinJikansuHyojiFlg("1");
+			
+		} else {
+			form.setShiyaChokinJikansuHyojiFlg("0");
+		}
+
 		// プロジェクト情報のチェック
 		checker.chkProjectList();
 		// エラーが発生されているの場合
